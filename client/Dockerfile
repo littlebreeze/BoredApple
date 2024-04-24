@@ -8,12 +8,10 @@ RUN mkdir /app
 WORKDIR /app
 
 # work dir에 build 폴더 생성
-RUN mkdir ./next
-
-RUN ls -al
+RUN mkdir ./.next
 
 # host pc의 현재 경로의 build 폴더를 work dir의 build 폴더로 복사
-ADD ./next ./next
+ADD ./.next ./.next
 
 # nginx의 default.conf 삭제
 RUN rm /etc/nginx/conf.d/default.conf
