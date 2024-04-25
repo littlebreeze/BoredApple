@@ -5,8 +5,8 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
-
+      defaultZone: http://k10a508.p.ssafy.io:8083/eureka
+#      http://localhost:8083/eureka
 spring:
   application:
     name: apigateway-service
