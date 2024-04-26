@@ -108,10 +108,10 @@ public class LoginService {
         GoogleUserInfoRes googleUserInfoRes = getUserInfoByToken(oauthTokenData.getAccess_token());
 
         //받아온 사용자 정보(로그인/회원가입한 유저)로 우리 토큰 만들기
-        return generateTokenbyUserInfo(googleUserInfoRes, oauthTokenData.getAccess_token());
+        return generateTokenbyUserInfo(googleUserInfoRes);
     }
 
-    private OauthTokenRes generateTokenbyUserInfo(GoogleUserInfoRes googleUserInfoRes, String googleAccessToken) {
+    private OauthTokenRes generateTokenbyUserInfo(GoogleUserInfoRes googleUserInfoRes) {
         boolean signUp = false;
         if (userRepository.findByGoogleId(googleUserInfoRes.getId()) == null) { //우리 회원이 아니면
             User newMember = User.builder()
