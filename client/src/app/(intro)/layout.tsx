@@ -3,5 +3,5 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className='h-screen bg-ourBlue'>{children}</div>;
+  return <div>{children}</div>;
 }
