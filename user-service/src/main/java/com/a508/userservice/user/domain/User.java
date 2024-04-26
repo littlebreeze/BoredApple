@@ -8,6 +8,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 
 @Entity
 @Getter
@@ -31,5 +34,10 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private UserRole role = UserRole.ROLE_USER;
 
+    public Collection<String> getRoles() {
+        Collection<String> roles = new ArrayList<>();
+        roles.add(role.getValue());
+        return roles;
+    }
 
 }
