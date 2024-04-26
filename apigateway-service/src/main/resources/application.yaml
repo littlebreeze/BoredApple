@@ -17,3 +17,5 @@ spring:
             uri: lb://USER-SERVICE
             predicates:
               - Path=/user-service/**
+            filters:
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
