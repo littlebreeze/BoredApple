@@ -2,21 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @font-face {
+:root {
+  --main-bg-color: #f2f2f2;
+}
+
+@font-face {
   font-family: 'Pretendard';
   src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-  font-weight: 400;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ansungtangmyun';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/Ansungtangmyun-Bold.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Batang';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/HANBatang.woff') format('woff');
+  font-weight: normal;
   font-style: normal;
 }
 
 @layer base {
   * {
     @apply font-Pretendard;
-  } 
-} */
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  }
+  ,
+  html {
+    backgroud-color: var(--main-bg-color);
   }
 }
