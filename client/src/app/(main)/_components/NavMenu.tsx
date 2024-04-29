@@ -9,10 +9,7 @@ export default function NavMenu() {
   return (
     <>
       <div className='flex w-full max-w-[1000px] h-[60px] items-center justify-between'>
-        <Link
-          href='/home'
-          className='flex justify-start w-36 items-center  cursor-pointer'
-        >
+        <Link href='/home' className='flex justify-start w-36 items-center  cursor-pointer'>
           <div className='font-Ansungtangmyun w-40 text-3xl text-ourTheme'>심심한 사과</div>
         </Link>
         <div className='flex justify-end gap-8 h-full'>
@@ -23,13 +20,7 @@ export default function NavMenu() {
                 className='flex items-center gap-2  cursor-pointe h-full border-b-2 border-solid border-ourBlue'
               >
                 <div className='flex justify-center items-center h-6 w-6'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                  >
+                  <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
                     <g clipPath='url(#clip0_335_6)'>
                       <path
                         d='M13.2281 2.68799C12.877 2.41488 12.4449 2.2666 12.0001 2.2666C11.5553 2.2666 11.1232 2.41488 10.7721 2.68799L2.3881 9.20799C1.6361 9.79499 2.0501 11 3.0031 11H4.0001V19C4.0001 19.5304 4.21082 20.0391 4.58589 20.4142C4.96096 20.7893 5.46967 21 6.0001 21H10.0001V15C10.0001 14.4696 10.2108 13.9608 10.5859 13.5858C10.961 13.2107 11.4697 13 12.0001 13C12.5305 13 13.0392 13.2107 13.4143 13.5858C13.7894 13.9608 14.0001 14.4696 14.0001 15V21H18.0001C18.5305 21 19.0392 20.7893 19.4143 20.4142C19.7894 20.0391 20.0001 19.5304 20.0001 19V11H20.9971C21.9491 11 22.3651 9.79499 21.6121 9.20899L13.2281 2.68799Z'
@@ -38,11 +29,7 @@ export default function NavMenu() {
                     </g>
                     <defs>
                       <clipPath id='clip0_335_6'>
-                        <rect
-                          width='24'
-                          height='24'
-                          fill='white'
-                        />
+                        <rect width='24' height='24' fill='white' />
                       </clipPath>
                     </defs>
                   </svg>
@@ -57,13 +44,7 @@ export default function NavMenu() {
                 className='flex items-center gap-2  cursor-pointe h-full border-b-2 border-solid border-ourLightGray'
               >
                 <div className='flex justify-center items-center h-6 w-6'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                  >
+                  <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
                     <g clipPath='url(#clip0_335_2)'>
                       <path
                         d='M13.2281 2.68799C12.877 2.41488 12.4449 2.2666 12.0001 2.2666C11.5553 2.2666 11.1232 2.41488 10.7721 2.68799L2.3881 9.20799C1.6361 9.79499 2.0501 11 3.0031 11H4.0001V19C4.0001 19.5304 4.21082 20.0391 4.58589 20.4142C4.96096 20.7893 5.46967 21 6.0001 21H10.0001V15C10.0001 14.4696 10.2108 13.9608 10.5859 13.5858C10.961 13.2107 11.4697 13 12.0001 13C12.5305 13 13.0392 13.2107 13.4143 13.5858C13.7894 13.9608 14.0001 14.4696 14.0001 15V21H18.0001C18.5305 21 19.0392 20.7893 19.4143 20.4142C19.7894 20.0391 20.0001 19.5304 20.0001 19V11H20.9971C21.9491 11 22.3651 9.79499 21.6121 9.20899L13.2281 2.68799Z'
@@ -72,11 +53,7 @@ export default function NavMenu() {
                     </g>
                     <defs>
                       <clipPath id='clip0_335_2'>
-                        <rect
-                          width='24'
-                          height='24'
-                          fill='white'
-                        />
+                        <rect width='24' height='24' fill='white' />
                       </clipPath>
                     </defs>
                   </svg>
@@ -93,13 +70,7 @@ export default function NavMenu() {
                 className='flex items-center gap-2  cursor-pointer h-full border-b-2 border-solid border-ourBlue'
               >
                 <div className='flex justify-center items-center h-6 w-6'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                  >
+                  <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
                     <g clipPath='url(#clip0_164_6)'>
                       <path
                         d='M8 8.7998C8 7.73894 8.42143 6.72152 9.17157 5.97138C9.92172 5.22123 10.9391 4.7998 12 4.7998C13.0609 4.7998 14.0783 5.22123 14.8284 5.97138C15.5786 6.72152 16 7.73894 16 8.7998C16 9.86067 15.5786 10.8781 14.8284 11.6282C14.0783 12.3784 13.0609 12.7998 12 12.7998C10.9391 12.7998 9.92172 12.3784 9.17157 11.6282C8.42143 10.8781 8 9.86067 8 8.7998Z'
@@ -114,11 +85,7 @@ export default function NavMenu() {
                     </g>
                     <defs>
                       <clipPath id='clip0_164_6'>
-                        <rect
-                          width='24'
-                          height='24'
-                          fill='white'
-                        />
+                        <rect width='24' height='24' fill='white' />
                       </clipPath>
                     </defs>
                   </svg>
@@ -133,13 +100,7 @@ export default function NavMenu() {
                 className='flex items-center gap-2  cursor-pointer h-full border-b-2 border-solid border-ourLightGray'
               >
                 <div className='flex justify-center items-center h-6 w-6'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                  >
+                  <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
                     <g clipPath='url(#clip0_129_233)'>
                       <path
                         d='M8 8.7998C8 7.73894 8.42143 6.72152 9.17157 5.97138C9.92172 5.22123 10.9391 4.7998 12 4.7998C13.0609 4.7998 14.0783 5.22123 14.8284 5.97138C15.5786 6.72152 16 7.73894 16 8.7998C16 9.86067 15.5786 10.8781 14.8284 11.6282C14.0783 12.3784 13.0609 12.7998 12 12.7998C10.9391 12.7998 9.92172 12.3784 9.17157 11.6282C8.42143 10.8781 8 9.86067 8 8.7998Z'
@@ -154,11 +115,7 @@ export default function NavMenu() {
                     </g>
                     <defs>
                       <clipPath id='clip0_129_233'>
-                        <rect
-                          width='24'
-                          height='24'
-                          fill='white'
-                        />
+                        <rect width='24' height='24' fill='white' />
                       </clipPath>
                     </defs>
                   </svg>
