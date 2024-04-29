@@ -1,0 +1,13 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: study-service
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://k10a508.p.ssafy.io:8083/eureka
