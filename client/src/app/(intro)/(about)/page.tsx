@@ -3,6 +3,7 @@ import Header from '@/app/_common/Header';
 import Card from './_component/Card';
 import CardContainer from './_component/CardContainer';
 import SituationCard from './_component/SituationCard';
+import IntroduceWrapper from './_component/IntroduceWrapper';
 
 export const metadata: Metadata = {
   title: '심심한 사과, 당신의 문해력 지키미',
@@ -56,11 +57,13 @@ export default function Page() {
           <SituationCard />
         </div>
       </div>
-      <div className='upside'>위로스르륵</div>
-      <div className='beside'>좌우스르륵</div>
-      <div className='upside'>위로스르륵</div>
-      <div className='beside'>좌우스르륵</div>
-      <div className='upside'>위로스르륵</div>
+      <div className='px-5 pt-20 flex flex-col justify-center gap-5'>
+        <IntroduceWrapper />
+        <div className='beside'>좌우스르륵</div>
+        <div className='upside'>위로스르륵</div>
+        <div className='beside'>좌우스르륵</div>
+        <div className='upside'>위로스르륵</div>
+      </div>
       <div className='upside'>단체도입 배경색</div>
       <div className='ping'>업적 - 호버 디용</div>
       <div className='upside'>자주 묻는 질문</div>
