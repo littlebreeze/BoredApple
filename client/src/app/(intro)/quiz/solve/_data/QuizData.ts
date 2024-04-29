@@ -1,11 +1,11 @@
-export interface Quiz {
+export interface IQuiz {
   id: number;
   question: string;
   passage?: string;
   options: { [key: number]: string }[];
   answer: number;
 }
-export const quizData: Quiz[] = [
+export const quizData: IQuiz[] = [
   {
     id: 1,
     question: '다음 중 중의적으로 해석되지 않는 것은?',
