@@ -1,0 +1,23 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: mypage-service
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+  #      show-sql: true
+
+  profiles:
+    include:
+      - secret
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://k10a508.p.ssafy.io:8083/eureka
+#      http://localhost:8083/eureka
