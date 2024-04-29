@@ -5,7 +5,7 @@ export default function CardContainer({ children }: { children: ReactNode }) {
   const [slideIndex, setSlideIdex] = useState(0);
 
   useEffect(() => {
-    if (slideIndex === 20) setSlideIdex(0);
+    if (slideIndex === 23) setSlideIdex(0);
     setTimeout(() => {
       setSlideIdex(slideIndex + 1);
     }, 1000);
