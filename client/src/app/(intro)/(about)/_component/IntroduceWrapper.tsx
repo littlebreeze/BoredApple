@@ -28,7 +28,8 @@ export default function IntroduceWrapper() {
 
   return (
     <div
-      className='upside flex flex-col gap-5 md:flex-row lg:flex-row justify-center opacity-0'
+      className={style.upside + ` flex flex-col gap-5 md:flex-row lg:flex-row justify-center`}
+      //className='upside flex flex-col gap-5 md:flex-row lg:flex-row justify-center opacity-0'
       ref={div}
       onMouseMove={handleScroll}
       onScroll={handleScroll}
