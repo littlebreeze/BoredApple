@@ -19,3 +19,7 @@ spring:
               - Path=/user-service/**
             filters:
               - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#              - AuthorizationHeaderFilter
+  profiles:
+    include:
+      - secret
