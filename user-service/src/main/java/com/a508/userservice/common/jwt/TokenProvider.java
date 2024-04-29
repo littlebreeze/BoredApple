@@ -11,6 +11,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +34,7 @@ public class TokenProvider {
     private static final String AUD = "https://k10a508.p.ssafy.io/";
     private static final String ISS = "https://k10a508.p.ssafy.io/";
     private final Key key;
+    private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Autowired
     private UserRepository userRepository;
@@ -100,4 +102,13 @@ public class TokenProvider {
         return googleId;
     }
 
+    //토큰에서 memberId 꺼내기
+    public Integer getMemberIdByToken(HttpServletRequest request) {
+        //검증은 끝난 것이라 예외처리 하지 않음
+        String accessToken = request.getHeader(AUTHORIZATION_HEADER).substring(7);
+        //복호화를 통해 googleID로 memberId꺼내기
+        Claims claims = parseClaims(accessToken);
+        String googleId = claims.getSubject();
+        return userRepository.findByGoogleId(googleId).getId();
+    }
 }
