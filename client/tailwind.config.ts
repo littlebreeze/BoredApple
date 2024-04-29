@@ -28,6 +28,6 @@ const config: Config = {
       Batang: ['Batang'],
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar-hide')],
 };
 export default config;
