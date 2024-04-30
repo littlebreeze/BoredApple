@@ -1,19 +1,46 @@
-import type { Metadata } from 'next';
-import Header from '@/app/_common/Header';
-import Card from './_component/Card';
-import CardContainer from './_component/CardContainer';
-import SituationCard from './_component/SituationCard';
-import IntroduceWrapper from './_component/IntroduceWrapper';
+'use client';
 
-export const metadata: Metadata = {
-  title: '심심한 사과, 당신의 문해력 지키미',
-  description: '문해력 학습 서비스 심심한 사과의 소개 페이지',
-};
+import { useEffect, useRef, useState } from 'react';
 
-export default function Page() {
+import Card from './Card';
+import CardContainer from './CardContainer';
+import SituationCard from './SituationCard';
+import IntroduceWrapper from './IntroduceWrapper';
+
+export default function AnimationPage() {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // entries : 현재 감시 중인 모든 요소가 출력됨
+        entries.forEach(({ target, isIntersecting }) => {
+          if (target === ref.current) {
+            // visible을 isIntersecting(boolean)의 값으로 바꿔줘라
+            // isIntersecting : target과 root가 교차된 상태인지(true) 아닌지(false)를 boolean값으로 반환한다.
+            setVisible(isIntersecting);
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+      }
+    );
+    // ref.current가 참이면(visible이 true)
+    if (ref.current) {
+      // 해당 타겟 ref를 Observer가 관찰할 수 있도록 넣어준다
+      // .observe() : 타겟요소가 화면에 보이는지 관찰하는 역할
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <div className='bg-white'>
-      <Header />
+    <>
       <div className='bg-ourTheme pt-[140px] pb-[50px] overflow-hidden'>
         <div className='flex flex-col items-center text-center gap-9'>
           <div className='flex flex-col gap-5'>
@@ -22,7 +49,7 @@ export default function Page() {
           </div>
           <div
             className=' w-[215px] h-[60px] cursor-pointer  bg-ourBlack flex justify-between items-center rounded-full text-white px-7 duration-[0.2s]
-          hover:bg-ourBlue'
+      hover:bg-ourBlue'
           >
             <div>시작하기</div>
             <div>→</div>
@@ -60,13 +87,13 @@ export default function Page() {
       <div className='px-5 pt-20 flex flex-col justify-center gap-5'>
         <IntroduceWrapper />
         <div className='beside'>좌우스르륵</div>
-        <IntroduceWrapper />
+        <div className='upside'>위로스르륵</div>
         <div className='beside'>좌우스르륵</div>
-        <IntroduceWrapper />
+        <div className='upside'>위로스르륵</div>
       </div>
       <div className='upside'>단체도입 배경색</div>
       <div className='ping'>업적 - 호버 디용</div>
       <div className='upside'>자주 묻는 질문</div>
-    </div>
+    </>
   );
 }
