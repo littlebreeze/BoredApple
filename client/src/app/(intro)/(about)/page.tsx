@@ -4,6 +4,7 @@ import Card from './_component/Card';
 import CardContainer from './_component/CardContainer';
 import SituationCard from './_component/SituationCard';
 import IntroduceWrapper from './_component/IntroduceWrapper';
+import UpsideAnimation from './_component/UpsideAnimation';
 
 export const metadata: Metadata = {
   title: '심심한 사과, 당신의 문해력 지키미',
@@ -16,10 +17,12 @@ export default function Page() {
       <Header />
       <div className='bg-ourTheme pt-[140px] pb-[50px] overflow-hidden'>
         <div className='flex flex-col items-center text-center gap-9'>
-          <div className='flex flex-col gap-5'>
-            <div className='text-white text-xl'>당신의 문해력 지키미,</div>
-            <div className='text-white font-Ansungtangmyun text-7xl'>심심한 사과</div>
-          </div>
+          <UpsideAnimation>
+            <div className='flex flex-col gap-5'>
+              <div className='text-white text-xl'>당신의 문해력 지키미,</div>
+              <div className='text-white font-Ansungtangmyun text-7xl'>심심한 사과</div>
+            </div>
+          </UpsideAnimation>
           <div
             className=' w-[215px] h-[60px] cursor-pointer  bg-ourBlack flex justify-between items-center rounded-full text-white px-7 duration-[0.2s]
           hover:bg-ourBlue'
