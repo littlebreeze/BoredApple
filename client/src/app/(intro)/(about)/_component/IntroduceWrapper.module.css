@@ -1,12 +1,13 @@
 .upside {
-  animation-duration: 3s;
+  animation-duration: 2s;
   animation-name: slidein;
+  opacity: 1;
 }
 
 @keyframes slidein {
   from {
     margin-top: 100%;
-    height: 300%;
+    height: 200%;
   }
 
   to {

@@ -3,39 +3,49 @@ import { RefAttributes, useEffect, useRef, useState } from 'react';
 import style from './IntroduceWrapper.module.css';
 
 export default function IntroduceWrapper() {
-  const div = useRef<HTMLDivElement>(null);
-  const [boundingClientRect, setBoundingClientRect] = useState<number | undefined>(0);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = useState(false);
 
-  const handleScroll = () => {
-    setBoundingClientRect(div.current?.getBoundingClientRect().top);
-    const innerHeight = window.innerHeight;
-
-    if (boundingClientRect && boundingClientRect > 0 && boundingClientRect < innerHeight - 200) {
-      setTimeout(() => {
-        div.current!.style.animation = '3s linear 1s infinite running slidein';
-        div.current!.style.opacity = '1';
-      }, 200);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // entries : 현재 감시 중인 모든 요소가 출력됨
+        entries.forEach(({ target, isIntersecting }) => {
+          if (target === ref.current) {
+            // visible을 isIntersecting(boolean)의 값으로 바꿔줘라
+            // isIntersecting : target과 root가 교차된 상태인지(true) 아닌지(false)를 boolean값으로 반환한다.
+            setVisible(isIntersecting);
+            // 한번켜지고 나면 사라지지 않게 관찰자 끊기
+            if (isIntersecting) observer.disconnect();
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+      }
+    );
+    // ref.current가 참이면(visible이 true)
+    if (ref.current) {
+      // 해당 타겟 ref를 Observer가 관찰할 수 있도록 넣어준다
+      // .observe() : 타겟요소가 화면에 보이는지 관찰하는 역할
+      observer.observe(ref.current);
     }
-  };
-  //   useEffect(() => {
-  //     setBoundingClientRect(div.current?.getBoundingClientRect().top);
-  //     const innerHeight = window.innerHeight;
 
-  //     if (boundingClientRect && boundingClientRect > 0 && boundingClientRect < innerHeight) {
-  //       console.log(boundingClientRect);
-  //     }
-  //   }, [boundingClientRect]);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
-    <div
-      className={style.upside + ` flex flex-col gap-5 md:flex-row lg:flex-row justify-center`}
-      //className='upside flex flex-col gap-5 md:flex-row lg:flex-row justify-center opacity-0'
-      ref={div}
-      onMouseMove={handleScroll}
-      onScroll={handleScroll}
-    >
-      <div className='w-full md:w-1/2 lg:w-1/2 h-56 bg-slate-300'>글</div>
-      <div className='w-full md:w-1/2 lg:w-1/2 h-56 bg-slate-300'>사진</div>
+    <div className='overflow-hidden h-56'>
+      <div
+        className={`flex flex-col gap-5 md:flex-row lg:flex-row justify-center transition-all duration-500 ",
+    ${visible ? 'opacity-100' : 'opacity-0 pt-56'}`}
+        ref={ref}
+      >
+        <div className='w-full md:w-1/2 lg:w-1/2 h-56 bg-slate-300'>글</div>
+        <div className='w-full md:w-1/2 lg:w-1/2 h-56 bg-slate-300'>사진</div>
+      </div>
     </div>
   );
 }
