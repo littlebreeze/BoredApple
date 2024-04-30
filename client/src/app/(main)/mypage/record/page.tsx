@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div className='flex flex-col md:flex-row lg:flex-row gap-4 px-4 md:px-0 lg:px-0'>
+    <div className='flex flex-col md:flex-row lg:flex-row gap-4 px-4 md:px-0 lg:px-0 pb-10'>
       <div className='w-full md:w-2/3 lg:w-2/3'>
         <div className='text-lg text-ourBlack pt-5 pb-2'>월별 학습 기록</div>
         <div className='flex gap-4 bg-white rounded-2xl'>

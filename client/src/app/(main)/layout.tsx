@@ -13,9 +13,9 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className='bg-ourLightGray flex flex-col items-center'>
+    <div className='bg-ourLightGray w-screen h-screen flex flex-col items-center'>
       <NavMenu />
-      <div className='w-full max-w-[1000px] flex-1'>
+      <div className='w-full max-w-[1000px] flex-1  overflow-y-scroll scrollbar-hide'>
         <div className='h-full'>{children}</div>
       </div>
     </div>
