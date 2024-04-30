@@ -1,7 +1,11 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { Children, useEffect, useRef, useState } from 'react';
 
-export default function IntroduceWrapper() {
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function LeftSideAnimation({ children }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
 
@@ -36,15 +40,14 @@ export default function IntroduceWrapper() {
   }, []);
 
   return (
-    <div className='overflow-hidden h-56'>
-      <div
-        className={`flex flex-col gap-5 md:flex-row lg:flex-row justify-center transition-all duration-500 ",
-    ${visible ? 'opacity-100' : 'opacity-0 pt-56'}`}
-        ref={ref}
-      >
-        <div className='w-full md:w-1/2 lg:w-1/2 h-56 bg-slate-300'>글</div>
-        <div className='w-full md:w-1/2 lg:w-1/2 h-56 bg-slate-300'>사진</div>
-      </div>
+    // <div className=''>
+    <div
+      className={`flex flex-col gap-5 md:flex-row lg:flex-row justify-center transition-all ease-in-out duration-1000",
+    ${visible ? 'opacity-100' : 'opacity-0 pr-14'}`}
+      ref={ref}
+    >
+      {children}
     </div>
+    // </div>
   );
 }

@@ -5,7 +5,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function UpsideAnimation({ children }: Props) {
+export default function RightSideAnimation({ children }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
 
@@ -43,7 +43,7 @@ export default function UpsideAnimation({ children }: Props) {
     // <div className=''>
     <div
       className={`flex flex-col gap-5 md:flex-row lg:flex-row justify-center transition-all ease-in-out duration-700 ",
-    ${visible ? 'opacity-100' : 'opacity-0 pt-14'}`}
+    ${visible ? 'opacity-100' : 'opacity-0 pl-14'}`}
       ref={ref}
     >
       {children}
