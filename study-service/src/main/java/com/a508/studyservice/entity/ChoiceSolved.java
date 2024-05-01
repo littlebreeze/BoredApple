@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 @EntityListeners(AuditingEntityListener.class)
-public class Choice {
+public class ChoiceSolved {
     //객관시 고른 거
 
     @Id
