@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
-public class Topic {
+public class TopicProblem {
     //주제 맞추기
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
