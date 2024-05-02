@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { quizData, IQuiz } from '../_data/QuizData';
+import { quizData, IQuiz } from '@/../public/data/quizData';
 import useQuizStore from '../../../../../store/QuizStore';
 
 export default function Quiz() {
