@@ -1,16 +1,16 @@
 package com.a508.studyservice.service;
 
 
-import com.a508.studyservice.respository.ChoiceRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.a508.studyservice.dto.response.ChoiceSolvedResponse;
 
-@Transactional
-@Service
-@RequiredArgsConstructor
-public class ChoiceSolvedService {
+import java.util.List;
 
-    private final ChoiceRepository choiceRepository;
+public interface ChoiceSolvedService {
+
+
+    List<ChoiceSolvedResponse>  getTodayChoice(String token );  // 오늘 거;
+
+    List<ChoiceSolvedResponse>  getSpecificChoice(String token ); // 특정 날짜 조회
+
+
 }
-
