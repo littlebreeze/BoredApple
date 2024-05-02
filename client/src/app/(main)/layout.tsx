@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-
 import NavMenu from './_components/NavMenu';
 
 export const metadata: Metadata = {
