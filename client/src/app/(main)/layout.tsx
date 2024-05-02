@@ -14,6 +14,7 @@ export default function MainLayout({
 }>) {
   return (
     <div className='bg-ourLightGray h-screen flex flex-col items-center'>
+      {/* 로그인 후 레이아웃 */}
       <NavMenu />
       <div className='w-full max-w-[1000px] flex-1  overflow-y-scroll scrollbar-hide'>
         <div className='h-full'>{children}</div>

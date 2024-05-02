@@ -13,6 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ko'>
+      {/* 루트 레이아웃 */}
       <body>{children}</body>
     </html>
   );

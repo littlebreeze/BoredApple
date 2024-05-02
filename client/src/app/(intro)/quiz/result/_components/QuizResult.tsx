@@ -1,12 +1,12 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import result_1 from '@/../public/quiz-result-1.svg';
-import result_2 from '@/../public/quiz-result-2.svg';
-import result_3 from '@/../public/quiz-result-3.svg';
-import result_4 from '@/../public/quiz-result-4.svg';
-import result_5 from '@/../public/quiz-result-5.svg';
-import quizResultTitle from '@/../public/quiz-result-title.svg';
+import result_1 from '@/../public/quiz/quiz-result-1.svg';
+import result_2 from '@/../public/quiz/quiz-result-2.svg';
+import result_3 from '@/../public/quiz/quiz-result-3.svg';
+import result_4 from '@/../public/quiz/quiz-result-4.svg';
+import result_5 from '@/../public/quiz/quiz-result-5.svg';
+import quizResultTitle from '@/../public/quiz/quiz-result-title.svg';
 import { quizResultData } from '@/../public/data/quizResultData';
 import QuizShare from '../../_components/QuizShare';
 
