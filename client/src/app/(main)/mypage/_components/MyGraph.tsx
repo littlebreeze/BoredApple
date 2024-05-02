@@ -74,10 +74,7 @@ export default function MyGraph() {
 
   return (
     <div className='relative w-full h-full pt-5 pb-5 flex justify-center items-center'>
-      <Radar
-        data={data}
-        options={options}
-      />
+      <Radar data={data} options={options} />
       {labelInfo.map((info) => (
         <div
           key={info.label}
