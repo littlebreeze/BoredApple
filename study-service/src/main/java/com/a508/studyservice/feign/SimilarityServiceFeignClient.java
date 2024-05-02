@@ -1,6 +1,6 @@
-package com.a508.studyservice.feign.client;
+package com.a508.studyservice.feign;
 
-import com.a508.studyservice.feign.dto.EssayDto;
+import com.a508.studyservice.dto.request.FeignEssaySimilarityRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,5 +10,5 @@ public interface SimilarityServiceFeignClient {
 
     //주제 찾기 유사도 받아오기
     @PostMapping()
-    double essaySimilarity(@RequestBody EssayDto essayDto );
+    double essaySimilarity(@RequestBody FeignEssaySimilarityRequest essayDto );
 }
