@@ -126,7 +126,7 @@ export default function NavMenu() {
           )}
         </div>
       </div>
-      <div className='absolute left-0 top-[59px] bg-ourGray w-screen h-[1px]'></div>
+      <div className='absolute left-0 top-[59px] bg-ourGray w-full h-[1px]'></div>
     </>
   );
 }
