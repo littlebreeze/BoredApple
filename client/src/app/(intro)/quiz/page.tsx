@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import quiz from '../../../../public/quiz-main.svg';
+import quiz from '@/../public/quiz/quiz-main.svg';
 import QuizStart from './_components/QuizStart';
 import QuizShare from './_components/QuizShare';
 
