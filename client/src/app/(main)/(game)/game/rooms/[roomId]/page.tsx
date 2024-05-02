@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+// stomp에서
 import { Client, IMessage } from '@stomp/stompjs';
 import axios from 'axios';
 // import './ChatPage.css';
