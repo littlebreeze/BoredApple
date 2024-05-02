@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { quizData, IQuiz } from '@/../public/data/quizData';
-import useQuizStore from '../../../../../store/QuizStore';
+import useQuizStore from '@/stores/quizStore';
 
 export default function Quiz() {
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
