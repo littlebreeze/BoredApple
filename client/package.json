@@ -17,7 +17,8 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "zustand": "^4.5.2"
+    "zustand": "^4.5.2",
+    "types": "^0.1.1"
   },
   "devDependencies": {
     "@types/node": "^20",

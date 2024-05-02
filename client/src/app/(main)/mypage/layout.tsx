@@ -1,4 +1,4 @@
-import MyPageNav from './_component/MyPageNav';
+import MyPageNav from './_components/MyPageNav';
 
 export default function MyPageLayout({
   children,
