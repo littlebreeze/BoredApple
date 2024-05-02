@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import CorrectAnswer from './_components/CorrectAnser';
+import QuizResult from './_components/QuizResult';
 
 export const metadata: Metadata = {
   title: '문해력 테스트',
@@ -8,9 +8,8 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div>
-      <div className=''>퀴즈 결과 페이지</div>
-      <CorrectAnswer />
+    <div className=' max-w-[800px]  mx-auto flex items-center justify-center '>
+      <QuizResult />
     </div>
   );
 }

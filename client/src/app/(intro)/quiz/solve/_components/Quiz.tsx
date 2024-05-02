@@ -1,26 +1,39 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { quizData, IQuiz } from '../_data/QuizData';
 import useQuizStore from '../../../../../store/QuizStore';
-import CorrectAnswer from '../../result/_components/CorrectAnser';
 
 export default function Quiz() {
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
+  const [correct, setCorrect] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<number>(-1);
   const totalQuizCount: number = quizData.length;
   const router = useRouter();
-  const { correctQuiz, setCorrectQuiz } = useQuizStore();
+  const { score, setScore, initScore } = useQuizStore();
 
-  // 다음 문제
-  const showNextQuiz = () => {
-    console.log('정답수', correctQuiz);
+  useEffect(() => {
+    initScore(0);
+    localStorage.removeItem('score');
+  }, []);
 
-    if (currentQuizIndex + 1 === totalQuizCount) {
-      router.push('/quiz/result');
+  // 결과 확인
+  const showResult = () => {
+    if (correct) {
+      localStorage.setItem('score', (score + currentQuiz.score).toString());
     } else {
-      setCurrentQuizIndex(currentQuizIndex + 1);
+      localStorage.setItem('score', score.toString());
     }
+    router.push('/quiz/result');
+  };
+
+  // 다음 문제 선택
+  const showNextQuiz = () => {
+    if (correct) {
+      setScore(currentQuiz.score);
+    }
+
+    setCurrentQuizIndex(currentQuizIndex + 1);
     setSelectedOption(-1);
   };
 
@@ -28,7 +41,9 @@ export default function Quiz() {
   const handleOptionClick = (index: number) => {
     setSelectedOption(index);
     if (currentQuiz.answer === index + 1) {
-      setCorrectQuiz(correctQuiz + 1);
+      setCorrect(true);
+    } else {
+      setCorrect(false);
     }
   };
 
@@ -36,6 +51,8 @@ export default function Quiz() {
 
   return (
     <>
+      {/* 인덱스 */}
+      <div className='w-full text-right mr-2'>{currentQuizIndex + 1}/12</div>
       {/* 문제 */}
       <div className='w-full bg-white rounded-xl flex-col px-10 pt-10 border border-neutral-200'>
         <div className='flex font-semibold text-lg'>
@@ -66,7 +83,7 @@ export default function Quiz() {
           className={`absolute bottom-2 mb-4 w-96 h-12 rounded-lg text-lg ${
             selectedOption === -1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-ourTheme'
           } text-white`}
-          onClick={() => router.push('/quiz/result')}
+          onClick={showResult}
         >
           결과 확인하기
         </button>

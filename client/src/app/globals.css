@@ -31,8 +31,8 @@
   * {
     @apply font-Pretendard;
   }
-  ,
-  html {
+  html,
+  body {
     background-color: var(--main-bg-color);
   }
 }

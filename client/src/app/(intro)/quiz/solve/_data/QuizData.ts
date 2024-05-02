@@ -4,7 +4,9 @@ export interface IQuiz {
   passage?: string;
   options: { [key: number]: string }[];
   answer: number;
+  score: number;
 }
+
 export const quizData: IQuiz[] = [
   {
     id: 1,
@@ -16,6 +18,7 @@ export const quizData: IQuiz[] = [
       { 4: '지섭이를 보고 싶어 하는 친구들이 많이 있다.' },
     ],
     answer: 4,
+    score: 8,
   },
   {
     id: 2,
@@ -23,6 +26,7 @@ export const quizData: IQuiz[] = [
     passage: '금일은 월요일이니, 과제는 사흘 뒤까지 제출하세요.',
     options: [{ 1: '수요일' }, { 2: '목요일' }, { 3: '금요일' }, { 4: '토요일' }],
     answer: 2,
+    score: 7,
   },
   {
     id: 3,
@@ -34,6 +38,7 @@ export const quizData: IQuiz[] = [
       { 4: '코 빠지다 → 새로운 생명이 탄생하다' },
     ],
     answer: 4,
+    score: 8,
   },
   {
     id: 4,
@@ -41,6 +46,7 @@ export const quizData: IQuiz[] = [
     passage: '재계약 시 급여는 익월 10일에 지급됩니다. 요청하신 서류는 명일 메일로 전달드리겠습니다.',
     options: [{ 1: '다음날 - 오늘' }, { 2: '이번달 - 내일' }, { 3: '다음달 - 내일' }, { 4: '이번달 - 오늘' }],
     answer: 3,
+    score: 7,
   },
   {
     id: 5,
@@ -52,6 +58,7 @@ export const quizData: IQuiz[] = [
       { 4: '미덥다 - 믿음이 없다' },
     ],
     answer: 2,
+    score: 7,
   },
   {
     id: 6,
@@ -63,6 +70,7 @@ export const quizData: IQuiz[] = [
       { 4: '그는 ‘개 머루 먹듯’ 정확히 모르면서 아는 체 하였다.' },
     ],
     answer: 3,
+    score: 9,
   },
   {
     id: 7,
@@ -75,6 +83,7 @@ export const quizData: IQuiz[] = [
       { 4: '그 학생이 너한테 뭐 잘못했니?' },
     ],
     answer: 3,
+    score: 8,
   },
   {
     id: 8,
@@ -86,6 +95,7 @@ export const quizData: IQuiz[] = [
       { 4: '요즘 회사원들은 자기 개발을 위해 퇴근 후 많은 시간을 할애한다.' },
     ],
     answer: 4,
+    score: 9,
   },
   {
     id: 9,
@@ -97,6 +107,7 @@ export const quizData: IQuiz[] = [
       { 4: '물 위를 떠가는 저 배를 보아라' },
     ],
     answer: 4,
+    score: 9,
   },
   {
     id: 10,
@@ -110,6 +121,7 @@ export const quizData: IQuiz[] = [
       { 4: '준혁: 글의 맥락을 파악하고 읽는 것이 중요하군!' },
     ],
     answer: 4,
+    score: 9,
   },
   {
     id: 11,
@@ -123,6 +135,7 @@ export const quizData: IQuiz[] = [
       { 4: '문이 열릴 가능성을 염두에 두지 않은 오토바이 운전자' },
     ],
     answer: 1,
+    score: 9,
   },
   {
     id: 12,
@@ -136,5 +149,6 @@ export const quizData: IQuiz[] = [
       { 4: '해외 유학 경험이 있는 조각가이다.' },
     ],
     answer: 1,
+    score: 10,
   },
 ];
