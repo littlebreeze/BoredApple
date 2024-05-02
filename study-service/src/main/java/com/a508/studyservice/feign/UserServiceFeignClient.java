@@ -1,7 +1,7 @@
-package com.a508.studyservice.feign.client;
+package com.a508.studyservice.feign;
 
 
-import com.a508.studyservice.feign.dto.UserScoreDto;
+import com.a508.studyservice.dto.response.FeignUserScoreResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -13,7 +13,7 @@ public interface UserServiceFeignClient {
     int getUserId(@RequestHeader("Authorization" ) String token ) ;
 
     @GetMapping("/score")
-    UserScoreDto getUserScore(@RequestHeader("Authorization") String token);
+    FeignUserScoreResponse getUserScore(@RequestHeader("Authorization") String token);
 
 
 
