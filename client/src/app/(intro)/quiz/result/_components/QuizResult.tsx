@@ -12,12 +12,16 @@ import { quizResultData } from '../_data/QuizResultData';
 
 export default function QuizResult() {
   const router = useRouter();
-  let score: string | number | null = localStorage.getItem('score');
+  let score: string | number | null = 0;
 
-  if (score !== null) {
-    score = parseInt(score);
-  } else {
-    score = 0;
+  if (typeof window !== 'undefined') {
+    score = localStorage.getItem('score');
+
+    if (score !== null) {
+      score = parseInt(score);
+    } else {
+      score = 0;
+    }
   }
 
   let resultImage;
