@@ -17,16 +17,10 @@ export default function MyPaGeNav() {
 
   return (
     <div className='flex w-full justify-center rounded-full bg-white h-8 items-center'>
-      <Link
-        href={'analysis'}
-        className={analysisClass}
-      >
+      <Link href={'analysis'} className={analysisClass}>
         분석 보고서
       </Link>
-      <Link
-        href={'record'}
-        className={recordClass}
-      >
+      <Link href={'record'} className={recordClass}>
         학습 일지
       </Link>
     </div>
