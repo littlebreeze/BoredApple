@@ -1,4 +1,4 @@
-package com.a508.studyservice.feign.dto;
+package com.a508.studyservice.dto.request;
 
 
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EssayDto {
+public class FeignEssaySimilarityRequest {
     String myAnswer;
     String answer;
 }
