@@ -7,8 +7,8 @@ import result_3 from '@/../public/quiz-result-3.svg';
 import result_4 from '@/../public/quiz-result-4.svg';
 import result_5 from '@/../public/quiz-result-5.svg';
 import quizResultTitle from '@/../public/quiz-result-title.svg';
-import QuizShare from '../../_components/QuizShare';
 import { quizResultData } from '@/../public/data/quizResultData';
+import QuizShare from '../../_components/QuizShare';
 
 export default function QuizResult() {
   const router = useRouter();

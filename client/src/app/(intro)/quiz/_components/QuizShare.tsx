@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
-import ShareKakao from '../../../../../public/share-kakao.svg';
-import ShareLink from '../../../../../public/share-link.svg';
+import ShareKakao from '@/../public/quiz/share-kakao.svg';
+import ShareLink from '@/../public/quiz/share-link.svg';
 
 export default function QuizShare() {
   const shareLink = () => {
