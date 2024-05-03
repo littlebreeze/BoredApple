@@ -1,6 +1,6 @@
 package com.a508.studyservice.service;
 
-import com.a508.studyservice.respository.TopicRepository;
+import com.a508.studyservice.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
