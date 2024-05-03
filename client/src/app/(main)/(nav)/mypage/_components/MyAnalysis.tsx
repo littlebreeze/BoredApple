@@ -4,10 +4,9 @@ import { useEffect, useRef } from 'react';
 import { useLabelStore } from '@/stores/label';
 import readability from '@/../public/data/readabilityScores.json';
 
-export default function MyAnalysis() {
+export default function MyAnalysis({ ability }: { ability: number[] }) {
   const { activeLabel, setActiveLabel } = useLabelStore();
   const labelRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-  const { scores } = useLabelStore();
 
   useEffect(() => {
     if (activeLabel && labelRefs.current[activeLabel]) {
@@ -17,7 +16,7 @@ export default function MyAnalysis() {
         inline: 'start',
       });
     }
-  }, [activeLabel]);
+  }, [activeLabel, ability]);
 
   const labels = ['사실적읽기', '추론능력', '어휘', '인지능력', '읽기속도'];
 
@@ -31,7 +30,7 @@ export default function MyAnalysis() {
   };
 
   const getDescription = labels.map((label, idx) => {
-    const score = getScore(scores[idx]);
+    const score = getScore(ability[idx]);
     const description = readability.find((item) => item.label === label && item.score === score)?.description;
     return { label, description, score };
   });

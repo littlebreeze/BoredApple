@@ -11,20 +11,14 @@ interface LabelInfo {
   position: string;
 }
 
-export default function MyGraph() {
-  const { scores, setScores } = useLabelStore();
-  // TODO: 백에서 받아오면 업데이트할 함수.
-  const updateScore = (newScores: number[]) => {
-    setScores(newScores);
-  };
-
+export default function MyGraph({ ability }: { ability: number[] }) {
   const data = {
     labels: ['사실적읽기', '추론능력', '어휘', '인지능력', '읽기속도'],
 
     datasets: [
       {
         // 데이터
-        data: scores,
+        data: ability,
         // 배경
         backgroundColor: 'rgba(72,147,255,0.3)',
         // border
@@ -74,7 +68,10 @@ export default function MyGraph() {
 
   return (
     <div className='relative w-full h-full pt-5 pb-5 flex justify-center items-center'>
-      <Radar data={data} options={options} />
+      <Radar
+        data={data}
+        options={options}
+      />
       {labelInfo.map((info) => (
         <div
           key={info.label}
