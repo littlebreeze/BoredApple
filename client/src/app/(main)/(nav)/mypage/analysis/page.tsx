@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import MyGraph from '../_component/MyGraph';
-import MyAnalysis from '../_component/MyAnalysis';
-import MyStrength from '../_component/MyStrength';
+import MyGraph from '../_components/MyGraph';
+import MyAnalysis from '../_components/MyAnalysis';
+import MyStrength from '../_components/MyStrength';
 
 export const metadata: Metadata = {
   title: '분석 보고서',
