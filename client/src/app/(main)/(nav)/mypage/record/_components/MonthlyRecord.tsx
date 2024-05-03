@@ -4,6 +4,7 @@ import { useState } from 'react';
 import StudyRecordItem from './StudyRecordItem';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import './Calendar.css';
 
 type ValuePiece = Date | null;
 
@@ -22,16 +23,18 @@ const quizType: QuizType[] = [
 export default function MonthlyRecord() {
   // const [today, setToday] = useState<string>('4월 30일');
   const [records, setRecords] = useState<QuizType[] | null>(quizType);
-  const [value, onChange] = useState<Value>(new Date());
+  const [today, onChange] = useState<Value>(new Date());
+
   return (
     <div className='flex flex-col p-5 w-full'>
       <div className='flex justify-center'>
         <div>
-          <Calendar onChange={onChange} value={value} />
+          <Calendar onChange={onChange} value={today} locale='ko' />
         </div>
       </div>
       <div>
-        <div className='text-ourDarkGray text-xl font-semibold'>{value?.toLocaleString()}</div>
+        <div className='text-ourDarkGray text-xl font-semibold'>{new Date(1714662000000).toISOString()}</div>
+        <div className='text-ourDarkGray text-xl font-semibold'>{today?.valueOf().toString()}</div>
         <div className='bg-ourLightGray rounded-2xl p-4 flex flex-col gap-2'>
           {records
             ? records!.map((re: QuizType, idx: number) => {
