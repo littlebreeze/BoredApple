@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.32.1",
     "@types/chart.js": "^2.9.41",
+    "axios": "^1.6.8",
     "chart.js": "^4.4.2",
     "dayjs": "^1.11.11",
     "next": "14.2.2",
@@ -18,8 +20,8 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "zustand": "^4.5.2",
-    "types": "^0.1.1"
+    "types": "^0.1.1",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",
