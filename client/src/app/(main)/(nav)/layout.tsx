@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import NavMenu from '../_components/NavMenu';
+import RQProvider from '@/queries/RQProvider';
 
 export const metadata: Metadata = {
   title: '심심한 사과, 당신의 문해력 지키미',
@@ -16,7 +17,9 @@ export default function MainLayout({
     <div className='bg-ourLightGray h-screen flex flex-col items-center'>
       <NavMenu />
       <div className='w-full max-w-[1000px] flex-1  overflow-y-scroll scrollbar-hide'>
-        <div className='h-full'>{children}</div>
+        <RQProvider>
+          <div className='h-full'>{children}</div>
+        </RQProvider>
       </div>
     </div>
   );
