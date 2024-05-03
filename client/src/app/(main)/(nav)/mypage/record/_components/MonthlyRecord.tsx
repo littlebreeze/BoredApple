@@ -5,6 +5,8 @@ import StudyRecordItem from './StudyRecordItem';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko'; //한국어
 
 type ValuePiece = Date | null;
 
@@ -33,8 +35,9 @@ export default function MonthlyRecord() {
         </div>
       </div>
       <div>
-        <div className='text-ourDarkGray text-xl font-semibold'>{new Date(1714662000000).toISOString()}</div>
-        <div className='text-ourDarkGray text-xl font-semibold'>{today?.valueOf().toString()}</div>
+        <div className='text-ourDarkGray text-xl font-semibold'>
+          {dayjs(new Date(Number(today?.valueOf().toString()))).format('MM월 DD일')}
+        </div>
         <div className='bg-ourLightGray rounded-2xl p-4 flex flex-col gap-2'>
           {records
             ? records!.map((re: QuizType, idx: number) => {
