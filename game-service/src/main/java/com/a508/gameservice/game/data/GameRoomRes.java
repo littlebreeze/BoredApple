@@ -20,4 +20,5 @@ public class GameRoomRes {
     private Boolean isStarted;
     private Integer roomCreatorName;
     private Integer quizCount;
+    private Boolean isEndPage;
 }
