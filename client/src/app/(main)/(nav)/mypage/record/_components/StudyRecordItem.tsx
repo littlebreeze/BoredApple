@@ -1,5 +1,5 @@
-type Type = { title: string; content: string; correct: boolean };
-export default function StudyRecordItem({ record }: { record: Type }) {
+type QuizType = { title: string; content: string; correct: boolean };
+export default function StudyRecordItem({ record }: { record: QuizType }) {
   return (
     <div className='flex gap-2'>
       <div>
