@@ -56,6 +56,7 @@ public class GameRoomService {
 //                .roomCreatorId(gameRoomReq.getRoomCreatorId()) user-service에 요청보내기
                 .quizCount(gameRoomReq.getQuizCount())
                 .isSecret(gameRoomReq.getIsSecret())
+                .isStarted(false)
                 .maxNum(gameRoomReq.getMaxNum()).build();
         gameRoomRepository.save(gameRoom);
     }
