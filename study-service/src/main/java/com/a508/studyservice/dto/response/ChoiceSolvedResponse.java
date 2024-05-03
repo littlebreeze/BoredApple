@@ -23,7 +23,5 @@ public class ChoiceSolvedResponse {
 
     private boolean correct;
 
-
-    @CreatedDate
     private LocalDateTime createdAt;
 }
