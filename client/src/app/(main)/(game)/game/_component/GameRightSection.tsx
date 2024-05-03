@@ -10,7 +10,7 @@ export default function GameRightSection() {
           <GameMenuBtn />
           <GameMenuBtn />
         </div>
-        <div className='w-1/4 bg-blue-300 lg:px-10 px-4 py-4 '>
+        <div className='w-1/4 bg-blue-300 lg:px-8 px-4 py-4 '>
           <GameMenuBtn />
         </div>
       </div>
