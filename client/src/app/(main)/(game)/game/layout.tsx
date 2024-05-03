@@ -8,7 +8,7 @@ export default function Layout({
   return (
     <>
       <Image
-        className='absolute object-cover h-screen top-0 left-0 opacity-50'
+        className='absolute object-cover h-screen top-0 left-0'
         src='/game-background.svg'
         loading='eager'
         layout='fill'

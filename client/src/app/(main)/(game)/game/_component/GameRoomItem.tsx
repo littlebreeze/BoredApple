@@ -22,7 +22,7 @@ export default function GameRoomItem({ roomInfo }: Props) {
     <>
       {/* 잠겨있으면 모달 띄우기...아악 */}
       <Link href={`game/rooms/${roomId}`}>
-        <div className='bg-white/60 rounded-xl h-28 cursor-pointer flex flex-row p-3 md:px-5 lg:px-5'>
+        <div className='bg-white/80 rounded-xl h-28 cursor-pointer flex flex-row p-3 md:px-5 lg:px-5'>
           <div className='w-1/5 font-semibold text-ourDarkGray text-lg mt-1'>
             {String(roomInfo.roomId).padStart(3, '0')}
           </div>
