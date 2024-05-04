@@ -21,12 +21,17 @@ public class ProblemController {
     private final TopicProblemService topicProblemService;
 
 
+    @GetMapping("/test")
+    public ResponseEntity<SuccessResponse<?>> test(@RequestHeader(value = "Authorization", required = false) String token){
+        return ResponseEntity.ok(
+                new SuccessResponse<>(HttpStatus.OK.value() ,"연결 성공"));
+    }
+
     //오늘의 학습
     @GetMapping("/today")
-    public ResponseEntity<SuccessResponse<?>> getTodayController(@RequestHeader("Authorization") String token){
-
+    public ResponseEntity<SuccessResponse<?>> getTodayController(@RequestHeader(value = "Authorization", required = false) String token){
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ," "));
+                new SuccessResponse<>(HttpStatus.OK.value() ,todayLearningService.getTodayLearning(token)));
     }
 
     // 정독 훈련
@@ -34,7 +39,7 @@ public class ProblemController {
     public ResponseEntity<SuccessResponse<?>> getIntensiveController(@RequestHeader("Authorization") String token){
 
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ," "));
+                new SuccessResponse<>(HttpStatus.OK.value() ,intensiveService.getIntensiveProblems(token)));
     }
 
 
