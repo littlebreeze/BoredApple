@@ -56,7 +56,10 @@ public enum ErrorCode {
 	// Method Not Allowed
 	METHOD_NOT_ALLOWED_ERROR(405, "G-020", "Method Not Allowed Exception"),
 	// 서버가 처리 할 방법을 모르는 경우 발생,
-	INTERNAL_SERVER_ERROR(500, "G-999", "Internal Server Error Exception");
+	INTERNAL_SERVER_ERROR(500, "G-999", "Internal Server Error Exception"),
+
+	// 오늘의 학습 문제가 생성되지 않음
+	NO_TODAY_LEARNING(405, "G-999", "Scheduler not activated" );
 
 
 
