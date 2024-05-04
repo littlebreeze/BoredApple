@@ -5,6 +5,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -22,8 +25,14 @@ public class TodayLearning {
 
     private Integer problemId;
 
-    private String content;
+    private String type;
 
     private String category;
+
+    private boolean correct;
+
+
+    @CreatedDate
+    private LocalDateTime createAt;
 
 }
