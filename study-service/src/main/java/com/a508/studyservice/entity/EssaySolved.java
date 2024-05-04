@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 @EntityListeners(AuditingEntityListener.class)
-public class Essay {
+public class EssaySolved {
     //주관식 푼 거
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
