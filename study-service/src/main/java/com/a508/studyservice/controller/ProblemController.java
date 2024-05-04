@@ -36,7 +36,7 @@ public class ProblemController {
 
     // 정독 훈련
     @GetMapping("/intensive")
-    public ResponseEntity<SuccessResponse<?>> getIntensiveController(@RequestHeader("Authorization") String token){
+    public ResponseEntity<SuccessResponse<?>> getIntensiveController(@RequestHeader(value = "Authorization",required = false) String token){
 
         return ResponseEntity.ok(
                 new SuccessResponse<>(HttpStatus.OK.value() ,intensiveService.getIntensiveProblems(token)));
