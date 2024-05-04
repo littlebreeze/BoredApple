@@ -34,6 +34,7 @@ public class IntensiveServiceImpl  implements  IntensiveService{
         LocalDateTime localDateTime = LocalDateTime.now();
         log.info(" 요청을 보낸 시간은 : "+String.valueOf(localDateTime));
         List<TodayLearning> todayLearnings = todayLearningRepository.findByUserIdAndCreateAt(userId,localDateTime);
+        if( todayLearnings.isEmpty()) todayLearnings = todayLearningRepository.findByUserId(0);  // 테스트용
         List<Intensive> intensiveList = new ArrayList<>();
         List<ProblemResponse> problemResponses = new ArrayList<>();
         for( TodayLearning todayLearning : todayLearnings){
@@ -74,7 +75,7 @@ public class IntensiveServiceImpl  implements  IntensiveService{
 
         //  " | "  을 기준으로 보여지게 할 수 있게 설정
         for(String part : parts){
-            answer.append(Arrays.toString(parts)).append(" | ");
+            answer.append(part).append(" | ");
         }
         return answer.toString();
     }
