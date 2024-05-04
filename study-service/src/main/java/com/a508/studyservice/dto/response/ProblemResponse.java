@@ -15,7 +15,7 @@ public class ProblemResponse {
 
 	private String question;
 
-	private String text;
+	private String content;
 
 	private String option1;
 
@@ -29,6 +29,8 @@ public class ProblemResponse {
 
 	//어떤 유형 문제인지
 	private String category;
+
+	private String type;
 
 	private Integer problemId;
 
