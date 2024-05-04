@@ -30,8 +30,11 @@ public class ChoiceSolved {
     //어떤 유형 문제인지
     private String category;
 
+    private Integer problemId;
+
     @CreatedDate
     private LocalDateTime createdAt;
+
 
 
 }
