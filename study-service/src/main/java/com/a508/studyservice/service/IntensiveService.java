@@ -7,7 +7,7 @@ import com.a508.studyservice.dto.response.ProblemResponse;
 
 public interface IntensiveService {
 
-	List<ProblemResponse> getIntensiveProblems(String token, ProblemRequest problemRequest);
+	List<ProblemResponse> getIntensiveProblems(String token);
 
 	List<ProblemResponse> getTodayIntensive(String token);
 
