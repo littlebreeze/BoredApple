@@ -22,10 +22,9 @@ const quizType: QuizType[] = [
 ];
 
 export default function MonthlyRecord() {
-  const registerDate = '2024-05-03';
-  const solvedCnt = [2, 0, 0, 0, 3, 1, 0, 0, 1, 0, 2, 0, 3, 0, 3, 1, 3, 2, 1, 2, 3, 3, 3, 3, 2, 0, 0, 1, 1, 1, 0];
-  const [records, setRecords] = useState<QuizType[] | null>(quizType);
-  const { today, onChange } = useRecordStore();
+  const { parseValueIntoDate } = useRecordStore();
+  const { records } = useRecordStore();
+  const { today } = useRecordStore();
 
   return (
     <div className='flex flex-col p-5 w-full'>
@@ -36,7 +35,7 @@ export default function MonthlyRecord() {
       </div>
       <div>
         <div className='text-ourDarkGray text-xl font-semibold ml-5 my-2'>
-          {dayjs(new Date(Number(today?.valueOf().toString()))).format('MM월 DD일')}
+          {dayjs(parseValueIntoDate(today)).format('MM월 DD일')}
         </div>
         <div className='bg-ourLightGray rounded-2xl p-4 flex flex-col gap-2'>
           {records

@@ -117,7 +117,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: var(--ourDarkGray);
+  color: var(--ourGray);
   padding: 10px;
   abbr {
     text-align: center;
@@ -140,8 +140,10 @@
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
   abbr {
-    background: var(--ourLightGray);
-    color: var(--ourDarkGray);
+    transition-duration: 0.2s;
+    transition-property: background-color;
+    background: var(--ourGray);
+    color: white;
     border-radius: 9999px;
   }
 }
@@ -197,7 +199,7 @@
 .react-calendar__tile--one-solved:enabled {
   abbr {
     background: var(--ourBlue);
-    opacity: 0.3;
+    opacity: 0.2;
     color: white;
     border-radius: 9999px;
   }
@@ -215,7 +217,7 @@
 .react-calendar__tile--two-solved:enabled {
   abbr {
     background: var(--ourBlue);
-    opacity: 0.6;
+    opacity: 0.5;
     color: white;
     border-radius: 9999px;
   }
