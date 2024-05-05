@@ -22,7 +22,7 @@ const quizType: QuizType[] = [
 ];
 
 export default function MonthlyRecord() {
-  // const [today, setToday] = useState<string>('4월 30일');
+  const registerDate = '2024-05-03';
   const [records, setRecords] = useState<QuizType[] | null>(quizType);
   const [today, onChange] = useState<Value>(new Date());
 
@@ -39,11 +39,13 @@ export default function MonthlyRecord() {
             next2Label={null}
             formatDay={(locale, date) => dayjs(date).format('D')}
             showNeighboringMonth={false}
+            minDate={new Date(registerDate)}
+            maxDate={new Date()}
           />
         </div>
       </div>
       <div>
-        <div className='text-ourDarkGray text-xl font-semibold'>
+        <div className='text-ourDarkGray text-xl font-semibold ml-5 my-2'>
           {dayjs(new Date(Number(today?.valueOf().toString()))).format('MM월 DD일')}
         </div>
         <div className='bg-ourLightGray rounded-2xl p-4 flex flex-col gap-2'>
