@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import StudyRecordItem from './StudyRecordItem';
-import Calendar from 'react-calendar';
-import './Calendar.css';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; //한국어
+import CalendarComponent from './CalendarComponent';
+import { useRecordStore } from '@/stores/record';
 
 type ValuePiece = Date | null;
 
@@ -23,25 +23,15 @@ const quizType: QuizType[] = [
 
 export default function MonthlyRecord() {
   const registerDate = '2024-05-03';
+  const solvedCnt = [2, 0, 0, 0, 3, 1, 0, 0, 1, 0, 2, 0, 3, 0, 3, 1, 3, 2, 1, 2, 3, 3, 3, 3, 2, 0, 0, 1, 1, 1, 0];
   const [records, setRecords] = useState<QuizType[] | null>(quizType);
-  const [today, onChange] = useState<Value>(new Date());
+  const { today, onChange } = useRecordStore();
 
   return (
     <div className='flex flex-col p-5 w-full'>
       <div className='flex justify-center'>
         <div>
-          <Calendar
-            onChange={onChange}
-            value={today}
-            locale='ko'
-            calendarType='gregory'
-            prev2Label={null}
-            next2Label={null}
-            formatDay={(locale, date) => dayjs(date).format('D')}
-            showNeighboringMonth={false}
-            minDate={new Date(registerDate)}
-            maxDate={new Date()}
-          />
+          <CalendarComponent />
         </div>
       </div>
       <div>
