@@ -29,6 +29,9 @@ export default function CalendarComponent() {
     <>
       <Calendar
         onChange={onChange}
+        onActiveStartDateChange={({ action, activeStartDate, value, view }) =>
+          alert('Changed view to: ' + activeStartDate + view)
+        }
         value={today}
         locale='ko'
         calendarType='gregory'

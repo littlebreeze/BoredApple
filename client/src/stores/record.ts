@@ -7,6 +7,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 type QuizType = { title: string; content: string; correct: boolean };
 
 interface recordState {
+  // Value 형식의 today를 Date로 변경
   parseValueIntoDate: (date: Value) => Date;
   today: Value;
   onChange: (date: Value) => void;
