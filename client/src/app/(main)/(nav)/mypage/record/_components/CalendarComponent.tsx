@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Calendar from 'react-calendar';
 import './Calendar.css';
@@ -13,9 +13,18 @@ type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export default function CalendarComponent() {
-  const registerDate = '2024-05-03';
-  const solvedCnt = [3, 2, 1, 0, 0, 1, 0, 0, 1, 0, 2, 0, 3, 0, 3, 1, 3, 2, 1, 2, 3, 3, 3, 3, 2, 0, 0, 1, 1, 1, 0];
+  const { parseValueIntoDate } = useRecordStore();
+  const { solvedCnt, setSolvedCnt } = useRecordStore();
   const { today, onChange } = useRecordStore();
+
+  const [yearMonth, setYearMonth] = useState<string>(dayjs(parseValueIntoDate(today)).format('YYYYMM'));
+  const [day, setDay] = useState<string>(dayjs(parseValueIntoDate(today)).format('DD'));
+
+  useEffect(() => {
+    setYearMonth(dayjs(parseValueIntoDate(today)).format('YYYYMM'));
+    setDay(dayjs(parseValueIntoDate(today)).format('D'));
+  }, [today]);
+
   return (
     <>
       <Calendar
@@ -31,16 +40,18 @@ export default function CalendarComponent() {
         minDate={new Date(2024, 0, 1)}
         maxDate={new Date()}
         tileClassName={({ date, view }) => {
-          const day: number = date.getDate() - 1;
+          const dayNum: number = date.getDate() - 1;
           let classType: string = '';
-          if (solvedCnt[day] === 1) {
-            classType = 'one';
-          } else if (solvedCnt[day] === 2) {
-            classType = 'two';
-          } else if (solvedCnt[day] === 3) {
-            classType = 'three';
+          if (view === 'month') {
+            if (solvedCnt[dayNum] === 1) {
+              classType = 'one';
+            } else if (solvedCnt[dayNum] === 2) {
+              classType = 'two';
+            } else if (solvedCnt[dayNum] === 3) {
+              classType = 'three';
+            }
+            return `react-calendar__tile--${classType}-solved`;
           }
-          return `react-calendar__tile--${classType}-solved`;
         }}
       />
     </>
