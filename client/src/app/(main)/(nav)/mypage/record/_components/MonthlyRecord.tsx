@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import StudyRecordItem from './StudyRecordItem';
 import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; //한국어
@@ -31,7 +30,16 @@ export default function MonthlyRecord() {
     <div className='flex flex-col p-5 w-full'>
       <div className='flex justify-center'>
         <div>
-          <Calendar onChange={onChange} value={today} locale='ko' />
+          <Calendar
+            onChange={onChange}
+            value={today}
+            locale='ko'
+            calendarType='gregory'
+            prev2Label={null}
+            next2Label={null}
+            formatDay={(locale, date) => dayjs(date).format('D')}
+            showNeighboringMonth={false}
+          />
         </div>
       </div>
       <div>
