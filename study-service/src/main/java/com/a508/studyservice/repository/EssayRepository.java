@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EssayRepository extends JpaRepository<EssaySolved,Integer> {
 
+    EssaySolved findByProblemId(Integer problemId);
+
 }
