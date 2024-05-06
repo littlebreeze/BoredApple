@@ -1,23 +1,20 @@
 package com.a508.studyservice.service;
 
 import com.a508.studyservice.dto.response.TodayLearningResponse;
-import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.repository.ChoiceRepository;
 import com.a508.studyservice.repository.TodayLearningRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional( readOnly = true)
 @Slf4j
 public class TodayLearningServiceImpl implements TodayLearningService {
 
@@ -29,6 +26,11 @@ public class TodayLearningServiceImpl implements TodayLearningService {
     public List<TodayLearningResponse> getTodayLearning(String token) {
         log.info(" token 정보가 들어옵니다. ");
         Integer userId = 1;
+        /*
+        Feign 을 통한 token 로직 추가되어야 함.
+        필요한 거 userId, 선호 카테고리
+         */
+
         List<TodayLearningResponse> todayLearningResponses = new ArrayList<>();
 
         List<TodayLearning> todayLearnings = todayLearningRepository.findByUserId(userId);
