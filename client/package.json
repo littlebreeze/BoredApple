@@ -17,6 +17,7 @@
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
+    "sweetalert2": "^11.10.8",
     "tailwind-scrollbar-hide": "^1.1.7",
     "types": "^0.1.1",
     "zustand": "^4.5.2"

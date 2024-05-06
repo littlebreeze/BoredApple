@@ -65,7 +65,7 @@ export default function QuizResult() {
           <div className='w-40 mx-auto'>
             <Image src={resultImage} alt='퀴즈 결과' />
           </div>
-          <div className='text-lg font-semibold text-center w-72 mx-auto'>
+          <div className='text-lg font-semibold w-72 mx-auto'>
             {quizResultData[resultDataIndex].title.split('\n').map((line, index) => (
               <span key={index}>
                 {line}
