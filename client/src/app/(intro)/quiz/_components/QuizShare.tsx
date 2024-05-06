@@ -4,7 +4,6 @@ import ShareKakao from '@/../public/quiz/share-kakao.svg';
 import ShareLink from '@/../public/quiz/share-link.svg';
 import Swal from 'sweetalert2';
 import { useEffect } from 'react';
-import ogQuiz from '@/../public/openGraph/og-quiz-image.jpg';
 
 export default function QuizShare() {
   useEffect(() => {
