@@ -3,12 +3,14 @@ package com.a508.studyservice.dto.response;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class ProblemResponse {
 
 	private String title;
