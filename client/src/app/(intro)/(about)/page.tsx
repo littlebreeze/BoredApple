@@ -6,6 +6,7 @@ import SituationCard from './_component/SituationCard';
 import UpsideAnimation from './_component/UpsideAnimation';
 import LeftSideAnimation from './_component/LeftSideAnimation';
 import RightSideAnimation from './_component/RightSideAnimation';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: '심심한 사과, 당신의 문해력 지키미',
@@ -24,13 +25,15 @@ export default function Page() {
               <div className='text-white font-Ansungtangmyun text-7xl'>심심한 사과</div>
             </div>
           </UpsideAnimation>
-          <div
-            className=' w-[215px] h-[60px] cursor-pointer bg-ourBlack flex justify-between items-center rounded-full text-white px-7 duration-[0.2s]
+          <Link href={'/login'}>
+            <div
+              className=' w-[215px] h-[60px] cursor-pointer bg-ourBlack flex justify-between items-center rounded-full text-white px-7 duration-[0.2s]
           hover:bg-ourBlue'
-          >
-            <div>시작하기</div>
-            <div>→</div>
-          </div>
+            >
+              <div>시작하기</div>
+              <div>→</div>
+            </div>
+          </Link>
         </div>
         {/* 움직일 div */}
         <CardContainer>
@@ -63,82 +66,125 @@ export default function Page() {
           <SituationCard svg={'situation4'} content={`말할 때 '그거 있잖아' 반복하기`} />
         </div>
       </div>
-      <div className='px-5 pt-36 flex flex-col justify-center gap-5'>
+      <div className='px-5 md:px-10 lg:px-28 pt-36 flex flex-col justify-center gap-10'>
         <div className='text-center font-semibold text-xl mb-10'>
           이런 문해력 고민{' '}
           <mark className='bg-ourGreen/30 mr-1'>
             <span className='font-Ansungtangmyun text-3xl text-ourTheme'>심심한 사과</span>
           </mark>
-          로 해결해보세요!
+          에서 해결해보세요!
         </div>
         <UpsideAnimation>
           <div className='w-full flex flex-col gap-5 md:flex-row lg:flex-row justify-center'>
-            <div className='w-full md:w-1/2 lg:w-1/2 h-80 bg-blue-100 rounded-lg'>
-              <div>작은타이틀</div>
-              <div>타이틀</div>
-              <div>자세한 설명</div>
+            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 flex flex-col gap-10 items-center md:items-start lg:items-start'>
+              <div className='text-ourBlue font-bold text-xl'>난이도별, 관심사별</div>
+              <div className='font-bold text-5xl flex flex-col gap-2'>
+                <span>매일 새로운</span>
+                <span>개인 맞춤 학습</span>
+              </div>
+              <ul className='text-ourDarkGray list-disc ml-4'>
+                <li>학습 유형, 학습 요소, 수준에 따른 학습 추천</li>
+                <li>인지 능력, 추론 능력 등을 기를 수 있는 다양한 문제</li>
+              </ul>
             </div>
-            <div className='w-full md:w-1/2 lg:w-1/2 h-80 bg-blue-100 rounded-lg'>사진</div>
+            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 bg-blue-100  '>사진</div>
           </div>
         </UpsideAnimation>
         <div className='w-full flex flex-col-reverse gap-5 md:flex-row lg:flex-row justify-center'>
-          <div className='w-full md:w-1/2 lg:w-1/2'>
+          <div className='w-full  md:w-1/2 lg:w-1/2'>
             <LeftSideAnimation>
-              <div className='w-full h-80 bg-blue-100 rounded-lg'>글</div>
+              <div className='w-full h-80 bg-blue-100  '>글</div>
             </LeftSideAnimation>
           </div>
-          <div className='w-full md:w-1/2 lg:w-1/2'>
+          <div className='w-full  md:w-1/2 lg:w-1/2'>
             <RightSideAnimation>
-              <div className='w-full h-80 bg-blue-100 rounded-lg'>
-                <div>작은타이틀</div>
-                <div>타이틀</div>
-                <div>자세한 설명</div>
+              <div className='w-full h-80 flex flex-col gap-10 items-center md:items-start lg:items-start'>
+                <div className='text-ourBlue font-bold text-xl'>나의 요약 실력</div>
+                <div className='font-bold text-5xl flex flex-col gap-2'>
+                  <span>짧은 글을 읽고 요약하고</span>
+                  <span>모범 답안과의</span>
+                  <span>유사도를 확인하세요</span>
+                </div>
+                <ul className='text-ourDarkGray list-disc ml-4'>
+                  <li>AI가 요약한 모범 답안 확인</li>
+                  <li>내 답안과 모범 답안과의 유사도 분석</li>
+                </ul>
               </div>
             </RightSideAnimation>
           </div>
         </div>
         <UpsideAnimation>
           <div className='w-full flex flex-col gap-5 md:flex-row lg:flex-row justify-center'>
-            <div className='w-full md:w-1/2 lg:w-1/2 h-80 bg-blue-100 rounded-lg'>
-              <div>작은타이틀</div>
-              <div>타이틀</div>
-              <div>자세한 설명</div>
+            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 flex flex-col gap-10 items-center md:items-start lg:items-start'>
+              <div className='text-ourBlue font-bold text-xl'>모든 학년별, 수준별</div>
+              <div className='font-bold text-5xl flex flex-col gap-2'>
+                <span>다양한 주제 지문들로</span>
+                <span>읽기 능력 상승!</span>
+              </div>
+              <ul className='text-ourDarkGray list-disc ml-4'>
+                <li>고등 수준 5개 대주제의 비문학 지문</li>
+                <li>다양한 문제 유형들의 실시간 피드백과 해설</li>
+              </ul>
             </div>
-            <div className='w-full md:w-1/2 lg:w-1/2 h-80 bg-blue-100 rounded-lg'>사진</div>
+            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 bg-blue-100  '>사진</div>
           </div>
         </UpsideAnimation>
         <div className='w-full flex flex-col-reverse gap-5 md:flex-row lg:flex-row justify-center'>
-          <div className='w-full md:w-1/2 lg:w-1/2'>
+          <div className='w-full  md:w-1/2 lg:w-1/2'>
             <LeftSideAnimation>
-              <div className='w-full h-80 bg-blue-100 rounded-lg'>글</div>
+              <div className='w-full h-80 bg-blue-100  '>글</div>
             </LeftSideAnimation>
           </div>
-          <div className='w-full md:w-1/2 lg:w-1/2'>
+          <div className='w-full  md:w-1/2 lg:w-1/2'>
             <RightSideAnimation>
-              <div className='w-full h-80 bg-blue-100 rounded-lg'>
-                <div>작은타이틀</div>
-                <div>타이틀</div>
-                <div>자세한 설명</div>
+              <div className='w-full h-80 flex flex-col gap-10 items-center md:items-start lg:items-start'>
+                <div className='text-ourBlue font-bold text-xl'>매달 성장하는 나</div>
+                <div className='font-bold text-5xl flex flex-col gap-2'>
+                  <span>향상된 나의 능력치와</span>
+                  <span>매달 학습 기록 확인</span>
+                </div>
+                <ul className='text-ourDarkGray list-disc ml-4'>
+                  <li>그래프를 통한 내 능력치와 강점, 약점</li>
+                  <li>달력에서 바로 확인하는 내 학습 기록</li>
+                </ul>
               </div>
             </RightSideAnimation>
           </div>
         </div>
         <UpsideAnimation>
           <div className='w-full flex flex-col gap-5 md:flex-row lg:flex-row justify-center'>
-            <div className='w-full md:w-1/2 lg:w-1/2 h-80 bg-blue-100 rounded-lg'>
-              <div>작은타이틀</div>
-              <div>타이틀</div>
-              <div>자세한 설명</div>
+            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 flex flex-col gap-10 items-center md:items-start lg:items-start'>
+              <div className='text-ourBlue font-bold text-xl'>문해력의 기초, 어휘!</div>
+              <div className='font-bold text-5xl flex flex-col gap-2'>
+                <span>대결을 통한</span>
+                <span>재밌는 단어 학습</span>
+              </div>
+              <ul className='text-ourDarkGray list-disc ml-4'>
+                <li>단어를 알면 문장 이해력이 올라가고</li>
+                <li>단어를 알면 표현력도 올라가요</li>
+              </ul>
             </div>
-            <div className='w-full md:w-1/2 lg:w-1/2 h-80 bg-blue-100 rounded-lg'>사진</div>
+            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 bg-blue-100  '>사진</div>
           </div>
         </UpsideAnimation>
       </div>
 
-      <div className='py-36 bg-ourBlue my-10 text-white'>
+      <div className='py-36 bg-ourBlue mt-10 text-white'>
         <UpsideAnimation>
-          <div className='text-center'>
-            <div>심심한 사과에서 학습하고 게임을 하며 문해력을 높여보세요!</div>
+          <div className='text-center flex flex-col items-center'>
+            <div>
+              <span className='font-Ansungtangmyun text-3xl text-white'>심심한 사과</span> 가 준비한 다양한 컨텐츠, 지금
+              바로 시작해보세요!
+            </div>
+            <Link href={'/login'}>
+              <div
+                className='pt-7 pb-3 px-10 text-ourBlack cursor-pointer border-0 border-b-4 border-ourBlack flex gap-10 duration-[0.2s]
+          hover:border-ourTheme hover:text-white '
+              >
+                <div>시작하기</div>
+                <div>→</div>
+              </div>
+            </Link>
           </div>
         </UpsideAnimation>
       </div>
