@@ -19,7 +19,7 @@ public class Voca {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String title;
+    private String content;
 
     private String option1;
 
