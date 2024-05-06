@@ -2,11 +2,10 @@
 
 import { useState } from 'react';
 import StudyRecordItem from './StudyRecordItem';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import './Calendar.css';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; //한국어
+import CalendarComponent from './CalendarComponent';
+import { useRecordStore } from '@/stores/record';
 
 type ValuePiece = Date | null;
 
@@ -23,20 +22,20 @@ const quizType: QuizType[] = [
 ];
 
 export default function MonthlyRecord() {
-  // const [today, setToday] = useState<string>('4월 30일');
-  const [records, setRecords] = useState<QuizType[] | null>(quizType);
-  const [today, onChange] = useState<Value>(new Date());
+  const { parseValueIntoDate } = useRecordStore();
+  const { records } = useRecordStore();
+  const { today } = useRecordStore();
 
   return (
     <div className='flex flex-col p-5 w-full'>
       <div className='flex justify-center'>
         <div>
-          <Calendar onChange={onChange} value={today} locale='ko' />
+          <CalendarComponent />
         </div>
       </div>
       <div>
-        <div className='text-ourDarkGray text-xl font-semibold'>
-          {dayjs(new Date(Number(today?.valueOf().toString()))).format('MM월 DD일')}
+        <div className='text-ourDarkGray text-xl font-semibold ml-5 my-2'>
+          {dayjs(parseValueIntoDate(today)).format('MM월 DD일')}
         </div>
         <div className='bg-ourLightGray rounded-2xl p-4 flex flex-col gap-2'>
           {records
