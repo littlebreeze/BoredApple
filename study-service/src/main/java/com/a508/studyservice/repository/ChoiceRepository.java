@@ -13,4 +13,8 @@ public interface ChoiceRepository extends JpaRepository<ChoiceSolved,Integer> {
 
     Optional<List<ChoiceSolved>> findByUserId(Integer userId);
 
+
+   ChoiceSolved findByUserIdAndTypeAndProblemId(Integer userId, String type, Integer problemId);
+
+
 }
