@@ -3,26 +3,26 @@ package com.a508.studyservice.dto.response;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class EssayResponse {
 
     private String title;
 
-    private String question;
-
     private String text;
 
-    private Integer userAnswer;
+    private String userAnswer;
 
-    private Integer answer;
+    private String answer;
 
     //어떤 유형 문제인지
-    private String category;
+    private String type;
 
     private Integer problemId;
 

@@ -22,11 +22,13 @@ public class EssaySolved {
 
     private Integer userId;
 
+    private Integer problemId;
+
     private String myAnswer;
 
     private String answer;
 
-    private double similarity;
+    private Integer similarity;
 
     private String category;
 
