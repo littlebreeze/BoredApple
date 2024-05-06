@@ -28,9 +28,11 @@ public class ChoiceSolved {
     private Integer answer;
 
     //어떤 유형 문제인지
-    private String category;
+    private String type;
 
     private Integer problemId;
+
+    private boolean correct;
 
     @CreatedDate
     private LocalDateTime createdAt;
