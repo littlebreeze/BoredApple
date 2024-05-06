@@ -1,16 +1,23 @@
 package com.a508.studyservice.controller;
 
+import com.a508.studyservice.dto.request.ChoiceRequest;
 import com.a508.studyservice.global.common.response.SuccessResponse;
 import com.a508.studyservice.service.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/study-service/problem")
 @RequiredArgsConstructor
+@Slf4j
 public class ProblemController {
 
     private final EssayService essayService;
@@ -19,7 +26,7 @@ public class ProblemController {
     private final SentenceInsertService sentenceInsertService;
     private final TodayLearningService todayLearningService;
     private final TopicProblemService topicProblemService;
-
+    private final VocaService vocaService;
 
     @GetMapping("/test")
     public ResponseEntity<SuccessResponse<?>> test(@RequestHeader(value = "Authorization", required = false) String token){
@@ -30,57 +37,72 @@ public class ProblemController {
     //오늘의 학습
     @GetMapping("/today")
     public ResponseEntity<SuccessResponse<?>> getTodayController(@RequestHeader(value = "Authorization", required = false) String token){
+        log.info(token);
         return ResponseEntity.ok(
                 new SuccessResponse<>(HttpStatus.OK.value() ,todayLearningService.getTodayLearning(token)));
     }
 
     // 정독 훈련
     @GetMapping("/intensive")
-    public ResponseEntity<SuccessResponse<?>> getIntensiveController(@RequestHeader(value = "Authorization",required = false) String token){
-
+    public ResponseEntity<SuccessResponse<?>> getIntensiveController(@RequestHeader(value = "Authorization", required = false) String token,
+                                                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Received date: {}", date);
+        if (date == null) {
+            date = LocalDate.now();
+        }
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ,intensiveService.getIntensiveProblems(token)));
+                new SuccessResponse<>(HttpStatus.OK.value() ,intensiveService.getIntensiveProblems(token,date.atTime(0,0))));
     }
 
 
     // 문장 삽입
     @GetMapping("/sentence")
-    public ResponseEntity<SuccessResponse<?>> getSentenceController(@RequestHeader("Authorization") String token){
+    public ResponseEntity<SuccessResponse<?>> getSentenceController(@RequestHeader(value = "Authorization", required = false) String token,
+                                                                    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Received date: {}", date);
+        if (date == null) {
+            date = LocalDate.now();
+        }
 
-        return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ," "));
+        return ResponseEntity.ok(new SuccessResponse<>(HttpStatus.OK.value(), sentenceInsertService.getSentenceProblems(token, date.atTime(0,0))));
     }
 
-    //주제
-    @GetMapping("/topic ")
-    public ResponseEntity<SuccessResponse<?>> getTopicController(@RequestHeader("Authorization") String token){
 
+    //주제
+    @GetMapping("/topic")
+    public ResponseEntity<SuccessResponse<?>> getTopicController(@RequestHeader(value = "Authorization", required = false) String token,
+                                                                 @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Received date: {}", date);
+        if (date == null) {
+            date = LocalDate.now();
+        }
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ," "));
+                new SuccessResponse<>(HttpStatus.OK.value() , essayService.getProblemList(token,date.atTime(0,0))));
     }
 
 
     // 단어 맞추기
     @GetMapping("/voca")
-    public ResponseEntity<SuccessResponse<?>> getVocaController(@RequestHeader("Authorization") String token){
-
+    public ResponseEntity<SuccessResponse<?>> getVocaController(@RequestHeader(value = "Authorization", required = false) String token,
+                                                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Received date: {}", date);
+        if (date == null) {
+            date = LocalDate.now();
+        }
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ," "));
+                new SuccessResponse<>(HttpStatus.OK.value() ,vocaService.getVocaProblem(token,date.atTime(0,0))));
     }
 
-    // 객관식 정답
-    @PostMapping("/choice")
-    public ResponseEntity<SuccessResponse<?>> postChoiceProblem(@RequestHeader("Authorization") String token){
+    //순서
+    @GetMapping("/order")
+    public ResponseEntity<SuccessResponse<?>> getOrderController(@RequestHeader(value = "Authorization", required = false) String token,
+                                                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Received date: {}", date);
+        if (date == null) {
+            date = LocalDate.now();
+        }
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ," "));
-    }
-
-
-    // 주관식 정답
-    @PostMapping("/topic")
-    public ResponseEntity<SuccessResponse<?>> postTopicProblem(@RequestHeader("Authorization") String token){
-        return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ," "));
+                new SuccessResponse<>(HttpStatus.OK.value() ,paragraphOrderService.getParagraphProblems(token,date.atTime(0,0))));
     }
 
 
