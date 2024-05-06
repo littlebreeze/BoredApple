@@ -59,7 +59,10 @@ public enum ErrorCode {
 	INTERNAL_SERVER_ERROR(500, "G-999", "Internal Server Error Exception"),
 
 	// 오늘의 학습 문제가 생성되지 않음
-	NO_TODAY_LEARNING(405, "G-999", "Scheduler not activated" );
+	NO_TODAY_LEARNING(405, "G-999", "Scheduler not activated" ),
+
+	// 그러한 문제는 존재하지 않습니다.
+	NOT_EXIST_QUESTION(406,"G-999", "Problem is not exist" );
 
 
 
