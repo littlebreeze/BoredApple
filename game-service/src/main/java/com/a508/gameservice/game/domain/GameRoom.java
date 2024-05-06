@@ -4,6 +4,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,4 +29,6 @@ public class GameRoom {
     private Integer quizCount;
 
     private Boolean isSecret;
+
+    private LocalDateTime createdTime;
 }
