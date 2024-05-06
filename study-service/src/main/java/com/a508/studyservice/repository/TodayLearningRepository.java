@@ -14,5 +14,6 @@ public interface TodayLearningRepository  extends JpaRepository<TodayLearning,In
 
     List<TodayLearning> findByUserId(Integer userId);
 
-    List<TodayLearning> findByUserIdAndCreateAt(Integer userId, LocalDateTime createAt);
+    List<TodayLearning> findByUserIdAndCreateAtBetween(Integer userId, LocalDateTime startDate, LocalDateTime endDate);
+    List<TodayLearning> findByUserIdAndCreateAtBetweenAndType(Integer userId, LocalDateTime startDate, LocalDateTime endDate,String type);
  }
