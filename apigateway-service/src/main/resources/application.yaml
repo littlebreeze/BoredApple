@@ -6,6 +6,7 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://k10a508.p.ssafy.io:8083/eureka
+
 #      http://localhost:8083/eureka
 spring:
   application:
@@ -17,3 +18,9 @@ spring:
             uri: lb://USER-SERVICE
             predicates:
               - Path=/user-service/**
+            filters:
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#              - AuthorizationHeaderFilter
+  profiles:
+    include:
+      - secret
