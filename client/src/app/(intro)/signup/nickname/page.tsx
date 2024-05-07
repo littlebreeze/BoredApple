@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import GlobalButton from '@/app/_common/GlobalButton';
+import Nickname from '../_components/Nickname';
 
 export const metadata: Metadata = {
   title: '회원가입',
@@ -8,12 +8,16 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div className='flex flex-col items-center h-screen bg-red-200 '>
-      <div className=' bg-slate-400 w-80'>1/4</div>
-      <div className='w-80 '>별명 짓기</div>
-      <input className='p-3' type='text' placeholder='닉네임을 입력해 주세요.' />
-      <div>특수문자 제외 2~10글자 이하로 지어주세요.</div>
-      <GlobalButton />
+    <div className='flex flex-col items-center h-screen'>
+      <div className='py-20'></div>
+      <div className='text-xs w-80'>
+        <span className='text-ourBlue'> 1</span>
+        <span className='text-ourBlack'> / 3 </span>
+      </div>
+      <div className='pb-1'></div>
+      <div className='text-2xl font-semibold w-80'>별명 짓기</div>
+      <div className='py-2'></div>
+      <Nickname />
     </div>
   );
 }

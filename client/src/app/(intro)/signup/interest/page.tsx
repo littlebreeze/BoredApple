@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Interest from '../_components/Interest';
 
 export const metadata: Metadata = {
   title: '회원가입',
@@ -6,5 +7,18 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <div className='bg-yellow-400'>회원가입2 흥미글 선택</div>;
+  return (
+    <div className='flex flex-col items-center h-screen'>
+      <div className='py-20'></div>
+      <div className='text-xs w-80'>
+        <span className='text-ourBlue'> 2</span>
+        <span className='text-ourBlack'> / 3 </span>
+      </div>
+      <div className='pb-1'></div>
+      <div className='text-2xl font-semibold w-80'>관심 분야</div>
+      <div className='py-1 text-xs w-80 text-ourDarkGray'>관심 분야를 두 개 선택해 주세요.</div>
+      <div className='py-2'></div>
+      <Interest />
+    </div>
+  );
 }

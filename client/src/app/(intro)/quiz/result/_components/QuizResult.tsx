@@ -57,8 +57,8 @@ export default function QuizResult() {
   return (
     <div>
       <Image className='py-4 pt-10 mx-auto mb-6 w-80' src={quizResultTitle} alt='진단결과' />
-      <div className='flex p-10 py-16 bg-white border border-gray-300 rounded-xl'>
-        <div className='w-96'>
+      <div className='flex flex-col p-10 py-16 bg-white border border-gray-300 sm:flex-row sm:items-center rounded-xl'>
+        <div className='mx-auto w-96'>
           <div className='mx-auto text-xl font-semibold text-center'>
             당신의 점수는 <span className='text-3xl font-semibold'>{score}</span>점
           </div>
@@ -74,7 +74,7 @@ export default function QuizResult() {
             ))}
           </div>
         </div>
-        <div className='flex-1 pt-2 pr-6'>
+        <div className='flex-1 pt-8 sm:pr-6 sm:pt-2'>
           <div className=''>
             {quizResultData[resultDataIndex].content.split('\n').map((line, index) => (
               <span key={index}>
@@ -87,13 +87,13 @@ export default function QuizResult() {
       </div>
       <div className='mx-auto my-4 w-96'>
         <button
-          className='mt-2 w-full h-12 rounded-lg text-lg text-ourTheme bg-white duration-[0.2s] hover:bg-white/50 hover:text-ourTheme/80'
+          className='mt-2 w-full h-12 rounded-lg text-lg text-ourTheme bg-white duration-[0.2s] hover:bg-white/40 hover:text-ourTheme'
           onClick={solveQuizAgain}
         >
           다시 테스트하기
         </button>
         <button
-          className='my-2 w-full h-12 rounded-lg text-lg bg-ourTheme text-white duration-[0.2s] hover:bg-ourTheme/80'
+          className='my-2 w-full h-12 rounded-lg text-lg bg-ourTheme text-white duration-[0.2s] hover:brightness-90'
           onClick={startService}
         >
           문해력 높이러 가기
