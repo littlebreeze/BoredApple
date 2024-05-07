@@ -1,8 +1,16 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import ChatWrapper from './_component/ChatWrapper';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
-  return <div className='bg-yellow-400'>게임 {roomId} 페이지</div>;
+  return (
+    <>
+      <div>{roomId}</div>
+      <div className='flex justify-center'>
+        <ChatWrapper />
+      </div>
+    </>
+  );
 }
