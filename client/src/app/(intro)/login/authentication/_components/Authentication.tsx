@@ -7,7 +7,7 @@ export default function Authentication() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code: string | null = searchParams.get('code');
-  const baseURL = `${process.env.NEXT_PUBLIC_PUBLIC_API_SERVER}/login/oauth2/code/google`;
+  const baseURL = `${process.env.NEXT_PUBLIC_PUBLIC_API_SERVER}/user-service/oauth2/code/google`;
 
   useEffect(() => {
     if (code) {
