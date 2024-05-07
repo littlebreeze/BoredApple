@@ -8,13 +8,13 @@ import QuizShare from './_components/QuizShare';
 export const metadata: Metadata = {
   title: '문해력 테스트',
   description: '문해력 테스트',
-  openGraph: {
-    type: 'website',
-    title: '심심한 사과:: 문해력 테스트',
-    description: '당신의 문해력이 궁금하신가요?\n 지금 당장 진단해 보세요!',
-    url: `${process.env.NEXT_PUBLIC_PUBLIC_SERVICE_URL}/quiz`,
-    images: [{ url: `${ogQuiz}`, alt: '문해력 자가진단' }],
-  },
+  // openGraph: {
+  //   type: 'website',
+  //   title: '심심한 사과:: 문해력 테스트',
+  //   description: '당신의 문해력이 궁금하신가요?\n 지금 당장 진단해 보세요!',
+  //   url: `${process.env.NEXT_PUBLIC_PUBLIC_SERVICE_URL}/quiz`,
+  //   images: [{ url: `${ogQuiz}`, alt: '문해력 자가진단' }],
+  // },
 };
 
 export default function Page() {
