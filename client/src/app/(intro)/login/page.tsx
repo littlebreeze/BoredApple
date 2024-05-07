@@ -10,12 +10,12 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <div className='mx-auto h-screen max-w-[800px] flex flex-col justify-center items-center'>
-      <div className='flex flex-col gap-5 justify-center items-center'>
-        <div className='text-ourTheme text-xl'>당신의 문해력 지키미,</div>
+      <div className='flex flex-col items-center justify-center gap-5'>
+        <div className='text-xl text-ourTheme'>당신의 문해력 지키미,</div>
         <div className='text-ourTheme font-Ansungtangmyun text-7xl'>심심한 사과</div>
       </div>
       <GoogleLogin />
-      <div className='w-96 text-xs text-zinc-300 mt-7'>
+      <div className='text-xs w-96 text-zinc-300 mt-7'>
         심심한 사과는 Google API에서 받은 정보를 사용하고 다른 앱으로 전송하는 것은 제한된 사용 요구 사항을 포함하여{' '}
         <Link
           className='underline text-zinc-400'

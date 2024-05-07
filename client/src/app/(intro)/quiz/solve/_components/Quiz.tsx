@@ -51,18 +51,18 @@ export default function Quiz() {
   return (
     <>
       {/* 인덱스 */}
-      <div className='w-full text-right mr-2'>{currentQuizIndex + 1}/12</div>
+      <div className='w-full mr-2 text-right'>{currentQuizIndex + 1}/12</div>
       {/* 문제 */}
-      <div className='w-full bg-white rounded-xl flex-col px-10 pt-10 border border-neutral-200'>
-        <div className='flex font-semibold text-lg'>
+      <div className='flex-col w-full px-10 pt-10 bg-white border rounded-xl border-neutral-200'>
+        <div className='flex text-lg font-semibold'>
           <div>
             {currentQuiz.id}.&nbsp;&nbsp; {currentQuiz.question}
           </div>
         </div>
-        <div className='font-Batang mt-4 mb-10'>{currentQuiz.passage}</div>
+        <div className='mt-4 mb-10 font-Batang'>{currentQuiz.passage}</div>
       </div>
       {/* 선지 */}
-      <div className='my-4 w-full p-10'>
+      <div className='w-full p-10 my-4'>
         {currentQuiz.options.map((optionObj, index) => (
           <div className={`mt-1 cursor-pointer`} onClick={() => handleOptionClick(index)} key={index}>
             <span className={`flex items-center `}>

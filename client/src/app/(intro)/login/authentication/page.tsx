@@ -13,7 +13,7 @@ export default function Page() {
   return (
     <>
       <div className='mx-auto h-screen max-w-[800px] flex flex-col justify-center items-center'>
-        <Image src={loading} className='motion-safe:animate-spin h-5 w-5 mb-4' alt='로딩 중' />
+        <Image src={loading} className='w-5 h-5 mb-4 motion-safe:animate-spin' alt='로딩 중' />
         <div className='mb-4'>로그인 중</div>
         <Suspense fallback={<div>서버에 연결하는 중 입니다 . . .</div>}>
           <Authentication />

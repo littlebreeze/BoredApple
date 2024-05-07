@@ -51,7 +51,7 @@ export default function QuizShare() {
   };
 
   return (
-    <div className='w-full h-28 flex justify-center items-center bg-ourGreen gap-10 rounded-lg'>
+    <div className='flex items-center justify-center w-full gap-10 rounded-lg h-28 bg-ourGreen'>
       <div className='text-xl text-white'>
         진단이 필요한 <br />
         친구에게 공유하기
