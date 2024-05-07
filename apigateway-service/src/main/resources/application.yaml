@@ -19,7 +19,7 @@ spring:
             predicates:
               - Path=/user-service/**
             filters:
-              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}/
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
       globalcors:
