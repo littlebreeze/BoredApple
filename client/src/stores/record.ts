@@ -17,6 +17,8 @@ interface recordState {
   setSolvedCnt: (counts: number[]) => void;
   records: QuizType[] | null;
   setRecords: (record: QuizType[] | null) => void;
+  yearMonth: Date | null;
+  onChangeYearMonth: (date: Date | null) => void;
 }
 
 export const useRecordStore = create<recordState>((set) => ({
@@ -42,4 +44,9 @@ export const useRecordStore = create<recordState>((set) => ({
     { title: '지문 요약', content: '비문학 지문을 읽고 요약해요.', correct: false },
   ],
   setRecords: (record: QuizType[] | null) => set({ records: record }),
+  yearMonth: new Date(),
+  onChangeYearMonth: (date: Date | null) =>
+    set({
+      yearMonth: date,
+    }),
 }));
