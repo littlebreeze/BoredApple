@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Authentication from './_components/Authentication';
 import loading from '@/../public/login/loading.png';
 import Image from 'next/image';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: '로그인',
@@ -13,10 +14,10 @@ export default function Page() {
     <>
       <div className='mx-auto h-screen max-w-[800px] flex flex-col justify-center items-center'>
         <Image src={loading} className='motion-safe:animate-spin h-5 w-5 mb-4' alt='로딩 중' />
-        <div>로그인 중</div>
-        <div>
+        <div className='mb-4'>로그인 중</div>
+        <Suspense fallback={<div>서버에 연결하는 중 입니다 . . .</div>}>
           <Authentication />
-        </div>
+        </Suspense>
       </div>
       ;
     </>
