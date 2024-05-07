@@ -41,11 +41,11 @@ export default function GameRoomItem({ roomInfo }: Props) {
             roomInfo!.isLocked ? 'hover:border-ourGray' : 'hover:border-ourBlue'
           }`}
         >
-          <div className='w-1/5 font-semibold text-ourDarkGray text-xl mt-1'>
+          <div className='w-1/5 font-semibold text-ourDarkGray text-base md:text-xl lg:text-xl mt-1'>
             {String(roomInfo!.roomId).padStart(3, '0')}
           </div>
           <div className='w-3/5 flex flex-col justify-between'>
-            <div className='font-semibold text-2xl'>{roomInfo!.title}</div>
+            <div className='font-semibold text-base sm:text-2xl md:text-2xl lg:text-2xl'>{roomInfo!.title}</div>
             <div className='text-ourDarkGray text-sm'>{roomInfo!.manager}의 방</div>
           </div>
           <div className='w-1/5 flex flex-col justify-between items-end'>

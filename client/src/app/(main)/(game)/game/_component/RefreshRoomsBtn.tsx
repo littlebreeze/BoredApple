@@ -8,7 +8,7 @@ export default function RefreshRoomsBtn() {
             fill='#51D0A2'
           />
         </svg>
-        새로고침
+        <div className=' text-sm md:text-lg lg:text-lg '>새로고침</div>
       </div>
     </>
   );
