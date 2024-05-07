@@ -8,10 +8,6 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; //한국어
 import { useRecordStore } from '@/stores/record';
 
-type ValuePiece = Date | null;
-
-type Value = ValuePiece | [ValuePiece, ValuePiece];
-
 export default function CalendarComponent() {
   const { parseValueIntoDate } = useRecordStore();
   const { solvedCnt, setSolvedCnt } = useRecordStore();

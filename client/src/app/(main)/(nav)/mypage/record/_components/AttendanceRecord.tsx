@@ -4,7 +4,7 @@ import RecordDetailItem from './RecordDetailItem';
 import { useRecordStore } from '@/stores/record';
 
 export default function AttendanceRecord() {
-  const { yearMonth, onChangeYearMonth } = useRecordStore();
+  const { yearMonth } = useRecordStore();
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>
