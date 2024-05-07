@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 
-export default function GlobalButton() {
+export default function LearningTime() {
   const [selected, setSelected] = useState<boolean>(false);
 
   const handleClick = () => {
