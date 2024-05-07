@@ -59,7 +59,7 @@ public class TodayLearningServiceImpl implements TodayLearningService {
         TodayLearningResponse todayLearningResponse = new TodayLearningResponse();
         todayLearningResponse.setCategory(category);
         todayLearningResponse.setType(type);
-        todayLearningResponse.setCorrect(false);
+        todayLearningResponse.setSolved(false);
         return todayLearningResponse;
     }
 
@@ -68,7 +68,7 @@ public class TodayLearningServiceImpl implements TodayLearningService {
         return TodayLearningResponse.builder()
                 .category(todayLearning.getCategory())
                 .type(todayLearning.getType())
-                .correct(todayLearning.isCorrect())
+                .solved(todayLearning.isCorrect())
                 .build();
     }
 

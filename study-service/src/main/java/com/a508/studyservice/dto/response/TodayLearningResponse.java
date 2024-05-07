@@ -16,7 +16,7 @@ public class TodayLearningResponse {
 
     private String category;
 
-    private boolean correct;
+    private boolean solved;
 
 
 }
