@@ -59,7 +59,7 @@ export default function GameRightSection() {
           <GameMenuBtn />
         </div>
       </div>
-      <div className='grid grid-cols-2 py-4 px-5 gap-x-2 gap-y-2 md:gap-x-5 md:gap-y-6 lg:gap-x-6 lg:px-6 bg-ourGray/50 rounded-xl'>
+      <div className='grid grid-cols-2 py-4 px-5 gap-x-2 gap-y-2 md:gap-x-3 md:gap-y-4 lg:gap-x-6 lg:px-6 bg-ourGray/50 rounded-xl'>
         {duplicatedRoomList.map((info: RoomInfo | undefined, idx: number) => (
           <GameRoomItem key={idx} roomInfo={info} />
         ))}
