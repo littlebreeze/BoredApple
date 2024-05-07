@@ -57,7 +57,10 @@ export default function GameRoomItem({ roomInfo }: Props) {
                   )}
                 </div>
               </div>
-              <div>{roomInfo!.quiz}문제</div>
+              <div className='flex flex-col items-center'>
+                <div className='text-xs'>문제수</div>
+                <div>{roomInfo!.quiz}</div>
+              </div>
             </div>
           </div>
         </Link>
