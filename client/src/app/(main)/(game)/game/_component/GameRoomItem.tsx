@@ -27,13 +27,11 @@ export default function GameRoomItem({ roomInfo }: Props) {
         {/* 잠겨있으면 모달 띄우기...아악 */}
         <Link href={`game/rooms/${roomId}`}>
           <div
-            className={`bg-white/80 rounded-xl h-28 cursor-pointer flex flex-row p-3 md:px-5 lg:px-5 border-4 border-white duration-150 ${
-              roomInfo!.isLocked
-                ? 'hover:border-ourRed/80 hover:text-ourRed'
-                : 'hover:border-ourTheme/80 hover:text-ourTheme'
+            className={`bg-white/80 rounded-xl h-28 cursor-pointer flex flex-row p-3 md:px-5 lg:px-5 border-2 border-white duration-150  ${
+              roomInfo!.isLocked ? 'hover:border-ourGray' : 'hover:border-ourBlue'
             }`}
           >
-            <div className='w-1/5 font-semibold text-ourDarkGray text-lg mt-1'>
+            <div className='w-1/5 font-semibold text-ourDarkGray text-xl mt-1'>
               {String(roomInfo!.roomId).padStart(3, '0')}
             </div>
             <div className='w-3/5 flex flex-col justify-between'>

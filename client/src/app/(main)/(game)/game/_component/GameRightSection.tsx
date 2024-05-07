@@ -1,8 +1,10 @@
 'use client';
 import { useState } from 'react';
-import GameMenuBtn from './GameMenuBtn';
+import MakeRoomBtn from './MakeRoomBtn';
 import GameRoomItem from './GameRoomItem';
 import PagingBtn from './PagingBtn';
+import QuickStartGameBtn from './QuickStartGameBtn';
+import RefreshRoomsBtn from './RefreshRoomsBtn';
 
 type RoomInfo = {
   roomId: number;
@@ -79,14 +81,14 @@ export default function GameRightSection() {
     <>
       <div className='flex flex-row justify-between mb-2'>
         <div className='flex flex-row w-2/4 lg:w-2/5 ml-2 px-3 py-3 gap-4 lg:px-5 lg:gap-5 bg-ourGray/50 rounded-xl'>
-          <GameMenuBtn />
-          <GameMenuBtn />
+          <MakeRoomBtn />
+          <QuickStartGameBtn />
         </div>
         <div className='w-1/4 lg:w-1/5 lg:px-5 px-4 py-3 mr-2 bg-ourGray/50 rounded-xl'>
-          <GameMenuBtn />
+          <RefreshRoomsBtn />
         </div>
       </div>
-      <div className='grid grid-cols-2 py-4 px-5 gap-x-2 gap-y-2 md:gap-x-3 md:gap-y-4 lg:gap-x-6 lg:px-6 bg-ourGray/50 rounded-xl'>
+      <div className='grid grid-cols-2 py-4 px-5 gap-x-2 gap-y-2 md:gap-x-3 md:gap-y-6 lg:gap-x-6 lg:px-6 bg-ourGray/50 rounded-xl'>
         {duplicatedRoomList.map((info: RoomInfo | undefined, idx: number) => (
           <GameRoomItem key={idx} roomInfo={info} />
         ))}
