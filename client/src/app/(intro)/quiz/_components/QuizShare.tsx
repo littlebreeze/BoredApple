@@ -56,13 +56,13 @@ export default function QuizShare() {
         진단이 필요한 <br />
         친구에게 공유하기
       </div>
-      <div className='flex gap-2'>
-        <div className='bg-yellow-200 w-16 h-16 rounded-full'>
+      <div className='flex gap-2 '>
+        <div className='w-16 h-16 rounded-full duration-[0.2s] hover:brightness-90'>
           <button onClick={shareKakao}>
             <Image src={ShareKakao} alt='카카오 공유' />
           </button>
         </div>
-        <div className='flex bg-blue-200 w-16 h-16 rounded-full items-center justify-center'>
+        <div className='flex bg-blue-200 w-16 h-16 rounded-full items-center justify-center duration-[0.2s] hover:brightness-90'>
           <button onClick={shareLink}>
             <Image className='w-12' src={ShareLink} alt='링크 공유' />
           </button>

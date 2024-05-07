@@ -32,7 +32,6 @@ export default function Quiz() {
     if (correct) {
       setScore(currentQuiz.score);
     }
-
     setCurrentQuizIndex(currentQuizIndex + 1);
     setSelectedOption(-1);
   };
@@ -81,7 +80,9 @@ export default function Quiz() {
       {currentQuizIndex + 1 === totalQuizCount ? (
         <button
           className={`absolute bottom-2 mb-4 w-96 h-12 rounded-lg text-lg ${
-            selectedOption === -1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-ourTheme'
+            selectedOption === -1
+              ? 'bg-gray-300 cursor-not-allowed'
+              : 'bg-ourTheme duration-[0.2s] hover:bg-ourTheme/80'
           } text-white`}
           onClick={showResult}
         >
@@ -89,8 +90,8 @@ export default function Quiz() {
         </button>
       ) : (
         <button
-          className={`absolute bottom-2 mb-4 w-96 h-12 rounded-lg text-lg ${
-            selectedOption === -1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-ourBlue'
+          className={`absolute bottom-2 mb-4 w-96 h-12 rounded-lg text-lg  ${
+            selectedOption === -1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-ourBlue duration-[0.2s] hover:bg-ourBlue/80'
           } text-white`}
           onClick={selectedOption !== -1 ? showNextQuiz : undefined}
           disabled={selectedOption === -1}

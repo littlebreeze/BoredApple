@@ -86,10 +86,16 @@ export default function QuizResult() {
         </div>
       </div>
       <div className='w-96 mx-auto my-4'>
-        <button className='mt-2 w-full h-12 rounded-lg text-lg text-ourTheme bg-white ' onClick={solveQuizAgain}>
+        <button
+          className='mt-2 w-full h-12 rounded-lg text-lg text-ourTheme bg-white duration-[0.2s] hover:bg-white/50 hover:text-ourTheme/80'
+          onClick={solveQuizAgain}
+        >
           다시 테스트하기
         </button>
-        <button className='my-2 w-full h-12 rounded-lg text-lg bg-ourTheme text-white' onClick={startService}>
+        <button
+          className='my-2 w-full h-12 rounded-lg text-lg bg-ourTheme text-white duration-[0.2s] hover:bg-ourTheme/80'
+          onClick={startService}
+        >
           문해력 높이러 가기
         </button>
         <QuizShare />

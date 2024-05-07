@@ -1,5 +1,4 @@
 'use client';
-import Image from 'next/image';
 import { useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -14,16 +13,14 @@ export default function Authentication() {
     if (code) {
       postLogin(code);
     }
-  }, [code, router]);
+  }, [code]);
 
   const handleHome = () => {
     router.push('/');
-    window.location.reload();
   };
 
   const handleProfile = () => {
     router.push('/signup/nickname');
-    window.location.reload();
   };
 
   const postLogin = async (code: string | null) => {
@@ -43,7 +40,7 @@ export default function Authentication() {
       // 기존 유저인지 신규 유저인지 판단
       response.data.data.signUp ? handleProfile() : handleHome();
     } catch (error) {
-      //error
+      // console.log('error: ', error);
     }
   };
 
