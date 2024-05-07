@@ -7,16 +7,17 @@ spring:
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 #      show-sql: true
 
   profiles:
     include:
       - secret
+      - cors
 
   data:
     redis:
-      host: localhost
+      host: k10a508.p.ssafy.io
       port: 6379
 
 eureka:
