@@ -21,8 +21,8 @@ export default function Page() {
   return (
     <div className=' mx-auto max-w-[1200px] flex flex-col items-center'>
       <div className='flex flex-col items-center'>
-        <div className='font-Ansungtangmyun text-4xl my-12'>문해력 자가진단 테스트</div>
-        <Image className='w-96 mb-12' src={quiz} alt='quiz' />
+        <div className='my-12 text-4xl font-Ansungtangmyun'>문해력 자가진단 테스트</div>
+        <Image className='mb-12 w-96' src={quiz} alt='quiz' />
         <QuizStart />
         <QuizShare />
       </div>

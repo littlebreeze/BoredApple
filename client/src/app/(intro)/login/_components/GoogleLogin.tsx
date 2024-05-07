@@ -15,7 +15,7 @@ export default function GoogleLogin() {
   return (
     <>
       <div
-        className='flex items-center justify-center w-96 font-semibold bg-white shadow-md cursor-pointer shadow-zinc-400 h-14 mt-14'
+        className='flex items-center justify-center font-semibold bg-white shadow-md cursor-pointer w-96 shadow-zinc-400 h-14 mt-14'
         onClick={handleGoogleLogin}
       >
         <Image className='ml-4 max-w-4' src={googleLogo} alt='구글 로고' />

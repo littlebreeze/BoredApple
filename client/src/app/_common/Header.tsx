@@ -4,10 +4,10 @@ import StartButton from './StartButton';
 
 export default function Header() {
   return (
-    <div className='h-20 bg-ourTheme py-2'>
+    <div className='h-20 py-2 bg-ourTheme'>
       <div className='flex justify-between mx-auto max-w-[1200px]'>
-        <Link href='/home' className='flex justify-start w-36 items-center  cursor-pointer'>
-          <div className='font-Ansungtangmyun w-40 text-3xl text-white'>심심한 사과</div>
+        <Link href='/home' className='flex items-center justify-start cursor-pointer w-36'>
+          <div className='w-40 text-3xl text-white font-Ansungtangmyun'>심심한 사과</div>
         </Link>
         <div className='flex'>
           <div className='mx-2'>
