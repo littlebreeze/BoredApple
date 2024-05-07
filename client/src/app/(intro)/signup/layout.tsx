@@ -4,8 +4,8 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
-      {/* 로그인 전 레이아웃 */}
+    <div className='max-w-[800px] mx-auto'>
+      {/* 회원가입 레이아웃 */}
       {children}
     </div>
   );
