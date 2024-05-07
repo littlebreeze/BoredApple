@@ -13,14 +13,34 @@ spring:
     name: apigateway-service
   cloud:
     gateway:
-        routes:
+      routes:
           - id: user-service
             uri: lb://USER-SERVICE
             predicates:
               - Path=/user-service/**
             filters:
               - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-#              - AuthorizationHeaderFilter
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: # 허용하려는 도메인
+              - 'http://localhost:3000'
+              - 'http://localhost:8081'
+              -  'http://localhost:8084'
+              -  'http://k10a508.p.ssafy.io'
+              -  'https://k10a508.p.ssafy.io'
+            allow-credentials: true # 요청 시 인증 정보를 전송하도록 허가
+            allowedHeaders: '*' # 허용하려는 헤더
+            allowedMethods: # 허용하려는 HTTP 메서드
+              - PUT
+              - GET
+              - POST
+              - DELETE
+              - OPTIONS
+
+    #              - AuthorizationHeaderFilter
   profiles:
     include:
       - secret
