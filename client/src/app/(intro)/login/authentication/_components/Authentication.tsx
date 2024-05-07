@@ -6,18 +6,15 @@ import axios from 'axios';
 
 export default function Authentication() {
   const router = useRouter();
-
   const searchParams = useSearchParams();
-  const code = searchParams.get('code'); // 잘 찍힘
+  const code: string | null = searchParams.get('code');
+  const baseURL = `${process.env.NEXT_PUBLIC_PUBLIC_API_SERVER}/login/oauth2/code/google`;
 
-  //// 여기부터 수정 필요
-  const baseURL = `${process.env.VITE_PUBLIC_API_SERVER}/login/oauth2/code/google`;
-
-  //   useEffect(() => {
-  //     if (code) {
-  //       postLogin(code);
-  //     }
-  //   }, [code, nav]);
+  useEffect(() => {
+    if (code) {
+      postLogin(code);
+    }
+  }, [code, router]);
 
   const handleHome = () => {
     router.push('/');
@@ -25,30 +22,30 @@ export default function Authentication() {
   };
 
   const handleProfile = () => {
-    router.push('/regist');
+    router.push('/signup/nickname');
     window.location.reload();
   };
 
-  //   const postLogin = async (code) => {
-  //     const headers = {
-  //       'Content-Type': 'text/plain;charset=utf-8',
-  //     };
+  const postLogin = async (code: string | null) => {
+    const headers = {
+      'Content-Type': 'text/plain;charset=utf-8',
+    };
 
-  //     try {
-  //       const response = await axios.post(baseURL, code, {
-  //         headers: headers,
-  //       });
+    try {
+      const response = await axios.post(baseURL, code, {
+        headers: headers,
+      });
 
-  //       // 토큰 저장
-  //       localStorage.setItem('accessToken', response.data.data.accessToken);
-  //       localStorage.setItem('refreshToken', response.data.data.refreshToken);
+      // 토큰 저장
+      localStorage.setItem('accessToken', response.data.data.accessToken);
+      localStorage.setItem('refreshToken', response.data.data.refreshToken);
 
-  //       // isSigUp으로 기존/신규 여부 판단
-  //       response.data.data.signUp ? handleProfile(response.data.data) : handleHome();
-  //     } catch (error) {
-  //       //error
-  //     }
-  //   };
+      // 기존 유저인지 신규 유저인지 판단
+      response.data.data.signUp ? handleProfile() : handleHome();
+    } catch (error) {
+      //error
+    }
+  };
 
   return <></>;
 }
