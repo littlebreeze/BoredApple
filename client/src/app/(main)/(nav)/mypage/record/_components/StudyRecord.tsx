@@ -1,9 +1,10 @@
 'use client';
 import { useState } from 'react';
 import RecordDetailItem from './RecordDetailItem';
+import { useRecordStore } from '@/stores/record';
 
 export default function StudyRecord() {
-  const [month, setMonth] = useState<number>(4);
+  const { yearMonth, onChangeYearMonth } = useRecordStore();
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>
@@ -33,7 +34,7 @@ export default function StudyRecord() {
           />
         </svg>
 
-        <div className='text-[#00C27C] font-bold text-lg'>{month}월 학습</div>
+        <div className='text-[#00C27C] font-bold text-lg'>{yearMonth!.getMonth() + 1}월 학습</div>
       </div>
       <div className='grid grid-cols-2 gap-2'>
         <RecordDetailItem title={'횟수'} content={'4일'} />

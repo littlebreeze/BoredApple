@@ -1,9 +1,10 @@
 'use client';
 import { useState } from 'react';
 import RecordDetailItem from './RecordDetailItem';
+import { useRecordStore } from '@/stores/record';
 
 export default function AttendanceRecord() {
-  const [month, setMonth] = useState<number>(4);
+  const { yearMonth, onChangeYearMonth } = useRecordStore();
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>
@@ -20,7 +21,7 @@ export default function AttendanceRecord() {
             fill='#0064FF'
           />
         </svg>
-        <div className='text-ourTheme font-bold text-lg'>{month}월 출석</div>
+        <div className='text-ourTheme font-bold text-lg'>{yearMonth!.getMonth() + 1}월 출석</div>
       </div>
       <div className='grid grid-cols-2 gap-2'>
         <RecordDetailItem title={'출석일수'} content={'4일'} />

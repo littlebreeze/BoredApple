@@ -17,21 +17,15 @@ export default function CalendarComponent() {
   const { solvedCnt, setSolvedCnt } = useRecordStore();
   const { today, onChange } = useRecordStore();
 
-  const [yearMonth, setYearMonth] = useState<string>(dayjs(parseValueIntoDate(today)).format('YYYYMM'));
-  const [day, setDay] = useState<string>(dayjs(parseValueIntoDate(today)).format('DD'));
-
-  useEffect(() => {
-    setYearMonth(dayjs(parseValueIntoDate(today)).format('YYYYMM'));
-    setDay(dayjs(parseValueIntoDate(today)).format('D'));
-  }, [today]);
+  const { onChangeYearMonth } = useRecordStore();
 
   return (
     <>
       <Calendar
         onChange={onChange}
-        onActiveStartDateChange={({ action, activeStartDate, value, view }) =>
-          alert('Changed view to: ' + activeStartDate + view)
-        }
+        onActiveStartDateChange={({ action, activeStartDate, value, view }) => {
+          if (view === 'month') onChangeYearMonth(activeStartDate);
+        }}
         value={today}
         locale='ko'
         calendarType='gregory'
