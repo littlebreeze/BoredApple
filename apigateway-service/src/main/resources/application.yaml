@@ -6,9 +6,6 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://k10a508.p.ssafy.io:8083/eureka
-  instance:
-    hostname: 43.202.53.115
-
 #      http://localhost:8083/eureka
 spring:
   application:
@@ -21,10 +18,10 @@ spring:
             predicates:
               - Path=/user-service/**
             filters:
-              - RewritePath=/user-service/(?<segment>.*), /$\{segment}/
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
-      globalcors:
+      globals:
         cors-configurations:
           '[/**]':
             allowedOrigins: # 허용하려는 도메인
