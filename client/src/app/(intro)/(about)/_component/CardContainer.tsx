@@ -13,7 +13,7 @@ export default function CardContainer({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className='w-full block mt-[140px] mb-[60px]'
+      className='w-full block mt-[100px] mb-[60px]'
       style={{
         transition: 'all 1000ms linear',
         transform: `translateX(${-1 * (5 * slideIndex)}%)`,
