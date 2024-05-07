@@ -20,11 +20,12 @@ type Props = {
 
 export default function GameRoomItem({ roomInfo }: Props) {
   // const [roomId, setRoomId] = useState<number | undefined>(roomInfo?.roomId);
-  const { setIsShow } = useGameWaitStore();
+  const { setIsShow, setSelectedRoomId, setSelectedRoomTitle } = useGameWaitStore();
   const onClickRoomItem = () => {
     if (roomInfo?.isLocked) {
-      alert('잠김');
       setIsShow(true);
+      setSelectedRoomId(roomInfo.roomId);
+      setSelectedRoomTitle(roomInfo.title);
     } else location.href = `game/rooms/${roomInfo?.roomId}`;
   };
 
