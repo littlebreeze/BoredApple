@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -28,11 +29,21 @@ public class ProblemController {
     private final TopicProblemService topicProblemService;
     private final VocaService vocaService;
 
+    private final TodayLearningScheduler todayLearningScheduler;
     @GetMapping("/test")
     public ResponseEntity<SuccessResponse<?>> test(@RequestHeader(value = "Authorization", required = false) String token){
         return ResponseEntity.ok(
                 new SuccessResponse<>(HttpStatus.OK.value() ,"연결 성공"));
     }
+
+    @GetMapping("/tt")
+    public void test(){
+		try {
+			todayLearningScheduler.makeTodayLearning();
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
     //오늘의 학습
     @GetMapping("/today")
