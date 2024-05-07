@@ -1,14 +1,14 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import result_1 from '../../../../../../public/quiz-result-1.svg';
-import result_2 from '../../../../../../public/quiz-result-2.svg';
-import result_3 from '../../../../../../public/quiz-result-3.svg';
-import result_4 from '../../../../../../public/quiz-result-4.svg';
-import result_5 from '../../../../../../public/quiz-result-5.svg';
-import quizResultTitle from '../../../../../../public/quiz-result-title.svg';
+import result_1 from '@/../public/quiz/quiz-result-1.svg';
+import result_2 from '@/../public/quiz/quiz-result-2.svg';
+import result_3 from '@/../public/quiz/quiz-result-3.svg';
+import result_4 from '@/../public/quiz/quiz-result-4.svg';
+import result_5 from '@/../public/quiz/quiz-result-5.svg';
+import quizResultTitle from '@/../public/quiz/quiz-result-title.svg';
+import { quizResultData } from '@/../public/data/quizResultData';
 import QuizShare from '../../_components/QuizShare';
-import { quizResultData } from '../_data/QuizResultData';
 
 export default function QuizResult() {
   const router = useRouter();
@@ -65,7 +65,7 @@ export default function QuizResult() {
           <div className='w-40 mx-auto'>
             <Image src={resultImage} alt='퀴즈 결과' />
           </div>
-          <div className='text-lg font-semibold text-center w-72 mx-auto'>
+          <div className='text-lg font-semibold w-72 mx-auto'>
             {quizResultData[resultDataIndex].title.split('\n').map((line, index) => (
               <span key={index}>
                 {line}
@@ -86,10 +86,16 @@ export default function QuizResult() {
         </div>
       </div>
       <div className='w-96 mx-auto my-4'>
-        <button className='mt-2 w-full h-12 rounded-lg text-lg text-ourTheme bg-white ' onClick={solveQuizAgain}>
+        <button
+          className='mt-2 w-full h-12 rounded-lg text-lg text-ourTheme bg-white duration-[0.2s] hover:bg-white/50 hover:text-ourTheme/80'
+          onClick={solveQuizAgain}
+        >
           다시 테스트하기
         </button>
-        <button className='my-2 w-full h-12 rounded-lg text-lg bg-ourTheme text-white' onClick={startService}>
+        <button
+          className='my-2 w-full h-12 rounded-lg text-lg bg-ourTheme text-white duration-[0.2s] hover:bg-ourTheme/80'
+          onClick={startService}
+        >
           문해력 높이러 가기
         </button>
         <QuizShare />
