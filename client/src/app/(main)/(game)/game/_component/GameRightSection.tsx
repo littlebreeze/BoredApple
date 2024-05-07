@@ -5,6 +5,8 @@ import GameRoomItem from './GameRoomItem';
 import PagingBtn from './PagingBtn';
 import QuickStartGameBtn from './QuickStartGameBtn';
 import RefreshRoomsBtn from './RefreshRoomsBtn';
+import { useGameWaitStore } from '@/stores/game-wait';
+import InsertPasswordModal from './InsertPasswordModal';
 
 type RoomInfo = {
   roomId: number;
@@ -27,7 +29,7 @@ const roomInfo: RoomInfo[] = [
     quiz: 20,
   },
   {
-    roomId: 1,
+    roomId: 2,
     title: '문제! 풀자!',
     manager: '문해너구리',
     current: 2,
@@ -36,7 +38,7 @@ const roomInfo: RoomInfo[] = [
     quiz: 20,
   },
   {
-    roomId: 1,
+    roomId: 3,
     title: '문제! 풀자!',
     manager: '문해너구리',
     current: 2,
@@ -45,7 +47,7 @@ const roomInfo: RoomInfo[] = [
     quiz: 20,
   },
   {
-    roomId: 1,
+    roomId: 4,
     title: '문제! 풀자!',
     manager: '문해너구리',
     current: 2,
@@ -54,7 +56,7 @@ const roomInfo: RoomInfo[] = [
     quiz: 20,
   },
   {
-    roomId: 1,
+    roomId: 5,
     title: '문제! 풀자!',
     manager: '문해너구리',
     current: 2,
@@ -65,6 +67,7 @@ const roomInfo: RoomInfo[] = [
 ];
 
 export default function GameRightSection() {
+  const { isShow } = useGameWaitStore();
   const [roomList, setRoomList] = useState<RoomInfo[]>(roomInfo);
   const generateRoomItems = (list: RoomInfo[]): (RoomInfo | undefined)[] => {
     let duplicatedList: (RoomInfo | undefined)[] = [];
@@ -78,7 +81,8 @@ export default function GameRightSection() {
   // Generate room items to ensure 6 items are rendered
   const duplicatedRoomList = generateRoomItems(roomList);
   return (
-    <>
+    <div className='relative'>
+      {isShow && <InsertPasswordModal />}
       <div className='flex flex-row justify-between mb-2'>
         <div className='flex flex-row w-2/4 lg:w-2/5 ml-2 px-3 py-3 gap-4 lg:px-5 lg:gap-5 bg-ourGray/50 rounded-xl'>
           <MakeRoomBtn />
@@ -97,6 +101,6 @@ export default function GameRightSection() {
         <PagingBtn />
         <PagingBtn />
       </div>
-    </>
+    </div>
   );
 }
