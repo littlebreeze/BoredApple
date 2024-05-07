@@ -24,4 +24,3 @@ spring:
   profiles:
     include:
       - secret
-      - cors
