@@ -33,6 +33,33 @@ const roomInfo: RoomInfo[] = [
     isLocked: false,
     quiz: 20,
   },
+  {
+    roomId: 1,
+    title: '문제! 풀자!',
+    manager: '문해너구리',
+    current: 2,
+    limit: 6,
+    isLocked: false,
+    quiz: 20,
+  },
+  {
+    roomId: 1,
+    title: '문제! 풀자!',
+    manager: '문해너구리',
+    current: 2,
+    limit: 6,
+    isLocked: true,
+    quiz: 20,
+  },
+  {
+    roomId: 1,
+    title: '문제! 풀자!',
+    manager: '문해너구리',
+    current: 2,
+    limit: 6,
+    isLocked: false,
+    quiz: 20,
+  },
 ];
 
 export default function GameRightSection() {

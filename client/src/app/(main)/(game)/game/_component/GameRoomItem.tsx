@@ -26,7 +26,13 @@ export default function GameRoomItem({ roomInfo }: Props) {
       <>
         {/* 잠겨있으면 모달 띄우기...아악 */}
         <Link href={`game/rooms/${roomId}`}>
-          <div className='bg-white/80 rounded-xl h-28 cursor-pointer flex flex-row p-3 md:px-5 lg:px-5'>
+          <div
+            className={`bg-white/80 rounded-xl h-28 cursor-pointer flex flex-row p-3 md:px-5 lg:px-5 border-4 border-white duration-150 ${
+              roomInfo!.isLocked
+                ? 'hover:border-ourRed/80 hover:text-ourRed'
+                : 'hover:border-ourTheme/80 hover:text-ourTheme'
+            }`}
+          >
             <div className='w-1/5 font-semibold text-ourDarkGray text-lg mt-1'>
               {String(roomInfo!.roomId).padStart(3, '0')}
             </div>
@@ -36,7 +42,7 @@ export default function GameRoomItem({ roomInfo }: Props) {
             </div>
             <div className='w-1/5 flex flex-col justify-between items-end'>
               <div className='flex flex-row gap-1 items-baseline mt-1'>
-                <div className='font-semibold text-sm'>
+                <div className='font-semibold text-sm text-ourBlack'>
                   {roomInfo!.current}/{roomInfo!.limit}
                 </div>
                 <div>
@@ -58,8 +64,8 @@ export default function GameRoomItem({ roomInfo }: Props) {
                 </div>
               </div>
               <div className='flex flex-col items-center'>
-                <div className='text-xs'>문제수</div>
-                <div>{roomInfo!.quiz}</div>
+                <div className='text-xs text-ourBlack'>문제수</div>
+                <div className='text-ourBlack'>{roomInfo!.quiz}</div>
               </div>
             </div>
           </div>
