@@ -6,5 +6,17 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <div className='bg-yellow-400'>회원가입3 학습시간 선택</div>;
+  return (
+    <div className='bg-yellow-400'>
+      <div>으악</div>
+      {/* <button
+        className={`absolute bottom-2 mb-4 w-96 h-12 rounded-lg text-lg ${
+          selectedOption === -1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-ourTheme duration-[0.2s] hover:bg-ourTheme/80'
+        } text-white`}
+        // onClick={showResult}
+      >
+        결과 확인하기
+      </button> */}
+    </div>
+  );
 }
