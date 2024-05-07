@@ -35,6 +35,10 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0'
+
+
 
 	// jwt 관련 라이브러리// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
