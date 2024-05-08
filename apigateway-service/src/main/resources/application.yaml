@@ -39,6 +39,7 @@ spring:
               - 'http://localhost:8081'
               -  'http://localhost:8084'
               -  'http://k10a508.p.ssafy.io'
+              - 'http://k10a508.p.ssafy.io:3000'
               -  'https://k10a508.p.ssafy.io'
             allow-credentials: true # 요청 시 인증 정보를 전송하도록 허가
             allowedHeaders: '*' # 허용하려는 헤더
