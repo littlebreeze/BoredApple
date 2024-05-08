@@ -65,41 +65,21 @@ export default function Interest() {
         })
         .filter((value) => value !== null);
 
-      console.log(selectedFieldsArray); // [1, 2]
-      test2();
-      router.push('/signup/learning-time');
+      const data = selectedFieldsArray; // [1, 2]
+      createInterest(data);
     }
   };
 
-  const test2 = async () => {
+  const createInterest = async (data: any) => {
     try {
-      const response = await instance.post(`category`, {
-        category: [1, 2],
+      await instance.post(`user-service/category`, {
+        category: data,
       });
+      router.push('/signup/learning-time');
     } catch (error) {
       // error
     }
   };
-
-  // const test2 = async () => {
-  //   try {
-  //     const config = {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-  //       },
-  //     };
-
-  //     await axios.post(
-  //       `${process.env.NEXT_PUBLIC_API_SERVER}/category`,
-  //       {
-  //         preferCategories: [1, 2],
-  //       },
-  //       config
-  //     );
-  //   } catch (error) {
-  //     // error
-  //   }
-  // };
 
   return (
     <>
