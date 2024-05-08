@@ -27,6 +27,3 @@ eureka:
     service-url:
       defaultZone: http://k10a508.p.ssafy.io:8083/eureka
 #      http://localhost:8083/eureka
-
-  instance:
-    hostname: 43.202.53.115
