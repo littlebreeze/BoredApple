@@ -9,6 +9,5 @@ eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
-
-
+    registered-replicas: http://k10a508.p.ssafy.io:8761/eureka/
 
