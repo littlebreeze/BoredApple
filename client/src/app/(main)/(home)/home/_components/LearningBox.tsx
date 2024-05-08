@@ -1,52 +1,47 @@
 'use client';
 import { useEffect } from 'react';
+import LearningItem1 from './LearningItem1';
 
-const data = {
-  status: 200,
-  data: [
-    {
-      type: '주제맞추기',
-      category: '인문',
-      solved: false,
-    },
-    {
-      type: '정독훈련',
-      category: '과학',
-      solved: false,
-    },
-    {
-      type: '어휘',
-      category: '기술',
-      solved: true,
-    },
-    {
-      type: '문장삽입',
-      category: '인문',
-      solved: true,
-    },
-    {
-      type: '순서맞추기',
-      category: '인문',
-      solved: true,
-    },
-  ],
-};
-
-const getData = () => {
-  return data;
-};
-
+// 주제맞추기 1
+// 정독훈련 2
+// 어휘 3
+// 문장삽입 4
+// 순서맞추기 5
 export default function LearningBox() {
+  const data = {
+    status: 200,
+    data: [
+      {
+        type: '주제맞추기',
+        solved: false,
+        level: 1,
+      },
+      {
+        type: '정독훈련',
+        solved: false,
+        level: 3,
+      },
+      {
+        type: '순서맞추기',
+        solved: true,
+        level: 5,
+      },
+    ],
+  };
+
+  const getData = () => {
+    return data;
+  };
+
   useEffect(() => {
     const response = getData();
-    console.log('안녕', response);
   }, []);
 
   return (
     <div className='flex h-full gap-4'>
-      <div className='flex-1 bg-red-200 rounded-2xl'>으</div>
-      <div className='flex-1 bg-slate-200 rounded-2xl'>악</div>
-      <div className='flex-1 bg-green-200 rounded-2xl'>새</div>
+      <LearningItem1 />
+      <LearningItem1 />
+      <LearningItem1 />
     </div>
   );
 }

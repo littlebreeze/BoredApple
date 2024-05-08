@@ -6,12 +6,13 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <div className='relative h-screen'>
       <Image
         className='absolute object-cover h-screen top-0 left-0'
-        src='/game-background.svg'
+        src='/game-bg-2.svg'
         loading='eager'
-        layout='fill'
+        priority
+        fill
         alt='게임배경'
       />
       <div className='relative z-10'>
@@ -29,6 +30,6 @@ export default function Layout({
           {children}
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,8 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState, ChangeEvent } from 'react';
-import axios from 'axios';
-import { config } from 'process';
+import instance from '@/utils/interceptor';
 
 export default function Nickname() {
   const router = useRouter();
@@ -10,21 +9,11 @@ export default function Nickname() {
   const [nickname, setNickname] = useState('');
   const [specialCharacter, setSpecialCharacter] = useState(false);
 
-  const test1 = async () => {
+  const createNickname = async () => {
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      };
-
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_SERVER}/nickname`,
-        {
-          nickname: '사용자 설정 닉네임',
-        },
-        config
-      );
+      await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/nickname`, {
+        nickname: nickname,
+      });
     } catch (error) {
       // error
     }
@@ -32,8 +21,7 @@ export default function Nickname() {
 
   const handleClick = () => {
     if (valid) {
-      // 회원가입 처리한 뒤 완료되면 페이지 이동
-      test1();
+      createNickname();
       router.push('/signup/interest');
     }
   };
