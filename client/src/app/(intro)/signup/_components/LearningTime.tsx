@@ -1,16 +1,53 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Swal from 'sweetalert2';
 
 export default function LearningTime() {
   const router = useRouter();
   const [valid, setValid] = useState(true);
-  const [AM, setAM] = useState(true);
 
-  const handleAMClick = () => {
-    setAM(!AM);
+  const [selectedHour, setSelectedHour] = useState<number>(0);
+  const [selectedMinute, setSelectedMinute] = useState<number>(0);
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minuteRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    handleHourClick(12);
+  }, []);
+
+  // 이 두 변수 갖다 쓰고 이 useEffect는 지워버리세용%%%%%%%%%%%%%%%%%%%%%%%%%
+  useEffect(() => {
+    console.log(selectedHour, selectedMinute);
+  }, [selectedHour, selectedMinute]);
+
+  // 시간 목록 생성
+  const hours = Array.from({ length: 24 }, (_, index) => index);
+  // 분 목록 생성 (10분 단위)
+  const minutes = Array.from({ length: 6 }, (_, index) => index * 10);
+
+  // 시간 선택 시 스크롤 이동
+  const handleHourClick = (hour: number) => {
+    setSelectedHour(hour);
+    const hourElement = hourRef.current?.querySelector(`#hour-${hour}`);
+    hourElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
+
+  // 분 선택 시 스크롤 이동
+  const handleMinuteClick = (minute: number) => {
+    setSelectedMinute(minute);
+    const minuteElement = minuteRef.current?.querySelector(`#minute-${minute}`);
+    minuteElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  // 빈 div박스 생성 함수
+  const renderEmptyDivs = () => (
+    <>
+      <div className='py-4 h-[42px]'></div>
+      <div className='py-4 h-[42px]'></div>
+      <div className='py-4 h-[42px]'></div>
+    </>
+  );
 
   const handleNextClick = () => {
     if (valid) {
@@ -26,36 +63,57 @@ export default function LearningTime() {
 
   return (
     <>
-      {/* 오전/오후 선택 */}
-      <div className='flex gap-4 mx-auto w-80'>
+      <div className='relative flex w-80 h-80  justify-between'>
+        {/* 시간 선택 */}
         <div
-          className={`flex-1 p-3 text-center cursor-pointer ${AM ? 'bg-black text-white' : 'bg-white text-black border-2 border-gray-200'}  rounded-xl`}
-          onClick={handleAMClick}
+          className='absolute top-[130px] w-80 h-[60px] flex justify-center items-center text-5xl'
+          style={{ pointerEvents: 'none' }}
         >
-          오전
+          :
         </div>
         <div
-          className={`flex-1 p-3 text-center ${!AM ? 'bg-black text-white' : 'bg-white text-black border-2 border-gray-200'} cursor-pointer rounded-xl`}
-          onClick={handleAMClick}
+          ref={hourRef}
+          className='w-5/12 h-80 overflow-y-auto bg-white scrollbar-hide rounded-3xl'
         >
-          오후
+          {renderEmptyDivs()}
+          {hours.map((hour) => (
+            <div
+              key={hour}
+              id={`hour-${hour}`}
+              className={
+                selectedHour === hour
+                  ? 'bg-ourBlue text-white font-bold py-4 text-center cursor-pointer text-2xl'
+                  : 'text-black py-4 text-center cursor-pointer text-lg'
+              }
+              onClick={() => handleHourClick(hour)}
+            >
+              {hour.toString().padStart(2, '0')}
+            </div>
+          ))}
+          {renderEmptyDivs()}
         </div>
-      </div>
-      <div className='py-2'></div>
 
-      {/* 시간 선택 */}
-      <div className='flex items-center justify-center bg-red-200 w-80'>
-        <div className='flex-1'>
-          <div className='flex'>
-            <div>1</div>
-            <div>시</div>
-          </div>
-        </div>
-        <div className='flex-1'>
-          <div className='flex'>
-            <div>15</div>
-            <div>분</div>
-          </div>
+        {/* 분 선택 */}
+        <div
+          ref={minuteRef}
+          className='w-5/12 h-80 overflow-y-auto bg-white scrollbar-hide rounded-3xl'
+        >
+          {renderEmptyDivs()}
+          {minutes.map((minute) => (
+            <div
+              key={minute}
+              id={`minute-${minute}`}
+              className={
+                selectedMinute === minute
+                  ? 'bg-ourBlue text-white font-bold py-4 text-center cursor-pointer text-2xl'
+                  : 'text-black py-4 text-center cursor-pointer text-lg'
+              }
+              onClick={() => handleMinuteClick(minute)}
+            >
+              {minute.toString().padStart(2, '0')}
+            </div>
+          ))}
+          {renderEmptyDivs()}
         </div>
       </div>
 
