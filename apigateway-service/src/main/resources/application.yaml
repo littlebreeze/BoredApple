@@ -31,7 +31,7 @@ spring:
               - RewritePath=/game-service/(?<segment>.*), /$\{segment}
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
-      global-cors:
+      globals:
         cors-configurations:
           '[/**]':
             allowedOrigins: # 허용하려는 도메인
