@@ -3,6 +3,7 @@ import { useRecordStore } from '@/stores/record';
 import StudyRecordItem from './StudyRecordItem';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; //한국어
+import axios from 'axios';
 
 type QuizType = { problemType: string; isCorrect: boolean };
 
@@ -13,12 +14,26 @@ const quizType: QuizType[] = [
   { problemType: '문장 순서 배열', isCorrect: true },
   { problemType: '어휘 퀴즈', isCorrect: false },
 ];
+
+const getDailyData = async (today: Date | null) => {
+  const response = await axios.post<{ data: number[] }>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/daystudy`, {
+    date: today,
+  });
+  console.log(response.data);
+};
+
 export default function RecordList() {
   const { parseValueIntoDate } = useRecordStore();
   const [records, setRecords] = useState<QuizType[] | null>(null);
   const { today } = useRecordStore();
   useEffect(() => {
-    setRecords(quizType);
+    // 요청 보내기
+    console.log('해당 일 학습 기록 요청 보내라');
+    getDailyData(parseValueIntoDate(today));
+    const num: number = (parseValueIntoDate(today).getDate() % 3) + 1;
+    let dupl: QuizType[] | null = quizType.slice(0, num);
+    if (num - 1 === 0) dupl = null;
+    setRecords(dupl);
   }, [today]);
   return (
     <>

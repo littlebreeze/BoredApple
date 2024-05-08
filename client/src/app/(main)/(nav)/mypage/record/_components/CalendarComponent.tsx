@@ -7,13 +7,25 @@ import './Calendar.css';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; //한국어
 import { useRecordStore } from '@/stores/record';
+import axios from 'axios';
+
+const getCalendarData = async (yearMonth: Date | null) => {
+  const response = await axios.post<{ data: number[] }>(`${process.env.NEXT_PUBLIC_API_SERVER}/calendar`, {
+    date: yearMonth,
+  });
+  console.log(response.data);
+};
 
 export default function CalendarComponent() {
-  const { parseValueIntoDate } = useRecordStore();
   const { solvedCnt, setSolvedCnt } = useRecordStore();
   const { today, onChange } = useRecordStore();
 
-  const { onChangeYearMonth } = useRecordStore();
+  const { yearMonth, onChangeYearMonth } = useRecordStore();
+
+  useEffect(() => {
+    console.log('월 바뀜 캘린더 요청 보내라');
+    getCalendarData(yearMonth);
+  }, [yearMonth]);
 
   return (
     <>

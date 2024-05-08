@@ -1,6 +1,18 @@
+'use client';
+import { useEffect } from 'react';
 import RecordDetailItem from './RecordDetailItem';
+import axios from 'axios';
 
+const getDailyData = async () => {
+  const response = await axios.get<{ data: number[] }>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/record`);
+  console.log(response.data);
+};
 export default function GameRecord() {
+  // 마운트 되었을 때 요청 보내기
+  useEffect(() => {
+    console.log('게임 기록 요청 보내라');
+    getDailyData();
+  }, []);
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>

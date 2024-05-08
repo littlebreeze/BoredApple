@@ -1,10 +1,26 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RecordDetailItem from './RecordDetailItem';
 import { useRecordStore } from '@/stores/record';
+import axios from 'axios';
 
+const getStudyData = async (yearMonth: Date | null) => {
+  const response = await axios.post<{ data: number[] }>(
+    `${process.env.NEXT_PUBLIC_API_SERVER}/use-service/monthstudy`,
+    {
+      date: yearMonth,
+    }
+  );
+  console.log(response.data);
+};
 export default function StudyRecord() {
+  // 월 바뀔 때 요청 보내기
   const { yearMonth } = useRecordStore();
+
+  useEffect(() => {
+    console.log('월 바뀜 학습 요청 보내라');
+    getStudyData(yearMonth);
+  }, [yearMonth]);
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>
