@@ -15,12 +15,16 @@ export default function Authentication() {
     }
   }, [code]);
 
-  const handleHome = () => {
-    router.push('/');
-  };
-
-  const handleProfile = () => {
-    router.push('/signup/nickname');
+  const handleRouter = (props: string | number) => {
+    if (props == 1) {
+      router.push('/signup/nickname');
+    } else if (props == 2) {
+      router.push('/signup/interest');
+    } else if (props == 3) {
+      router.push('/signup/learning-time');
+    } else {
+      router.push('/');
+    }
   };
 
   const postLogin = async (code: string | null) => {
@@ -37,8 +41,8 @@ export default function Authentication() {
       localStorage.setItem('accessToken', response.data.data.accessToken);
       localStorage.setItem('refreshToken', response.data.data.refreshToken);
 
-      // 기존 유저인지 신규 유저인지 판단
-      response.data.data.signUp ? handleProfile() : handleHome();
+      // 기존 유저인지 신규 유저인지 판단하여 라우팅 처리
+      handleRouter(response.data.data.signUpProcess);
     } catch (error) {
       // console.log('error: ', error);
     }
