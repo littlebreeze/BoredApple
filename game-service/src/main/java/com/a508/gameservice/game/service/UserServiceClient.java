@@ -17,4 +17,7 @@ public interface UserServiceClient {
 
     @PostMapping("/nicknames")
     public UserListRes getNicknameByUserId(@RequestBody UserListReq userListReq);
+
+    @GetMapping("/nicknames")
+    public String getNicknameByUserId(@RequestParam("userId") Integer userId);
 }
