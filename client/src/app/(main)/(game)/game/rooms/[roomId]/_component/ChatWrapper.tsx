@@ -18,18 +18,19 @@ export default function ChatWrapper() {
 
   return (
     <div className='h-full p-3 bg-ourLightGray rounded-xl flex flex-col justify-between'>
-      <div className='bg-red-300 h-44 flex flex-col overflow-y-scroll scrollbar-hide'>
+      <div className='h-44 flex flex-col overflow-y-scroll scrollbar-hide'>
         {messages.map((m, idx) => (
-          <div key={idx}>
-            {m.nickname} : {m.content}
+          <div key={idx} className='p-1 flex gap-3'>
+            <div className='text-center w-2/12'>{m.nickname}</div>
+            <div className='pl-2 w-10/12 appearance-none rounded leading-tight focus:outline-none'>{m.content}</div>
           </div>
         ))}
         <div ref={messageEndRef}></div>
       </div>
-      <div className='bg-blue-200 p-2 flex gap-5'>
+      <div className='p-2 flex gap-3'>
         <label className='text-center w-2/12'>닉네임닉</label>
         <input
-          className='w-10/12 appearance-none rounded leading-tight focus:outline-none'
+          className='px-2 w-10/12 appearance-none rounded leading-tight focus:outline-none'
           type='text'
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
