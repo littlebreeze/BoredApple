@@ -12,9 +12,10 @@ public class RoomPlayerRepository {
         this.redisTemplate = redisTemplate;
     }
 
-    public void addPlayerToRoom(String roomId, Integer userId) {
+    public void addPlayerToRoom(String roomId, int userId) {
         String key = ROOM_PLAYER_HASH_KEY + roomId;
-        redisTemplate.opsForHash().put(key, userId.toString(), userId);
+        String userIdStr = String.valueOf(userId);
+        redisTemplate.opsForHash().put(key, userIdStr, userIdStr);
     }
 
     public Long playerCnt(String roomId) {
