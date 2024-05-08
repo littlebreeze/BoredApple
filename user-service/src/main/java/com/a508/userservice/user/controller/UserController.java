@@ -2,6 +2,7 @@ package com.a508.userservice.user.controller;
 
 import com.a508.userservice.common.jwt.TokenProvider;
 import com.a508.userservice.common.response.SuccessResponse;
+import com.a508.userservice.user.data.StudyTimeReq;
 import com.a508.userservice.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +36,9 @@ public class UserController {
     }
 
     @PostMapping("/setstudytime")
-    public SuccessResponse<Integer> settingStudyTime(HttpServletRequest request, @RequestBody int ho, @RequestBody int mi) {
+    public SuccessResponse<Integer> settingStudyTime(HttpServletRequest request, @RequestBody StudyTimeReq studyTime) {
         int userId = tokenProvider.getUserIdByToken(request);
-        userService.updateStudyTime(userId, ho, mi);
+        userService.updateStudyTime(userId, studyTime.getHour(), studyTime.getMinute());
         return new SuccessResponse<>(HttpStatus.SC_OK);
     }
 }
