@@ -11,7 +11,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -102,12 +101,12 @@ public class TokenProvider {
         return googleId;
     }
 
-    //토큰에서 memberId 꺼내기
-    public Integer getUserIdByToken(String token) {
-        //복호화를 통해 googleID로 memberId꺼내기
+    //토큰에서 user 꺼내기
+    public User getUserByToken(String token) {
+        //복호화를 통해 googleID로 user 꺼내기
         Claims claims = parseClaims(token);
         String googleId = claims.getSubject();
-        return userRepository.findByGoogleId(googleId).getId();
+        return userRepository.findByGoogleId(googleId);
     }
 
 }
