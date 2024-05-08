@@ -25,7 +25,7 @@ export default function QuizShare() {
   }, []);
 
   const shareLink = () => {
-    const link = `${process.env.NEXT_PUBLIC_PUBLIC_SERVICE_URL}/quiz`;
+    const link = `${process.env.NEXT_PUBLIC_SERVICE_URL}/quiz`;
     navigator.clipboard.writeText(link);
     Swal.fire({
       title: '링크가 복사되었습니다.',
@@ -35,7 +35,7 @@ export default function QuizShare() {
   };
 
   const shareKakao = () => {
-    const link = `${process.env.NEXT_PUBLIC_PUBLIC_SERVICE_URL}/quiz`;
+    const link = `${process.env.NEXT_PUBLIC_SERVICE_URL}/quiz`;
     window.Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
