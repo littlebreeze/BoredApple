@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import Swal from 'sweetalert2';
+import instance from '@/utils/interceptor';
 
 export default function LearningTime() {
   const router = useRouter();
@@ -49,8 +50,12 @@ export default function LearningTime() {
     </>
   );
 
-  const handleNextClick = () => {
+  const handleNextClick = async () => {
     if (valid) {
+      await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/studytime`, {
+        hour: selectedHour,
+        minute: selectedMinute,
+      });
       // 회원가입 처리한 뒤 완료되면 페이지 이동
       Swal.fire({
         title: '가입을 환영합니다.',
@@ -71,10 +76,7 @@ export default function LearningTime() {
         >
           :
         </div>
-        <div
-          ref={hourRef}
-          className='w-5/12 h-80 overflow-y-auto bg-white scrollbar-hide rounded-3xl'
-        >
+        <div ref={hourRef} className='w-5/12 h-80 overflow-y-auto bg-white scrollbar-hide rounded-3xl'>
           {renderEmptyDivs()}
           {hours.map((hour) => (
             <div
@@ -94,10 +96,7 @@ export default function LearningTime() {
         </div>
 
         {/* 분 선택 */}
-        <div
-          ref={minuteRef}
-          className='w-5/12 h-80 overflow-y-auto bg-white scrollbar-hide rounded-3xl'
-        >
+        <div ref={minuteRef} className='w-5/12 h-80 overflow-y-auto bg-white scrollbar-hide rounded-3xl'>
           {renderEmptyDivs()}
           {minutes.map((minute) => (
             <div
@@ -118,6 +117,7 @@ export default function LearningTime() {
       </div>
 
       {/* 다음 버튼 */}
+      <div></div>
       <button
         className={`absolute bottom-2 mb-4 w-96 h-12 rounded-lg text-lg  ${
           valid ? 'bg-ourBlue duration-[0.2s] hover:bg-ourTheme/80' : 'bg-gray-300 cursor-not-allowed'
