@@ -7,8 +7,8 @@ eureka:
     service-url:
       defaultZone: http://k10a508.p.ssafy.io:8083/eureka
 
-#  instance:
-#    hostname: 43.202.53.115
+  instance:
+    hostname: 43.202.53.115
 
 #      http://localhost:8083/eureka
 spring:
