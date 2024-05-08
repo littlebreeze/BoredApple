@@ -36,9 +36,9 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public void updateStudyTime(int userId, int ho, int mi) {
+	public void updateStudyTime(int userId, int hour, int minute) {
 		User user = getUser(userId);
-		user.setStudyTime(LocalTime.of(ho,mi));
+		user.setStudyTime(LocalTime.of(hour,minute));
 		user.setSignUpProcess(4);
 		userRepository.save(user);
 	}
