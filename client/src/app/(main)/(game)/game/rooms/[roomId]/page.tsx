@@ -51,7 +51,7 @@ export default function Page() {
       </div>
       <div className='w-2/3 h-60'>
         {/* 채팅창 */}
-        <div className='h-full p-3 bg-ourLightGray rounded-xl'></div>
+        <ChatWrapper />
       </div>
     </div>
   );
