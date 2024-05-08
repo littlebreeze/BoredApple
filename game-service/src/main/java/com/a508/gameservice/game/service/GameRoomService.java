@@ -36,18 +36,26 @@ public class GameRoomService {
      * 방 전체 목록 페이지별 반환
      */
     public List<GameRoomRes> getRooms(int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum - 1, 2, Sort.by("id").ascending());
+        Pageable pageable = PageRequest.of(pageNum - 1, 6, Sort.by("id").ascending());
         Page<GameRoom> gameRoomList = gameRoomRepository.findAll(pageable);
         Boolean isEndPage = false;
         if (pageNum == gameRoomList.getTotalPages()) isEndPage = true;
         List<GameRoomRes> gameRoomResList = new ArrayList<>();
-        for (GameRoom gameRoom : gameRoomList.getContent()) {
+        List<Integer> userIdList = new ArrayList<>();
+        for (int i = 0; i < gameRoomList.getContent().size(); i++) {
+            userIdList.add(gameRoomList.getContent().get(i).getRoomCreatorId());
+        }
+        UserListRes userListRes = userServiceClient.getNicknameByUserId(UserListReq.builder().idList(userIdList).build());
+        List<String> nicknameList=userListRes.getNicknameList();
+        for (int i = 0; i < gameRoomList.getContent().size(); i++) {
+            GameRoom gameRoom= gameRoomList.getContent().get(i);
             GameRoomRes gameRoomRes = GameRoomRes.builder()
                     .id(gameRoom.getId())
                     .roomName(gameRoom.getRoomName())
                     .isSecret(gameRoom.getIsSecret())
                     .roomPassword(gameRoom.getRoomPassword())
-//                    .roomCreatorName()
+                    .roomCreatorName(nicknameList.get(i))
+                    .nowNum(roomPlayerRepository.playerCnt(gameRoom.getId()))
                     .maxNum(gameRoom.getMaxNum())
                     .quizCount(gameRoom.getQuizCount())
                     .isStarted(gameRoom.getIsStarted())
@@ -62,7 +70,7 @@ public class GameRoomService {
     /**
      * 방 생성
      */
-    public synchronized Integer createRoom(HttpServletRequest request, GameRoomReq gameRoomReq) {
+    public synchronized NewRoomRes createRoom(HttpServletRequest request, GameRoomReq gameRoomReq) {
 
         int userId = getUserId(request);
         int roomId = getMinRoomId();
@@ -80,7 +88,14 @@ public class GameRoomService {
         //방 입장
         roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId);
 
-        return roomId;
+        return NewRoomRes.builder()
+                .myNickname(userServiceClient.getNicknameByUserId(userId))
+                .myUserId(userId)
+                .roomId(roomId)
+                .maxNum(gameRoomReq.getMaxNum())
+                .quizCount(gameRoomReq.getQuizCount())
+                .creatorId(userId)
+                .build();
     }
 
     /**
@@ -99,11 +114,44 @@ public class GameRoomService {
      * 방에 회원넣기
      */
     public synchronized void createRoomPlayer(HttpServletRequest request, Integer roomId) {
-        if (roomPlayerRepository.playerCnt(String.valueOf(roomId)) < 6) {
-            roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), 1);
+        int userId = getUserId(request);
+        if (roomPlayerRepository.playerCnt(String.valueOf(roomId)) < gameRoomRepository.findById(String.valueOf(roomId)).orElseThrow().getMaxNum()) {
+            roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId);
         } else {
-            new CustomException(ErrorCode.PLAYER_IS_FULL_ERROR);
+            throw new CustomException(ErrorCode.PLAYER_IS_FULL_ERROR);
         }
+    }
+
+    public JoinRoomRes getRoomInfo(HttpServletRequest request, Integer roomId) {
+        int userId = getUserId(request);
+        GameRoom gameRoom = gameRoomRepository.findById(String.valueOf(roomId)).orElseThrow();
+        List<Integer> userIdList = new ArrayList<>();
+        for (Object userIdStr : roomPlayerRepository.getPlayersInRoom(String.valueOf(roomId)).keySet()) {
+            userIdList.add(Integer.parseInt(String.valueOf(userIdStr)));
+        }
+        List<String> nicknameList = userServiceClient.getNicknameByUserId(UserListReq.builder()
+                .idList(userIdList)
+                .build()
+        ).getNicknameList();
+        String myNickname = "";
+        List<RoomPlayerRes> roomPlayerResList = new ArrayList<>();
+        for (int i = 0; i < userIdList.size(); i++) {
+            int id = userIdList.get(i);
+            if (id == userId) myNickname = nicknameList.get(i);
+            else roomPlayerResList.add(
+                    RoomPlayerRes.builder()
+                            .userId(id)
+                            .nickname(nicknameList.get(i)).build());
+        }
+        return JoinRoomRes.builder()
+                .roomId(roomId)
+                .myUserId(userId)
+                .myNickname(myNickname)
+                .quizCount(gameRoom.getQuizCount())
+                .maxNum(gameRoom.getMaxNum())
+                .creatorId(gameRoom.getRoomCreatorId())
+                .roomPlayerRes(roomPlayerResList)
+                .build();
     }
 
     public RankingRes getRankings(HttpServletRequest request) {
@@ -138,7 +186,7 @@ public class GameRoomService {
             rankingList.add(TopRankingRes.builder()
                     .ranking(i + 1)
                     .rating(battleRecord.getRating())
-                    .nickName(nicknameList.get(i+1))
+                    .nickname(nicknameList.get(i + 1))
                     .build());
         }
         Integer myRanking = -1;
@@ -148,7 +196,7 @@ public class GameRoomService {
             }
         }
         return RankingRes.builder()
-                .myNickName(nicknameList.get(0))
+                .myNickname(nicknameList.get(0))
                 .myRanking(myRanking)
                 .myRating(myBattleRecord.getRating())
                 .rankingList(rankingList)
