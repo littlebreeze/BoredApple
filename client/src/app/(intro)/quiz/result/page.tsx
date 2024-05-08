@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div className=' max-w-[800px]  mx-auto flex items-center justify-center '>
+    <div className='max-w-[800px] mx-auto flex items-center justify-center '>
       <QuizResult />
     </div>
   );
