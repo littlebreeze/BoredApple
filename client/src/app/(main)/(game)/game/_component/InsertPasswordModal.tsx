@@ -9,7 +9,7 @@ export default function InsertPasswordModal() {
   return (
     <>
       <div className='rounded-md absolute top-0 left-0 w-full h-full bg-ourBlack/30 flex justify-center items-center'>
-        <div className='relative gap-12 w-4/5 md:w-1/2 lg:w-1/2 h-1/2 bg-ourLightGray rounded-xl flex flex-col justify-center items-center'>
+        <div className='relative gap-7 w-1/2 md:w-3/5 lg:w-2/5 h-2/5 bg-ourLightGray rounded-xl flex flex-col justify-center items-center'>
           <div className='absolute top-3 right-3 cursor-pointer' onClick={() => setIsShow(false)}>
             <svg width='25' height='25' viewBox='0 0 300 300' fill='none' xmlns='http://www.w3.org/2000/svg'>
               <path
