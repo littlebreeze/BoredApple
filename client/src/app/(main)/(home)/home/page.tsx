@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import LearningBox from './_components/LearningBox';
+import GameBox from './_components/GameBox';
 
 export const metadata: Metadata = {
   title: '심심한 사과, 당신의 문해력 지키미',
@@ -7,8 +9,19 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div>
-      <div className='bg-yellow-400'>홈 페이지</div>
+    <div className='min-w-[1000px]'>
+      <div className=' h-screen '>
+        <div className='py-2'></div>
+        <div className=' text-ourDarkGray pb-1'>오늘의 학습</div>
+        <div className='bg-blue-200 h-96'>
+          <LearningBox />
+        </div>
+        <div className='py-2'></div>
+        <div className=' text-ourDarkGray pb-1'>실시간 어휘 퀴즈 대결</div>
+        <div className='bg-blue-200 h-52'>
+          <GameBox />
+        </div>
+      </div>
     </div>
   );
 }
