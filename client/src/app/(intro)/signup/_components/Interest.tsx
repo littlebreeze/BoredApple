@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import checked from '@/../public/signup/checked.svg';
 import unchecked from '@/../public/signup/unchecked.svg';
+import axios from 'axios';
+import instance from '@/utils/interceptor';
 
 export default function Interest() {
   const router = useRouter();
@@ -64,9 +66,40 @@ export default function Interest() {
         .filter((value) => value !== null);
 
       console.log(selectedFieldsArray); // [1, 2]
+      test2();
       router.push('/signup/learning-time');
     }
   };
+
+  const test2 = async () => {
+    try {
+      const response = await instance.post(`category`, {
+        category: [1, 2],
+      });
+    } catch (error) {
+      // error
+    }
+  };
+
+  // const test2 = async () => {
+  //   try {
+  //     const config = {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+  //       },
+  //     };
+
+  //     await axios.post(
+  //       `${process.env.NEXT_PUBLIC_API_SERVER}/category`,
+  //       {
+  //         preferCategories: [1, 2],
+  //       },
+  //       config
+  //     );
+  //   } catch (error) {
+  //     // error
+  //   }
+  // };
 
   return (
     <>
