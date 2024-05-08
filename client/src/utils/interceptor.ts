@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // axios instance
 const instance = axios.create({
-  baseURL: process.env.LOCAL_PUBLIC_API_SERVER,
+  baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   headers: {
     'Access-Control-Allow-Origin': 'https://j10a601.p.ssafy.io/8081', // CORS 정책을 허용할 오리진 설정
     'Access-Control-Allow-Credentials': 'true', // CORS 요청에서 자격 증명 정보를 허용
@@ -13,7 +13,7 @@ const instance = axios.create({
 
 // refresh axios instance
 const refreshInstance = axios.create({
-  baseURL: process.env.LOCAL_PUBLIC_API_SERVER,
+  baseURL: process.env.NEXT_PUBLIC_API_SERVER,
 });
 
 // request refresh token (in request body)
