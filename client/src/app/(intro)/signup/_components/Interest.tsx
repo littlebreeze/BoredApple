@@ -72,8 +72,6 @@ export default function Interest() {
 
   const createInterest = async (data: any) => {
     try {
-      console.log(data);
-
       await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/category`, {
         category1: data[0],
         category2: data[1],
