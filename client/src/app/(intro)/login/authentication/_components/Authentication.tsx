@@ -23,7 +23,7 @@ export default function Authentication() {
     } else if (props == 3) {
       router.push('/signup/learning-time');
     } else {
-      router.push('/');
+      router.push('/home');
     }
   };
 
@@ -42,6 +42,7 @@ export default function Authentication() {
       localStorage.setItem('refreshToken', response.data.data.refreshToken);
 
       // 기존 유저인지 신규 유저인지 판단하여 라우팅 처리
+
       handleRouter(response.data.data.signUpProcess);
     } catch (error) {
       // console.log('error: ', error);
