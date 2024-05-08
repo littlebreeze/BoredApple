@@ -4,13 +4,18 @@ import RecordDetailItem from './RecordDetailItem';
 import { useRecordStore } from '@/stores/record';
 import axios from 'axios';
 
+type SResponse = {
+  data: {
+    daysCompleteLearning: number;
+    mostLearnedStudy: string;
+    mostReadCategory: string;
+  };
+};
+
 const getStudyData = async (yearMonth: Date | null) => {
-  const response = await axios.post<{ data: number[] }>(
-    `${process.env.NEXT_PUBLIC_API_SERVER}/use-service/monthstudy`,
-    {
-      date: yearMonth,
-    }
-  );
+  const response = await axios.post<SResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/use-service/monthstudy`, {
+    date: yearMonth,
+  });
   console.log(response.data);
 };
 export default function StudyRecord() {

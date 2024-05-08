@@ -3,8 +3,17 @@ import { useEffect } from 'react';
 import RecordDetailItem from './RecordDetailItem';
 import axios from 'axios';
 
+type GResponse = {
+  data: {
+    numberOfWin: number;
+    numberOfGame: number;
+    rating: number;
+    rank: number;
+  };
+};
+
 const getDailyData = async () => {
-  const response = await axios.get<{ data: number[] }>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/record`);
+  const response = await axios.get<GResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/record`);
   console.log(response.data);
 };
 export default function GameRecord() {

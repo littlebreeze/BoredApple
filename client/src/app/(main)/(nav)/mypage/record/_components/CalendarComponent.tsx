@@ -9,8 +9,12 @@ import 'dayjs/locale/ko'; //한국어
 import { useRecordStore } from '@/stores/record';
 import axios from 'axios';
 
+type CResponse = {
+  data: number[];
+};
+
 const getCalendarData = async (yearMonth: Date | null) => {
-  const response = await axios.post<{ data: number[] }>(`${process.env.NEXT_PUBLIC_API_SERVER}/calendar`, {
+  const response = await axios.post<CResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/calendar`, {
     date: yearMonth,
   });
   console.log(response.data);
