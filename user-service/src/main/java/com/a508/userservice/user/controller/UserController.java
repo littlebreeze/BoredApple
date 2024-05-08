@@ -1,9 +1,9 @@
 package com.a508.userservice.user.controller;
 
 import com.a508.userservice.common.jwt.TokenProvider;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final TokenProvider tokenProvider;
-    @GetMapping("userId")
-    public Integer getUserIdByToken(HttpServletRequest request) {
-        return tokenProvider.getMemberIdByToken(request);
+
+    @GetMapping("/userId")
+    public Integer getUserIdByToken(@RequestParam String token) {
+        return tokenProvider.getUserByToken(token).getId();
     }
+
+
 }
