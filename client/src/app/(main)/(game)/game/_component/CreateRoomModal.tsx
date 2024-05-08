@@ -2,7 +2,7 @@
 
 import { useModalStore } from '@/stores/modal';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import instance from '@/utils/interceptor';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -20,7 +20,7 @@ export default function CreateRoomModal() {
 
   const mutation = useMutation({
     mutationFn: async (e) => {
-      return axios.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms`, {
+      return instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms`, {
         roomName: roomName,
         isSecret: isSecret,
         roomPassword: roomPassword,
