@@ -1,5 +1,5 @@
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
-import axios from 'axios';
+import instance from '@/utils/interceptor';
 import Image from 'next/image';
 
 export interface IRankings {
@@ -17,7 +17,7 @@ export interface IRankings {
 
 async function getRanking() {
   try {
-    const res = await axios.get<IRankings>(`${process.env.NEXT_PUBLIC_API_SERVER}/game-server/rankings`);
+    const res = await instance.get<IRankings>(`${process.env.NEXT_PUBLIC_API_SERVER}/game-server/rankings`);
     console.log(res.data);
     return res.data || {};
   } catch (e) {
