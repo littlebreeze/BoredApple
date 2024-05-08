@@ -11,7 +11,7 @@ export default function Nickname() {
 
   const createNickname = async () => {
     try {
-      await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/nickname`, {
+      await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/nickname`, {
         nickname: nickname,
       });
     } catch (error) {
