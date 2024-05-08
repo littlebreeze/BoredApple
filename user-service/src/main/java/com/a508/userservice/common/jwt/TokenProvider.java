@@ -84,6 +84,7 @@ public class TokenProvider {
                 .accessToken(accessToken)
                 .expiresIn(ACCESS_TOKEN_EXPIRE_TIME - 1)
                 .refreshToken(refreshToken)
+                .signUpProcess(user.getSignUpProcess())
                 .refreshTokenExpiresIn(REFRESH_TOKEN_EXPIRE_TIME)
                 .build();
     }
