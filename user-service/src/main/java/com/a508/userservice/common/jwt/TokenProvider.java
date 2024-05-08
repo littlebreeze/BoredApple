@@ -11,6 +11,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +39,14 @@ public class TokenProvider {
     @Autowired
     private UserRepository userRepository;
 
+    public Integer getUserIdByToken(HttpServletRequest request) {
+        //검증은 끝난 것이라 예외처리 하지 않음
+        String accessToken = request.getHeader(AUTHORIZATION_HEADER).substring(7);
+        //복호화를 통해 googleID로 userId꺼내기
+        Claims claims = parseClaims(accessToken);
+        String googleId = claims.getSubject();
+        return userRepository.findByGoogleId(googleId).getId();
+    }
 
     public TokenProvider(@Value("${spring.security.oauth2.jwt.secret}") String secret) {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
