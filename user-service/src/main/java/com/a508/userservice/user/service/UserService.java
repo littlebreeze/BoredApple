@@ -16,7 +16,9 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final UserCategoryRepository userCategoryRepository;
 
-	public User getUser(int userId) { return userRepository.findById(userId).orElseThrow(); }
+	public User getUser(int userId) {
+		return userRepository.findById(userId).orElseThrow();
+	}
 
 	public void updateNickname(int userId, String nickname) {
 		User user = getUser(userId);
@@ -27,8 +29,8 @@ public class UserService {
 
 	public void updateCategory(int userId, int[] category) {
 		User user = getUser(userId);
-		String[] cat = {"","인문","사회","과학","기술","예술"};
-		for(int i : category) {
+		String[] cat = {"", "인문", "사회", "과학", "기술", "예술"};
+		for (int i : category) {
 			UserCategory userCategory = UserCategory.builder().userId(userId).category(cat[i]).build();
 			userCategoryRepository.save(userCategory);
 		}
@@ -38,7 +40,7 @@ public class UserService {
 
 	public void updateStudyTime(int userId, int hour, int minute) {
 		User user = getUser(userId);
-		user.setStudyTime(LocalTime.of(hour,minute));
+		user.setStudyTime(LocalTime.of(hour, minute));
 		user.setSignUpProcess(4);
 		userRepository.save(user);
 	}
