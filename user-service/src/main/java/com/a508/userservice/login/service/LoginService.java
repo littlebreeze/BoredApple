@@ -114,8 +114,9 @@ public class LoginService {
             User newMember = User.builder()
                     .googleId(googleUserInfoRes.getId())
                     .email(googleUserInfoRes.getEmail())
-                    .nickname(googleUserInfoRes.getName())
+                    .nickname(null)
                     .role(UserRole.ROLE_USER)
+                    .signUpProcess(1)
                     .build();
             userRepository.save(newMember);
             signUp = true;

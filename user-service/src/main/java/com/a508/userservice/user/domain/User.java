@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,10 +26,13 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String nickname;
 
     private String studyTime;
+
+    @ColumnDefault("1")
+    @Column(nullable = false)
+    private Integer signUpProcess;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
