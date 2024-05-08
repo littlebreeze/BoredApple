@@ -15,8 +15,18 @@ const quizType: QuizType[] = [
   { problemType: '어휘 퀴즈', isCorrect: false },
 ];
 
+type Study = {
+  problemType: string;
+  isCorrect: boolean;
+};
+type RResponse = {
+  data: {
+    dailyStudyList: Study[];
+  };
+};
+
 const getDailyData = async (today: Date | null) => {
-  const response = await axios.post<{ data: number[] }>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/daystudy`, {
+  const response = await axios.post<RResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/daystudy`, {
     date: today,
   });
   console.log(response.data);

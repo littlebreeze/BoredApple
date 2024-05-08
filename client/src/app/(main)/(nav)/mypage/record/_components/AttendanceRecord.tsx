@@ -4,8 +4,14 @@ import RecordDetailItem from './RecordDetailItem';
 import { useRecordStore } from '@/stores/record';
 import axios from 'axios';
 
+type AResponse = {
+  data: {
+    days: number;
+    registerDate: string;
+  };
+};
 const getAttendanceData = async (yearMonth: Date | null) => {
-  const response = await axios.post<{ data: number[] }>(`${process.env.NEXT_PUBLIC_API_SERVER}/use-service/calendar`, {
+  const response = await axios.post<AResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/use-service/calendar`, {
     date: yearMonth,
   });
   console.log(response.data);
