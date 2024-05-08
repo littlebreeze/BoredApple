@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class StudyTimeReq {
 
-	private int hour;
+	private Integer hour;
 
-	private int minute;
+	private Integer minute;
 }
