@@ -15,12 +15,12 @@ export default function Authentication() {
     }
   }, [code]);
 
-  const handleRouter = (props: string | number) => {
-    if (props == 1) {
+  const handleRouter = (signUpProcess: number) => {
+    if (signUpProcess == 1) {
       router.push('/signup/nickname');
-    } else if (props == 2) {
+    } else if (signUpProcess == 2) {
       router.push('/signup/interest');
-    } else if (props == 3) {
+    } else if (signUpProcess == 3) {
       router.push('/signup/learning-time');
     } else {
       router.push('/home');
