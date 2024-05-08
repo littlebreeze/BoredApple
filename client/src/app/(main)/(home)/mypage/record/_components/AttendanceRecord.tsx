@@ -11,7 +11,7 @@ type AResponse = {
   };
 };
 const getAttendanceData = async (yearMonth: Date | null) => {
-  const response = await axios.post<AResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/use-service/calendar`, {
+  const response = await axios.post<AResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/calendar`, {
     date: yearMonth,
   });
   console.log(response.data);

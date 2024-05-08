@@ -13,7 +13,7 @@ type SResponse = {
 };
 
 const getStudyData = async (yearMonth: Date | null) => {
-  const response = await axios.post<SResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/use-service/monthstudy`, {
+  const response = await axios.post<SResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/monthstudy`, {
     date: yearMonth,
   });
   console.log(response.data);
