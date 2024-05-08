@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class GameRoomReq {
 
-    private String id;
     private String roomName;
-    private Boolean isSecret; //entity에 없는 것
+    private Boolean isSecret;
     private String roomPassword;
     private Integer maxNum;
     private Integer quizCount;
