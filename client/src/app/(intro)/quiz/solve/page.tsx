@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import quizTitle from '../../../../../public/quiz-title.svg';
+import quizTitle from '@/../public/quiz/quiz-title.svg';
 import Quiz from './_components/Quiz';
 
 export const metadata: Metadata = {

@@ -8,7 +8,10 @@ export default function QuizStart() {
   };
 
   return (
-    <button className='mb-4 w-full h-12 rounded-lg text-lg bg-ourTheme text-white' onClick={onClick}>
+    <button
+      className='mb-4 w-full h-12 rounded-lg text-lg bg-ourTheme text-white duration-[0.2s] hover:bg-ourTheme/80'
+      onClick={onClick}
+    >
       진단하러 가기
     </button>
   );
