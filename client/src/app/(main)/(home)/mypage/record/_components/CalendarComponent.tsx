@@ -14,7 +14,7 @@ type CResponse = {
 };
 
 const getCalendarData = async (yearMonth: Date | null) => {
-  const response = await axios.post<CResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/calendar`, {
+  const response = await axios.post<CResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/calendar`, {
     date: yearMonth,
   });
   console.log(response.data);
