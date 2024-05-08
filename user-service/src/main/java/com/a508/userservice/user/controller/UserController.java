@@ -14,7 +14,7 @@ public class UserController {
 
     @GetMapping("/userId")
     public Integer getUserIdByToken(@RequestParam String token) {
-        return tokenProvider.getUserIdByToken(token);
+        return tokenProvider.getUserByToken(token).getId();
     }
 
 
