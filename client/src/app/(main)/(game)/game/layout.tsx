@@ -9,7 +9,7 @@ export default function Layout({
     <>
       <Image
         className='absolute object-cover h-screen top-0 left-0'
-        src='/game-background.svg'
+        src='/game-bg-2.svg'
         loading='eager'
         layout='fill'
         alt='게임배경'
