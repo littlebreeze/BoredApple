@@ -9,6 +9,7 @@ import jakarta.persistence.Enumerated;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -20,28 +21,31 @@ import java.util.Collection;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
-    @Column(nullable = false)
-    private String googleId;
+	@Column(nullable = false)
+	private String googleId;
 
-    @Column(nullable = false)
-    private String email;
+	@Column(nullable = false)
+	private String email;
 
-    private String nickname;
+	@Setter
+	private String nickname;
 
-    private String studyTime;
+	@Setter
+	private LocalTime studyTime;
 
-    @ColumnDefault("1")
-    @Column(nullable = false)
-    private Integer signUpProcess;
+	@Setter
+	@ColumnDefault("1")
+	@Column(nullable = false)
+	private Integer signUpProcess;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserRole role = UserRole.ROLE_USER;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private UserRole role = UserRole.ROLE_USER;
 
-    public Collection<String> getRoles() {
-        Collection<String> roles = new ArrayList<>();
-        roles.add(role.getValue());
-        return roles;
-    }
+	public Collection<String> getRoles() {
+		Collection<String> roles = new ArrayList<>();
+		roles.add(role.getValue());
+		return roles;
+	}
 
 }

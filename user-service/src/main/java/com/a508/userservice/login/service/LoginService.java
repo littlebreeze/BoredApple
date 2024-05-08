@@ -59,7 +59,7 @@ public class LoginService {
         params.add("client_id", CLIENT_ID);
         params.add("client_secret", CLIENT_SECRET);
         params.add("code", code);
-        params.add("redirect_uri", "http://k10a508.p.ssafy.io" + "/login/authentication");
+        params.add("redirect_uri", "http://k10a508.p.ssafy.io:3000" + "/login/authentication");
 
         // 요청하기 위해 헤더(Header)와 데이터(Body)를 합친다.
         // googleTokenRequest는 데이터(Body)와 헤더(Header)를 Entity가 된다.
