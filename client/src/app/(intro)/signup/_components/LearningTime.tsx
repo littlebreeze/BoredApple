@@ -17,13 +17,9 @@ export default function LearningTime() {
     handleHourClick(12);
   }, []);
 
-  // 이 두 변수 갖다 쓰고 이 useEffect는 지워버리세용%%%%%%%%%%%%%%%%%%%%%%%%%
-  useEffect(() => {
-    console.log(selectedHour, selectedMinute);
-  }, [selectedHour, selectedMinute]);
-
   // 시간 목록 생성
   const hours = Array.from({ length: 24 }, (_, index) => index);
+
   // 분 목록 생성 (10분 단위)
   const minutes = Array.from({ length: 6 }, (_, index) => index * 10);
 
