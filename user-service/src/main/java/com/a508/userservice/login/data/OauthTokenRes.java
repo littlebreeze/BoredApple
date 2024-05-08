@@ -21,6 +21,8 @@ public class OauthTokenRes {
 
     private boolean signUp;
 
+    private Integer signUpProcess;
+
     public void isSignUp(boolean signUp) {
         this.signUp = signUp;
     }
