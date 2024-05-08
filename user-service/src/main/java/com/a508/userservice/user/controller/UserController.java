@@ -28,16 +28,16 @@ public class UserController {
 	}
 
 	@PostMapping("/nickname")
-	public SuccessResponse<Integer> settingNickname(HttpServletRequest request, @RequestBody String nickname) {
+	public SuccessResponse<Integer> settingNickname(HttpServletRequest request, @RequestBody NicknameReq nickname) {
 		int userId = tokenProvider.getUserIdByToken(request);
-		userService.updateNickname(userId, nickname);
+		userService.updateNickname(userId, nickname.getNickname());
 		return new SuccessResponse<>(HttpStatus.SC_OK);
 	}
 
 	@PostMapping("/category")
-	public SuccessResponse<Integer> settingCategory(HttpServletRequest request, @RequestBody int[] category) {
+	public SuccessResponse<Integer> settingCategory(HttpServletRequest request, @RequestBody CategoryReq category) {
 		int userId = tokenProvider.getUserIdByToken(request);
-		userService.updateCategory(userId, category);
+		userService.updateCategory(userId, category.getCategory1(), category.getCategory2());
 		return new SuccessResponse<>(HttpStatus.SC_OK);
 	}
 

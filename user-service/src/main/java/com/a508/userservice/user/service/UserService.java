@@ -27,13 +27,13 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public void updateCategory(int userId, int[] category) {
+	public void updateCategory(int userId, int category1, int category2) {
 		User user = getUser(userId);
 		String[] cat = {"", "인문", "사회", "과학", "기술", "예술"};
-		for (int i : category) {
-			UserCategory userCategory = UserCategory.builder().userId(userId).category(cat[i]).build();
-			userCategoryRepository.save(userCategory);
-		}
+		UserCategory userCategory1 = UserCategory.builder().userId(userId).category(cat[category1]).build();
+		UserCategory userCategory2 = UserCategory.builder().userId(userId).category(cat[category2]).build();
+		userCategoryRepository.save(userCategory1);
+		userCategoryRepository.save(userCategory2);
 		user.setSignUpProcess(3);
 		userRepository.save(user);
 	}
