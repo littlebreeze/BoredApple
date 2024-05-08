@@ -9,6 +9,7 @@ import jakarta.persistence.Enumerated;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -26,10 +27,13 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
+    @Setter
     private String nickname;
 
-    private String studyTime;
+    @Setter
+    private LocalTime studyTime;
 
+    @Setter
     @ColumnDefault("1")
     @Column(nullable = false)
     private Integer signUpProcess;
