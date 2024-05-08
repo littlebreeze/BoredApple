@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class TopRankingRes {
 
     private Integer ranking;
-    private String nickName;
+    private String nickname;
     private Integer rating;
 }

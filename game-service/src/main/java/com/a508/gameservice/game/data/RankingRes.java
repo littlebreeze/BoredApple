@@ -13,7 +13,7 @@ import java.util.List;
 public class RankingRes {
 
     private Integer myRanking;
-    private String myNickName;
+    private String myNickname;
     private Integer myRating;
     private List<TopRankingRes> rankingList;
 

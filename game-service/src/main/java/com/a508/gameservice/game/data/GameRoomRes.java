@@ -18,7 +18,7 @@ public class GameRoomRes {
     private Integer nowNum; //entity에 없는 것
     private Integer maxNum;
     private Boolean isStarted;
-    private Integer roomCreatorName;
+    private String roomCreatorName;
     private Integer quizCount;
     private Boolean isEndPage;
 }
