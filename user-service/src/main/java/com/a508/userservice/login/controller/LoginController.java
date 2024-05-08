@@ -16,7 +16,9 @@ public class LoginController {
 
     @PostMapping("/oauth2/code/google")
     public SuccessResponse<OauthTokenRes> getAccessTokenJsonData(@RequestBody String code) { // Data를 리턴해주는 컨트롤러 함수
+        System.out.println("code"+code);
         OauthTokenRes oauthTokenRes = loginService.getAccessTokenJsonData(code);
+        System.out.println("토큰"+oauthTokenRes.getAccessToken());
         return new SuccessResponse<>(oauthTokenRes);
     }
 
