@@ -1,10 +1,12 @@
 package com.a508.studyservice.service;
 
 import com.a508.studyservice.dto.response.ProblemResponse;
+import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.Intensive;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.global.common.code.ErrorCode;
 import com.a508.studyservice.global.common.exception.BaseException;
+import com.a508.studyservice.repository.ChoiceRepository;
 import com.a508.studyservice.repository.IntensiveRepository;
 import com.a508.studyservice.repository.TodayLearningRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class IntensiveServiceImpl  implements  IntensiveService{
 
     private final IntensiveRepository intensiveRepository;
     private final TodayLearningRepository todayLearningRepository;
+    private final ChoiceRepository choiceRepository;
 
 
     @Override
@@ -52,7 +55,15 @@ public class IntensiveServiceImpl  implements  IntensiveService{
 
 
         for(Intensive intensive : intensiveList){
-            problemResponses.add(intensiveToDto(intensive));
+            ChoiceSolved choiceSolved = choiceRepository.findByUserIdAndTypeAndProblemId(userId,type,intensive.getId());
+            ProblemResponse response = intensiveToDto(intensive);
+            if( choiceSolved != null ) {
+                response.setAnswer(choiceSolved.getAnswer());
+                response.setUserAnswer(choiceSolved.getUserAnswer());
+                response.setCorrect(choiceSolved.isCorrect());
+                response.setCreatedAt(choiceSolved.getCreatedAt());
+            }
+            problemResponses.add(response);
         }
         return problemResponses;
 

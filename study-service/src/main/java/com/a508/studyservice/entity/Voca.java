@@ -29,4 +29,6 @@ public class Voca {
 
     private Integer answer;
 
+    private  String category;
+
 }
