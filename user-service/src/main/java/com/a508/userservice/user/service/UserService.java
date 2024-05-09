@@ -1,5 +1,7 @@
 package com.a508.userservice.user.service;
 
+import com.a508.userservice.user.data.AllUserCategoryRes;
+import com.a508.userservice.user.data.UserCategoryRes;
 import com.a508.userservice.user.data.UserListReq;
 import com.a508.userservice.user.data.UserListRes;
 import com.a508.userservice.user.domain.User;
@@ -50,9 +52,9 @@ public class UserService {
 	}
 
 	public UserListRes getNicknameByUserIdList(UserListReq userListReq) {
-		List<Integer> userIdList=userListReq.getIdList();
-		List<String> nicknameList=new ArrayList<>();
-		for (int i=0;i<userIdList.size();i++){
+		List<Integer> userIdList = userListReq.getIdList();
+		List<String> nicknameList = new ArrayList<>();
+		for (int i = 0; i < userIdList.size(); i++) {
 			nicknameList.add(userRepository.findById(userIdList.get(i)).orElseThrow().getNickname());
 		}
 
@@ -61,7 +63,45 @@ public class UserService {
 				.build();
 	}
 
-	public String getNicknameByUserId(Integer userId) {
+	public String getNicknameByUserId(int userId) {
 		return userRepository.findById(userId).orElseThrow().getNickname();
+	}
+
+	public UserCategoryRes getUserCategory(int userId) {
+		List<String> category = new ArrayList<>();
+		List<UserCategory> userCategories = userCategoryRepository.findByUserId(userId);
+		for (UserCategory uc : userCategories) {
+			category.add(uc.getCategory());
+		}
+
+		return UserCategoryRes.builder().userId(userId).categories(category).build();
+	}
+
+	public AllUserCategoryRes getAllUserCategory() {
+
+		int maxId = userRepository.findMaxUserId() + 1;
+
+		List<String>[] AllCategory = new List[maxId + 1];
+		for (int i = 0; i <= maxId; i++) {
+			AllCategory[i] = new ArrayList<>();
+		}
+
+		List<UserCategory> allUserCategory = userCategoryRepository.findAll();
+		for (UserCategory uc : allUserCategory) {
+			AllCategory[uc.getUserId()].add(uc.getCategory());
+		}
+
+		AllUserCategoryRes allUserCategoryRes = AllUserCategoryRes.builder().build();
+		List<AllUserCategoryRes.UserCategoryInfo> userCategoryInfos = new ArrayList<>();
+
+		for (int i = 0; i <= maxId; i++) {
+			if (!AllCategory[i].isEmpty()) {
+				AllUserCategoryRes.UserCategoryInfo userCategoryInfo = AllUserCategoryRes.UserCategoryInfo.builder().userId(i).categories(AllCategory[i]).build();
+				userCategoryInfos.add(userCategoryInfo);
+			}
+		}
+
+		allUserCategoryRes.setUsers(userCategoryInfos);
+		return allUserCategoryRes;
 	}
 }
