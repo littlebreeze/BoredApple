@@ -138,7 +138,7 @@ export default function GameRightSection() {
       </div>
       <div className='flex flex-row py-4 gap-1 px-8 md:gap-3 md:px-8 lg:gap-6 lg:px-20'>
         <PagingBtn title='이전' activate={pageNum !== 1} />
-        <PagingBtn title='다음' activate={roomList[0].isEndPage} />
+        <PagingBtn title='다음' activate={roomList.length > 0 && roomList[0].isEndPage} />
       </div>
     </div>
   );
