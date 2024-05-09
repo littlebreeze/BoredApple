@@ -1,7 +1,7 @@
 export interface IRoom {
   roomName: string;
   isSecret: boolean;
-  roomPassword?: number;
+  roomPassword?: string;
   maxNum: number;
   quizCount: number;
 }
