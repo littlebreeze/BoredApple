@@ -2,6 +2,7 @@ package com.a508.gameservice.game.controller;
 
 import com.a508.gameservice.game.data.ChatMessageReq;
 import com.a508.gameservice.game.data.ChatMessageRes;
+import com.a508.gameservice.game.data.MessageType;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -14,15 +15,24 @@ public class ChatController {
     @MessageMapping("/chat/rooms/{roomId}/send")
     @SendTo("/topic/public/rooms/{roomId}")
     public ChatMessageRes sendMessage(@DestinationVariable Integer roomId, @Payload ChatMessageReq chatMessage) {
-        if(chatMessage.getType()== ChatMessageReq.MessageType.ENTER){
-            
-        } else if (chatMessage.getType()== ChatMessageReq.MessageType.TALK) {
-            
+        String content = chatMessage.getMessage();
+        String writer = "심심한 사과";
+        if (chatMessage.getType() == MessageType.ENTER) {
+            content = chatMessage.getSender() + "님이 입장하셨습니다.";
+        } else if (chatMessage.getType() == MessageType.TALK) {
+            writer = chatMessage.getSender();
+        } else if (chatMessage.getType() == MessageType.CORRECT) {
+            content = chatMessage.getSender() + "님이 정답을 맞히셨습니다.";
+        } else if (chatMessage.getType() == MessageType.EXIT) {
+            content = chatMessage.getSender() + "님이 퇴장하셨습니다.";
         }
-        ChatMessageRes chatMessageRes = ChatMessageRes.builder()
-                .content(chatMessage.getMessage())
-                .writer(chatMessage.getSender())
+
+        return ChatMessageRes.builder()
+                .type(chatMessage.getType())
+                .content(content)
+                .writer(writer)
+                .target(chatMessage.getSender())
                 .build();
-        return chatMessageRes;
     }
+
 }
