@@ -51,20 +51,22 @@ public class GameRoomService {
 
 //        List<String> nicknameList=userListRes.getNicknameList();
         for (int i = 0; i < gameRoomList.getContent().size(); i++) {
-            GameRoom gameRoom= gameRoomList.getContent().get(i);
-            GameRoomRes gameRoomRes = GameRoomRes.builder()
-                    .id(gameRoom.getId())
-                    .roomName(gameRoom.getRoomName())
-                    .isSecret(gameRoom.getIsSecret())
-                    .roomPassword(gameRoom.getRoomPassword())
+            GameRoom gameRoom = gameRoomList.getContent().get(i);
+            if (gameRoom != null) {
+                GameRoomRes gameRoomRes = GameRoomRes.builder()
+                        .id(gameRoom.getId())
+                        .roomName(gameRoom.getRoomName())
+                        .isSecret(gameRoom.getIsSecret())
+                        .roomPassword(gameRoom.getRoomPassword())
 //                    .roomCreatorName(nicknameList.get(i))
-                    .nowNum(roomPlayerRepository.playerCnt(gameRoom.getId()))
-                    .maxNum(gameRoom.getMaxNum())
-                    .quizCount(gameRoom.getQuizCount())
-                    .isStarted(gameRoom.getIsStarted())
-                    .isEndPage(isEndPage)
-                    .build();
-            gameRoomResList.add(gameRoomRes);
+                        .nowNum(roomPlayerRepository.playerCnt(gameRoom.getId()))
+                        .maxNum(gameRoom.getMaxNum())
+                        .quizCount(gameRoom.getQuizCount())
+                        .isStarted(gameRoom.getIsStarted())
+                        .isEndPage(isEndPage)
+                        .build();
+                gameRoomResList.add(gameRoomRes);
+            }
         }
 
         return gameRoomResList;
