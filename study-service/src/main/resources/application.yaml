@@ -1,14 +1,7 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://k10a508.p.ssafy.io:3306/study
-    username: ssafy
-    password: Ba123123!!
-    hikari:
-      maximum-pool-size: 10
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     defer-datasource-initialization: true
   sql:
     init:
@@ -21,8 +14,15 @@ spring:
     time-zone: Asia/Seoul
   application:
     name: study-service
+  profiles:
+    include:
+      - secret
+
 server:
   port: 8086
+  cloud:
+    discovery:
+      enabled: false
 
 eureka:
   client:
