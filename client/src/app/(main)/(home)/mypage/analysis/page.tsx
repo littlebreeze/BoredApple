@@ -16,11 +16,11 @@ export interface IAbilities {
 
 async function getAbilities() {
   try {
-    const res = await axios.get<IAbilities>(`http://k10a508.p.ssafy.io:8087/ability`);
+    const res = await axios.get<IAbilities>(`${process.env.NEXT_PUBLIC_API_SERVER}/ability`);
     console.log(res.data);
     return res.data || [];
   } catch (e) {
-    console.log('분석 보고서 데이터 에러: ', e);
+    console.log('분석 보고서 데이터 조회 에러: ', e);
     return { data: [[]] };
   }
 }
@@ -37,18 +37,18 @@ export default async function Analysis() {
   return (
     <div className='w-full'>
       <div className='flex flex-col '>
-        <div className='text-lg text-ourBlack pt-5 pb-2'>종합 평가</div>
+        <div className='pt-5 pb-2 text-lg text-ourBlack'>종합 평가</div>
         <HydrationBoundary state={dehydratedState}>
           <div className='flex gap-4'>
-            <div className='flex flex-col flex-1 items-center bg-white px-5 pb-5 rounded-2xl'>
-              <div className='w-full text-ourDarkGray py-3 font-bold'>독해 핵심 능력</div>
-              <div className='w-52 h-52 flex justify-center items-center'>
+            <div className='flex flex-col items-center flex-1 px-5 pb-5 bg-white rounded-2xl'>
+              <div className='w-full py-3 font-bold text-ourDarkGray'>독해 핵심 능력</div>
+              <div className='flex items-center justify-center w-52 h-52'>
                 <MyGraph ability={ability} />
               </div>
               <MyAnalysis ability={ability} />
             </div>
-            <div className='bg-white rounded-2xl px-5 pb-5 w-1/3'>
-              <div className='w-full text-ourDarkGray py-3 font-bold'>강점 & 약점</div>
+            <div className='w-1/3 px-5 pb-5 bg-white rounded-2xl'>
+              <div className='w-full py-3 font-bold text-ourDarkGray'>강점 & 약점</div>
               <MyStrength abilities={abilities?.data || [[]]} />
             </div>
           </div>
