@@ -9,8 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 @Service
 @RequiredArgsConstructor
@@ -30,11 +33,16 @@ public class TodayLearningServiceImpl implements TodayLearningService {
         Feign 을 통한 token 로직 추가되어야 함.
         필요한 거 userId, 선호 카테고리
          */
+        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime startDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN); // 오늘의 시작
+        LocalDateTime endDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX); // 오늘의 끝
 
         List<TodayLearningResponse> todayLearningResponses = new ArrayList<>();
 
-        List<TodayLearning> todayLearnings = todayLearningRepository.findByUserId(userId);
+        List<TodayLearning> todayLearnings = todayLearningRepository.findByUserIdAndCreateAtBetween(userId,startDate,endDate);
         log.info(String.valueOf(todayLearnings));
+
+
         if(todayLearnings.isEmpty()){
             log.warn(" 해당 유저는 신규 가입 유저거나 GUEST 입니다. ");
            TodayLearningResponse dummy1 = todayLearningFactory("정독훈련","인문");
@@ -47,8 +55,19 @@ public class TodayLearningServiceImpl implements TodayLearningService {
             return todayLearningResponses;
         } else{
             log.info(" 오늘의 학습 조회가 성공적으로 이루어졌습니다. ");
-            for(TodayLearning todayLearning : todayLearnings)
+        }
+
+        TreeSet<String> treeSet = new TreeSet<>();
+        List<Boolean> booleanList = new ArrayList<>();
+
+        for(TodayLearning todayLearning : todayLearnings)treeSet.add(todayLearning.getType());
+
+        for(TodayLearning todayLearning : todayLearnings ){
+            if( treeSet.contains(todayLearning.getType())) {
                 todayLearningResponses.add(todayLearningToDto(todayLearning));
+                treeSet.remove(todayLearning.getType());
+            }
+
         }
         return todayLearningResponses;
     }

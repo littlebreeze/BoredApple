@@ -1,10 +1,12 @@
 package com.a508.studyservice.service;
 
 import com.a508.studyservice.dto.response.ProblemResponse;
+import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.entity.Voca;
 import com.a508.studyservice.global.common.code.ErrorCode;
 import com.a508.studyservice.global.common.exception.BaseException;
+import com.a508.studyservice.repository.ChoiceRepository;
 import com.a508.studyservice.repository.TodayLearningRepository;
 import com.a508.studyservice.repository.VocaRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +25,9 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class VocaServiceImpl implements  VocaService {
 
-    private  final TodayLearningRepository todayLearningRepository;
+    private final TodayLearningRepository todayLearningRepository;
     private final VocaRepository vocaRepository;
+    private final ChoiceRepository choiceRepository;
 
 
 
@@ -49,7 +52,16 @@ public class VocaServiceImpl implements  VocaService {
         log.info(vocaList.toString());
 
         for(Voca voca : vocaList){
-            problemResponses.add(vocaToDto(voca));
+            ChoiceSolved choiceSolved = choiceRepository.findByUserIdAndTypeAndProblemId(userId,type,voca.getId());
+            ProblemResponse response = vocaToDto(voca);
+            if( choiceSolved != null ) {
+                response.setAnswer(choiceSolved.getAnswer());
+                response.setUserAnswer(choiceSolved.getUserAnswer());
+                response.setCorrect(choiceSolved.isCorrect());
+                response.setCreatedAt(choiceSolved.getCreatedAt());
+            }
+
+            problemResponses.add(response);
         }
 
         return problemResponses;

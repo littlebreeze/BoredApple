@@ -1,11 +1,13 @@
 package com.a508.studyservice.service;
 
 import com.a508.studyservice.dto.response.ProblemResponse;
+import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.Intensive;
 import com.a508.studyservice.entity.ParagraphOrder;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.global.common.code.ErrorCode;
 import com.a508.studyservice.global.common.exception.BaseException;
+import com.a508.studyservice.repository.ChoiceRepository;
 import com.a508.studyservice.repository.ParagraphOrderRepository;
 import com.a508.studyservice.repository.TodayLearningRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class ParagraphOrderServiceImpl implements  ParagraphOrderService{
 
     private final ParagraphOrderRepository paragraphOrderRepository;
     private final TodayLearningRepository todayLearningRepository;
+    private  final ChoiceRepository choiceRepository;
 
 
     @Override
@@ -49,7 +52,16 @@ public class ParagraphOrderServiceImpl implements  ParagraphOrderService{
         }
 
         for(ParagraphOrder paragraphOrder : orderList){
-            problemResponses.add(orderToDto(paragraphOrder));
+            ChoiceSolved choiceSolved = choiceRepository.findByUserIdAndTypeAndProblemId(userId,type,paragraphOrder.getId());
+            ProblemResponse response = orderToDto(paragraphOrder);
+            if( choiceSolved != null ) {
+                response.setAnswer(choiceSolved.getAnswer());
+                response.setUserAnswer(choiceSolved.getUserAnswer());
+                response.setCorrect(choiceSolved.isCorrect());
+                response.setCreatedAt(choiceSolved.getCreatedAt());
+            }
+            problemResponses.add(response);
+
         }
 
         return problemResponses;
