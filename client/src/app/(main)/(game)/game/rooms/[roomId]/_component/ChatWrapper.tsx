@@ -65,7 +65,7 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
         message: newMessage,
       };
       stompClient.publish({
-        destination: `/pub/chat/rooms/${roomId}/send`,
+        destination: `/pub/ws/rooms/${roomId}/send`,
         body: JSON.stringify(chatMessage),
       });
       console.log(messages);
