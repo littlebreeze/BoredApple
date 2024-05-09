@@ -1,10 +1,29 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RecordDetailItem from './RecordDetailItem';
 import { useRecordStore } from '@/stores/record';
+import axios from 'axios';
 
+type AResponse = {
+  data: {
+    days: number;
+    registerDate: string;
+  };
+};
+const getAttendanceData = async (yearMonth: Date | null) => {
+  const response = await axios.post<AResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/calendar`, {
+    date: yearMonth,
+  });
+  console.log(response.data);
+};
 export default function AttendanceRecord() {
+  // 월 바뀔 때 요청 보내기
   const { yearMonth } = useRecordStore();
+
+  useEffect(() => {
+    console.log('월 바뀜 출석 요청 보내라');
+    getAttendanceData(yearMonth);
+  }, [yearMonth]);
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>
