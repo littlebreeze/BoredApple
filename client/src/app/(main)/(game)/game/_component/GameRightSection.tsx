@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MakeRoomBtn from './MakeRoomBtn';
 import GameRoomItem from './GameRoomItem';
 import PagingBtn from './PagingBtn';
@@ -7,70 +7,96 @@ import QuickStartGameBtn from './QuickStartGameBtn';
 import RefreshRoomsBtn from './RefreshRoomsBtn';
 import { useGameWaitStore } from '@/stores/game-wait';
 import InsertPasswordModal from './InsertPasswordModal';
+import { useGameRoomList } from '@/queries/game-wait';
+import axios from 'axios';
 
-type RoomInfo = {
-  roomId: number;
-  title: string;
-  manager: string;
-  current: number;
-  limit: number;
-  isLocked: boolean;
-  quiz: number;
+type GameRoomInfo = {
+  id: number;
+  roomName: string;
+  isSecret: boolean;
+  roomPassword: string;
+  nowNum: number;
+  maxNum: number;
+  isStarted: boolean;
+  roomCreatorName: string;
+  quizCount: number;
+  isEndPage: boolean;
 };
 
-const roomInfo: RoomInfo[] = [
+type GRResponse = {
+  data: GameRoomInfo[];
+};
+const roomInfo: GameRoomInfo[] = [
   {
-    roomId: 1,
-    title: '문제! 풀자!',
-    manager: '문해너구리',
-    current: 2,
-    limit: 6,
-    isLocked: true,
-    quiz: 20,
+    id: 1,
+    roomName: '외않되',
+    isSecret: true,
+    roomPassword: '1234',
+    nowNum: 2,
+    maxNum: 4,
+    isStarted: false,
+    roomCreatorName: '문해너구리',
+    quizCount: 20,
+    isEndPage: false,
   },
   {
-    roomId: 2,
-    title: '문제! 풀자!',
-    manager: '문해너구리',
-    current: 2,
-    limit: 6,
-    isLocked: false,
-    quiz: 20,
+    id: 2,
+    roomName: '외않되',
+    isSecret: false,
+    roomPassword: '1234',
+    nowNum: 2,
+    maxNum: 4,
+    isStarted: false,
+    roomCreatorName: '문해너구리',
+    quizCount: 20,
+    isEndPage: false,
   },
   {
-    roomId: 3,
-    title: '문제! 풀자!',
-    manager: '문해너구리',
-    current: 2,
-    limit: 6,
-    isLocked: false,
-    quiz: 20,
+    id: 3,
+    roomName: '외않되',
+    isSecret: true,
+    roomPassword: '1234',
+    nowNum: 2,
+    maxNum: 4,
+    isStarted: false,
+    roomCreatorName: '문해너구리',
+    quizCount: 20,
+    isEndPage: false,
   },
   {
-    roomId: 4,
-    title: '문제! 풀자!',
-    manager: '문해너구리',
-    current: 2,
-    limit: 6,
-    isLocked: true,
-    quiz: 20,
+    id: 4,
+    roomName: '외않되',
+    isSecret: false,
+    roomPassword: '1234',
+    nowNum: 2,
+    maxNum: 4,
+    isStarted: false,
+    roomCreatorName: '문해너구리',
+    quizCount: 20,
+    isEndPage: false,
   },
   {
-    roomId: 5,
-    title: '문제! 풀자!',
-    manager: '문해너구리',
-    current: 2,
-    limit: 6,
-    isLocked: false,
-    quiz: 20,
+    id: 5,
+    roomName: '외않되',
+    isSecret: false,
+    roomPassword: '1234',
+    nowNum: 2,
+    maxNum: 4,
+    isStarted: false,
+    roomCreatorName: '문해너구리',
+    quizCount: 20,
+    isEndPage: false,
   },
 ];
 
 export default function GameRightSection() {
+  const { pageNum, setPageNum } = useGameWaitStore();
+  // const { data } = useGameRoomList(pageNum);
   const { isShow } = useGameWaitStore();
-  const [roomList, setRoomList] = useState<RoomInfo[]>(roomInfo);
-  const generateRoomItems = (list: RoomInfo[]): (RoomInfo | undefined)[] => {
-    let duplicatedList: (RoomInfo | undefined)[] = [];
+  const { roomList, setRoomList } = useGameWaitStore();
+
+  const generateRoomItems = (list: GameRoomInfo[]): (GameRoomInfo | undefined)[] => {
+    let duplicatedList: (GameRoomInfo | undefined)[] = [];
     for (let idx = 0; idx < 6; idx++) {
       if (idx < roomList.length) duplicatedList.push(list[idx]);
       else duplicatedList.push(undefined);
@@ -80,6 +106,19 @@ export default function GameRightSection() {
 
   // Generate room items to ensure 6 items are rendered
   const duplicatedRoomList = generateRoomItems(roomList);
+
+  const getRoomList = async () => {
+    const response = await axios.get<GRResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms/${pageNum}`);
+    console.log(response.data.data);
+  };
+
+  useEffect(() => {
+    //if (data?.data) setRoomList(data?.data.data);
+    getRoomList();
+    //setRoomList(roomInfo);
+    //console.log(roomList);
+  }, [pageNum]);
+
   return (
     <div className='relative'>
       {isShow && <InsertPasswordModal />}
@@ -93,8 +132,8 @@ export default function GameRightSection() {
         </div>
       </div>
       <div className='grid grid-cols-2 py-4 px-5 gap-x-2 gap-y-2 md:gap-x-3 md:gap-y-6 lg:gap-x-6 lg:px-6 bg-ourGray/50 rounded-xl'>
-        {duplicatedRoomList.map((info: RoomInfo | undefined, idx: number) => (
-          <GameRoomItem key={idx} roomInfo={info} />
+        {duplicatedRoomList.map((info: GameRoomInfo | undefined) => (
+          <GameRoomItem key={info?.id} roomInfo={info} />
         ))}
       </div>
       <div className='flex flex-row py-4 gap-1 px-8 md:gap-3 md:px-8 lg:gap-6 lg:px-20'>
