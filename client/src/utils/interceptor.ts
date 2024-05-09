@@ -5,7 +5,8 @@ import axios from 'axios';
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   headers: {
-    'Access-Control-Allow-Origin': 'https://j10a601.p.ssafy.io/8081', // CORS 정책을 허용할 오리진 설정
+    // 'Access-Control-Allow-Origin': 'https://j10a601.p.ssafy.io/8081', // CORS 정책을 허용할 오리진 설정
+    'Access-Control-Allow-Origin': 'http://localhost:3000',
     'Access-Control-Allow-Credentials': 'true', // CORS 요청에서 자격 증명 정보를 허용
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE', // CORS 요청에서 허용하는 HTTP 메소드
   },
