@@ -80,7 +80,7 @@ const roomInfo: GameRoomInfo[] = [
     roomName: '외않되',
     isSecret: false,
     roomPassword: '1234',
-    nowNum: 2,
+    nowNum: 4,
     maxNum: 4,
     isStarted: false,
     roomCreatorName: '문해너구리',
