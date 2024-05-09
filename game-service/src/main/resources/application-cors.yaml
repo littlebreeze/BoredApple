@@ -1,0 +1,8 @@
+cors:
+  allowed-origins: >
+    http://localhost:3000,
+    http://localhost:8085,
+    http://localhost:8084,
+    http://localhost:8081,
+    http://k10a508.p.ssafy.io,
+    https://k10a508.p.ssafy.io

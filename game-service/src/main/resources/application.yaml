@@ -5,9 +5,20 @@ spring:
   application:
     name: game-service
 
+  data:
+    redis:
+      host: k10a508.p.ssafy.io
+      port: 6379
+
+  profiles:
+    include:
+      - cors
+
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
       defaultZone: http://k10a508.p.ssafy.io:8083/eureka
+#      http://localhost:8761/eureka
+#      http://k10a508.p.ssafy.io:8083/eureka
