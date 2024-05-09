@@ -20,20 +20,20 @@ type LearningItemProps = {
 };
 
 export default function LearningItem(props: { learningItem: LearningItemType }) {
-  const { type, solved, level } = props.learningItem;
+  const { type, solved, difficulty } = props.learningItem;
 
   const renderTypeComponent = () => {
     switch (type) {
       case '주제맞추기':
-        return <LearningItem1 level={level} solved={solved} />;
+        return <LearningItem1 difficulty={difficulty} solved={solved} />;
       case '정독훈련':
-        return <LearningItem2 level={level} solved={solved} />;
+        return <LearningItem2 difficulty={difficulty} solved={solved} />;
       case '어휘':
-        return <LearningItem3 level={level} solved={solved} />;
+        return <LearningItem3 difficulty={difficulty} solved={solved} />;
       case '문장삽입':
-        return <LearningItem4 level={level} solved={solved} />;
+        return <LearningItem4 difficulty={difficulty} solved={solved} />;
       case '순서맞추기':
-        return <LearningItem5 level={level} solved={solved} />;
+        return <LearningItem5 difficulty={difficulty} solved={solved} />;
       default:
         return <DefaultItem />;
     }
@@ -42,14 +42,14 @@ export default function LearningItem(props: { learningItem: LearningItemType }) 
   return <div className='flex-1 h-full '>{renderTypeComponent()}</div>;
 }
 
-const getStars = (level: number) => {
+const getStars = (difficulty: number) => {
   const stars = ['★☆☆☆☆', '★★☆☆☆', '★★★☆☆', '★★★★☆', '★★★★★'];
-  return stars[level - 1] || '★★★☆☆';
+  return stars[difficulty - 1] || '★★★☆☆';
 };
 
 // 지문 요약(주제맞추기)
-const LearningItem1 = ({ level, solved }: { level: number; solved: boolean }) => {
-  const stars = getStars(level);
+const LearningItem1 = ({ difficulty, solved }: { difficulty: number; solved: boolean }) => {
+  const stars = getStars(difficulty);
 
   return (
     <div
@@ -77,7 +77,7 @@ const LearningItem1 = ({ level, solved }: { level: number; solved: boolean }) =>
 };
 
 // 정독 훈련(정독훈련)
-const LearningItem2 = ({ level, solved }: { level: number; solved: boolean }) => {
+const LearningItem2 = ({ difficulty: level, solved }: { difficulty: number; solved: boolean }) => {
   const stars = getStars(level);
 
   return (
@@ -106,7 +106,7 @@ const LearningItem2 = ({ level, solved }: { level: number; solved: boolean }) =>
 };
 
 // 어휘 퀴즈(어휘)
-const LearningItem3 = ({ level, solved }: { level: number; solved: boolean }) => {
+const LearningItem3 = ({ difficulty: level, solved }: { difficulty: number; solved: boolean }) => {
   const stars = getStars(level);
 
   return (
@@ -135,12 +135,12 @@ const LearningItem3 = ({ level, solved }: { level: number; solved: boolean }) =>
 };
 
 // 문장 넣기(문장삽입)
-const LearningItem4 = ({ level, solved }: { level: number; solved: boolean }) => {
+const LearningItem4 = ({ difficulty: level, solved }: { difficulty: number; solved: boolean }) => {
   const stars = getStars(level);
 
   return (
     <div
-      className={`flex justify-between bg-ourRed h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-110'}`}
+      className={`flex justify-between bg-ourRed h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-105'}`}
     >
       <div className='flex flex-col justify-between '>
         <div>
@@ -164,12 +164,12 @@ const LearningItem4 = ({ level, solved }: { level: number; solved: boolean }) =>
 };
 
 // 문장 순서 배열(순서맞추기)
-const LearningItem5 = ({ level, solved }: { level: number; solved: boolean }) => {
+const LearningItem5 = ({ difficulty: level, solved }: { difficulty: number; solved: boolean }) => {
   const stars = getStars(level);
 
   return (
     <div
-      className={`flex justify-between bg-ourPurple h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-110'}`}
+      className={`flex justify-between bg-ourPurple h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-105'}`}
     >
       <div className='flex flex-col justify-between '>
         <div>
