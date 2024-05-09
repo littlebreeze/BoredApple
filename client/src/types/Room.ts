@@ -1,4 +1,4 @@
-export interface Room {
+export interface IRoom {
   roomName: string;
   isSecret: boolean;
   roomPassword?: number;
