@@ -1,9 +1,9 @@
 import { create } from 'zustand';
-import { Room } from '@/types/Room';
+import { IRoom } from '@/types/Room';
 
 interface ModalState {
-  data: Room | null;
-  setData(data: Room): void;
+  data: IRoom | null;
+  setData(data: IRoom): void;
   reset(): void;
 }
 
