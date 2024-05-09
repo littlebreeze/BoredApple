@@ -59,7 +59,7 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
   const sendMessage = () => {
     if (stompClient && newMessage) {
       const chatMessage: ChatMessageRequest = {
-        type: 'TYPE',
+        type: 'TALK',
         roomId: roomId,
         sender: '보냅니다',
         message: newMessage,
