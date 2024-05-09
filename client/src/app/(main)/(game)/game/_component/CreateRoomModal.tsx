@@ -1,12 +1,10 @@
 'use client';
 
 import { useModalStore } from '@/stores/modal';
-import { useMutation } from '@tanstack/react-query';
 import instance from '@/utils/interceptor';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useCreateRoom } from '@/queries/create-room';
 import { IRoom } from '@/types/Room';
 
 export default function CreateRoomModal() {

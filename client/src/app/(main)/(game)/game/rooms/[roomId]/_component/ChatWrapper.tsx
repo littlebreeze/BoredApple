@@ -1,5 +1,6 @@
 'use client';
 
+import { useWebsocketStore } from '@/stores/websocketStore';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 type Chat = {
@@ -7,10 +8,30 @@ type Chat = {
   content: string;
 };
 
-export default function ChatWrapper() {
+// interface ChatMessageRequest {
+//   type: string;
+//   roomId: string;
+//   sender: string;
+//   message: string;
+// }
+
+export default function ChatWrapper({ roomId }: { roomId: string }) {
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState<Chat[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
+
+  // 스토어 불러와서 sendMessage에 (발행할path, JSON) / messages는 전역으로 관리
+  // const {messages, sendMessage} = useWebsocketStore();
+  // const handleSend = () => {
+  //   const chatMessage: ChatMessageRequest = {
+  //     type: 'TALK',
+  //     roomId: roomId,
+  //     sender: '보냅니다',
+  //     message: newMessage,
+  //   };
+
+  //   sendMessage(`/topic/public/rooms/${roomId}`, JSON.stringify(chatMessage));
+  // };
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -20,7 +41,10 @@ export default function ChatWrapper() {
     <div className='h-full p-3 bg-ourLightGray rounded-xl flex flex-col justify-between'>
       <div className='h-44 flex flex-col overflow-y-scroll scrollbar-hide'>
         {messages.map((m, idx) => (
-          <div key={idx} className='p-1 flex gap-3'>
+          <div
+            key={idx}
+            className='p-1 flex gap-3'
+          >
             <div className='text-center w-2/12'>{m.nickname}</div>
             <div className='pl-2 w-10/12 appearance-none rounded leading-tight focus:outline-none'>{m.content}</div>
           </div>
