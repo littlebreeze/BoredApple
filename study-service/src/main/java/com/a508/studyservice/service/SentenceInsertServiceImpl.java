@@ -3,6 +3,7 @@ package com.a508.studyservice.service;
 import com.a508.studyservice.dto.response.ProblemResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.Intensive;
+import com.a508.studyservice.entity.ParagraphOrder;
 import com.a508.studyservice.entity.SentenceInsert;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.global.common.code.ErrorCode;
@@ -53,17 +54,23 @@ public class SentenceInsertServiceImpl  implements  SentenceInsertService{
 
 
         List<ProblemResponse> problemResponses = new ArrayList<>();
+        List<SentenceInsert> sentenceInsertList = new ArrayList<>();
 
         for( TodayLearning todayLearning : todayLearnings){
-          SentenceInsert sentenceInsert = sentenceInsertRepository.findById(todayLearning.getProblemId()).orElseThrow(() -> new BaseException(ErrorCode.BAD_REQUEST_ERROR));
-          problemResponses.add(sentenceInsertToDto(sentenceInsert));
+         sentenceInsertList.add(sentenceInsertRepository.findById(todayLearning.getProblemId()).orElseThrow(() -> new BaseException(ErrorCode.BAD_REQUEST_ERROR)));
         }
-        if( todayLearnings.get(0).isCorrect()) {
-            for( int idx = 0 ; idx < problemResponses.size() ; idx ++) {
-                ChoiceSolved choice = choiceRepository.findByUserIdAndTypeAndProblemId(userId,type,problemResponses.get(idx).getProblemId());
-                problemResponses.get(idx).setAnswer(choice.getAnswer());
-                problemResponses.get(idx).setUserAnswer(choice.getUserAnswer());
+
+        for(SentenceInsert sentenceInsert : sentenceInsertList){
+
+            ChoiceSolved choiceSolved = choiceRepository.findByUserIdAndTypeAndProblemId(userId,type,sentenceInsert.getId());
+            ProblemResponse response = sentenceInsertToDto(sentenceInsert);
+            if( choiceSolved != null ) {
+                response.setAnswer(choiceSolved.getAnswer());
+                response.setUserAnswer(choiceSolved.getUserAnswer());
+                response.setCorrect(choiceSolved.isCorrect());
+                response.setCreatedAt(choiceSolved.getCreatedAt());
             }
+            problemResponses.add(response);
 
         }
 
