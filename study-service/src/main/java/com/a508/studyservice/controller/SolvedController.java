@@ -28,13 +28,13 @@ public class SolvedController {
     public ResponseEntity<SuccessResponse<?>> getFiveAbilityController(@RequestHeader(value = "Authorization", required = false) String token){
 
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ," "));
+                new SuccessResponse<>("success" ," "));
     }
 
     @GetMapping("/specific/{date}")
     public ResponseEntity<SuccessResponse<?>> getSpecificStudyController(@PathVariable("date")LocalDateTime date, @RequestHeader(value = "Authorization", required = false) String token){
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ," "));
+                new SuccessResponse<>("success" ," "));
     }
 
 
@@ -42,19 +42,19 @@ public class SolvedController {
     public ResponseEntity<SuccessResponse<?>>  getMonthStudyController ( @PathVariable("month") int month , @RequestHeader(value = "Authorization", required = false) String token){
 
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ," "));
+                new SuccessResponse<>("success" ," "));
     }
 
     @PostMapping("/choice")
     public ResponseEntity<SuccessResponse<?>>  saveUserChoice (@RequestHeader(value = "Authorization", required = false) String token, @RequestBody ChoiceRequest request){
         log.info(request.toString());
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ,choiceSolved.postChoice(token, request)));
+                new SuccessResponse<>("success" ,choiceSolved.postChoice(token, request)));
     }
     @PostMapping("/essay")
     public ResponseEntity<SuccessResponse<?>>  saveUserEssay (@RequestHeader(value = "Authorization", required = false) String token, @RequestBody EssayRequest request){
 
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ,essayService.postEssayProblem(token,request)));
+                new SuccessResponse<>("success" ,essayService.postEssayProblem(token,request)));
     }
 }
