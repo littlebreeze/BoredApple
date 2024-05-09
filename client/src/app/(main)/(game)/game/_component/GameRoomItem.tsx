@@ -25,7 +25,7 @@ export default function GameRoomItem({ roomInfo }: Props) {
   // const [roomId, setRoomId] = useState<number | undefined>(roomInfo?.roomId);
   const { setIsShow, setSelectedRoomId, setSelectedRoomTitle } = useGameWaitStore();
   const onClickRoomItem = () => {
-    if (!roomInfo?.isStarted) {
+    if (!roomInfo?.isStarted && roomInfo?.nowNum !== roomInfo?.maxNum) {
       if (roomInfo?.isSecret) {
         setIsShow(true);
         setSelectedRoomId(roomInfo.id);
@@ -35,22 +35,20 @@ export default function GameRoomItem({ roomInfo }: Props) {
   };
 
   if (!roomInfo) {
-    return <div className='bg-white/80 rounded-xl h-28 cursor-not-allowed flex flex-row p-3 md:px-5 lg:px-5'></div>;
+    return <div className='bg-white/80 rounded-xl h-28 flex flex-row p-3 md:px-5 lg:px-5'></div>;
   } else
     return (
       <>
         <div
           onClick={onClickRoomItem}
-          className={`bg-white/80 rounded-xl h-28 flex flex-row p-3 md:px-5 lg:px-5 border-4 border-white duration-150  ${
-            roomInfo!.isStarted
-              ? 'hover:border-ourPurple cursor-not-allowed'
-              : roomInfo!.isSecret
-              ? 'hover:border-ourGray cursor-pointer'
-              : 'hover:border-ourBlue cursor-pointer'
+          className={`bg-white/80 rounded-xl h-28 flex flex-row p-3 md:px-5 lg:px-5 border-4 border-white duration-150  
+          ${roomInfo!.isSecret ? 'hover:border-ourGray' : 'hover:border-ourBlue'} ${
+            roomInfo.isStarted || roomInfo.nowNum === roomInfo.maxNum ? 'cursor-not-allowed ' : 'cursor-pointer '
           }`}
         >
-          <div className='w-1/5 font-semibold text-ourDarkGray text-base md:text-xl lg:text-xl mt-1'>
-            {String(roomInfo!.id).padStart(3, '0')}
+          <div className='w-1/5 font-semibold text-ourDarkGray text-base md:text-xl lg:text-xl mt-1 flex flex-col justify-between'>
+            <div>{String(roomInfo!.id).padStart(3, '0')}</div>
+            {roomInfo.isStarted && <div className='text-sm text-ourTheme'>게임중</div>}
           </div>
           <div className='w-3/5 flex flex-col justify-between'>
             <div className='font-semibold text-base sm:text-2xl md:text-2xl lg:text-2xl'>{roomInfo!.roomName}</div>
@@ -58,7 +56,11 @@ export default function GameRoomItem({ roomInfo }: Props) {
           </div>
           <div className='w-1/5 flex flex-col justify-between items-end'>
             <div className='flex flex-row gap-1 items-baseline mt-1'>
-              <div className='font-semibold text-sm text-ourBlack'>
+              <div
+                className={`font-semibold text-sm ${
+                  roomInfo?.nowNum === roomInfo?.maxNum ? 'text-rose-500' : 'text-ourBlack'
+                }`}
+              >
                 {roomInfo!.nowNum}/{roomInfo!.maxNum}
               </div>
               <div>
