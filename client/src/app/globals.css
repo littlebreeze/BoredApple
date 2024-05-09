@@ -4,6 +4,17 @@
 
 :root {
   --main-bg-color: #f2f2f2;
+  --ourTheme: #0064ff;
+  --ourBlue: #4893ff;
+  --ourPurple: #cab8ff;
+  --ourPink: #f0a8ea;
+  --ourRed: #ff8a8c;
+  --ourYellow: #ffc28a;
+  --ourGreen: #51d0a2;
+  --ourLightGray: #f2f2f2;
+  --ourGray: #d9d9d9;
+  --ourDarkGray: #737373;
+  --ourBlack: #202632;
 }
 
 @font-face {
@@ -35,4 +46,16 @@
   body {
     background-color: var(--main-bg-color);
   }
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+  background-color: white;
+  border-radius: 0.375rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--ourGray);
+  border-radius: 0.375rem;
+  transition-duration: 1s;
 }

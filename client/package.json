@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@stomp/stompjs": "^7.0.0",
     "@tanstack/react-query": "^5.35.1",
     "@types/chart.js": "^2.9.41",
     "axios": "^1.6.8",

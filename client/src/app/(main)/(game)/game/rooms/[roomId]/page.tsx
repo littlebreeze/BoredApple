@@ -51,7 +51,7 @@ export default function Page() {
       </div>
       <div className='w-2/3 h-60'>
         {/* 채팅창 */}
-        <ChatWrapper />
+        <ChatWrapper roomId={roomId} />
       </div>
     </div>
   );
