@@ -72,8 +72,9 @@ export default function Interest() {
 
   const createInterest = async (data: any) => {
     try {
-      await instance.post(`user-service/category`, {
-        category: data,
+      await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/category`, {
+        category1: data[0],
+        category2: data[1],
       });
       router.push('/signup/learning-time');
     } catch (error) {
