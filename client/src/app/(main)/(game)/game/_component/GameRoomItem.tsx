@@ -39,8 +39,12 @@ export default function GameRoomItem({ roomInfo }: Props) {
       <>
         <div
           onClick={onClickRoomItem}
-          className={`bg-white/80 rounded-xl h-28 cursor-pointer flex flex-row p-3 md:px-5 lg:px-5 border-4 border-white duration-150  ${
-            roomInfo!.isSecret ? 'hover:border-ourGray' : 'hover:border-ourBlue'
+          className={`bg-white/80 rounded-xl h-28 flex flex-row p-3 md:px-5 lg:px-5 border-4 border-white duration-150  ${
+            roomInfo!.isStarted
+              ? 'hover:border-ourPurple cursor-not-allowed'
+              : roomInfo!.isSecret
+              ? 'hover:border-ourGray cursor-pointer'
+              : 'hover:border-ourBlue cursor-pointer'
           }`}
         >
           <div className='w-1/5 font-semibold text-ourDarkGray text-base md:text-xl lg:text-xl mt-1'>

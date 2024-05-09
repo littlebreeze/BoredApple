@@ -70,7 +70,7 @@ const roomInfo: GameRoomInfo[] = [
     roomPassword: '1234',
     nowNum: 2,
     maxNum: 4,
-    isStarted: false,
+    isStarted: true,
     roomCreatorName: '문해너구리',
     quizCount: 20,
     isEndPage: false,
@@ -114,8 +114,8 @@ export default function GameRightSection() {
 
   useEffect(() => {
     //if (data?.data) setRoomList(data?.data.data);
-    getRoomList();
-    //setRoomList(roomInfo);
+    //getRoomList();
+    setRoomList(roomInfo);
     //console.log(roomList);
   }, [pageNum]);
 
@@ -132,13 +132,13 @@ export default function GameRightSection() {
         </div>
       </div>
       <div className='grid grid-cols-2 py-4 px-5 gap-x-2 gap-y-2 md:gap-x-3 md:gap-y-6 lg:gap-x-6 lg:px-6 bg-ourGray/50 rounded-xl'>
-        {duplicatedRoomList.map((info: GameRoomInfo | undefined) => (
-          <GameRoomItem key={info?.id} roomInfo={info} />
+        {duplicatedRoomList.map((info: GameRoomInfo | undefined, idx: number) => (
+          <GameRoomItem key={idx} roomInfo={info} />
         ))}
       </div>
       <div className='flex flex-row py-4 gap-1 px-8 md:gap-3 md:px-8 lg:gap-6 lg:px-20'>
-        <PagingBtn />
-        <PagingBtn />
+        <PagingBtn title='이전' activate={pageNum !== 1} />
+        <PagingBtn title='다음' activate={roomList[0].isEndPage} />
       </div>
     </div>
   );
