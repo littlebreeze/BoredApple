@@ -3,6 +3,8 @@ package com.a508.studyservice.service;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -10,28 +12,40 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.a508.studyservice.dto.response.TodayLearningResponse;
+import com.a508.studyservice.dto.response.UserFeignResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
+import com.a508.studyservice.entity.Intensive;
+import com.a508.studyservice.entity.SentenceInsert;
 import com.a508.studyservice.entity.TodayLearning;
+import com.a508.studyservice.entity.TopicProblem;
 import com.a508.studyservice.repository.ChoiceRepository;
+import com.a508.studyservice.repository.IntensiveRepository;
+import com.a508.studyservice.repository.SentenceInsertRepository;
 import com.a508.studyservice.repository.TodayLearningRepository;
+import com.a508.studyservice.repository.TopicRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Transactional( readOnly = true)
+@Transactional
 @Slf4j
 public class TodayLearningServiceImpl implements TodayLearningService {
 
     private final TodayLearningRepository todayLearningRepository;
     //    private final UserServiceFeignClient userServiceFeignClient;
     private final ChoiceRepository choiceRepository;
+    private final IntensiveRepository intensiveRepository;
+    private final SentenceInsertRepository sentenceInsertRepository;
+    private final TopicRepository topicRepository;
 
+    private static final List<String> categories = new ArrayList<>(Arrays.asList("인문", "사회", "과학", "예술", "기술"));
     @Override
     public List<TodayLearningResponse> getTodayLearning(String token) {
         log.info(" token 정보가 들어옵니다. ");
         Integer userId = 1;
+        List<String> personalCategories = new ArrayList<>();
         /*
         Feign 을 통한 token 로직 추가되어야 함.
         필요한 거 userId, 선호 카테고리
@@ -54,7 +68,7 @@ public class TodayLearningServiceImpl implements TodayLearningService {
             todayLearningResponses.add(dummy1);
             todayLearningResponses.add(dummy2);
             todayLearningResponses.add(dummy3);
-            newbie(userId);
+            newbie(userId,personalCategories);
             return todayLearningResponses;
         } else{
             log.info(" 오늘의 학습 조회가 성공적으로 이루어졌습니다. ");
@@ -97,6 +111,7 @@ public class TodayLearningServiceImpl implements TodayLearningService {
         todayLearningResponse.setCategory(category);
         todayLearningResponse.setType(type);
         todayLearningResponse.setSolved(false);
+        todayLearningResponse.setDifficulty(2);
         return todayLearningResponse;
     }
 
@@ -112,21 +127,55 @@ public class TodayLearningServiceImpl implements TodayLearningService {
 
     // 신규 가입 유저들 오늘의 학습 데이터 생성
     @Transactional
-    public void newbie(Integer userId){
-        if(userId == 0 ) return; // 게스트 유저면 데이터를 만들지 않음.
-        log.info(  " user 번호 :  " + userId +  "님이 오늘의 학습을 생성하셨습니다. ");
-        List<TodayLearning> todayLearnings = todayLearningRepository.findByUserId(0);
-        for( TodayLearning todayLearning : todayLearnings){
-                todayLearningRepository.save(TodayLearning.builder()
-                                .category(todayLearning.getCategory())
-                                .type(todayLearning.getType())
-                                .correct(false)
-                                .userId(userId)
-                                .problemId(todayLearning.getProblemId())
-                                .build());
+    public void newbie(Integer userId, List<String> personalCategories){
+        //정독훈련, 문장삽입, 주제맞추기
+        UserFeignResponse userFeignResponse = new UserFeignResponse(1,new ArrayList<>());
+        /*
+        Feign 요청을 통해서
+         */
+        int size = personalCategories.size();
+
+        if( size < 3 ) {
+            while(personalCategories.size() < 3){
+                Collections.shuffle(categories);
+                if(!personalCategories.contains(categories.get(0))) {personalCategories.add(categories.get(0));}
             }
+        }
+
+        // 카테고리
+        String fir = personalCategories.get(0);
+        String sec = personalCategories.get(1);
+        String thi = personalCategories.get(2);
+        List<Intensive>  intensiveList = intensiveRepository.findByCategory(fir);
+        List<SentenceInsert> sentenceInsertList = sentenceInsertRepository.findByCategory(sec);
+        List<TopicProblem> topicProblemList = topicRepository.findByCategory(thi);
+
+        log.info(intensiveList.toString());
+        log.info(sentenceInsertList.toString());
+        log.info(topicProblemList.toString());
+        for(int idx = 0 ; idx < 3 ; idx++){
+            todayLearningRepository.save(makeEntity(userId, intensiveList.get(idx).getId(), "정독훈련", fir));
+            todayLearningRepository.save(makeEntity(userId, sentenceInsertList.get(idx).getId(), "문장삽입", fir));
+            todayLearningRepository.save(makeEntity(userId, topicProblemList.get(idx).getId(), "주제맞추기", fir));
+        }
+
+
+
+
+
     }
 
+    // 오늘의학습 인스턴스 생성  메소드
+    static TodayLearning makeEntity(int userId, int problemId,String type, String category){
+        return TodayLearning.builder()
+            .userId(userId)
+            .problemId(problemId)
+            .type(type)
+            .category(category)
+            .correct(false)
+            .createAt(LocalDateTime.now())
+            .build();
+    }
 
 
 }
