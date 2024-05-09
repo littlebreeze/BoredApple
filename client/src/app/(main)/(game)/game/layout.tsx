@@ -9,12 +9,13 @@ export default function Layout({
   modal: React.ReactNode;
 }>) {
   return (
-    <>
+    <div className='relative h-screen'>
       <Image
         className='absolute top-0 left-0 object-cover h-screen'
         src='/game-background.svg'
         loading='eager'
-        layout='fill'
+        priority
+        fill
         alt='게임배경'
       />
       <div className='relative z-10'>
@@ -35,6 +36,6 @@ export default function Layout({
           </RQProvider>
         </div>
       </div>
-    </>
+    </div>
   );
 }
