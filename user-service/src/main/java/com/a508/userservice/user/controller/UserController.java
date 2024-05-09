@@ -22,7 +22,6 @@ public class UserController {
 
 	private final TokenProvider tokenProvider;
 	private final UserService userService;
-	private final UserCategoryRepository userCategoryRepository;
 
 	/**
 	 * feign
@@ -52,15 +51,14 @@ public class UserController {
 
 	@PostMapping("/nickname")
 	public SuccessResponse<Integer> settingNickname(HttpServletRequest request, @RequestBody NicknameReq nickname) {
-		int userId = tokenProvider.getUserIdByToken(request);
-		userService.updateNickname(userId, nickname.getNickname());
+
+		userService.updateNickname(tokenProvider.getUserIdByToken(request), nickname.getNickname());
 		return new SuccessResponse<>(HttpStatus.SC_OK);
 	}
 
 	@PostMapping("/category")
 	public SuccessResponse<Integer> settingCategory(HttpServletRequest request, @RequestBody CategoryReq category) {
-		int userId = tokenProvider.getUserIdByToken(request);
-		userService.updateCategory(userId, category.getCategory1(), category.getCategory2());
+		userService.updateCategory(tokenProvider.getUserIdByToken(request), category.getCategory1(), category.getCategory2());
 		return new SuccessResponse<>(HttpStatus.SC_OK);
 	}
 
@@ -83,9 +81,9 @@ public class UserController {
 	}
 
 	@PostMapping("/calendar")
-	public SuccessResponse<List<Integer>> getCalenderInfo(HttpServletRequest request, @RequestBody LocalDate date) {
+	public SuccessResponse<List<Integer>> getCalenderInfo(HttpServletRequest request, @RequestBody YearMonthReq date) {
 
-		int daysInMonth = date.lengthOfMonth();
+		int daysInMonth = LocalDate.of(date.getYear(), date.getMonth(), 1).lengthOfMonth();
 		List<Integer> result = new ArrayList<>();
 
 		for (int i = 1; i <= daysInMonth; i++) {
@@ -95,7 +93,7 @@ public class UserController {
 	}
 
 	@PostMapping("/daystudy")
-	public SuccessResponse<DailyStudyRes> getStudyByDay(HttpServletRequest request, @RequestBody LocalDate date) {
+	public SuccessResponse<DailyStudyRes> getStudyByDay(HttpServletRequest request, @RequestBody DateReq date) {
 
 		List<DailyStudyRes.StudyInfo> dailyStudy = new ArrayList<>();
 		dailyStudy.add(DailyStudyRes.StudyInfo.builder().problemType("정독훈련").isCorrect(true).build());
@@ -106,13 +104,13 @@ public class UserController {
 	}
 
 	@PostMapping("/attendance")
-	public SuccessResponse<AttendanceRes> getAttendanceInfo(HttpServletRequest request, @RequestBody LocalDate date) {
+	public SuccessResponse<AttendanceRes> getAttendanceInfo(HttpServletRequest request, @RequestBody YearMonthReq date) {
 
 		return new SuccessResponse<>(AttendanceRes.builder().days(10).registerDate(LocalDate.now()).build());
 	}
 
 	@PostMapping("/monthstudy")
-	public SuccessResponse<MonthlyStudyRes> getStudyByMonth(HttpServletRequest request, @RequestBody LocalDate date) {
+	public SuccessResponse<MonthlyStudyRes> getStudyByMonth(HttpServletRequest request, @RequestBody YearMonthReq date) {
 
 		return new SuccessResponse<>(MonthlyStudyRes.builder().daysCompleteLearning(3).mostLearnedStudy("정독훈련").mostReadCategory("과학/기술").build());
 	}
