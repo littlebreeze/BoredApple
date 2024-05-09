@@ -12,4 +12,6 @@ public class ChoiceRequest {
 
     List<Integer> problemId;
 
+    Integer spendTime;
+
 }
