@@ -3,7 +3,11 @@ import { useState, useEffect } from 'react';
 import instance from '@/utils/interceptor';
 
 export default function Word() {
-  const createNickname = async () => {
+  useEffect(() => {
+    getWordData();
+  });
+
+  const getWordData = async () => {
     try {
       const response = await instance.get(`/study-service/problem/voca`);
       console.log(response.data.data);
