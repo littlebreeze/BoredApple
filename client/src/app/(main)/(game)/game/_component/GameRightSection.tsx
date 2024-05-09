@@ -25,7 +25,7 @@ type GameRoomInfo = {
 
 export default function GameRightSection() {
   const { pageNum, setPageNum } = useGameWaitStore();
-  const { data } = useGameRoomList(pageNum);
+  const { data, isLoading } = useGameRoomList(pageNum);
 
   const { isShow } = useGameWaitStore();
 
@@ -50,7 +50,7 @@ export default function GameRightSection() {
     } else {
       setRoomList([]);
     }
-  }, [pageNum]);
+  }, [isLoading, pageNum]);
 
   // 방 목록이 바뀌면 출력용 리스트 변경
   useEffect(() => {
