@@ -18,5 +18,7 @@ public class TodayLearningResponse {
 
     private boolean solved;
 
+    private Integer difficulty;
+
 
 }
