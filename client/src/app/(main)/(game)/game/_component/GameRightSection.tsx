@@ -43,6 +43,7 @@ export default function GameRightSection() {
 
   // 페이지 바뀌면 방 목록 요청
   useEffect(() => {
+    console.log(data);
     if (data?.data) {
       console.log(data.data.data);
       setRoomList(data.data.data);
