@@ -1,5 +1,18 @@
 import { create } from 'zustand';
 
+type GameRoomInfo = {
+  id: number;
+  roomName: string;
+  isSecret: boolean;
+  roomPassword: string;
+  nowNum: number;
+  maxNum: number;
+  isStarted: boolean;
+  roomCreatorName: string;
+  quizCount: number;
+  isEndPage: boolean;
+};
+
 interface gameWaitState {
   isShow: boolean;
   setIsShow: (state: boolean) => void;
@@ -7,7 +20,10 @@ interface gameWaitState {
   setSelectedRoomId: (id: number) => void;
   selectedRoomTitle: string;
   setSelectedRoomTitle: (title: string) => void;
-  // 게임방 아이디, 게임방 이름
+  roomList: GameRoomInfo[];
+  setRoomList: (list: GameRoomInfo[]) => void;
+  pageNum: number;
+  setPageNum: (page: number) => void;
 }
 
 export const useGameWaitStore = create<gameWaitState>((set) => ({
@@ -22,5 +38,13 @@ export const useGameWaitStore = create<gameWaitState>((set) => ({
   selectedRoomTitle: '제목없음',
   setSelectedRoomTitle: (title: string) => {
     set({ selectedRoomTitle: title });
+  },
+  roomList: [],
+  setRoomList: (list: GameRoomInfo[]) => {
+    set({ roomList: list });
+  },
+  pageNum: 1,
+  setPageNum: (page: number) => {
+    set({ pageNum: page });
   },
 }));
