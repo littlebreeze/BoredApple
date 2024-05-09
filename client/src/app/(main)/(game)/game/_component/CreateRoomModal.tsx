@@ -30,7 +30,7 @@ export default function CreateRoomModal() {
     try {
       const res = await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms`, newRoom);
       const newRoomId = res.data.data.roomId;
-      closeModal();
+      resetState();
       router.replace(`game/rooms/${newRoomId}`);
     } catch (e) {
       console.error('방 생성 중 에러가 발생했습니다.', e);
