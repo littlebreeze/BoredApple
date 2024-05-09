@@ -23,77 +23,14 @@ type GameRoomInfo = {
   isEndPage: boolean;
 };
 
-type GRResponse = {
-  data: GameRoomInfo[];
-};
-const roomInfo: GameRoomInfo[] = [
-  {
-    id: 1,
-    roomName: '외않되',
-    isSecret: true,
-    roomPassword: '1234',
-    nowNum: 2,
-    maxNum: 4,
-    isStarted: false,
-    roomCreatorName: '문해너구리',
-    quizCount: 20,
-    isEndPage: false,
-  },
-  {
-    id: 2,
-    roomName: '외않되',
-    isSecret: false,
-    roomPassword: '1234',
-    nowNum: 2,
-    maxNum: 4,
-    isStarted: false,
-    roomCreatorName: '문해너구리',
-    quizCount: 20,
-    isEndPage: false,
-  },
-  {
-    id: 3,
-    roomName: '외않되',
-    isSecret: true,
-    roomPassword: '1234',
-    nowNum: 2,
-    maxNum: 4,
-    isStarted: true,
-    roomCreatorName: '문해너구리',
-    quizCount: 20,
-    isEndPage: false,
-  },
-  {
-    id: 4,
-    roomName: '외않되',
-    isSecret: false,
-    roomPassword: '1234',
-    nowNum: 2,
-    maxNum: 4,
-    isStarted: true,
-    roomCreatorName: '문해너구리',
-    quizCount: 20,
-    isEndPage: false,
-  },
-  {
-    id: 5,
-    roomName: '외않되',
-    isSecret: false,
-    roomPassword: '1234',
-    nowNum: 4,
-    maxNum: 4,
-    isStarted: false,
-    roomCreatorName: '문해너구리',
-    quizCount: 20,
-    isEndPage: false,
-  },
-];
-
 export default function GameRightSection() {
   const { pageNum, setPageNum } = useGameWaitStore();
-  // const { data } = useGameRoomList(pageNum);
+  const { data } = useGameRoomList(pageNum);
+
   const { isShow } = useGameWaitStore();
+
   const { roomList, setRoomList } = useGameWaitStore();
+  const [duplList, setDuplList] = useState<(GameRoomInfo | undefined)[]>(new Array(6).fill(undefined));
 
   const generateRoomItems = (list: GameRoomInfo[]): (GameRoomInfo | undefined)[] => {
     let duplicatedList: (GameRoomInfo | undefined)[] = [];
@@ -104,20 +41,20 @@ export default function GameRightSection() {
     return duplicatedList;
   };
 
-  // Generate room items to ensure 6 items are rendered
-  const duplicatedRoomList = generateRoomItems(roomList);
-
-  const getRoomList = async () => {
-    const response = await axios.get<GRResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms/${pageNum}`);
-    console.log(response.data.data);
-  };
-
+  // 페이지 바뀌면 방 목록 요청
   useEffect(() => {
-    //if (data?.data) setRoomList(data?.data.data);
-    //getRoomList();
-    setRoomList(roomInfo);
-    //console.log(roomList);
+    if (data?.data) {
+      console.log(data.data.data);
+      setRoomList(data.data.data);
+    } else {
+      setRoomList([]);
+    }
   }, [pageNum]);
+
+  // 방 목록이 바뀌면 출력용 리스트 변경
+  useEffect(() => {
+    setDuplList(generateRoomItems(roomList));
+  }, [roomList]);
 
   return (
     <div className='relative'>
@@ -132,7 +69,7 @@ export default function GameRightSection() {
         </div>
       </div>
       <div className='grid grid-cols-2 py-4 px-5 gap-x-2 gap-y-2 md:gap-x-3 md:gap-y-6 lg:gap-x-6 lg:px-6 bg-ourGray/50 rounded-xl'>
-        {duplicatedRoomList.map((info: GameRoomInfo | undefined, idx: number) => (
+        {duplList.map((info: GameRoomInfo | undefined, idx: number) => (
           <GameRoomItem key={idx} roomInfo={info} />
         ))}
       </div>
