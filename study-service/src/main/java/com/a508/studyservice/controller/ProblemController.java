@@ -33,7 +33,7 @@ public class ProblemController {
     @GetMapping("/test")
     public ResponseEntity<SuccessResponse<?>> test(@RequestHeader(value = "Authorization", required = false) String token){
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ,"연결 성공"));
+                new SuccessResponse<>("success" ,"연결 성공"));
     }
 
     @GetMapping("/tt")
@@ -50,7 +50,7 @@ public class ProblemController {
     public ResponseEntity<SuccessResponse<?>> getTodayController(@RequestHeader(value = "Authorization", required = false) String token){
         log.info(token);
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ,todayLearningService.getTodayLearning(token)));
+                new SuccessResponse<>("success" ,todayLearningService.getTodayLearning(token)));
     }
 
     // 정독 훈련
@@ -62,7 +62,7 @@ public class ProblemController {
             date = LocalDate.now();
         }
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ,intensiveService.getIntensiveProblems(token,date.atTime(0,0))));
+                new SuccessResponse<>("success" ,intensiveService.getIntensiveProblems(token,date.atTime(0,0))));
     }
 
 
@@ -75,7 +75,7 @@ public class ProblemController {
             date = LocalDate.now();
         }
 
-        return ResponseEntity.ok(new SuccessResponse<>(HttpStatus.OK.value(), sentenceInsertService.getSentenceProblems(token, date.atTime(0,0))));
+        return ResponseEntity.ok(new SuccessResponse<>("success", sentenceInsertService.getSentenceProblems(token, date.atTime(0,0))));
     }
 
 
@@ -88,7 +88,7 @@ public class ProblemController {
             date = LocalDate.now();
         }
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() , essayService.getProblemList(token,date.atTime(0,0))));
+                new SuccessResponse<>("success" , essayService.getProblemList(token,date.atTime(0,0))));
     }
 
 
@@ -101,7 +101,7 @@ public class ProblemController {
             date = LocalDate.now();
         }
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ,vocaService.getVocaProblem(token,date.atTime(0,0))));
+                new SuccessResponse<>("success" ,vocaService.getVocaProblem(token,date.atTime(0,0))));
     }
 
     //순서
@@ -113,7 +113,7 @@ public class ProblemController {
             date = LocalDate.now();
         }
         return ResponseEntity.ok(
-                new SuccessResponse<>(HttpStatus.OK.value() ,paragraphOrderService.getParagraphProblems(token,date.atTime(0,0))));
+                new SuccessResponse<>("success" ,paragraphOrderService.getParagraphProblems(token,date.atTime(0,0))));
     }
 
 
