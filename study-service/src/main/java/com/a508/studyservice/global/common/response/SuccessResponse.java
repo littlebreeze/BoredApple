@@ -12,12 +12,12 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class SuccessResponse<T> {
-	private int status;
+	private String status;
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private T data;
 
-	public SuccessResponse(HttpStatus status, T data) {
-		this.status = status.value();
+	public SuccessResponse( T data) {
+		this.status = "success";
 		this.data = data;
 	}
 
