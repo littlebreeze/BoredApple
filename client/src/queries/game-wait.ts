@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import instance from '@/utils/interceptor';
 
 type GameRoomInfo = {
   id: number;
@@ -20,7 +21,9 @@ type GRResponse = {
 
 // async - await 함수 작성
 const getGameRoomList = async (pageNum: number) => {
-  const response = await axios.get<GRResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms/${pageNum}`);
+  const response = await instance.get<GRResponse>(
+    `${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms/${pageNum}`
+  );
   return response;
 };
 
