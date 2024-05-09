@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 public class ChatController {
 
     @MessageMapping("/ws/rooms/{roomId}/send")
-    @SendTo("/topic/public/rooms/{roomId}")
+    @SendTo("/topic/chat/rooms/{roomId}")
     public ChatMessageRes sendMessage(@DestinationVariable Integer roomId, @Payload ChatMessageReq chatMessage) {
         String content = chatMessage.getMessage();
         String writer = "심심한 사과";
