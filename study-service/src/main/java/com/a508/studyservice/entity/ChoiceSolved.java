@@ -32,6 +32,8 @@ public class ChoiceSolved {
 
     private Integer problemId;
 
+    private Integer spendTime;
+
     private boolean correct;
 
     @CreatedDate
