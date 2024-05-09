@@ -12,7 +12,7 @@ export default function Layout({
     <div className='relative h-screen'>
       <Image
         className='absolute object-cover h-screen top-0 left-0'
-        src='/game-bg-2.svg'
+        src='/game-background.svg'
         loading='eager'
         priority
         fill
