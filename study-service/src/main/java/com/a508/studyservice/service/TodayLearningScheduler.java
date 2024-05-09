@@ -1,6 +1,7 @@
 package com.a508.studyservice.service;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,13 +10,15 @@ import java.util.Objects;
 import java.util.PriorityQueue;
 
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.a508.studyservice.dto.response.UserFeignResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.EssaySolved;
 import com.a508.studyservice.entity.FiveAbility;
+import com.a508.studyservice.entity.ParagraphOrder;
+import com.a508.studyservice.entity.SentenceInsert;
+import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.repository.ChoiceRepository;
 import com.a508.studyservice.repository.EssayRepository;
 import com.a508.studyservice.repository.FiveAbilityRepository;
@@ -44,7 +47,7 @@ public class TodayLearningScheduler {
 	private final VocaRepository vocaRepository;
 	private final IntensiveRepository intensiveRepository;
 
-	private static final List<String> categories = new ArrayList<>(Arrays.asList("인문", "사회", "과학/기술", "예술", "언어"));
+	private static final List<String> categories = new ArrayList<>(Arrays.asList("인문", "사회", "과학", "예술", "기술"));
 
 	@Transactional
 	@Scheduled(cron = "0 0 0 * * ?")
@@ -52,15 +55,14 @@ public class TodayLearningScheduler {
 
 		List<UserFeignResponse> userFeignResponses = new ArrayList<>();
 		UserFeignResponse userFeignResponse = new UserFeignResponse(1,new ArrayList<>());
-		userFeignResponse.getCategoryList().add("인문");
-		userFeignResponse.getCategoryList().add("사회");
-		userFeignResponse.getCategoryList().add("예술");
 		userFeignResponses.add(userFeignResponse);
 		/*
 		user Feign 을 통해서 userId, 선호 카테고리들 받아옴
 		 */
 
 		log.info(userFeignResponses.toString());
+
+		//유저 정보들을 순회하면서 유저들의 오늘의학습을 만들어주는 시작점
 		for(UserFeignResponse userFeignResponse1 : userFeignResponses){
 			int userId = userFeignResponse1.getUserId();
 			List<String> categoryList = userFeignResponse1.getCategoryList();
@@ -94,16 +96,41 @@ public class TodayLearningScheduler {
 			}
 			log.info(categoryList.toString());
 			log.info(abilityList.toString());
+
 			for( int idx = 0 ; idx < 3 ; idx++){
 				String type = abilityList.get(idx);
+				String category = categoryList.get(idx);
 				log.info( "String = " +  type );
 				if(type.equals("순서맞추기")){
+					List<ParagraphOrder> paragraphOrders = paragraphOrderRepository.findByCategory(type);
+					Collections.shuffle(paragraphOrders);
+					l: for(ParagraphOrder paragraphOrder : paragraphOrders) {
+						for(ChoiceSolved choiceSolved :choiceSolvedList) {
+							if(Objects.equals(choiceSolved.getProblemId(), paragraphOrder.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
+						}
+
+					}
+				}
+
+				if(type.equals("문장삽입")){
+					List<SentenceInsert> sentenceInsertList = sentenceInsertRepository.findByCategory(type);
+					Collections.shuffle(sentenceInsertList);
+					l: for(SentenceInsert sentenceInsert : sentenceInsertList) {
+						for(ChoiceSolved choiceSolved :choiceSolvedList) {
+							if(Objects.equals(choiceSolved.getProblemId(), sentenceInsert.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
+						}
+
+					}
+				}
+				if(type.equals("어휘")){
 
 				}
-				if(type.equals("문장삽입")){ }
-				if(type.equals("어휘")){ }
-				if(type.equals("주제맞추기")){ }
-				if(type.equals("정독훈련")){ }
+				if(type.equals("정독훈련")){
+
+				}
+				if(type.equals("주제맞추기")){
+
+				}
 			}
 
 
@@ -114,6 +141,19 @@ public class TodayLearningScheduler {
 
 
 	}
+
+
+	static TodayLearning makeEntity(int userId, int problemId,String type, String category){
+		return TodayLearning.builder()
+			.userId(userId)
+			.problemId(problemId)
+			.type(type)
+			.category(category)
+			.correct(false)
+			.createAt(LocalDateTime.now())
+			.build();
+	}
+
 	static class Ability implements  Comparable<Ability>{
 		String category;
 		int score;
