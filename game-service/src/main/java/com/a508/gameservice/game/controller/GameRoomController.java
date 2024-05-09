@@ -21,7 +21,7 @@ public class GameRoomController {
     }
 
     @PostMapping("/rooms")
-    public SuccessResponse<NewRoomRes> addRoom(HttpServletRequest request, @RequestBody GameRoomReq gameRoomReq) {
+    public SuccessResponse<JoinRoomRes> addRoom(HttpServletRequest request, @RequestBody GameRoomReq gameRoomReq) {
         return new SuccessResponse<>(gameRoomService.createRoom(request, gameRoomReq));
     }
 
