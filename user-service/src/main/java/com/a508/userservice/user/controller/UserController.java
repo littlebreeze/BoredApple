@@ -22,6 +22,9 @@ public class UserController {
 	private final TokenProvider tokenProvider;
 	private final UserService userService;
 
+	/**
+	 * feign
+	 */
 	@GetMapping("/userId")
 	public Integer getUserIdByToken(@RequestParam String token) {
 		return tokenProvider.getUserByToken(token).getId();
@@ -98,5 +101,23 @@ public class UserController {
 	public SuccessResponse<RecordRes> getMatchRecord(HttpServletRequest request) {
 
 		return new SuccessResponse<>(RecordRes.builder().numberOfWin(5).numberOfGame(15).rating(1549).rank(7).build());
+	}
+
+
+	/**
+	 * feign
+	 */
+	@PostMapping("/nicknames")
+	public UserListRes getNicknameByUserId(@RequestBody UserListReq userListReq){
+		return userService.getNicknameByUserIdList(userListReq);
+	}
+
+
+	/**
+	 * feign
+	 */
+	@GetMapping("/nicknames")
+	public String getNicknameByUserId(@RequestParam Integer userId) {
+		return userService.getNicknameByUserId(userId);
 	}
 }

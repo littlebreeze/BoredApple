@@ -1,5 +1,7 @@
 package com.a508.userservice.user.service;
 
+import com.a508.userservice.user.data.UserListReq;
+import com.a508.userservice.user.data.UserListRes;
 import com.a508.userservice.user.domain.User;
 import com.a508.userservice.user.domain.UserCategory;
 import com.a508.userservice.user.repository.UserCategoryRepository;
@@ -8,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,4 +49,19 @@ public class UserService {
 		userRepository.save(user);
 	}
 
+	public UserListRes getNicknameByUserIdList(UserListReq userListReq) {
+		List<Integer> userIdList=userListReq.getIdList();
+		List<String> nicknameList=new ArrayList<>();
+		for (int i=0;i<userIdList.size();i++){
+			nicknameList.add(userRepository.findById(userIdList.get(i)).orElseThrow().getNickname());
+		}
+
+		return UserListRes.builder()
+				.nicknameList(nicknameList)
+				.build();
+	}
+
+	public String getNicknameByUserId(Integer userId) {
+		return userRepository.findById(userId).orElseThrow().getNickname();
+	}
 }
