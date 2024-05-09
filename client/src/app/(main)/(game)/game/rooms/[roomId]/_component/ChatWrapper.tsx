@@ -39,7 +39,8 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
 
   useEffect(() => {
     const client = new Client({
-      brokerURL: `ws://localhost:8788/chat`, // 서버 WebSocket URL
+      // env 파일에 추가할 것 : ws://localhost:8085
+      brokerURL: `wss://k10a508.p.ssafy.io:8085/chat`, // 서버 WebSocket URL
       reconnectDelay: 5000,
       onConnect: () => {
         client.subscribe(`/topic/chat/rooms/${roomId}`, (message: IMessage) => {
