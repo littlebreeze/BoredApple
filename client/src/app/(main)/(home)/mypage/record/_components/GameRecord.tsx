@@ -1,6 +1,29 @@
+'use client';
+import { useEffect, useState } from 'react';
 import RecordDetailItem from './RecordDetailItem';
+import axios from 'axios';
+import { useGameRecord } from '@/queries/mypage-record';
 
+type GResponse = {
+  data: {
+    numberOfWin: number;
+    numberOfGame: number;
+    rating: number;
+    rank: number;
+  };
+};
+
+// const getDailyData = async () => {
+//   const response = await axios.get<GResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/record`);
+//   console.log(response.data);
+// };
 export default function GameRecord() {
+  const { data } = useGameRecord();
+  const [gameRecord, setGameRecord] = useState<GResponse>();
+  // 마운트 되었을 때 요청 보내기
+  useEffect(() => {
+    if (data) setGameRecord(data.data);
+  }, [data]);
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>
@@ -20,10 +43,16 @@ export default function GameRecord() {
         <div className='text-[#F45C5E] font-bold text-lg'>전체 대전 기록</div>
       </div>
       <div className='grid grid-cols-2 gap-2'>
-        <RecordDetailItem title={'우승 횟수'} content={'4일'} />
-        <RecordDetailItem title={'총 경기 횟수'} content={'4일'} />
-        <RecordDetailItem title={'승률'} content={'4일'} />
-        <RecordDetailItem title={'랭킹(*점수)'} content={'4일'} />
+        <RecordDetailItem title={'우승 횟수'} content={gameRecord ? gameRecord!.data.numberOfWin + '번' : '-'} />
+        <RecordDetailItem title={'총 경기 횟수'} content={gameRecord ? gameRecord!.data.numberOfGame + '번' : '-'} />
+        <RecordDetailItem
+          title={'승률'}
+          content={gameRecord ? gameRecord!.data.numberOfGame / gameRecord!.data.numberOfWin + '%' : '-'}
+        />
+        <RecordDetailItem
+          title={'랭킹(*점수)'}
+          content={gameRecord ? gameRecord!.data.rank + '위(*' + gameRecord!.data.rating + ')' : '-'}
+        />
       </div>
     </div>
   );
