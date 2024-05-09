@@ -4,15 +4,21 @@ server:
 spring:
   application:
     name: game-service
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
 
   data:
     redis:
       host: k10a508.p.ssafy.io
       port: 6379
 
+#k10a508.p.ssafy.io
   profiles:
     include:
       - cors
+      - secret
 
 eureka:
   client:
