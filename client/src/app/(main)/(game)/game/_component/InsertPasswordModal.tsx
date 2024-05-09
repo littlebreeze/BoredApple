@@ -4,8 +4,17 @@ import { useGameWaitStore } from '@/stores/game-wait';
 import { useState } from 'react';
 
 export default function InsertPasswordModal() {
-  const { selectedRoomId, selectedRoomTitle, setIsShow } = useGameWaitStore();
+  const { roomList, selectedRoom, setIsShow } = useGameWaitStore();
   const [password, setPassword] = useState<string>('');
+  const [isCorrect, setCorrect] = useState<boolean>(true);
+
+  const onClickPasswordCheck = () => {
+    if (password === selectedRoom?.roomPassword) {
+      location.href = `game/rooms/${selectedRoom?.id}`;
+    } else {
+      setCorrect(false);
+    }
+  };
   return (
     <>
       <div className='rounded-md absolute top-0 left-0 w-full h-full bg-ourBlack/30 flex justify-center items-center'>
@@ -19,15 +28,18 @@ export default function InsertPasswordModal() {
             </svg>
           </div>
           <div className='flex flex-row items-baseline gap-1'>
-            <div className='text-ourTheme font-bold text-2xl'>{selectedRoomTitle}</div>
+            <div className='text-ourTheme font-bold text-2xl'>{selectedRoom?.roomName}</div>
             <div className='font-bold text-xl'>에 입장</div>
           </div>
           <input
-            className='appearance-none rounded w-2/3 p-3 text-gray-700 leading-tight focus:outline-none'
+            className={`appearance-none rounded w-2/3 p-3 leading-tight focus:outline-none ${
+              isCorrect ? 'text-gray-700 ' : 'text-rose-500'
+            }`}
             type='text'
             placeholder='비밀번호를 입력하세요'
             value={password}
             onChange={(e) => {
+              setCorrect(true);
               setPassword(e.target.value);
             }}
           />
@@ -35,6 +47,7 @@ export default function InsertPasswordModal() {
             className={`px-7 py-2  rounded-full text-white duration-[0.2s] cursor-not-allowed ${
               password ? 'cursor-pointer bg-ourBlack hover:bg-ourTheme' : 'bg-ourDarkGray'
             }`}
+            onClick={onClickPasswordCheck}
           >
             확인
           </div>
