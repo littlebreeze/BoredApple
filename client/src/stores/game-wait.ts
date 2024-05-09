@@ -43,7 +43,8 @@ export const useGameWaitStore = create<gameWaitState>((set) => ({
   setRoomList: (list: GameRoomInfo[]) => {
     set({ roomList: list });
   },
-  pageNum: 1,
+  // 페이지 시작번호 여기서 바꾸기
+  pageNum: 5,
   setPageNum: (page: number) => {
     set({ pageNum: page });
   },
