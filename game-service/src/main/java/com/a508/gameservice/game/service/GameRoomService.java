@@ -42,11 +42,14 @@ public class GameRoomService {
         if (pageNum == gameRoomList.getTotalPages()) isEndPage = true;
         List<GameRoomRes> gameRoomResList = new ArrayList<>();
         List<Integer> userIdList = new ArrayList<>();
-        for (int i = 0; i < gameRoomList.getContent().size(); i++) {
-            userIdList.add(gameRoomList.getContent().get(i).getRoomCreatorId());
-        }
-        UserListRes userListRes = userServiceClient.getNicknameByUserId(UserListReq.builder().idList(userIdList).build());
-        List<String> nicknameList=userListRes.getNicknameList();
+
+//        for (int i = 0; i < gameRoomList.getContent().size(); i++) {
+//            userIdList.add(gameRoomList.getContent().get(i).getRoomCreatorId());
+//        }
+
+//        UserListRes userListRes = userServiceClient.getNicknameByUserId(UserListReq.builder().idList(userIdList).build());
+
+//        List<String> nicknameList=userListRes.getNicknameList();
         for (int i = 0; i < gameRoomList.getContent().size(); i++) {
             GameRoom gameRoom= gameRoomList.getContent().get(i);
             GameRoomRes gameRoomRes = GameRoomRes.builder()
@@ -54,7 +57,7 @@ public class GameRoomService {
                     .roomName(gameRoom.getRoomName())
                     .isSecret(gameRoom.getIsSecret())
                     .roomPassword(gameRoom.getRoomPassword())
-                    .roomCreatorName(nicknameList.get(i))
+//                    .roomCreatorName(nicknameList.get(i))
                     .nowNum(roomPlayerRepository.playerCnt(gameRoom.getId()))
                     .maxNum(gameRoom.getMaxNum())
                     .quizCount(gameRoom.getQuizCount())
