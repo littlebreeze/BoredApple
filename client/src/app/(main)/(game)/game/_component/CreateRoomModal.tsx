@@ -8,18 +8,24 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function CreateRoomModal() {
-  const [roomName, setRoomName] = useState('');
-  const [isSecret, setIsSecret] = useState(false);
-  const [roomPassword, setRoomPassword] = useState('');
-  const [maxNum, setMaxNum] = useState(1);
-  const [quizCount, setQuizCount] = useState(0);
+  const [roomName, setRoomName] = useState<string>('');
+  const [isSecret, setIsSecret] = useState<boolean>(false);
+  const [roomPassword, setRoomPassword] = useState<string>('');
+  const [maxNum, setMaxNum] = useState<number>(1);
+  const [quizCount, setQuizCount] = useState<number>(5);
   const modalStore = useModalStore();
   const router = useRouter();
 
-  const parent = modalStore.data;
+  const resetState = () => {
+    setRoomName('');
+    setQuizCount(5);
+    setMaxNum(1);
+    setRoomPassword('');
+    setIsSecret(false);
+  };
 
   const mutation = useMutation({
-    mutationFn: async (e) => {
+    mutationFn: async () => {
       return instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms`, {
         roomName: roomName,
         isSecret: isSecret,
@@ -30,6 +36,7 @@ export default function CreateRoomModal() {
     },
     async onSuccess(response, variable) {
       const newRoomId = await response.data.data;
+      router.back();
       router.replace(`/game/rooms/${newRoomId}`);
     },
     onError(error) {
@@ -38,16 +45,16 @@ export default function CreateRoomModal() {
     },
     onSettled() {
       modalStore.reset();
-      router.back();
     },
   });
 
+  const closeModal = () => {
+    modalStore.reset();
+    resetState();
+    router.back();
+  };
+
   const submitBtn = () => {
-    console.log('방이름', roomName);
-    console.log('비밀?', isSecret);
-    console.log('비밀번호', roomPassword);
-    console.log('정원', maxNum);
-    console.log('문제수', quizCount);
     mutation.mutate();
   };
   return (
@@ -221,14 +228,7 @@ export default function CreateRoomModal() {
         <div className='flex justify-around mt-4'>
           <button
             className='w-1/4 h-8 text-white rounded-lg bg-ourDarkGray'
-            onClick={() => {
-              setRoomName('');
-              setQuizCount(0);
-              setMaxNum(0);
-              setRoomPassword('');
-              setIsSecret(false);
-              router.back();
-            }}
+            onClick={closeModal}
           >
             취소
           </button>
