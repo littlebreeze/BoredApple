@@ -3,6 +3,7 @@ package com.a508.userservice.user.controller;
 import com.a508.userservice.common.jwt.TokenProvider;
 import com.a508.userservice.common.response.SuccessResponse;
 import com.a508.userservice.user.data.*;
+import com.a508.userservice.user.repository.UserCategoryRepository;
 import com.a508.userservice.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class UserController {
 
 	private final TokenProvider tokenProvider;
 	private final UserService userService;
+	private final UserCategoryRepository userCategoryRepository;
 
 	/**
 	 * feign
@@ -28,6 +30,24 @@ public class UserController {
 	@GetMapping("/userId")
 	public Integer getUserIdByToken(@RequestParam String token) {
 		return tokenProvider.getUserByToken(token).getId();
+	}
+
+	/**
+	 * feign
+	 */
+	@GetMapping("/usercategories")
+	public UserCategoryRes userCategory(@RequestParam String token) {
+
+		return userService.getUserCategory(tokenProvider.getUserByToken(token).getId());
+	}
+
+	/**
+	 * feign
+	 */
+	@GetMapping("/allusercategories")
+	public AllUserCategoryRes allUserCategory() {
+
+		return userService.getAllUserCategory();
 	}
 
 	@PostMapping("/nickname")
@@ -108,7 +128,7 @@ public class UserController {
 	 * feign
 	 */
 	@PostMapping("/nicknames")
-	public UserListRes getNicknameByUserId(@RequestBody UserListReq userListReq){
+	public UserListRes getNicknameByUserId(@RequestBody UserListReq userListReq) {
 		return userService.getNicknameByUserIdList(userListReq);
 	}
 
