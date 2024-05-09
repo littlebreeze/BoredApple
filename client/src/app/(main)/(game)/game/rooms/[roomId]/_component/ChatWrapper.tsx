@@ -7,7 +7,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 interface ChatMessageRequest {
   type: string;
-  roomId: number;
+  roomId: string;
   sender: string;
   message: string;
 }
@@ -26,7 +26,7 @@ type Chat = {
   content: string;
 };
 
-export default function ChatWrapper({ roomId }: { roomId: number }) {
+export default function ChatWrapper({ roomId }: { roomId: string }) {
   const [stompClient, setStompClient] = useState<Client | null>(null);
 
   const messageEndRef = useRef<HTMLDivElement | null>(null);
