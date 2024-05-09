@@ -58,7 +58,7 @@ const roomInfo: GameRoomInfo[] = [
     roomPassword: '1234',
     nowNum: 2,
     maxNum: 4,
-    isStarted: false,
+    isStarted: true,
     roomCreatorName: '문해너구리',
     quizCount: 20,
     isEndPage: false,

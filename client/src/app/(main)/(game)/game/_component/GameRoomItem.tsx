@@ -25,11 +25,13 @@ export default function GameRoomItem({ roomInfo }: Props) {
   // const [roomId, setRoomId] = useState<number | undefined>(roomInfo?.roomId);
   const { setIsShow, setSelectedRoomId, setSelectedRoomTitle } = useGameWaitStore();
   const onClickRoomItem = () => {
-    if (roomInfo?.isSecret) {
-      setIsShow(true);
-      setSelectedRoomId(roomInfo.id);
-      setSelectedRoomTitle(roomInfo.roomName);
-    } else location.href = `game/rooms/${roomInfo?.id}`;
+    if (!roomInfo?.isStarted) {
+      if (roomInfo?.isSecret) {
+        setIsShow(true);
+        setSelectedRoomId(roomInfo.id);
+        setSelectedRoomTitle(roomInfo.roomName);
+      } else location.href = `game/rooms/${roomInfo?.id}`;
+    }
   };
 
   if (!roomInfo) {
