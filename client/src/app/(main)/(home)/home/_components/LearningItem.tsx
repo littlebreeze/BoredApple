@@ -1,13 +1,14 @@
 'use client';
-import { LearningItemType } from './LearningBox';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { LearningItemType } from './LearningBox';
+
 import learnImg1 from '@/../public/learn/learn-1-theme.svg';
 import learnImg2 from '@/../public/learn/learn-2-read.svg';
 import learnImg3 from '@/../public/learn/learn-3-word.svg';
 import learnImg4 from '@/../public/learn/learn-4-insert.svg';
 import learnImg5 from '@/../public/learn/learn-5-order.svg';
 import checked from '@/../public/signup/checked.svg';
-import unchecked from '@/../public/signup/unchecked.svg';
 import settings from '@/../public/learn/Settings.svg';
 
 // 1. 주제맞추기
