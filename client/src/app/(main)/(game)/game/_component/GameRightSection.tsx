@@ -22,6 +22,68 @@ type GameRoomInfo = {
   quizCount: number;
   isEndPage: boolean;
 };
+const roomInfo: GameRoomInfo[] = [
+  {
+    id: 1,
+    roomName: '외않되',
+    isSecret: true,
+    roomPassword: '1234',
+    nowNum: 2,
+    maxNum: 4,
+    isStarted: false,
+    roomCreatorName: '문해너구리',
+    quizCount: 20,
+    isEndPage: false,
+  },
+  {
+    id: 2,
+    roomName: '외않되',
+    isSecret: false,
+    roomPassword: '1234',
+    nowNum: 2,
+    maxNum: 4,
+    isStarted: false,
+    roomCreatorName: '문해너구리',
+    quizCount: 20,
+    isEndPage: false,
+  },
+  {
+    id: 3,
+    roomName: '외않되',
+    isSecret: true,
+    roomPassword: '1234',
+    nowNum: 2,
+    maxNum: 4,
+    isStarted: true,
+    roomCreatorName: '문해너구리',
+    quizCount: 20,
+    isEndPage: false,
+  },
+  {
+    id: 4,
+    roomName: '외않되',
+    isSecret: false,
+    roomPassword: '1234',
+    nowNum: 2,
+    maxNum: 4,
+    isStarted: true,
+    roomCreatorName: '문해너구리',
+    quizCount: 20,
+    isEndPage: false,
+  },
+  {
+    id: 5,
+    roomName: '외않되',
+    isSecret: false,
+    roomPassword: '1234',
+    nowNum: 4,
+    maxNum: 4,
+    isStarted: false,
+    roomCreatorName: '문해너구리',
+    quizCount: 20,
+    isEndPage: false,
+  },
+];
 
 export default function GameRightSection() {
   const { pageNum, setPageNum } = useGameWaitStore();

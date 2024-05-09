@@ -14,9 +14,9 @@ export default function PagingBtn({ title, activate }: { title: string; activate
       }
     }
   };
-  useEffect(() => {
-    console.log(pageNum);
-  }, [pageNum]);
+  // useEffect(() => {
+  //   console.log(pageNum);
+  // }, [pageNum]);
   return (
     <>
       <div
