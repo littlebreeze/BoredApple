@@ -6,6 +6,8 @@ import instance from '@/utils/interceptor';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useCreateRoom } from '@/queries/create-room';
+import { IRoom } from '@/types/Room';
 
 export default function CreateRoomModal() {
   const [roomName, setRoomName] = useState<string>('');
@@ -24,29 +26,17 @@ export default function CreateRoomModal() {
     setIsSecret(false);
   };
 
-  const mutation = useMutation({
-    mutationFn: async () => {
-      return instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms`, {
-        roomName: roomName,
-        isSecret: isSecret,
-        roomPassword: roomPassword,
-        maxNum: maxNum,
-        quizCount: quizCount,
-      });
-    },
-    async onSuccess(response, variable) {
-      const newRoomId = await response.data.data;
-      router.back();
-      router.replace(`/game/rooms/${newRoomId}`);
-    },
-    onError(error) {
-      console.error(error);
+  const createRoom = async (newRoom: IRoom) => {
+    try {
+      const res = await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms`, newRoom);
+      const newRoomId = res.data.data.roomId;
+      closeModal();
+      router.replace(`game/rooms/${newRoomId}`);
+    } catch (e) {
+      console.error('방 생성 중 에러가 발생했습니다.', e);
       alert('방 생성 중 에러가 발생했습니다.');
-    },
-    onSettled() {
-      modalStore.reset();
-    },
-  });
+    }
+  };
 
   const closeModal = () => {
     modalStore.reset();
@@ -55,7 +45,13 @@ export default function CreateRoomModal() {
   };
 
   const submitBtn = () => {
-    mutation.mutate();
+    createRoom({
+      roomName: roomName,
+      isSecret: isSecret,
+      roomPassword: isSecret ? roomPassword : '',
+      maxNum: maxNum,
+      quizCount: quizCount,
+    });
   };
   return (
     <div className='absolute inset-0 z-10 flex items-center justify-center h-full bg-gray-600 w-lvw bg-opacity-60'>
