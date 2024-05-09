@@ -70,7 +70,7 @@ public class GameRoomService {
     /**
      * 방 생성
      */
-    public synchronized NewRoomRes createRoom(HttpServletRequest request, GameRoomReq gameRoomReq) {
+    public synchronized JoinRoomRes createRoom(HttpServletRequest request, GameRoomReq gameRoomReq) {
 
         int userId = getUserId(request);
         int roomId = getMinRoomId();
@@ -88,13 +88,14 @@ public class GameRoomService {
         //방 입장
         roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId);
 
-        return NewRoomRes.builder()
+        return JoinRoomRes.builder()
                 .myNickname(userServiceClient.getNicknameByUserId(userId))
                 .myUserId(userId)
                 .roomId(roomId)
                 .maxNum(gameRoomReq.getMaxNum())
                 .quizCount(gameRoomReq.getQuizCount())
                 .creatorId(userId)
+                .roomPlayerRes(null)
                 .build();
     }
 
