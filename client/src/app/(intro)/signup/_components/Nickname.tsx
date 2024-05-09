@@ -10,6 +10,7 @@ export default function Nickname() {
   const [specialCharacter, setSpecialCharacter] = useState(false);
 
   const createNickname = async () => {
+    console.log(process.env.NEXT_PUBLIC_API_SERVER);
     try {
       await instance.post(`https://k10a508.p.ssafy.io:8081/user-service/nickname`, {
         nickname: nickname,
