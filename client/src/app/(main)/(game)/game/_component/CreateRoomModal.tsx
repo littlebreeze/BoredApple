@@ -29,7 +29,7 @@ export default function CreateRoomModal() {
   const createRoom = async (newRoom: IRoom) => {
     try {
       const res = await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms`, newRoom);
-      const newRoomId = res.data.data;
+      const newRoomId = res.data.data.roomId;
       closeModal();
       router.replace(`game/rooms/${newRoomId}`);
     } catch (e) {
