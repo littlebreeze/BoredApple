@@ -5,7 +5,7 @@ import instance from '@/utils/interceptor';
 
 export type LearningItemType = {
   type: string;
-  level: number;
+  difficulty: number;
   solved: boolean;
 };
 
@@ -17,46 +17,15 @@ export type LearningItemType = {
 export default function LearningBox() {
   const [learningItems, setLearningItems] = useState<LearningItemType[]>([]);
 
-  const response = {
-    data: {
-      status: 'success',
-      data: [
-        {
-          type: '정독훈련',
-          level: 5,
-          solved: true,
-        },
-        {
-          type: '문장삽입',
-          level: 2,
-          solved: false,
-        },
-        {
-          type: '순서맞추기',
-          level: 3,
-          solved: true,
-        },
-      ],
-    },
-  };
-
-  const getData = () => {
-    return response;
-  };
-
   useEffect(() => {
-    const tmp = getData();
-    console.log(tmp);
-    if (tmp.data.status === 'success') {
-      setLearningItems(tmp.data.data);
-    }
+    const handleLoad = async () => {
+      const response = await instance.get(`/study-service/problem/today`);
+      if (response.data.status === 'success') {
+        setLearningItems(response.data.data);
+      }
+    };
     handleLoad();
   }, []);
-
-  const handleLoad = async () => {
-    const response = await instance.get(`/study-service/problem/today`);
-    console.log(response);
-  };
 
   return (
     <div className='flex h-full gap-2'>
