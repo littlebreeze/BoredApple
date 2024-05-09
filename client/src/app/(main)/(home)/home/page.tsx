@@ -11,13 +11,13 @@ export default function Page() {
   return (
     <div className='min-w-[1000px]'>
       <div className=' h-screen '>
-        <div className='py-2'></div>
-        <div className=' text-ourDarkGray pb-1'>오늘의 학습</div>
-        <div className='bg-blue-200 h-96'>
+        <div className='py-4'></div>
+        <div className='text-ourDarkGray pb-2 text-xl font-semibold'>오늘의 학습</div>
+        <div className=' h-96'>
           <LearningBox />
         </div>
-        <div className='py-2'></div>
-        <div className=' text-ourDarkGray pb-1'>실시간 어휘 퀴즈 대결</div>
+        <div className='py-8'></div>
+        <div className=' text-ourDarkGray pb-2 text-xl font-semibold'>실시간 어휘 퀴즈 대결</div>
         <div className='bg-blue-200 h-52'>
           <GameBox />
         </div>
