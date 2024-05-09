@@ -3,6 +3,8 @@ cors:
     http://localhost:3000,
     http://localhost:8084,
     http://localhost:8081,
+    http://localhost:8085,
     http://k10a508.p.ssafy.io,
     http://k10a508.p.ssafy.io:3000,
-    https://k10a508.p.ssafy.io
+    https://k10a508.p.ssafy.io,
+    https://k10a508.p.ssafy.io:3000
