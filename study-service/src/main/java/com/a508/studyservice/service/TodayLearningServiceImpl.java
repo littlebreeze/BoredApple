@@ -1,19 +1,22 @@
 package com.a508.studyservice.service;
 
-import com.a508.studyservice.dto.response.TodayLearningResponse;
-import com.a508.studyservice.entity.TodayLearning;
-import com.a508.studyservice.repository.ChoiceRepository;
-import com.a508.studyservice.repository.TodayLearningRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.a508.studyservice.dto.response.TodayLearningResponse;
+import com.a508.studyservice.entity.ChoiceSolved;
+import com.a508.studyservice.entity.TodayLearning;
+import com.a508.studyservice.repository.ChoiceRepository;
+import com.a508.studyservice.repository.TodayLearningRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -64,7 +67,22 @@ public class TodayLearningServiceImpl implements TodayLearningService {
 
         for(TodayLearning todayLearning : todayLearnings ){
             if( treeSet.contains(todayLearning.getType())) {
-                todayLearningResponses.add(todayLearningToDto(todayLearning));
+                List<ChoiceSolved> choiceSolvedResponseList = choiceRepository.findByTypeAndProblemId(todayLearning.getType(),todayLearning.getProblemId());
+                TodayLearningResponse response = todayLearningToDto(todayLearning);
+                int difficulty = 0 ;
+                for( ChoiceSolved choiceSolved : choiceSolvedResponseList) if(choiceSolved.isCorrect()) difficulty++;
+                int size = Math.max(choiceSolvedResponseList.size() , 1);
+                double ratio = (double)difficulty / size;
+                if( ratio >= 0.2) response.setDifficulty(5);
+                if( ratio >= 0.4) response.setDifficulty(4);
+                if( ratio >= 0.6) response.setDifficulty(3);
+                if( ratio >= 0.8) response.setDifficulty(2);
+                if( ratio >= 1) response.setDifficulty(1);
+
+                if( size <= 3 ) response.setDifficulty(2);
+
+                todayLearningResponses.add(response);
+
                 treeSet.remove(todayLearning.getType());
             }
 
