@@ -69,7 +69,7 @@ public class TodayLearningServiceImpl implements TodayLearningService {
             todayLearningResponses.add(dummy2);
             todayLearningResponses.add(dummy3);
             newbie(userId,personalCategories);
-            return todayLearningResponses;
+                return todayLearningResponses;
         } else{
             log.info(" 오늘의 학습 조회가 성공적으로 이루어졌습니다. ");
         }
