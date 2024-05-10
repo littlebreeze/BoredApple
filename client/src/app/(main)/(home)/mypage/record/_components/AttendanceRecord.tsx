@@ -18,7 +18,7 @@ const getAttendanceData = async (yearMonth: Date | null) => {
       month: yearMonth!.getMonth() + 1,
     }
   );
-  console.log(response.data);
+  return response;
 };
 export default function AttendanceRecord() {
   // 월 바뀔 때 요청 보내기
@@ -26,8 +26,7 @@ export default function AttendanceRecord() {
   const [attendance, setAttendance] = useState<AResponse>();
 
   useEffect(() => {
-    console.log('월 바뀜 출석 요청 보내라');
-    getAttendanceData(yearMonth);
+    getAttendanceData(yearMonth).then((value) => setAttendance(value.data.data));
   }, [yearMonth]);
   return (
     <div className='flex flex-col'>
