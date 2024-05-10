@@ -20,30 +20,27 @@ type Study = {
   isCorrect: boolean;
 };
 type RResponse = {
-  data: {
-    dailyStudyList: Study[];
-  };
+  dailyStudyList: Study[];
 };
 
 const getDailyData = async (today: Date | null) => {
-  const response = await axios.post<RResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/daystudy`, {
-    date: today,
-  });
-  console.log(response.data);
+  const response = await axios.post<{ data: RResponse }>(
+    `${process.env.NEXT_PUBLIC_API_SERVER}/user-service/daystudy`,
+    {
+      date: today,
+    }
+  );
+  return response;
 };
 
 export default function RecordList() {
   const { parseValueIntoDate } = useRecordStore();
-  const [records, setRecords] = useState<QuizType[] | null>(null);
+  const [records, setRecords] = useState<Study[] | null>(null);
   const { today } = useRecordStore();
   useEffect(() => {
     // 요청 보내기
     console.log('해당 일 학습 기록 요청 보내라');
-    getDailyData(parseValueIntoDate(today));
-    const num: number = (parseValueIntoDate(today).getDate() % 3) + 1;
-    let dupl: QuizType[] | null = quizType.slice(0, num);
-    if (num - 1 === 0) dupl = null;
-    setRecords(dupl);
+    getDailyData(parseValueIntoDate(today)).then((value) => setRecords(value.data.data.dailyStudyList));
   }, [today]);
   return (
     <>
@@ -52,7 +49,7 @@ export default function RecordList() {
       </div>
       <div className='bg-ourLightGray rounded-2xl p-4 flex flex-col gap-2'>
         {records ? (
-          records!.map((re: QuizType, idx: number) => {
+          records!.map((re: Study, idx: number) => {
             return <StudyRecordItem key={idx} record={re} />;
           })
         ) : (

@@ -3,26 +3,30 @@ import { useEffect, useState } from 'react';
 import RecordDetailItem from './RecordDetailItem';
 import { useRecordStore } from '@/stores/record';
 import axios from 'axios';
+import instance from '@/utils/interceptor';
 
 type AResponse = {
-  data: {
-    days: number;
-    registerDate: string;
-  };
+  days: number;
+  registerDate: string;
 };
 const getAttendanceData = async (yearMonth: Date | null) => {
-  const response = await axios.post<AResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/calendar`, {
-    date: yearMonth,
-  });
-  console.log(response.data);
+  const response = await instance.post<{ data: AResponse }>(
+    `${process.env.NEXT_PUBLIC_API_SERVER}/user-service/attendance`,
+    {
+      date: yearMonth,
+      year: yearMonth?.getFullYear(),
+      month: yearMonth!.getMonth() + 1,
+    }
+  );
+  return response;
 };
 export default function AttendanceRecord() {
   // 월 바뀔 때 요청 보내기
   const { yearMonth } = useRecordStore();
+  const [attendance, setAttendance] = useState<AResponse>();
 
   useEffect(() => {
-    console.log('월 바뀜 출석 요청 보내라');
-    getAttendanceData(yearMonth);
+    getAttendanceData(yearMonth).then((value) => setAttendance(value.data.data));
   }, [yearMonth]);
   return (
     <div className='flex flex-col'>
@@ -43,9 +47,12 @@ export default function AttendanceRecord() {
         <div className='text-ourTheme font-bold text-lg'>{yearMonth!.getMonth() + 1}월 출석</div>
       </div>
       <div className='grid grid-cols-2 gap-2'>
-        <RecordDetailItem title={'출석일수'} content={'4일'} />
+        <RecordDetailItem title={'출석일수'} content={attendance ? attendance?.days + '일' : '-'} />
         <RecordDetailItem title={'출석율'} content={'4일'} />
-        <RecordDetailItem title={'심심한 사과와 처음 만난 날'} content={'4일'} />
+        <RecordDetailItem
+          title={'심심한 사과와 처음 만난 날'}
+          content={attendance ? attendance!.registerDate.toString() : '-'}
+        />
       </div>
     </div>
   );

@@ -3,28 +3,34 @@ import { useEffect, useState } from 'react';
 import RecordDetailItem from './RecordDetailItem';
 import { useRecordStore } from '@/stores/record';
 import axios from 'axios';
+import instance from '@/utils/interceptor';
 
 type SResponse = {
-  data: {
-    daysCompleteLearning: number;
-    mostLearnedStudy: string;
-    mostReadCategory: string;
-  };
+  daysCompleteLearning: number;
+  mostLearnedStudy: string;
+  mostReadCategory: string;
 };
 
 const getStudyData = async (yearMonth: Date | null) => {
-  const response = await axios.post<SResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/monthstudy`, {
-    date: yearMonth,
-  });
-  console.log(response.data);
+  const response = await instance.post<{ data: SResponse }>(
+    `${process.env.NEXT_PUBLIC_API_SERVER}/user-service/monthstudy`,
+    {
+      date: yearMonth,
+      year: yearMonth?.getFullYear(),
+      month: yearMonth!.getMonth() + 1,
+    }
+  );
+  return response;
 };
 export default function StudyRecord() {
+  const [studyData, setStudyData] = useState<SResponse>();
   // 월 바뀔 때 요청 보내기
   const { yearMonth } = useRecordStore();
 
   useEffect(() => {
-    console.log('월 바뀜 학습 요청 보내라');
-    getStudyData(yearMonth);
+    try {
+      getStudyData(yearMonth).then((value) => setStudyData(value.data.data));
+    } catch (error) {}
   }, [yearMonth]);
   return (
     <div className='flex flex-col'>
@@ -58,10 +64,10 @@ export default function StudyRecord() {
         <div className='text-[#00C27C] font-bold text-lg'>{yearMonth!.getMonth() + 1}월 학습</div>
       </div>
       <div className='grid grid-cols-2 gap-2'>
-        <RecordDetailItem title={'횟수'} content={'4일'} />
-        <RecordDetailItem title={'완료율'} content={'4일'} />
-        <RecordDetailItem title={'가장 많이 한 학습'} content={'4일'} />
-        <RecordDetailItem title={'가장 많이 읽은 분야'} content={'4일'} />
+        <RecordDetailItem title={'횟수'} content={studyData ? studyData!.daysCompleteLearning + '회' : '-'} />
+        <RecordDetailItem title={'완료율'} content={studyData ? studyData!.daysCompleteLearning + '%' : '-'} />
+        <RecordDetailItem title={'가장 많이 한 학습'} content={studyData ? studyData!.mostLearnedStudy : '-'} />
+        <RecordDetailItem title={'가장 많이 읽은 분야'} content={studyData ? studyData!.mostReadCategory : '-'} />
       </div>
     </div>
   );
