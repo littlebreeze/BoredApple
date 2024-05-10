@@ -1,16 +1,46 @@
 'use client';
 
+import { useGameRoomStore } from '@/stores/game-room-info';
 import { useGameWaitStore } from '@/stores/game-wait';
+import instance from '@/utils/interceptor';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
+type GameRoomDetail = {
+  myNickname: string | undefined;
+  myUserId: number | undefined;
+  roomId: number | undefined;
+  maxNum: number | undefined;
+  quizCount: number | undefined;
+  creatorId: number | undefined;
+  roomPlayerRes: { userId: number; nickname: string }[] | null;
+};
+const getGameRoomInfo = (roomId: number) => {
+  const response = instance.get<{ data: GameRoomDetail }>(
+    `${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players`,
+    {
+      params: {
+        roomId: roomId, // roomId를 요청에 포함시킵니다.
+      },
+    }
+  );
+  return response;
+};
 export default function InsertPasswordModal() {
+  const router = useRouter();
+  const { setGameRoomInfo, roomId, roomPlayerRes } = useGameRoomStore();
   const { roomList, selectedRoom, setIsShow } = useGameWaitStore();
   const [password, setPassword] = useState<string>('');
   const [isCorrect, setCorrect] = useState<boolean>(true);
 
   const onClickPasswordCheck = () => {
     if (password === selectedRoom?.roomPassword) {
-      location.href = `game/rooms/${selectedRoom?.id}`;
+      getGameRoomInfo(selectedRoom!.id)
+        .then((value) => {
+          // console.log(value.data.data);
+          setGameRoomInfo(value.data.data);
+        })
+        .catch((error) => console.log(error))
+        .finally(() => router.push(`/game/rooms/${selectedRoom?.id}`));
     } else {
       setCorrect(false);
     }
