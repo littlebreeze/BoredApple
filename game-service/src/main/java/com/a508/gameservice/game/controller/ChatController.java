@@ -31,7 +31,7 @@ public class ChatController {
                 .type(chatMessage.getType())
                 .content(content)
                 .writer(writer)
-                .target(chatMessage.getSender())
+                .target(chatMessage.getSenderId())
                 .build();
     }
 

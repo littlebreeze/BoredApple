@@ -14,6 +14,6 @@ public class ChatMessageRes {
     private MessageType type;
     private String content;
     private String writer;
-    private String target;
+    private Integer target;
 
 }
