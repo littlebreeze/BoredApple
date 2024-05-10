@@ -1,7 +1,5 @@
 package com.a508.studyservice.dto.response;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProblemResponse {
 
-	private String title;
-
-	private String question;
 
 	private String content;
 
@@ -38,6 +33,5 @@ public class ProblemResponse {
 
 	private boolean correct;
 
-	private LocalDateTime createdAt;
 
 }

@@ -61,7 +61,6 @@ public class IntensiveServiceImpl  implements  IntensiveService{
                 response.setAnswer(choiceSolved.getAnswer());
                 response.setUserAnswer(choiceSolved.getUserAnswer());
                 response.setCorrect(choiceSolved.isCorrect());
-                response.setCreatedAt(choiceSolved.getCreatedAt());
             }
             problemResponses.add(response);
         }
@@ -77,9 +76,7 @@ public class IntensiveServiceImpl  implements  IntensiveService{
 
     public ProblemResponse  intensiveToDto(Intensive intensive){
         ProblemResponse problemResponse = new ProblemResponse();
-        problemResponse.setTitle("차례대로 나오는 문장들을 집중해서 읽고 문제를 맞추세요!");
         problemResponse.setContent( splitSentence (intensive.getContent()));
-        problemResponse.setQuestion(intensive.getQuestion());
         problemResponse.setOption1(intensive.getOption1());
         problemResponse.setOption2(intensive.getOption2());
         problemResponse.setOption3(intensive.getOption3());
