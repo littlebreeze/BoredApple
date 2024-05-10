@@ -27,7 +27,6 @@ public class EssayResponse {
 
     private Integer similarity;
 
-    private LocalDateTime createdAt;
 
 
 }
