@@ -58,7 +58,6 @@ public class VocaServiceImpl implements  VocaService {
                 response.setAnswer(choiceSolved.getAnswer());
                 response.setUserAnswer(choiceSolved.getUserAnswer());
                 response.setCorrect(choiceSolved.isCorrect());
-                response.setCreatedAt(choiceSolved.getCreatedAt());
             }
 
             problemResponses.add(response);
@@ -70,8 +69,7 @@ public class VocaServiceImpl implements  VocaService {
 
     public ProblemResponse  vocaToDto(Voca voca){
         ProblemResponse problemResponse = new ProblemResponse();
-        problemResponse.setTitle("다음 단어나 문장과 관련된 단어를 고르세요!");
-        problemResponse.setQuestion(voca.getContent());
+        problemResponse.setContent(voca.getContent());
         problemResponse.setOption1(voca.getOption1());
         problemResponse.setOption2(voca.getOption2());
         problemResponse.setOption3(voca.getOption3());

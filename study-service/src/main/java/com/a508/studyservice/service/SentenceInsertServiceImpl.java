@@ -1,9 +1,15 @@
 package com.a508.studyservice.service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.a508.studyservice.dto.response.ProblemResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
-import com.a508.studyservice.entity.Intensive;
-import com.a508.studyservice.entity.ParagraphOrder;
 import com.a508.studyservice.entity.SentenceInsert;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.global.common.code.ErrorCode;
@@ -11,18 +17,9 @@ import com.a508.studyservice.global.common.exception.BaseException;
 import com.a508.studyservice.repository.ChoiceRepository;
 import com.a508.studyservice.repository.SentenceInsertRepository;
 import com.a508.studyservice.repository.TodayLearningRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.parsing.Problem;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional( readOnly = true)
@@ -68,7 +65,6 @@ public class SentenceInsertServiceImpl  implements  SentenceInsertService{
                 response.setAnswer(choiceSolved.getAnswer());
                 response.setUserAnswer(choiceSolved.getUserAnswer());
                 response.setCorrect(choiceSolved.isCorrect());
-                response.setCreatedAt(choiceSolved.getCreatedAt());
             }
             problemResponses.add(response);
 
@@ -83,8 +79,7 @@ public class SentenceInsertServiceImpl  implements  SentenceInsertService{
                 .category(sentenceInsert.getCategory())
                 .type("문장삽입")
                 .problemId(sentenceInsert.getId())
-                .title("다음 문장이 들어가야 할 적절한 위치를 고르세요!!")
-                .question(sentenceInsert.getInsertSentence())
+                .content(sentenceInsert.getInsertSentence())
                 .option1(sentenceInsert.getOption1())
                 .option2(sentenceInsert.getOption2())
                 .option3(sentenceInsert.getOption3())

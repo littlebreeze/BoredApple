@@ -13,9 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProblemResponse {
 
-	private String title;
-
-	private String question;
 
 	private String content;
 
@@ -38,6 +35,5 @@ public class ProblemResponse {
 
 	private boolean correct;
 
-	private LocalDateTime createdAt;
 
 }
