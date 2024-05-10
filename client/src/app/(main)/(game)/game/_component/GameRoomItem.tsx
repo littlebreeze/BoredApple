@@ -33,8 +33,10 @@ type Props = {
   roomInfo: GameRoomInfo | undefined;
 };
 
-const getGameRoomInfo = () => {
-  const response = instance.get<{ data: GameRoomDetail }>(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players`);
+const getGameRoomInfo = (roomId: number) => {
+  const response = instance.get<{ data: GameRoomDetail }>(
+    `${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players/${roomId}`
+  );
   return response;
 };
 
@@ -47,7 +49,7 @@ export default function GameRoomItem({ roomInfo }: Props) {
         setIsShow(true);
         setSelectedRoom(roomInfo);
       } else {
-        getGameRoomInfo()
+        getGameRoomInfo(roomInfo!.id)
           .then((value) => {
             setGameRoomInfo(value.data.data);
             location.href = `game/rooms/${roomInfo?.id}`;
