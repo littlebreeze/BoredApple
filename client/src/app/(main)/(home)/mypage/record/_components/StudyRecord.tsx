@@ -1,15 +1,10 @@
 'use client';
+import { SResponse } from '@/types/MypageRecord';
 import { useEffect, useState } from 'react';
 import RecordDetailItem from './RecordDetailItem';
 import { useRecordStore } from '@/stores/record';
 import axios from 'axios';
 import instance from '@/utils/interceptor';
-
-type SResponse = {
-  daysCompleteLearning: number;
-  mostLearnedStudy: string;
-  mostReadCategory: string;
-};
 
 const getStudyData = async (yearMonth: Date | null) => {
   const response = await instance.post<{ data: SResponse }>(
