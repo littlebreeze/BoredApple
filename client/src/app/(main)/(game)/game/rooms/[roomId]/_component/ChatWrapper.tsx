@@ -77,13 +77,6 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
     }
   };
 
-  useEffect(() => {
-    console.log(myNickname, myUserId);
-    if (myNickname && myUserId) {
-      location.href = '/game';
-    }
-  }, [myNickname, myUserId]);
-
   return (
     <div className='h-full px-3 pt-3 pb-1 bg-ourLightGray/50 rounded-xl flex flex-col justify-between'>
       <div className='h-44 flex flex-col overflow-y-scroll'>
