@@ -1,27 +1,10 @@
+import { Study, RResponse } from '@/types/MypageRecord';
 import { useEffect, useState } from 'react';
 import { useRecordStore } from '@/stores/record';
 import StudyRecordItem from './StudyRecordItem';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; //한국어
 import axios from 'axios';
-
-type QuizType = { problemType: string; isCorrect: boolean };
-
-const quizType: QuizType[] = [
-  { problemType: '정독 훈련', isCorrect: false },
-  { problemType: '문장 넣기', isCorrect: true },
-  { problemType: '지문 요약', isCorrect: false },
-  { problemType: '문장 순서 배열', isCorrect: true },
-  { problemType: '어휘 퀴즈', isCorrect: false },
-];
-
-type Study = {
-  problemType: string;
-  isCorrect: boolean;
-};
-type RResponse = {
-  dailyStudyList: Study[];
-};
 
 const getDailyData = async (today: Date | null) => {
   const response = await axios.post<{ data: RResponse }>(

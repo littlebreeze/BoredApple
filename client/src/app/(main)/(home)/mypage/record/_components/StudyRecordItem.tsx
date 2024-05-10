@@ -1,7 +1,5 @@
-type Study = {
-  problemType: string;
-  isCorrect: boolean;
-};
+import { Study } from '@/types/MypageRecord';
+
 export default function StudyRecordItem({ record }: { record: Study }) {
   return (
     <div className='flex gap-2'>
