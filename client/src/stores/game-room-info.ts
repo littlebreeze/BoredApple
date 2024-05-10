@@ -30,6 +30,8 @@ export const useGameRoomStore = create<gameRoomInfo>((set) => ({
   creatorId: undefined,
   roomPlayerRes: null,
   setGameRoomInfo: (info: GameRoomDetail) => {
-    set({ ...info });
+    set({
+      ...info,
+    });
   },
 }));
