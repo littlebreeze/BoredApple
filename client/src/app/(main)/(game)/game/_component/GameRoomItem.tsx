@@ -1,10 +1,11 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import InsertPasswordModal from './InsertPasswordModal';
 import { useGameWaitStore } from '@/stores/game-wait';
 import instance from '@/utils/interceptor';
 import { useGameRoomStore } from '@/stores/game-room-info';
+import { useRouter } from 'next/navigation';
 
 type GameRoomDetail = {
   myNickname: string | undefined;
@@ -46,8 +47,9 @@ const getGameRoomInfo = (roomId: number) => {
 };
 
 export default function GameRoomItem({ roomInfo }: Props) {
-  const { setGameRoomInfo } = useGameRoomStore();
-  const { setIsShow, setSelectedRoom } = useGameWaitStore();
+  const router = useRouter();
+  const { setGameRoomInfo, roomId, roomPlayerRes } = useGameRoomStore();
+  const { setIsShow, setSelectedRoom, selectedRoom } = useGameWaitStore();
   const onClickRoomItem = () => {
     if (!roomInfo?.isStarted && roomInfo?.nowNum !== roomInfo?.maxNum) {
       if (roomInfo?.isSecret) {
@@ -56,14 +58,18 @@ export default function GameRoomItem({ roomInfo }: Props) {
       } else {
         getGameRoomInfo(roomInfo!.id)
           .then((value) => {
+            // console.log(value.data.data);
             setGameRoomInfo(value.data.data);
-            location.href = `game/rooms/${roomInfo?.id}`;
           })
-          .catch((error) => console.log(error));
+          .catch((error) => console.log(error))
+          .finally(() => router.push(`/game/rooms/${roomInfo?.id}`));
       }
     }
   };
 
+  useEffect(() => {
+    console.log('바껴서 출력되는 거에요', roomId, roomPlayerRes);
+  }, [roomId, roomPlayerRes]);
   if (!roomInfo) {
     return <div className='bg-white/80 rounded-xl h-28 flex flex-row p-3 md:px-5 lg:px-5'></div>;
   } else
