@@ -5,12 +5,10 @@ import axios from 'axios';
 import { useGameRecord } from '@/queries/mypage-record';
 
 type GResponse = {
-  data: {
-    numberOfWin: number;
-    numberOfGame: number;
-    rating: number;
-    rank: number;
-  };
+  numberOfWin: number;
+  numberOfGame: number;
+  rating: number;
+  rank: number;
 };
 
 // const getDailyData = async () => {
@@ -43,15 +41,15 @@ export default function GameRecord() {
         <div className='text-[#F45C5E] font-bold text-lg'>전체 대전 기록</div>
       </div>
       <div className='grid grid-cols-2 gap-2'>
-        <RecordDetailItem title={'우승 횟수'} content={gameRecord ? gameRecord!.data.numberOfWin + '번' : '-'} />
-        <RecordDetailItem title={'총 경기 횟수'} content={gameRecord ? gameRecord!.data.numberOfGame + '번' : '-'} />
+        <RecordDetailItem title={'우승 횟수'} content={gameRecord ? gameRecord!.numberOfWin + '번' : '-'} />
+        <RecordDetailItem title={'총 경기 횟수'} content={gameRecord ? gameRecord!.numberOfGame + '번' : '-'} />
         <RecordDetailItem
           title={'승률'}
-          content={gameRecord ? gameRecord!.data.numberOfGame / gameRecord!.data.numberOfWin + '%' : '-'}
+          content={gameRecord ? gameRecord!.numberOfGame / gameRecord!.numberOfWin + '%' : '-'}
         />
         <RecordDetailItem
           title={'랭킹(*점수)'}
-          content={gameRecord ? gameRecord!.data.rank + '위(*' + gameRecord!.data.rating + ')' : '-'}
+          content={gameRecord ? gameRecord!.rank + '위(*' + gameRecord!.rating + ')' : '-'}
         />
       </div>
     </div>

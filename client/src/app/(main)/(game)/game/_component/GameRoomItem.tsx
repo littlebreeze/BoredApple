@@ -3,6 +3,18 @@ import Link from 'next/link';
 import { useState } from 'react';
 import InsertPasswordModal from './InsertPasswordModal';
 import { useGameWaitStore } from '@/stores/game-wait';
+import instance from '@/utils/interceptor';
+import { useGameRoomStore } from '@/stores/game-room-info';
+
+type GameRoomDetail = {
+  myNickname: string | undefined;
+  myUserId: number | undefined;
+  roomId: number | undefined;
+  maxNum: number | undefined;
+  quizCount: number | undefined;
+  creatorId: number | undefined;
+  roomPlayerRes: { userId: number; nickname: string }[] | null;
+};
 
 type GameRoomInfo = {
   id: number;
@@ -21,14 +33,29 @@ type Props = {
   roomInfo: GameRoomInfo | undefined;
 };
 
+const getGameRoomInfo = () => {
+  const response = instance.get<{ data: GameRoomDetail }>(
+    `${process.env.NEXT_PUBLIC_API_SERVER}/user-service/attendance`
+  );
+  return response;
+};
+
 export default function GameRoomItem({ roomInfo }: Props) {
+  const { setGameRoomInfo } = useGameRoomStore();
   const { setIsShow, setSelectedRoom } = useGameWaitStore();
   const onClickRoomItem = () => {
     if (!roomInfo?.isStarted && roomInfo?.nowNum !== roomInfo?.maxNum) {
       if (roomInfo?.isSecret) {
         setIsShow(true);
         setSelectedRoom(roomInfo);
-      } else location.href = `game/rooms/${roomInfo?.id}`;
+      } else {
+        getGameRoomInfo()
+          .then((value) => {
+            setGameRoomInfo(value.data.data);
+            location.href = `game/rooms/${roomInfo?.id}`;
+          })
+          .catch((error) => console.log(error));
+      }
     }
   };
 
