@@ -1,46 +1,6 @@
-import axios from 'axios';
+import { ARequest, AResponse, GResponse, RLRequest, RLResponse, SRResponse } from '@/types/MypageRecord';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import instance from '@/utils/interceptor';
-
-// 출석 요청 데이터
-type ARequest = {
-  year: number;
-  month: number;
-};
-// 출석 응답 데이터
-type AResponse = {
-  days: number;
-  registerDate: string;
-};
-
-// 일자별 기록 요청 데이터
-type RLRequest = {
-  year: number;
-  month: number;
-  day: number;
-};
-// 일자별 기록 응답 데이터
-type RLResponse = {
-  dailyStudyList: {
-    problemType: string;
-    isCorrect: boolean;
-  }[];
-};
-
-// 월별 학습 응답 데이터
-type SRResponse = {
-  daysCompleteLearning: number;
-  mostLearnedStudy: string;
-  mostReadCategory: string;
-};
-
-// 게임 응답 데이터
-type GResponse = {
-  numberOfWin: number;
-  numberOfGame: number;
-  rating: number;
-  rank: number;
-};
 
 // 달력 요청
 const postCalendarRecord = async (yearMonth: ARequest) => {
