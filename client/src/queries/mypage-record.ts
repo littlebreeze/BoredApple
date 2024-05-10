@@ -101,7 +101,7 @@ export const useStudyRecord = () => {
 // 게임 요청
 // async - await 함수 작성
 const getGameRecord = async () => {
-  const response = await instance.get<{ data: GResponse }>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/record`);
+  const response = await instance.get<GResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/record`);
   return response;
 };
 
