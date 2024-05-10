@@ -1,15 +1,24 @@
+'use client';
+
+import { useGameRoomStore } from '@/stores/game-room-info';
+import { useEffect } from 'react';
+
 export default function GameScoreBoard() {
+  const { roomPlayerRes } = useGameRoomStore();
+  useEffect(() => {
+    if (roomPlayerRes!.length <= 0) {
+      location.href = '/game';
+    }
+  }, []);
   return (
     <div className='flex flex-col gap-1 p-3 bg-white rounded-xl'>
       <div className='text-center'>점수</div>
-      <div className='flex justify-between'>
-        <div>문해문어</div>
-        <div>1</div>
-      </div>
-      <div className='flex justify-between'>
-        <div>문해너구리</div>
-        <div>3</div>
-      </div>
+      {roomPlayerRes?.map((player, idx) => (
+        <div key={idx} className='flex justify-between'>
+          <div>{player.nickname}</div>
+          <div>-</div>
+        </div>
+      ))}
     </div>
   );
 }

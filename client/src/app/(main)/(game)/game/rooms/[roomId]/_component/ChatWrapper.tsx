@@ -1,5 +1,6 @@
 'use client';
 
+import { useGameRoomStore } from '@/stores/game-room-info';
 import { Client, IMessage } from '@stomp/stompjs';
 import axios from 'axios';
 
@@ -9,6 +10,7 @@ interface ChatMessageRequest {
   type: string;
   roomId: string;
   sender: string;
+  senderId: number;
   message: string;
 }
 interface ChatMessageResponse {
@@ -27,6 +29,7 @@ type Chat = {
 };
 
 export default function ChatWrapper({ roomId }: { roomId: string }) {
+  const { myNickname, myUserId } = useGameRoomStore();
   const [stompClient, setStompClient] = useState<Client | null>(null);
 
   const messageEndRef = useRef<HTMLDivElement | null>(null);
@@ -61,7 +64,8 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
       const chatMessage: ChatMessageRequest = {
         type: 'TALK',
         roomId: roomId,
-        sender: '보냅니다',
+        sender: myNickname!,
+        senderId: myUserId!,
         message: newMessage,
       };
       stompClient.publish({
@@ -72,6 +76,12 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
       setNewMessage('');
     }
   };
+
+  useEffect(() => {
+    if (myNickname && myUserId) {
+      location.href = '/game';
+    }
+  }, []);
 
   return (
     <div className='h-full px-3 pt-3 pb-1 bg-ourLightGray/50 rounded-xl flex flex-col justify-between'>
@@ -85,7 +95,7 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
         <div ref={messageEndRef}></div>
       </div>
       <div className='p-2 flex gap-3 border-t-2 bg-ourDarkGray/10 rounded-md'>
-        <label className='text-center w-2/12'>닉네임닉</label>
+        <label className='text-center w-2/12'>{myNickname}</label>
         <input
           className='px-2 w-10/12 appearance-none rounded leading-tight focus:outline-none'
           type='text'
