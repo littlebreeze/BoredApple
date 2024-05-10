@@ -18,12 +18,12 @@ type GResponse = {
 //   console.log(response.data);
 // };
 export default function GameRecord() {
-  const { data } = useGameRecord();
-  const [gameRecord, setGameRecord] = useState<GResponse>();
+  const { data, isLoading } = useGameRecord();
+  const [gameRecord, setGameRecord] = useState<GResponse | undefined>(undefined);
   // 마운트 되었을 때 요청 보내기
   useEffect(() => {
-    if (data) setGameRecord(data.data);
-  }, [data]);
+    if (data?.data) setGameRecord(data.data);
+  }, [isLoading]);
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>
