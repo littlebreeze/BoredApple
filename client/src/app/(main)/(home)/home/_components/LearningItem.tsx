@@ -21,20 +21,61 @@ type LearningItemProps = {
 };
 
 export default function LearningItem(props: { learningItem: LearningItemType }) {
+  const router = useRouter();
   const { type, solved, difficulty } = props.learningItem;
+
+  const handleClick = (type: number) => {
+    switch (type) {
+      case 1:
+        if (!solved) {
+          router.push('/learn/summary');
+        } else {
+          router.push('/learn/summary/result');
+        }
+        break;
+      case 2:
+        if (!solved) {
+          router.push('/learn/read');
+        } else {
+          router.push('/learn/read/result');
+        }
+        break;
+      case 3:
+        if (!solved) {
+          router.push('/learn/word');
+        } else {
+          router.push('/learn/word/result');
+        }
+        break;
+      case 4:
+        if (!solved) {
+          router.push('/learn/insert');
+        } else {
+          router.push('/learn/insert/result');
+        }
+        break;
+      case 5:
+        if (!solved) {
+          router.push('/learn/order');
+        } else {
+          router.push('/learn/order/result');
+        }
+        break;
+    }
+  };
 
   const renderTypeComponent = () => {
     switch (type) {
       case '주제맞추기':
-        return <LearningItem1 difficulty={difficulty} solved={solved} />;
+        return <LearningItem1 difficulty={difficulty} solved={solved} handleClick={handleClick} />;
       case '정독훈련':
-        return <LearningItem2 difficulty={difficulty} solved={solved} />;
+        return <LearningItem2 difficulty={difficulty} solved={solved} handleClick={handleClick} />;
       case '어휘':
-        return <LearningItem3 difficulty={difficulty} solved={solved} />;
+        return <LearningItem3 difficulty={difficulty} solved={solved} handleClick={handleClick} />;
       case '문장삽입':
-        return <LearningItem4 difficulty={difficulty} solved={solved} />;
+        return <LearningItem4 difficulty={difficulty} solved={solved} handleClick={handleClick} />;
       case '순서맞추기':
-        return <LearningItem5 difficulty={difficulty} solved={solved} />;
+        return <LearningItem5 difficulty={difficulty} solved={solved} handleClick={handleClick} />;
       default:
         return <DefaultItem />;
     }
@@ -49,12 +90,23 @@ const getStars = (difficulty: number) => {
 };
 
 // 지문 요약(주제맞추기)
-const LearningItem1 = ({ difficulty, solved }: { difficulty: number; solved: boolean }) => {
+const LearningItem1 = ({
+  difficulty,
+  solved,
+  handleClick,
+}: {
+  difficulty: number;
+  solved: boolean;
+  handleClick: (type: number) => void;
+}) => {
   const stars = getStars(difficulty);
 
   return (
     <div
       className={`flex justify-between bg-ourPink h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-110'}`}
+      onClick={() => {
+        handleClick(1);
+      }}
     >
       <div className='flex flex-col justify-between '>
         <div>
@@ -78,12 +130,23 @@ const LearningItem1 = ({ difficulty, solved }: { difficulty: number; solved: boo
 };
 
 // 정독 훈련(정독훈련)
-const LearningItem2 = ({ difficulty: level, solved }: { difficulty: number; solved: boolean }) => {
-  const stars = getStars(level);
+const LearningItem2 = ({
+  difficulty,
+  solved,
+  handleClick,
+}: {
+  difficulty: number;
+  solved: boolean;
+  handleClick: (type: number) => void;
+}) => {
+  const stars = getStars(difficulty);
 
   return (
     <div
       className={`flex justify-between bg-ourGreen h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-110'}`}
+      onClick={() => {
+        handleClick(2);
+      }}
     >
       <div className='flex flex-col justify-between '>
         <div>
@@ -107,12 +170,23 @@ const LearningItem2 = ({ difficulty: level, solved }: { difficulty: number; solv
 };
 
 // 어휘 퀴즈(어휘)
-const LearningItem3 = ({ difficulty: level, solved }: { difficulty: number; solved: boolean }) => {
-  const stars = getStars(level);
+const LearningItem3 = ({
+  difficulty,
+  solved,
+  handleClick,
+}: {
+  difficulty: number;
+  solved: boolean;
+  handleClick: (type: number) => void;
+}) => {
+  const stars = getStars(difficulty);
 
   return (
     <div
       className={`flex justify-between bg-ourYellow h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-110'}`}
+      onClick={() => {
+        handleClick(3);
+      }}
     >
       <div className='flex flex-col justify-between '>
         <div>
@@ -136,12 +210,23 @@ const LearningItem3 = ({ difficulty: level, solved }: { difficulty: number; solv
 };
 
 // 문장 넣기(문장삽입)
-const LearningItem4 = ({ difficulty: level, solved }: { difficulty: number; solved: boolean }) => {
-  const stars = getStars(level);
+const LearningItem4 = ({
+  difficulty,
+  solved,
+  handleClick,
+}: {
+  difficulty: number;
+  solved: boolean;
+  handleClick: (type: number) => void;
+}) => {
+  const stars = getStars(difficulty);
 
   return (
     <div
       className={`flex justify-between bg-ourRed h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-105'}`}
+      onClick={() => {
+        handleClick(4);
+      }}
     >
       <div className='flex flex-col justify-between '>
         <div>
@@ -165,12 +250,23 @@ const LearningItem4 = ({ difficulty: level, solved }: { difficulty: number; solv
 };
 
 // 문장 순서 배열(순서맞추기)
-const LearningItem5 = ({ difficulty: level, solved }: { difficulty: number; solved: boolean }) => {
-  const stars = getStars(level);
+const LearningItem5 = ({
+  difficulty,
+  solved,
+  handleClick,
+}: {
+  difficulty: number;
+  solved: boolean;
+  handleClick: (type: number) => void;
+}) => {
+  const stars = getStars(difficulty);
 
   return (
     <div
       className={`flex justify-between bg-ourPurple h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-105'}`}
+      onClick={() => {
+        handleClick(5);
+      }}
     >
       <div className='flex flex-col justify-between '>
         <div>
