@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import RecordDetailItem from './RecordDetailItem';
 import { useRecordStore } from '@/stores/record';
 import axios from 'axios';
+import instance from '@/utils/interceptor';
 
 type AResponse = {
   data: {
@@ -11,7 +12,7 @@ type AResponse = {
   };
 };
 const getAttendanceData = async (yearMonth: Date | null) => {
-  const response = await axios.post<AResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/calendar`, {
+  const response = await instance.post<AResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/calendar`, {
     date: yearMonth,
   });
   console.log(response.data);
