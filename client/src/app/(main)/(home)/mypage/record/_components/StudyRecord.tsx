@@ -16,6 +16,8 @@ const getStudyData = async (yearMonth: Date | null) => {
     `${process.env.NEXT_PUBLIC_API_SERVER}/user-service/monthstudy`,
     {
       date: yearMonth,
+      year: yearMonth?.getFullYear(),
+      month: yearMonth!.getMonth() + 1,
     }
   );
   return response;
