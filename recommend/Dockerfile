@@ -18,8 +18,6 @@ RUN adduser \
 
 USER root
 
-COPY mecabrc /usr/local/etc/
-
 RUN apt update
 RUN apt install -y gcc pkg-config default-libmysqlclient-dev curl
 
@@ -27,6 +25,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
 
+COPY mecabrc /usr/local/etc/
 
 
 COPY . .
