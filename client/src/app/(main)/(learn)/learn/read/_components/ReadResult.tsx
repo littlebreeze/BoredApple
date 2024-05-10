@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { IBasicProblem, BasicProblemResponse } from '@/types/Problem';
 
-export default function WordResult() {
+export default function ReadResult() {
   const router = useRouter();
   const [wordProblems, setWordProblems] = useState<BasicProblemResponse>([]);
   const [wordProblemIndex, setWordProblemIndex] = useState(0);
@@ -94,7 +94,7 @@ export default function WordResult() {
         </div>
         <div className='py-4'></div>
         <div className='flex'>
-          <div className='mr-2'>어휘 퀴즈</div>
+          <div className='mr-2'>정독 훈련</div>
           <div>
             <span className='text-ourBlue'>{progress}</span>
             <span className='text-ourBlack'> / 3</span>

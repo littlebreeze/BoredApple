@@ -1,4 +1,4 @@
-export interface IWordProblem {
+export interface IBasicProblem {
   content: string;
   option1: string;
   option2: string;
@@ -11,4 +11,4 @@ export interface IWordProblem {
   correct: boolean;
 }
 
-export type WordProblemResponse = IWordProblem[];
+export type BasicProblemResponse = IBasicProblem[];

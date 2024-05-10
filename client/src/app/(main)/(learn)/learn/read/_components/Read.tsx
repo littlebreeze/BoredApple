@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { BasicProblemResponse } from '@/types/Problem';
 
-export default function Word() {
+export default function Read() {
   const router = useRouter();
   const [wordProblems, setWordProblems] = useState<BasicProblemResponse>([]);
   const [wordProblemIndex, setWordProblemIndex] = useState(0);
@@ -47,7 +47,8 @@ export default function Word() {
 
   const getWordData = async () => {
     try {
-      const response = await instance.get(`/study-service/problem/voca`);
+      const response = await instance.get(`/study-service/problem/intensive`);
+      console.log(response.data.data);
       setWordProblems(response.data.data);
     } catch (error) {
       // error
@@ -100,20 +101,20 @@ export default function Word() {
         </div>
         <div className='py-4'></div>
         <div className='flex'>
-          <div className='mr-2'>어휘 퀴즈</div>
+          <div className='mr-2'>정독 훈련</div>
           <div>
             <span className='text-ourBlue'>{progress}</span>
             <span className='text-ourBlack'> / 3</span>
           </div>
         </div>
         <div className='py-1'></div>
-        <div>다음 문장의 의미에 부합하는 적절한 어휘를 고르시오.</div>
+        <div>각 문장을 정확히 끊어 읽고 문제를 풀어보세요. 준비됐다면 시작 버튼을 눌러주세요!</div>
         <div className='py-2'></div>
 
         {currWordProblem && (
           <div>
             <div className='flex gap-2'>
-              <div className='p-4 h-fit flex-1 font-Batang'>{currWordProblem.content}</div>
+              <div className='p-4 h-fit flex-1 font-Batang select-none'>{currWordProblem.content}</div>
               <div>
                 <div className='py-12'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
