@@ -1,7 +1,5 @@
 package com.a508.studyservice.dto.response;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +25,6 @@ public class EssayResponse {
 
     private Integer similarity;
 
-    private LocalDateTime createdAt;
 
 
 }
