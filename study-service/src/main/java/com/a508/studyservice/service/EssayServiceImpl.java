@@ -101,7 +101,6 @@ public class EssayServiceImpl  implements  EssayService{
                             .answer(topicProblem.getAnswer())
                             .type(type)
                             .similarity(similarity)
-                            .createdAt(essaySolved.getCreatedAt())
                             .content(topicProblem.getContent())
                             .build());
             log.info(topicProblem.toString());
