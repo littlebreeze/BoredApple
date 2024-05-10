@@ -1,11 +1,16 @@
 package com.a508.studyservice.service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.a508.studyservice.dto.request.EssayRequest;
 import com.a508.studyservice.dto.response.EssayResponse;
-import com.a508.studyservice.dto.response.ProblemResponse;
 import com.a508.studyservice.entity.EssaySolved;
-import com.a508.studyservice.entity.SentenceInsert;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.entity.TopicProblem;
 import com.a508.studyservice.global.common.code.ErrorCode;
@@ -13,15 +18,9 @@ import com.a508.studyservice.global.common.exception.BaseException;
 import com.a508.studyservice.repository.EssayRepository;
 import com.a508.studyservice.repository.TodayLearningRepository;
 import com.a508.studyservice.repository.TopicRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Transactional
@@ -103,7 +102,7 @@ public class EssayServiceImpl  implements  EssayService{
                             .type(type)
                             .similarity(similarity)
                             .createdAt(essaySolved.getCreatedAt())
-                            .text(topicProblem.getContent())
+                            .content(topicProblem.getContent())
                             .build());
             log.info(topicProblem.toString());
         }
@@ -114,8 +113,7 @@ public class EssayServiceImpl  implements  EssayService{
 
     public EssayResponse topicToDto (TopicProblem topicProblem){
         return EssayResponse.builder()
-                .title(" 다음 글을 읽고 주제를 요약하세요!")
-                .text(topicProblem.getContent())
+                .content(topicProblem.getContent())
                 .type("주제맞추기")
                 .build();
 
