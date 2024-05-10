@@ -19,8 +19,6 @@ public class Intensive {
     //정독 훈련
     private String content;
 
-    private String question;
-
     private String option1;
 
     private String option2;
