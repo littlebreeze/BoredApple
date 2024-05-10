@@ -18,7 +18,7 @@ RUN adduser \
 
 USER root
 
-COPY mecabrc /usr/local/etc/mecabrc
+COPY mecabrc /usr/local/etc/
 
 RUN apt update
 RUN apt install -y gcc pkg-config default-libmysqlclient-dev curl
