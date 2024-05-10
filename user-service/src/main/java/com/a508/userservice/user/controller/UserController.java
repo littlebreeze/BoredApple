@@ -111,7 +111,7 @@ public class UserController {
 
 	@PostMapping("/monthstudy")
 	public SuccessResponse<MonthlyStudyRes> getStudyByMonth(HttpServletRequest request, @RequestBody YearMonthReq date) {
-
+		System.out.println(date.getYear()+" "+date.getMonth());
 		return new SuccessResponse<>(MonthlyStudyRes.builder().daysCompleteLearning(3).mostLearnedStudy("정독훈련").mostReadCategory("과학/기술").build());
 	}
 
