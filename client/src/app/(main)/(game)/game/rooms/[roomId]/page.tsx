@@ -2,10 +2,25 @@
 
 import { useParams } from 'next/navigation';
 import ChatWrapper from './_component/ChatWrapper';
-import GameScoreBoard from '../../_component/GameScoreBoard';
+import GameScoreBoard from './_component/GameScoreBoard';
+import { useGameRoomStore } from '@/stores/game-room-info';
+import { useEffect } from 'react';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
+  const {
+    myNickname,
+    myUserId,
+    roomId: storedRoomId,
+    maxNum,
+    quizCount,
+    creatorId,
+    roomPlayerRes,
+  } = useGameRoomStore();
+
+  useEffect(() => {
+    console.log(storedRoomId);
+  }, []);
 
   return (
     <div className='flex flex-col items-center'>
