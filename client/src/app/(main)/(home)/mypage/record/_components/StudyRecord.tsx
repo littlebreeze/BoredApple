@@ -18,7 +18,6 @@ const getStudyData = async (yearMonth: Date | null) => {
       date: yearMonth,
     }
   );
-  console.log(response.data);
   return response;
 };
 export default function StudyRecord() {
