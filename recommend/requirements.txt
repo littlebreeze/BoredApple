@@ -11,4 +11,3 @@ mecab-python==1.0.0
 mecab-python3==1.0.9
 hgtk==0.2.1
 mecab-ko
-mecab-dic
