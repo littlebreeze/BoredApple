@@ -5,24 +5,8 @@ import ChatWrapper from './_component/ChatWrapper';
 import GameScoreBoard from './_component/GameScoreBoard';
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useEffect } from 'react';
-import instance from '@/utils/interceptor';
-
-type GameRoomDetail = {
-  myNickname: string | undefined;
-  myUserId: number | undefined;
-  roomId: number | undefined;
-  maxNum: number | undefined;
-  quizCount: number | undefined;
-  creatorId: number | undefined;
-  roomPlayerRes: { userId: number; nickname: string }[] | null;
-};
-const getGameRoomInfo = () => {
-  const response = instance.get<{ data: GameRoomDetail }>(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players`);
-  return response;
-};
 
 export default function Page() {
-  const { setGameRoomInfo } = useGameRoomStore();
   const { roomId } = useParams<{ roomId: string }>();
   const {
     myNickname,
@@ -35,11 +19,6 @@ export default function Page() {
   } = useGameRoomStore();
 
   useEffect(() => {
-    getGameRoomInfo()
-      .then((value) => {
-        setGameRoomInfo(value.data.data);
-      })
-      .catch((error) => console.log(error));
     console.log(storedRoomId);
   }, []);
 
