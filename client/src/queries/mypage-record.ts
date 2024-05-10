@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import instance from '@/utils/interceptor';
 
 type GResponse = {
   data: {
@@ -12,7 +13,7 @@ type GResponse = {
 
 // async - await 함수 작성
 const getGameRecord = async () => {
-  const response = await axios.get<GResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/record`);
+  const response = await instance.get<GResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/record`);
   return response;
 };
 
