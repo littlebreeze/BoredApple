@@ -34,9 +34,7 @@ type Props = {
 };
 
 const getGameRoomInfo = () => {
-  const response = instance.get<{ data: GameRoomDetail }>(
-    `${process.env.NEXT_PUBLIC_API_SERVER}/user-service/attendance`
-  );
+  const response = instance.get<{ data: GameRoomDetail }>(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players`);
   return response;
 };
 
