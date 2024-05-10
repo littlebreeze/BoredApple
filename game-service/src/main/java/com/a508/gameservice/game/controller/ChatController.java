@@ -12,8 +12,8 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ChatController {
 
-    @MessageMapping("/chat/rooms/{roomId}/send")
-    @SendTo("/topic/public/rooms/{roomId}")
+    @MessageMapping("/ws/rooms/{roomId}/send")
+    @SendTo("/topic/chat/rooms/{roomId}")
     public ChatMessageRes sendMessage(@DestinationVariable Integer roomId, @Payload ChatMessageReq chatMessage) {
         String content = chatMessage.getMessage();
         String writer = "심심한 사과";
