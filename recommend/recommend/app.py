@@ -1,7 +1,7 @@
 import math
 from flask import Flask
 from flask import request
-from fastText.python.fasttext_module import fasttext
+import fasttext
 
 model = fasttext.load_model("fasttext.bin")
 import MeCab
