@@ -13,9 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EssayResponse {
 
-    private String title;
 
-    private String text;
+    private String content;
 
     private String userAnswer;
 

@@ -1,8 +1,15 @@
 package com.a508.studyservice.service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.a508.studyservice.dto.response.ProblemResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
-import com.a508.studyservice.entity.Intensive;
 import com.a508.studyservice.entity.ParagraphOrder;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.global.common.code.ErrorCode;
@@ -10,15 +17,9 @@ import com.a508.studyservice.global.common.exception.BaseException;
 import com.a508.studyservice.repository.ChoiceRepository;
 import com.a508.studyservice.repository.ParagraphOrderRepository;
 import com.a508.studyservice.repository.TodayLearningRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Transactional( readOnly = true)
@@ -58,7 +59,6 @@ public class ParagraphOrderServiceImpl implements  ParagraphOrderService{
                 response.setAnswer(choiceSolved.getAnswer());
                 response.setUserAnswer(choiceSolved.getUserAnswer());
                 response.setCorrect(choiceSolved.isCorrect());
-                response.setCreatedAt(choiceSolved.getCreatedAt());
             }
             problemResponses.add(response);
 
@@ -70,7 +70,6 @@ public class ParagraphOrderServiceImpl implements  ParagraphOrderService{
 
     public ProblemResponse orderToDto(ParagraphOrder order){
         ProblemResponse problemResponse = new ProblemResponse();
-        problemResponse.setTitle("첫 번째 문장을 읽고 이어서 문장의 순서를 정하세요");
         problemResponse.setContent(order.getFirstSentence());
         problemResponse.setOption1(order.getOption1());
         problemResponse.setOption2(order.getOption2());
