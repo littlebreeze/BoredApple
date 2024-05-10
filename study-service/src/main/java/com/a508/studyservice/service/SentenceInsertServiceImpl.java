@@ -79,7 +79,6 @@ public class SentenceInsertServiceImpl  implements  SentenceInsertService{
                 .category(sentenceInsert.getCategory())
                 .type("문장삽입")
                 .problemId(sentenceInsert.getId())
-                .content(sentenceInsert.getInsertSentence())
                 .option1(sentenceInsert.getOption1())
                 .option2(sentenceInsert.getOption2())
                 .option3(sentenceInsert.getOption3())

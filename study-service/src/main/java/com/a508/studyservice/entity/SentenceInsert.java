@@ -21,8 +21,6 @@ public class SentenceInsert {
     //정독 훈련
     private String content;
 
-    private String insertSentence;
-
     private String option1;
 
     private String option2;
