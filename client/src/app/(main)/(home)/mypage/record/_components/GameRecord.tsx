@@ -1,15 +1,10 @@
 'use client';
+
+import { GResponse } from '@/types/MypageRecord';
 import { useEffect, useState } from 'react';
 import RecordDetailItem from './RecordDetailItem';
 import axios from 'axios';
 import { useGameRecord } from '@/queries/mypage-record';
-
-type GResponse = {
-  numberOfWin: number;
-  numberOfGame: number;
-  rating: number;
-  rank: number;
-};
 
 // const getDailyData = async () => {
 //   const response = await axios.get<GResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/record`);

@@ -1,14 +1,10 @@
 'use client';
+import { AResponse } from '@/types/MypageRecord';
 import { useEffect, useState } from 'react';
 import RecordDetailItem from './RecordDetailItem';
 import { useRecordStore } from '@/stores/record';
-import axios from 'axios';
 import instance from '@/utils/interceptor';
 
-type AResponse = {
-  days: number;
-  registerDate: string;
-};
 const getAttendanceData = async (yearMonth: Date | null) => {
   const response = await instance.post<{ data: AResponse }>(
     `${process.env.NEXT_PUBLIC_API_SERVER}/user-service/attendance`,
