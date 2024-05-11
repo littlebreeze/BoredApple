@@ -15,7 +15,7 @@ export default function GameRecord() {
   const [gameRecord, setGameRecord] = useState<GResponse | undefined>(undefined);
   // 마운트 되었을 때 요청 보내기
   useEffect(() => {
-    if (data?.data) setGameRecord(data.data);
+    if (data?.data) setGameRecord(data.data.data);
   }, [isLoading]);
   return (
     <div className='flex flex-col'>
