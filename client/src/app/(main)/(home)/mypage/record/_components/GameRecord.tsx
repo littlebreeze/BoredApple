@@ -11,12 +11,12 @@ import { useGameRecord } from '@/queries/mypage-record';
 //   console.log(response.data);
 // };
 export default function GameRecord() {
-  const { data } = useGameRecord();
+  const { data, isLoading } = useGameRecord();
   const [gameRecord, setGameRecord] = useState<GResponse>();
   // 마운트 되었을 때 요청 보내기
   useEffect(() => {
-    if (data) setGameRecord(data.data);
-  }, [data]);
+    if (data) setGameRecord(data.data.data);
+  }, [isLoading]);
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>
