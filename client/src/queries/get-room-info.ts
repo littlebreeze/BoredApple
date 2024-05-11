@@ -9,7 +9,7 @@ type GameRoomDetail = {
   maxNum: number | undefined;
   quizCount: number | undefined;
   creatorId: number | undefined;
-  roomPlayerRes: { userId: number; nickname: string }[] | null;
+  roomPlayerRes: { userId: number; nickname: string }[];
 };
 
 const getGameRoomInfo = (roomId: number | undefined) => {
