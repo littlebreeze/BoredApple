@@ -1,27 +1,19 @@
 import { create } from 'zustand';
 
-interface gameScore {
-  myNickname: string | undefined;
-  myUserId: number | undefined;
-  roomId: number | undefined;
-  maxNum: number | undefined;
-  quizCount: number | undefined;
-  creatorId: number | undefined;
-  roomPlayerRes: { userId: number; nickname: string }[] | null;
-  // setGameRoomInfo: (info: GameRoomDetail) => void;
+type MemberScore = {
+  score: number;
+  nickname: string;
+  id: number;
+};
+
+interface GameScore {
+  players: MemberScore[];
+  addPlayers: (player: MemberScore[]) => void;
 }
 
-export const useGameScoreStore = create<gameScore>((set) => ({
-  myNickname: undefined,
-  myUserId: undefined,
-  roomId: undefined,
-  maxNum: undefined,
-  quizCount: undefined,
-  creatorId: undefined,
-  roomPlayerRes: null,
-  // setGameRoomInfo: (info: GameRoomDetail) => {
-  //   set({
-  //     ...info,
-  //   });
-  // },
+export const useGameScoreStore = create<GameScore>((set) => ({
+  players: [],
+  addPlayers: (players: MemberScore[]) => {
+    set({ players: players });
+  },
 }));
