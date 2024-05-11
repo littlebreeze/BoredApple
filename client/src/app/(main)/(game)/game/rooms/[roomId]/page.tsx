@@ -19,7 +19,7 @@ export default function Page() {
   } = useGameRoomStore();
 
   useEffect(() => {
-    console.log(storedRoomId);
+    console.log(roomPlayerRes);
   }, []);
 
   return (
