@@ -57,7 +57,7 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
     return () => {
       client.deactivate();
     };
-  }, [roomId]);
+  }, []);
 
   const sendMessage = () => {
     if (stompClient && newMessage) {
