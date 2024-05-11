@@ -31,7 +31,9 @@ const regenerateRefreshToken = async () => {
 instance.interceptors.request.use(
   (config) => {
     // 요청 전달 전 미리 헤더에 엑세스 토큰 저장
-    config.headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+    config.headers[
+      'Authorization'
+    ] = `Bearer eyJhbGciOiJIUzUxMiJ9.eyJhdXRoIjpbIlJPTEVfVVNFUiJdLCJhdWQiOiJodHRwczovL2sxMGE1MDgucC5zc2FmeS5pby8iLCJzdWIiOiIxMDc5NDgwNTgzMzU3MDg2NjUyNjAiLCJpc3MiOiJodHRwczovL2sxMGE1MDgucC5zc2FmeS5pby8iLCJpYXQiOjE3MTUxNDEwNzgsImV4cCI6MTcxNjk0MTA3OH0.jiZ8RXL-5PlCfT-mhpR1WyF4o6twJs3mQQwkXr2ZyUT8Hp6rtuPfjw7e32WvFVPHd7N5-FhVjjzGQkaTIOKhuA`;
     return config;
   },
   (error) => {
