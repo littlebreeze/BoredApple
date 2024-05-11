@@ -3,6 +3,7 @@
 import { useGameRoomInfoStore } from '@/queries/get-room-info';
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useGameWaitStore } from '@/stores/game-wait';
+import { useWebsocketStore } from '@/stores/websocketStore';
 import instance from '@/utils/interceptor';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -23,6 +24,7 @@ export default function InsertPasswordModal() {
   const { data: roomData, isLoading, isError } = useGameRoomInfoStore(selectedRoom?.id);
   const [password, setPassword] = useState<string>('');
   const [isCorrect, setCorrect] = useState<boolean>(true);
+  const { connect, stompClient } = useWebsocketStore();
 
   const onClickPasswordCheck = () => {
     if (password === selectedRoom?.roomPassword) {
@@ -30,6 +32,8 @@ export default function InsertPasswordModal() {
         // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
         setGameRoomInfo(roomData.data.data);
         setIsShow(false);
+        connect(String(selectedRoom?.id));
+
         router.push(`/game/rooms/${selectedRoom?.id}`);
       }
     } else {
