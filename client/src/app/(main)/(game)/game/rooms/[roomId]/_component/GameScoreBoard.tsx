@@ -30,7 +30,7 @@ export default function GameScoreBoard() {
     let scoreList = res?.map(
       (re: { userId: number; nickname: string }, idx: number) => new MemberScore(0, re.nickname, re.userId)
     );
-    scoreList.push(new MemberScore(0, myNickname, myUserId));
+    scoreList.push(new MemberScore(0, myNickname!, myUserId!));
     addPlayers(scoreList);
   }, []);
 
