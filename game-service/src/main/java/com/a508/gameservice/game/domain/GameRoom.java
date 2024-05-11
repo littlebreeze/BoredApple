@@ -1,6 +1,9 @@
 package com.a508.gameservice.game.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
@@ -31,4 +34,8 @@ public class GameRoom {
     private Boolean isSecret;
 
     private LocalDateTime createdTime;
+
+    public void setIsStarted() {
+        this.isStarted = !isStarted;
+    }
 }
