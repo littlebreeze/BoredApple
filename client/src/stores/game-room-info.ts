@@ -10,6 +10,12 @@ type GameRoomDetail = {
   roomPlayerRes: { userId: number; nickname: string }[] | null;
 };
 
+type Score = {
+  myNickname: string | undefined;
+  myUserId: number | undefined;
+  score: number;
+};
+
 interface gameRoomInfo {
   myNickname: string | undefined;
   myUserId: number | undefined;

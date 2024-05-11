@@ -6,6 +6,7 @@ import { useGameWaitStore } from '@/stores/game-wait';
 import instance from '@/utils/interceptor';
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useRouter } from 'next/navigation';
+import { useGameRoomInfoStore } from '@/queries/get-room-info';
 
 type GameRoomDetail = {
   myNickname: string | undefined;
@@ -34,20 +35,9 @@ type Props = {
   roomInfo: GameRoomInfo | undefined;
 };
 
-const getGameRoomInfo = (roomId: number) => {
-  const response = instance.get<{ data: GameRoomDetail }>(
-    `${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players`,
-    {
-      params: {
-        roomId: roomId, // roomId를 요청에 포함시킵니다.
-      },
-    }
-  );
-  return response;
-};
-
 export default function GameRoomItem({ roomInfo }: Props) {
   const router = useRouter();
+  const { data: roomData, isLoading, isError } = useGameRoomInfoStore(roomInfo?.id);
   const { setGameRoomInfo, roomId, roomPlayerRes } = useGameRoomStore();
   const { setIsShow, setSelectedRoom, selectedRoom } = useGameWaitStore();
   const onClickRoomItem = () => {
@@ -56,20 +46,15 @@ export default function GameRoomItem({ roomInfo }: Props) {
         setIsShow(true);
         setSelectedRoom(roomInfo);
       } else {
-        getGameRoomInfo(roomInfo!.id)
-          .then((value) => {
-            // console.log(value.data.data);
-            setGameRoomInfo(value.data.data);
-          })
-          .catch((error) => console.log(error))
-          .finally(() => router.push(`/game/rooms/${roomInfo?.id}`));
+        if (!isLoading && !isError && roomData) {
+          // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
+          setGameRoomInfo(roomData.data.data);
+          router.push(`/game/rooms/${roomInfo?.id}`);
+        }
       }
     }
   };
 
-  useEffect(() => {
-    console.log('바껴서 출력되는 거에요', roomId, roomPlayerRes);
-  }, [roomId, roomPlayerRes]);
   if (!roomInfo) {
     return <div className='bg-white/80 rounded-xl h-28 flex flex-row p-3 md:px-5 lg:px-5'></div>;
   } else
