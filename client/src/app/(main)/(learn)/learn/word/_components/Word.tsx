@@ -28,7 +28,7 @@ export default function Word() {
     getWordData();
   }, []);
 
-  // 서버에 데이터 요청 전송
+  // 서버에 푼 문제 데이터 요청 전송
   useEffect(() => {
     if (submit === true) {
       const postData = async () => {
