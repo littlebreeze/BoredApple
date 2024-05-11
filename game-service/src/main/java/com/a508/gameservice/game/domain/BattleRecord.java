@@ -1,5 +1,6 @@
 package com.a508.gameservice.game.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
@@ -15,12 +16,15 @@ public class BattleRecord {
     @Id
     Integer id;
 
+    @Column(nullable = false)
     @ColumnDefault("0")
     Integer victory;
 
+    @Column(nullable = false)
     @ColumnDefault("0")
     Integer game;
 
+    @Column(nullable = false)
     @ColumnDefault("1500")
     Integer rating;
 
