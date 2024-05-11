@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import instance from '@/utils/interceptor';
 import checked from '@/../public/learn/checked.svg';
 import unchecked from '@/../public/learn/unchecked.svg';
@@ -10,28 +10,36 @@ import { BasicProblemResponse } from '@/types/Problem';
 
 export default function Read() {
   const router = useRouter();
-  const [wordProblems, setWordProblems] = useState<BasicProblemResponse>([]);
-  const [wordProblemIndex, setWordProblemIndex] = useState(0);
+  const [problems, setProblems] = useState<BasicProblemResponse>([]);
+  const [problemIndex, setProblemIndex] = useState(0);
   const [progress, setProgress] = useState(1);
   const [submit, setSubmit] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const [userAnswer, setUserAnswer] = useState<(number | null)[]>([]);
   const [problemId, setProblemId] = useState<(number | null)[]>([]);
 
-  const currWordProblem = wordProblems[wordProblemIndex];
+  const beginTime = useRef<number>(0);
+  const currWordProblem = problems[problemIndex];
 
+  // 문제 풀이 시간 설정
+  // 문제 데이터 가져오기
   useEffect(() => {
+    beginTime.current = Date.now();
     getWordData();
   }, []);
 
+  // 서버에 푼 문제 데이터 요청 전송
   useEffect(() => {
     if (submit === true) {
       const postData = async () => {
+        const endTime = Date.now();
+        const spendTime = Math.round((endTime - beginTime.current) / 1000);
+
         const response = await instance.post('/study-service/solve/choice', {
           type: '어휘',
           myAnswer: userAnswer,
           problemId: problemId,
-          spendTime: 50,
+          spendTime: spendTime,
         });
 
         Swal.fire({
@@ -39,7 +47,7 @@ export default function Read() {
           text: '결과 페이지로 이동할게요.',
           confirmButtonColor: '#0064FF',
         });
-        router.push('/learn/word/result');
+        router.push('/learn/read/result');
       };
       postData();
     }
@@ -49,7 +57,7 @@ export default function Read() {
     try {
       const response = await instance.get(`/study-service/problem/intensive`);
       console.log(response.data.data);
-      setWordProblems(response.data.data);
+      setProblems(response.data.data);
     } catch (error) {
       // error
     }
@@ -60,7 +68,7 @@ export default function Read() {
       setUserAnswer((prevMyAnswer) => [...prevMyAnswer, selected]);
       setProblemId((prevProblemId) => [...prevProblemId, currWordProblem.problemId]);
       setProgress((prevProgress) => prevProgress + 1);
-      setWordProblemIndex((prevIndex) => prevIndex + 1);
+      setProblemIndex((prevIndex) => prevIndex + 1);
       setSelected(null);
     }
   };
@@ -119,21 +127,27 @@ export default function Read() {
                 <div className='py-12'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
                   <div
-                    className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${selected === 1 ? 'bg-black text-white' : 'bg-[#f2f2f2]'} `}
+                    className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${
+                      selected === 1 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
+                    } `}
                     onClick={() => handleOptionClick(1)}
                   >
                     <Image className='w-4 h-4 mr-2' src={selected === 1 ? checked : unchecked} alt='선택' />
                     <span>{currWordProblem.option1}</span>
                   </div>
                   <div
-                    className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${selected === 2 ? 'bg-black text-white' : 'bg-[#f2f2f2]'} `}
+                    className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${
+                      selected === 2 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
+                    } `}
                     onClick={() => handleOptionClick(2)}
                   >
                     <Image className='w-4 h-4 mr-2' src={selected === 2 ? checked : unchecked} alt='선택' />
                     <span>{currWordProblem.option2}</span>
                   </div>
                   <div
-                    className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${selected === 3 ? 'bg-black text-white' : 'bg-[#f2f2f2]'} `}
+                    className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${
+                      selected === 3 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
+                    } `}
                     onClick={() => handleOptionClick(3)}
                   >
                     <Image className='w-4 h-4 mr-2' src={selected === 3 ? checked : unchecked} alt='선택' />
@@ -158,7 +172,9 @@ export default function Read() {
             </button>
           ) : (
             <button
-              className={`mt-4 px-12 p-2 w-40 ${selected !== null ? 'bg-ourBlue' : 'bg-ourGray'} rounded-3xl text-white duration-[0.2s] ${
+              className={`mt-4 px-12 p-2 w-40 ${
+                selected !== null ? 'bg-ourBlue' : 'bg-ourGray'
+              } rounded-3xl text-white duration-[0.2s] ${
                 selected === null ? 'cursor-not-allowed' : 'hover:bg-ourTheme/80'
               }`}
               onClick={handleNextClick}
