@@ -51,7 +51,10 @@ export default function Quiz() {
   return (
     <>
       {/* 인덱스 */}
-      <div className='w-full mr-2 text-right'>{currentQuizIndex + 1}/12</div>
+      <div className='w-full mr-2 text-right'>
+        <span className='text-ourBlue'>{currentQuizIndex + 1}</span>
+        <span className='text-ourBlack'> / 12</span>
+      </div>
       {/* 문제 */}
       <div className='flex-col w-full px-10 pt-10 bg-white border rounded-xl border-neutral-200'>
         <div className='flex text-lg font-semibold'>
