@@ -46,9 +46,9 @@ const NotFound: NextPage = () => {
 
       <div className='bg-ourGreen/40 rounded-full p-16 md:p-20 lg:p-24 flex flex-col justify-center items-center gap-3'>
         <div className='text-ourTheme font-Ansungtangmyun text-5xl md:text-6xl lg:text-6xl mb-3'>심심하다</div>
-        <div>1. (형) 마음의 표현 정도가 매우 깊고 간절하다.</div>
-        <div>1. (형) 하는 일이 없어 지루하고 재미가 없다.</div>
-        <div>1. (형) 음식 맛이 조금 싱겁다.</div>
+        <div className='font-Batang font-bold'>1. (형) 마음의 표현 정도가 매우 깊고 간절하다.</div>
+        <div className='font-Batang font-bold'>2. (형) 하는 일이 없어 지루하고 재미가 없다.</div>
+        <div className='font-Batang font-bold'>3. (형) 음식 맛이 조금 싱겁다.</div>
       </div>
     </div>
   );
