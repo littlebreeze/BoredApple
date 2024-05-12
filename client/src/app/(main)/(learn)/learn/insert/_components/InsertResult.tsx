@@ -6,11 +6,11 @@ import checkFalse from '@/../public/learn/check-false.svg';
 import unchecked from '@/../public/learn/unchecked.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { IBasicProblem, BasicProblemResponse } from '@/types/Problem';
+import { InsertProblemResponse, IInsertProblem } from '@/types/Problem';
 
 export default function InsertResult() {
   const router = useRouter();
-  const [problems, setProblems] = useState<BasicProblemResponse>([]);
+  const [problems, setProblems] = useState<InsertProblemResponse>([]);
   const [problemIndex, setProblemIndex] = useState(0);
   const [progress, setProgress] = useState(1);
 
@@ -22,7 +22,7 @@ export default function InsertResult() {
 
   const getReadData = async () => {
     try {
-      const response = await instance.get(`/study-service/problem/intensive`);
+      const response = await instance.get(`/study-service/problem/sentence`);
       setProblems(response.data.data);
     } catch (error) {
       // error
@@ -95,21 +95,27 @@ export default function InsertResult() {
         {/* 문제 */}
         <div className='py-4'></div>
         <div className='flex'>
-          <div className='mr-2'>정독 훈련</div>
+          <div className='mr-2'>문장 넣기</div>
           <div>
             <span className='text-ourBlue'>{progress}</span>
             <span className='text-ourBlack'> / 3</span>
           </div>
         </div>
         <div className='py-1'></div>
-        <div>각 문장을 정확히 끊어 읽고 가장 적절한 선택지를 고르세요. 준비됐다면 시작 버튼을 눌러주세요!</div>
+        <div>다음 글을 읽고 문맥상 빈칸에 들어가기에 알맞은 내용을 골라주세요</div>
         <div className='py-2'></div>
 
         {/* 지문 및 선택지 */}
         {currProblem && (
           <div>
             <div className='flex gap-2'>
-              <div className='p-4 h-fit flex-1 font-Batang'> {currProblem.content.replace(/\|/g, '')}</div>
+              <div className='p-4 h-fit flex-1 font-Batang'>
+                <span className='font-Batang'>{currProblem.content1}</span>
+                <span className='select-none font-bold font-Batang bg-white p-1 rounded-lg px-4 mx-2'>
+                  &nbsp;?&nbsp;
+                </span>
+                <span className='font-Batang'>{currProblem.content2}</span>
+              </div>
               <div>
                 <div className='py-12'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
@@ -119,7 +125,7 @@ export default function InsertResult() {
                       className={`flex items-center p-2 m-1 rounded-xl ${optionTextColor(option)} bg-[#f2f2f2]`}
                     >
                       <Image className='w-4 h-4 mr-2' src={optionImage(option)} alt='선택' />
-                      <span>{currProblem[`option${option}` as keyof IBasicProblem]}</span>
+                      <span>{currProblem[`option${option}` as keyof IInsertProblem]}</span>
                     </div>
                   ))}
                 </div>

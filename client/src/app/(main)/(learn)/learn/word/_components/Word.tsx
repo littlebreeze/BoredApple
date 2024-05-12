@@ -129,7 +129,10 @@ export default function Word() {
         {currProblem && (
           <div>
             <div className='flex gap-2'>
+              {/* 지문 */}
               <div className='p-4 h-fit flex-1 font-Batang'>{currProblem.content}</div>
+
+              {/* 선택지 */}
               <div>
                 <div className='py-12'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>

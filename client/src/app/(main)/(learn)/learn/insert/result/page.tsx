@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import CloseButton from '../../_components/CloseButton';
-import ReadResult from '../_components/InsertResult';
+import InsertResult from '../_components/InsertResult';
 
 export const metadata: Metadata = {
   title: '문장넣기 - 오늘의 학습',
@@ -13,7 +13,7 @@ export default function Page() {
       <div className='py-1'></div>
       <CloseButton />
       <div className='py-2'></div>
-      <ReadResult />
+      <InsertResult />
     </div>
   );
 }
