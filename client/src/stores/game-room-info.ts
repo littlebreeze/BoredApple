@@ -7,7 +7,7 @@ type GameRoomDetail = {
   maxNum: number | undefined;
   quizCount: number | undefined;
   creatorId: number | undefined;
-  roomPlayerRes: { userId: number; nickname: string }[];
+  roomPlayerRes?: { userId: number; nickname: string }[];
 };
 
 type Score = {

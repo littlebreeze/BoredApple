@@ -8,7 +8,6 @@ import { useEffect } from 'react';
 import QuizWrapper from './_component/QuizWrapper';
 import TimerWrapper from './_component/TimerWrapper';
 import { useWebsocketStore } from '@/stores/websocketStore';
-import { useRoomStore } from '@/stores/roomStore';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -23,11 +22,8 @@ export default function Page() {
   } = useGameRoomStore();
 
   const { connect, disconnect } = useWebsocketStore();
-  const { getRoomById } = useRoomStore();
-  console.log(getRoomById(roomId));
   useEffect(() => {
     console.log(roomPlayerRes);
-    console.log(getRoomById(roomId));
   }, []);
 
   useEffect(() => {
