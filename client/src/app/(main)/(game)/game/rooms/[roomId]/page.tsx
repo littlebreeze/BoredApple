@@ -22,12 +22,13 @@ export default function Page() {
     roomPlayerRes,
   } = useGameRoomStore();
 
-  useEffect(() => {
-    console.log(roomPlayerRes);
-  }, []);
   const { connect, disconnect } = useWebsocketStore();
   const { getRoomById } = useRoomStore();
   console.log(getRoomById(roomId));
+  useEffect(() => {
+    console.log(roomPlayerRes);
+    console.log(getRoomById(roomId));
+  }, []);
 
   useEffect(() => {
     // roomId 있으면 연결
