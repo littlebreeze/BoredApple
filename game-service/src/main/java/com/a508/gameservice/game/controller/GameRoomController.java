@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,13 +17,13 @@ public class GameRoomController {
     private final GameSchedulerManageService gameSchedulerManageService;
 
     @GetMapping("/rooms/{pageNum}")
-    public SuccessResponse<List<GameRoomRes>> getRooms(@PathVariable int pageNum) {
+    public SuccessResponse<GameRoomListRes> getRooms(@PathVariable int pageNum) {
         return new SuccessResponse<>(gameRoomService.getRooms(pageNum));
     }
 
     @PostMapping("/rooms")
     public SuccessResponse<JoinRoomRes> addRoom(HttpServletRequest request, @RequestBody GameRoomReq gameRoomReq) {
-        JoinRoomRes joinRoomRes=gameRoomService.createRoom(request, gameRoomReq);
+        JoinRoomRes joinRoomRes = gameRoomService.createRoom(request, gameRoomReq);
         gameSchedulerManageService.addRoom(joinRoomRes.getRoomId());
         return new SuccessResponse<>(joinRoomRes);
     }
