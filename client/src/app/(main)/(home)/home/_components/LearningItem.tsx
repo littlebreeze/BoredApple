@@ -16,11 +16,13 @@ import settings from '@/../public/learn/Settings.svg';
 // 3. 어휘
 // 4. 문장삽입
 // 5. 순서맞추기
+
 type LearningItemProps = {
   learningItem: LearningItemType;
 };
 
-export default function LearningItem(props: { learningItem: LearningItemType }) {
+// export default function LearningItem(props: { learningItem: LearningItemType }) {
+export default function LearningItem(props: LearningItemProps) {
   const router = useRouter();
   const { type, solved, difficulty } = props.learningItem;
 
@@ -103,7 +105,9 @@ const LearningItem1 = ({
 
   return (
     <div
-      className={`flex justify-between bg-ourPink h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-110'}`}
+      className={`flex justify-between bg-ourPink h-full rounded-2xl p-5 cursor-pointer ${
+        solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-110'
+      }`}
       onClick={() => {
         handleClick(1);
       }}
@@ -143,7 +147,9 @@ const LearningItem2 = ({
 
   return (
     <div
-      className={`flex justify-between bg-ourGreen h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-110'}`}
+      className={`flex justify-between bg-ourGreen h-full rounded-2xl p-5 cursor-pointer ${
+        solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-110'
+      }`}
       onClick={() => {
         handleClick(2);
       }}
@@ -183,7 +189,9 @@ const LearningItem3 = ({
 
   return (
     <div
-      className={`flex justify-between bg-ourYellow h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-110'}`}
+      className={`flex justify-between bg-ourYellow h-full rounded-2xl p-5 cursor-pointer ${
+        solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-110'
+      }`}
       onClick={() => {
         handleClick(3);
       }}
@@ -223,7 +231,9 @@ const LearningItem4 = ({
 
   return (
     <div
-      className={`flex justify-between bg-ourRed h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-105'}`}
+      className={`flex justify-between bg-ourRed h-full rounded-2xl p-5 cursor-pointer ${
+        solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-105'
+      }`}
       onClick={() => {
         handleClick(4);
       }}
@@ -263,7 +273,9 @@ const LearningItem5 = ({
 
   return (
     <div
-      className={`flex justify-between bg-ourPurple h-full rounded-2xl p-5 cursor-pointer ${solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-105'}`}
+      className={`flex justify-between bg-ourPurple h-full rounded-2xl p-5 cursor-pointer ${
+        solved ? 'brightness-50 duration-[0.2s] hover:brightness-75' : 'duration-[0.2s] hover:brightness-105'
+      }`}
       onClick={() => {
         handleClick(5);
       }}
