@@ -3,7 +3,7 @@ import MyGraph from '../_components/MyGraph';
 import MyAnalysis from '../_components/MyAnalysis';
 import MyStrength from '../_components/MyStrength';
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
-import axios from 'axios';
+import instance from '@/utils/interceptor';
 
 export const metadata: Metadata = {
   title: '분석 보고서',
@@ -16,7 +16,7 @@ export interface IAbilities {
 
 async function getAbilities() {
   try {
-    const res = await axios.get<IAbilities>(`${process.env.NEXT_PUBLIC_API_SERVER}/ability`);
+    const res = await instance.get<IAbilities>(`${process.env.NEXT_PUBLIC_API_SERVER}/ability`);
     console.log(res.data);
     return res.data || [];
   } catch (e) {
