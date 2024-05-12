@@ -83,6 +83,8 @@ public class SentenceInsertServiceImpl  implements  SentenceInsertService{
                 .option1(sentenceInsert.getOption1())
                 .option2(sentenceInsert.getOption2())
                 .option3(sentenceInsert.getOption3())
+                .content1(sentenceInsert.getContent1())
+                .content2(sentenceInsert.getContent2())
                 .build();
 
     }
