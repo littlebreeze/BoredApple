@@ -2,14 +2,29 @@
 
 import { useParams } from 'next/navigation';
 import ChatWrapper from './_component/ChatWrapper';
+import GameScoreBoard from './_component/GameScoreBoard';
+import { useGameRoomStore } from '@/stores/game-room-info';
+import { useEffect } from 'react';
 import QuizWrapper from './_component/QuizWrapper';
 import TimerWrapper from './_component/TimerWrapper';
 import { useWebsocketStore } from '@/stores/websocketStore';
-import { useEffect } from 'react';
 import { useRoomStore } from '@/stores/roomStore';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
+  const {
+    myNickname,
+    myUserId,
+    roomId: storedRoomId,
+    maxNum,
+    quizCount,
+    creatorId,
+    roomPlayerRes,
+  } = useGameRoomStore();
+
+  useEffect(() => {
+    console.log(roomPlayerRes);
+  }, []);
   const { connect, disconnect } = useWebsocketStore();
   const { getRoomById } = useRoomStore();
   console.log(getRoomById(roomId));
@@ -28,17 +43,7 @@ export default function Page() {
       <div className='relative flex justify-center w-full gap-10 -top-8'>
         {/* 점수판 */}
         <div className='w-1/6'>
-          <div className='flex flex-col gap-1 p-3 bg-white rounded-xl'>
-            <div className='text-center'>점수</div>
-            <div className='flex justify-between'>
-              <div>문해문어</div>
-              <div>1</div>
-            </div>
-            <div className='flex justify-between'>
-              <div>문해너구리</div>
-              <div>3</div>
-            </div>
-          </div>
+          <GameScoreBoard />
           <button className='w-full p-3 mt-3 text-white rounded-3xl bg-[#FF0000]'>게임나가기</button>
         </div>
         {/* 문제 및 힌트 */}

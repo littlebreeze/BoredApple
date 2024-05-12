@@ -7,17 +7,18 @@ import './Calendar.css';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; //한국어
 import { useRecordStore } from '@/stores/record';
-import axios from 'axios';
-
-type CResponse = {
-  data: number[];
-};
+import instance from '@/utils/interceptor';
 
 const getCalendarData = async (yearMonth: Date | null) => {
-  const response = await axios.post<CResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/calendar`, {
-    date: yearMonth,
-  });
-  console.log(response.data);
+  const response = await instance.post<{ data: number[] }>(
+    `${process.env.NEXT_PUBLIC_API_SERVER}/user-service/calendar`,
+    {
+      date: yearMonth,
+      year: yearMonth?.getFullYear(),
+      month: yearMonth!.getMonth() + 1,
+    }
+  );
+  return response;
 };
 
 export default function CalendarComponent() {
@@ -28,7 +29,7 @@ export default function CalendarComponent() {
 
   useEffect(() => {
     console.log('월 바뀜 캘린더 요청 보내라');
-    getCalendarData(yearMonth);
+    getCalendarData(yearMonth).then((value) => setSolvedCnt(value.data.data));
   }, [yearMonth]);
 
   return (
