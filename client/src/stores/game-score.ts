@@ -10,6 +10,7 @@ interface GameScore {
   players: MemberScore[];
   setPlayers: (player: MemberScore[]) => void;
   addPlayers: (player: MemberScore) => void;
+  exitPlayer: (playerId: number) => void;
 }
 
 export const useGameScoreStore = create<GameScore>((set, get) => ({
@@ -21,5 +22,10 @@ export const useGameScoreStore = create<GameScore>((set, get) => ({
     let prev = get().players;
     prev.push(players);
     set({ players: prev });
+  },
+  exitPlayer: (playerId: number) => {
+    let filtered = get().players;
+    filtered = filtered.filter((player) => player.id != playerId);
+    set({ players: filtered });
   },
 }));

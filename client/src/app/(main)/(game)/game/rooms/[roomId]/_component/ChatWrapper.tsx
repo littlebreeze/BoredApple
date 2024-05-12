@@ -13,7 +13,7 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
   const [newMessage, setNewMessage] = useState<string>('');
 
   const { myNickname, myUserId } = useGameRoomStore();
-  const { addPlayers } = useGameScoreStore();
+  const { addPlayers, exitPlayer } = useGameScoreStore();
   const { connect, disconnect, messages, stompClient, sendMessage, clearMessage } = useWebsocketStore();
 
   useEffect(() => {
@@ -48,13 +48,18 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
 
   useEffect(() => {
     const lastMsg = messages[messages.length - 1];
-    if (lastMsg && Number(lastMsg.target) !== myUserId && lastMsg.type === 'ENTER') {
-      console.log('사용자를 추가하세요');
-      addPlayers({
-        score: 0,
-        nickname: lastMsg.content,
-        id: lastMsg.target,
-      });
+    if (lastMsg && Number(lastMsg.target) !== myUserId) {
+      if (lastMsg.type === 'ENTER') {
+        console.log('사용자를 추가하세요');
+        addPlayers({
+          score: 0,
+          nickname: lastMsg.content,
+          id: lastMsg.target,
+        });
+        // 퇴장 메세지가 나오면 삭제....
+      } else if (lastMsg.type === 'EXIT') {
+        exitPlayer(lastMsg.target);
+      }
     }
   }, [messages]);
 
