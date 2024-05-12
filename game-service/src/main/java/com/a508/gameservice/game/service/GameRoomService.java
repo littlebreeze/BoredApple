@@ -7,13 +7,9 @@ import com.a508.gameservice.game.domain.BattleRecord;
 import com.a508.gameservice.game.domain.GameRoom;
 import com.a508.gameservice.game.repository.BattleRecordRepository;
 import com.a508.gameservice.game.repository.GameRoomRepository;
-import com.a508.gameservice.game.repository.GameRoomTemplateRepository;
 import com.a508.gameservice.game.repository.RoomPlayerRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +21,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class GameRoomService {
 
+
     private final GameRoomRepository gameRoomRepository;
-    private final GameRoomTemplateRepository gameRoomTemplateRepository;
     private final RoomPlayerRepository roomPlayerRepository;
     private final UserServiceClient userServiceClient;
     private final BattleRecordRepository battleRecordRepository;
@@ -35,41 +31,43 @@ public class GameRoomService {
     /**
      * 방 전체 목록 페이지별 반환
      */
-    public List<GameRoomRes> getRooms(int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum - 1, 6, Sort.by("id").ascending());
-        Page<GameRoom> gameRoomList = gameRoomRepository.findAll(pageable);
-        Boolean isEndPage = false;
-        if (pageNum == gameRoomList.getTotalPages()) isEndPage = true;
+    public GameRoomListRes getRooms(int pageNum) {
+
+        PageRoomListDTO pageRoomListDTO = gameRoomRepository.getGameRoomsByPage(pageNum);
+
+        List<GameRoom> gameRoomList = pageRoomListDTO.getGameRoomList();
         List<GameRoomRes> gameRoomResList = new ArrayList<>();
         List<Integer> userIdList = new ArrayList<>();
 
-//        for (int i = 0; i < gameRoomList.getContent().size(); i++) {
-//            userIdList.add(gameRoomList.getContent().get(i).getRoomCreatorId());
-//        }
+        for (int i = 0; i < gameRoomList.size(); i++) {
+            userIdList.add(gameRoomList.get(i).getRoomCreatorId());
+        }
 
-//        UserListRes userListRes = userServiceClient.getNicknameByUserId(UserListReq.builder().idList(userIdList).build());
+        UserListRes userListRes = userServiceClient.getNicknameByUserId(UserListReq.builder().idList(userIdList).build());
 
-//        List<String> nicknameList=userListRes.getNicknameList();
-        for (int i = 0; i < gameRoomList.getContent().size(); i++) {
-            GameRoom gameRoom = gameRoomList.getContent().get(i);
+        List<String> nicknameList = userListRes.getNicknameList();
+        for (int i = 0; i < gameRoomList.size(); i++) {
+            GameRoom gameRoom = gameRoomList.get(i);
             if (gameRoom != null) {
                 GameRoomRes gameRoomRes = GameRoomRes.builder()
                         .id(gameRoom.getId())
                         .roomName(gameRoom.getRoomName())
                         .isSecret(gameRoom.getIsSecret())
                         .roomPassword(gameRoom.getRoomPassword())
-//                    .roomCreatorName(nicknameList.get(i))
+                        .roomCreatorName(nicknameList.get(i))
                         .nowNum(roomPlayerRepository.playerCnt(gameRoom.getId()))
                         .maxNum(gameRoom.getMaxNum())
                         .quizCount(gameRoom.getQuizCount())
                         .isStarted(gameRoom.getIsStarted())
-                        .isEndPage(isEndPage)
                         .build();
                 gameRoomResList.add(gameRoomRes);
             }
         }
 
-        return gameRoomResList;
+        return GameRoomListRes.builder()
+                .gameRoomResList(gameRoomResList)
+                .isEndPage(pageRoomListDTO.getIsEndPage())
+                .build();
     }
 
     /**
@@ -89,7 +87,9 @@ public class GameRoomService {
                 .isSecret(gameRoomReq.getIsSecret())
                 .isStarted(false)
                 .maxNum(gameRoomReq.getMaxNum()).build();
-        gameRoomRepository.save(gameRoom);
+//        gameRoomRepository.save(gameRoom);
+
+        gameRoomRepository.saveGameRoom(gameRoom);
         //방 입장
         roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId);
 
@@ -108,7 +108,7 @@ public class GameRoomService {
      * 방번호 작은 값 배정
      */
     public Integer getMinRoomId() {
-        Set<Integer> idList = gameRoomTemplateRepository.getAllIds();
+        Set<Integer> idList = gameRoomRepository.getAllIds();
         int num = 1;
         while (true) {
             if (!idList.contains(num)) return num;
@@ -121,7 +121,7 @@ public class GameRoomService {
      */
     public synchronized void createRoomPlayer(HttpServletRequest request, Integer roomId) {
         int userId = getUserId(request);
-        if (roomPlayerRepository.playerCnt(String.valueOf(roomId)) < gameRoomRepository.findById(String.valueOf(roomId)).orElseThrow().getMaxNum()) {
+        if (roomPlayerRepository.playerCnt(String.valueOf(roomId)) < gameRoomRepository.getGameRoom(String.valueOf(roomId)).getMaxNum()) {
             roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId);
         } else {
             throw new CustomException(ErrorCode.PLAYER_IS_FULL_ERROR);
@@ -130,7 +130,7 @@ public class GameRoomService {
 
     public JoinRoomRes getRoomInfo(HttpServletRequest request, Integer roomId) {
         int userId = getUserId(request);
-        GameRoom gameRoom = gameRoomRepository.findById(String.valueOf(roomId)).orElseThrow();
+        GameRoom gameRoom = gameRoomRepository.getGameRoom(String.valueOf(roomId));
         List<Integer> userIdList = new ArrayList<>();
         for (Object userIdStr : roomPlayerRepository.getPlayersInRoom(String.valueOf(roomId)).keySet()) {
             userIdList.add(Integer.parseInt(String.valueOf(userIdStr)));
@@ -215,4 +215,10 @@ public class GameRoomService {
         String accessToken = request.getHeader(AUTHORIZATION_HEADER).substring(7);
         return userServiceClient.getUserIdByToken(accessToken);
     }
+
+    public void updateIsStarted(Integer roomId) {
+        gameRoomRepository.updateIsStarted(String.valueOf(roomId));
+    }
+
+
 }
