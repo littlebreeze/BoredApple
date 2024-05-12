@@ -3,9 +3,9 @@
 import { useWebsocketStore } from '@/stores/websocketStore';
 import Image from 'next/image';
 
-import count_1 from '@/../public/quiz/count-1.svg';
-import count_2 from '@/../public/quiz/count-2.svg';
-import count_3 from '@/../public/quiz/count-3.svg';
+import count_1 from '@/../public/game/count-1.svg';
+import count_2 from '@/../public/game/count-2.svg';
+import count_3 from '@/../public/game/count-3.svg';
 
 // 힌트 - 초성뽑기
 const INITIAL_CONSONANTS = [
