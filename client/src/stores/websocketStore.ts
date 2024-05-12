@@ -5,13 +5,23 @@ interface WebSocketState {
   stompClient: Client | null;
   messages: ChatMessageResponse[];
   timer: number;
-  isTimerRunning: boolean;
+  // 타이머 관련(임시)
   startTimer: (duration: number) => void;
   intervalId: number | null;
+
+  isGaming: boolean; // 게임이 진행중인가?
+  isGameRoundInProgress: boolean; // 라운드가 진행중인가?
+  roundCount: number; // 전체 몇라운드인지?
+  currentRound: number; // 현재 몇라운드인지?
+
+  // 웹소켓 연결, 끊기
   connect: (roomId: string) => void;
   disconnect: () => void;
-  startGame: (roodId: string) => void;
-  sendMessage: (destination: string, body: any) => void;
+
+  startGame: (roodId: string) => void; // 게임 시작(START)
+  sendMessage: (destination: string, body: any) => void; // 메세지 발행
+  setIsGameRoundInProgress: () => void; // 라운드 on/off 조정
+  setCurrentRound: (round: number) => void; // 라운드 수 조정
 }
 
 interface ChatMessageResponse {
@@ -25,67 +35,27 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
   stompClient: null,
   messages: [],
   timer: 0,
-  isTimerRunning: false,
   intervalId: null,
-
-  startGame: (roomId: string) => {
-    const client = get().stompClient;
-    if (client) {
-      client.publish({
-        destination: `/app/rooms/${roomId}/startGame`,
-        body: JSON.stringify({ message: 'Start the game!' }),
-      });
-      client.publish({
-        destination: `/app/rooms/${roomId}/startTimer`,
-        body: JSON.stringify({ messages: 'Start timer!' }),
-      });
-    }
-  },
-
-  startTimer: (duration: number) => {
-    const existingIntervalId = get().intervalId;
-
-    if (existingIntervalId !== null) {
-      clearInterval(existingIntervalId);
-    }
-
-    const intervalId = window.setInterval(() => {
-      const { timer, isTimerRunning } = get();
-      if (timer <= 0 || !isTimerRunning) {
-        clearInterval(intervalId);
-        set({ isTimerRunning: false });
-      } else {
-        set((state) => ({ timer: state.timer - 1 }));
-      }
-    }, 1000);
-
-    set({ timer: duration, isTimerRunning: true, intervalId });
-  },
+  isGaming: false,
+  isGameRoundInProgress: false,
+  roundCount: 5,
+  currentRound: 1,
 
   connect: (roomId: string) => {
     const client = new Client({
-      brokerURL: 'ws://localhost:8788/chat',
+      brokerURL: 'wss://k10a508.p.ssafy.io:8081/game-service/ws',
       reconnectDelay: 5000,
       onConnect: () => {
-        client.subscribe(`/topic/public/rooms/${roomId}`, (message: IMessage) => {
+        // 채팅 구독
+        client.subscribe(`/topic/chat/rooms/${roomId}`, (message: IMessage) => {
           console.log(message);
           const msg: ChatMessageResponse = JSON.parse(message.body);
           set((prev) => ({ messages: [...prev.messages, msg] }));
         });
-        client.subscribe(`/topic/rooms/${roomId}/timer`, (message: IMessage) => {
+        // 시간 구독
+        client.subscribe(`topic/time/rooms/${roomId}`, (message: IMessage) => {
           console.log(message);
-          if (message.body === "Time's up!") {
-            set({ timer: 0 });
-            console.log(message.body);
-          }
-        });
-        client.subscribe(`/topic/rooms/${roomId}/start`, (message: IMessage) => {
-          console.log(message);
-          if (message.body === 'Game Start!') {
-            const { startTimer } = get();
-            startTimer(30);
-            console.log(message.body);
-          }
+          set({ timer: parseInt(message.body) });
         });
       },
     });
@@ -100,7 +70,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
     }
   },
 
-  sendMessage: (destination: string, body: any) => {
+  sendMessage: (destination: string, body: object) => {
     const client = get().stompClient;
     if (client) {
       client.publish({
@@ -108,5 +78,45 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         body: JSON.stringify(body),
       });
     }
+  },
+
+  startGame: (roomId: string) => {
+    const client = get().stompClient;
+    if (client) {
+      client.publish({
+        destination: `/app/rooms/${roomId}/startGame`,
+        body: JSON.stringify({ type: 'START', message: 'START' }),
+      });
+    }
+    if (get().currentRound == 1) set({ isGaming: true });
+    set({ isGameRoundInProgress: true });
+  },
+
+  startTimer: (duration: number) => {
+    const existingIntervalId = get().intervalId;
+
+    if (existingIntervalId !== null) {
+      clearInterval(existingIntervalId);
+    }
+
+    const intervalId = window.setInterval(() => {
+      const { timer } = get();
+      if (timer <= 0) {
+        clearInterval(intervalId);
+        set({ isGameRoundInProgress: false });
+      } else {
+        set((state) => ({ timer: state.timer - 1 }));
+      }
+    }, 1000);
+
+    set({ timer: duration, intervalId });
+  },
+
+  setIsGameRoundInProgress: () => {
+    get().isGameRoundInProgress ? set({ isGameRoundInProgress: true }) : set({ isGameRoundInProgress: false });
+  },
+
+  setCurrentRound: (round: number) => {
+    set({ roundCount: round });
   },
 }));
