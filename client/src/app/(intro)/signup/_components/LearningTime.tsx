@@ -48,7 +48,7 @@ export default function LearningTime() {
 
   const handleNextClick = async () => {
     if (valid) {
-      await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/studytime`, {
+      await instance.post(`/user-service/studytime`, {
         hour: selectedHour,
         minute: selectedMinute,
       });

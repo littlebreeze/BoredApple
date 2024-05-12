@@ -25,7 +25,7 @@ type GameRoomInfo = {
 
 export default function GameRightSection() {
   const { pageNum, setPageNum } = useGameWaitStore();
-  const { data } = useGameRoomList(pageNum);
+  const { data, isLoading } = useGameRoomList(pageNum);
 
   const { isShow } = useGameWaitStore();
 
@@ -43,13 +43,14 @@ export default function GameRightSection() {
 
   // 페이지 바뀌면 방 목록 요청
   useEffect(() => {
+    console.log(data);
     if (data?.data) {
       console.log(data.data.data);
       setRoomList(data.data.data);
     } else {
       setRoomList([]);
     }
-  }, [pageNum]);
+  }, [isLoading, pageNum]);
 
   // 방 목록이 바뀌면 출력용 리스트 변경
   useEffect(() => {
@@ -75,7 +76,8 @@ export default function GameRightSection() {
       </div>
       <div className='flex flex-row py-4 gap-1 px-8 md:gap-3 md:px-8 lg:gap-6 lg:px-20'>
         <PagingBtn title='이전' activate={pageNum !== 1} />
-        <PagingBtn title='다음' activate={roomList.length > 0 && roomList[0].isEndPage} />
+        {/* <PagingBtn title='다음' activate={roomList.length > 0 && roomList[0].isEndPage} /> */}
+        <PagingBtn title='다음' activate={true} />
       </div>
     </div>
   );

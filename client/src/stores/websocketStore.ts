@@ -50,6 +50,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         client.subscribe(`/topic/chat/rooms/${roomId}`, (message: IMessage) => {
           console.log(message);
           const msg: ChatMessageResponse = JSON.parse(message.body);
+          console.log('메세지: ', msg);
           set((prev) => ({ messages: [...prev.messages, msg] }));
         });
         // 시간 구독

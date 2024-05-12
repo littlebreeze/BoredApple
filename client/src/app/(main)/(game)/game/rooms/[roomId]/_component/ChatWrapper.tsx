@@ -1,58 +1,65 @@
 'use client';
 
+import { useGameRoomStore } from '@/stores/game-room-info';
 import { useWebsocketStore } from '@/stores/websocketStore';
+import { Client, IMessage } from '@stomp/stompjs';
+import axios from 'axios';
+
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
-type Chat = {
-  nickname: string;
-  content: string;
-};
-
-// interface ChatMessageRequest {
-//   type: string;
-//   roomId: string;
-//   sender: string;
-//   message: string;
-// }
-
 export default function ChatWrapper({ roomId }: { roomId: string }) {
+  const { myNickname, myUserId } = useGameRoomStore();
+  // const [stompClient, setStompClient] = useState<Client | null>(null);
+
   const messageEndRef = useRef<HTMLDivElement | null>(null);
-  const [messages, setMessages] = useState<Chat[]>([]);
+  // const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
 
-  // 스토어 불러와서 sendMessage에 (발행할path, JSON) / messages는 전역으로 관리
-  // const {messages, sendMessage} = useWebsocketStore();
-  // const handleSend = () => {
-  //   const chatMessage: ChatMessageRequest = {
-  //     type: 'TALK',
-  //     roomId: roomId,
-  //     sender: '보냅니다',
-  //     message: newMessage,
-  //   };
-
-  //   sendMessage(`/topic/public/rooms/${roomId}`, JSON.stringify(chatMessage));
-  // };
+  const { connect, disconnect, messages, stompClient, sendMessage } = useWebsocketStore();
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  useEffect(() => {
+    sendMessage(`/pub/ws/rooms/${roomId}/send`, {
+      type: 'ENTER',
+      roomId: roomId,
+      sender: myNickname!,
+      senderId: myUserId!,
+      message: newMessage,
+    });
+  }, []);
+
+  useEffect(() => {
+    // 메시지 비우기
+    return () => disconnect();
+  }, [roomId, connect, disconnect]);
+
   return (
-    <div className='h-full p-3 bg-ourLightGray rounded-xl flex flex-col justify-between'>
-      <div className='h-44 flex flex-col overflow-y-scroll scrollbar-hide'>
+    <div className='h-full px-3 pt-3 pb-1 bg-ourLightGray/50 rounded-xl flex flex-col justify-between'>
+      <div className='h-44 flex flex-col overflow-y-scroll'>
         {messages.map((m, idx) => (
           <div
             key={idx}
             className='p-1 flex gap-3'
           >
-            <div className='text-center w-2/12'>{m.nickname}</div>
-            <div className='pl-2 w-10/12 appearance-none rounded leading-tight focus:outline-none'>{m.content}</div>
+            <div className={`text-center w-2/12 border-r-2 ${m.writer === '심심한 사과' && 'font-bold text-ourTheme'}`}>
+              {m.writer}
+            </div>
+            <div
+              className={`pl-2 w-10/12 ${
+                m.writer === '심심한 사과' && m.target === String(myUserId) && 'text-ourTheme font-bold '
+              }`}
+            >
+              {m.content}
+            </div>
           </div>
         ))}
         <div ref={messageEndRef}></div>
       </div>
-      <div className='p-2 flex gap-3'>
-        <label className='text-center w-2/12'>닉네임닉</label>
+      <div className='p-2 flex gap-3 border-t-2 bg-ourDarkGray/10 rounded-md'>
+        <label className='text-center w-2/12'>{myNickname}</label>
         <input
           className='px-2 w-10/12 appearance-none rounded leading-tight focus:outline-none'
           type='text'
@@ -61,7 +68,13 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
           onKeyUp={(e) => {
             if (e.key === 'Enter') {
               setNewMessage('');
-              setMessages([...messages, { nickname: '닉네임', content: newMessage }]);
+              sendMessage(`/pub/ws/rooms/${roomId}/send`, {
+                type: 'TALK',
+                roomId: roomId,
+                sender: myNickname!,
+                senderId: myUserId!,
+                message: newMessage,
+              });
             }
           }}
         />
