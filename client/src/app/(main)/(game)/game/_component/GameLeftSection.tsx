@@ -4,6 +4,11 @@ import Image from 'next/image';
 import { IRankingList } from '@/types/Ranking';
 import { useGetRanking } from '@/queries/get-ranking';
 
+import trophy from '@/../public/game/trophy.svg';
+import first from '@/../public/game/1st.svg';
+import second from '@/../public/game/2nd.svg';
+import third from '@/../public/game/3rd.svg';
+
 export default function GameLeftSection() {
   const { data: rankings } = useGetRanking();
 
@@ -15,8 +20,7 @@ export default function GameLeftSection() {
         <div className='flex items-center justify-center w-1/3'>
           <Image
             className='w-full h-full'
-            src='/trophy.svg'
-            loading='eager'
+            src={trophy}
             width={400}
             height={400}
             alt='트로피'
@@ -30,7 +34,6 @@ export default function GameLeftSection() {
           <div className='flex-1'>닉네임</div>
           <div className='flex-1'>레이팅</div>
         </div>
-        {/* <HydrationBoundary state={dehydratedState}> */}
         {rankingList &&
           rankingList.map((rank, idx) => (
             <div
@@ -41,7 +44,7 @@ export default function GameLeftSection() {
                 {rank.ranking === 1 ? (
                   <Image
                     className='h-full'
-                    src='/1st.svg'
+                    src={first}
                     loading='eager'
                     width={500}
                     height={500}
@@ -50,8 +53,7 @@ export default function GameLeftSection() {
                 ) : rank.ranking === 2 ? (
                   <Image
                     className='h-full'
-                    src='/2nd.svg'
-                    loading='eager'
+                    src={second}
                     width={500}
                     height={500}
                     alt='2등'
@@ -59,8 +61,7 @@ export default function GameLeftSection() {
                 ) : rank.ranking === 3 ? (
                   <Image
                     className='h-full'
-                    src='/3rd.svg'
-                    loading='eager'
+                    src={third}
                     width={500}
                     height={500}
                     alt='3등'
@@ -81,8 +82,7 @@ export default function GameLeftSection() {
             {rankings?.myRanking === 1 ? (
               <Image
                 className='h-full'
-                src='/1st.svg'
-                loading='eager'
+                src={first}
                 width={500}
                 height={500}
                 alt='1등'
@@ -90,8 +90,7 @@ export default function GameLeftSection() {
             ) : rankings?.myRanking === 2 ? (
               <Image
                 className='h-full'
-                src='/2nd.svg'
-                loading='eager'
+                src={second}
                 width={500}
                 height={500}
                 alt='2등'
@@ -99,7 +98,7 @@ export default function GameLeftSection() {
             ) : rankings?.myRanking === 3 ? (
               <Image
                 className='h-full'
-                src='/3rd.svg'
+                src={third}
                 loading='eager'
                 width={500}
                 height={500}
@@ -112,7 +111,6 @@ export default function GameLeftSection() {
           <div className='flex items-center justify-center flex-1 text-xs truncate'>{rankings?.myNickname}</div>
           <div className='flex-1'> {rankings?.myRating}</div>
         </div>
-        {/* </HydrationBoundary> */}
       </div>
     </div>
   );
