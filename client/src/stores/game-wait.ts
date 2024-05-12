@@ -17,7 +17,7 @@ interface gameWaitState {
   isShow: boolean;
   setIsShow: (state: boolean) => void;
   selectedRoom: GameRoomInfo | null;
-  setSelectedRoom: (item: GameRoomInfo) => void;
+  setSelectedRoom: (item: GameRoomInfo | null) => void;
   roomList: GameRoomInfo[];
   setRoomList: (list: GameRoomInfo[]) => void;
   pageNum: number;
@@ -30,7 +30,7 @@ export const useGameWaitStore = create<gameWaitState>((set) => ({
     set({ isShow: state });
   },
   selectedRoom: null,
-  setSelectedRoom: (item: GameRoomInfo) => {
+  setSelectedRoom: (item: GameRoomInfo | null) => {
     set({ selectedRoom: item });
   },
   roomList: [],
