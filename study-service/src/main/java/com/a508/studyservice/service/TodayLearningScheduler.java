@@ -9,24 +9,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.PriorityQueue;
 
+import com.a508.studyservice.dto.response.FeignList;
+import com.a508.studyservice.entity.*;
+import com.a508.studyservice.feign.UserServiceFeignClient;
+import com.a508.studyservice.repository.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.a508.studyservice.dto.response.UserFeignResponse;
-import com.a508.studyservice.entity.ChoiceSolved;
-import com.a508.studyservice.entity.EssaySolved;
-import com.a508.studyservice.entity.FiveAbility;
-import com.a508.studyservice.entity.ParagraphOrder;
-import com.a508.studyservice.entity.SentenceInsert;
-import com.a508.studyservice.entity.TodayLearning;
-import com.a508.studyservice.repository.ChoiceRepository;
-import com.a508.studyservice.repository.EssayRepository;
-import com.a508.studyservice.repository.FiveAbilityRepository;
-import com.a508.studyservice.repository.IntensiveRepository;
-import com.a508.studyservice.repository.ParagraphOrderRepository;
-import com.a508.studyservice.repository.SentenceInsertRepository;
-import com.a508.studyservice.repository.TodayLearningRepository;
-import com.a508.studyservice.repository.VocaRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -46,16 +36,17 @@ public class TodayLearningScheduler {
 	private final ParagraphOrderRepository paragraphOrderRepository;
 	private final VocaRepository vocaRepository;
 	private final IntensiveRepository intensiveRepository;
-
+	private final UserServiceFeignClient userServiceFeignClient;
+	private final TopicRepository topicRepository;
 	private static final List<String> categories = new ArrayList<>(Arrays.asList("인문", "사회", "과학", "예술", "기술"));
 
 	@Transactional
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void makeTodayLearning()throws NoSuchAlgorithmException{
 
-		List<UserFeignResponse> userFeignResponses = new ArrayList<>();
-		UserFeignResponse userFeignResponse = new UserFeignResponse(1,new ArrayList<>());
-		userFeignResponses.add(userFeignResponse);
+
+		FeignList feignList = userServiceFeignClient.getAllUser();
+		List<UserFeignResponse> userFeignResponses = feignList.getUsers();
 		/*
 		user Feign 을 통해서 userId, 선호 카테고리들 받아옴
 		 */
@@ -65,8 +56,9 @@ public class TodayLearningScheduler {
 		//유저 정보들을 순회하면서 유저들의 오늘의학습을 만들어주는 시작점
 		for(UserFeignResponse userFeignResponse1 : userFeignResponses){
 			int userId = userFeignResponse1.getUserId();
-			List<String> categoryList = userFeignResponse1.getCategoryList();
+			List<String> categoryList = userFeignResponse1.getCategories();
 			Collections.shuffle(categoryList);
+			//선호 카테고리의 개수를 정하자
 			int size = categoryList.size();
 			size = Math.min(3, size);
 
@@ -76,10 +68,11 @@ public class TodayLearningScheduler {
 			PriorityQueue<Ability> abilities = new PriorityQueue<>();
 			abilities.add( new Ability("정독훈련", fiveAbility.getFact()));
 			abilities.add( new Ability("순서맞추기", fiveAbility.getInference()));
-			abilities.add( new Ability("문장삽입", fiveAbility.getInference()));
+			abilities.add( new Ability("문장삽입", fiveAbility.getSpeed()));
 			abilities.add( new Ability("주제맞추기", fiveAbility.getRecognition()));
 			abilities.add( new Ability("어휘", fiveAbility.getVoca()));
 
+			// 부족한 능력 3가지를 추가.
 			List<String> abilityList = new ArrayList<>();
 			abilityList.add(Objects.requireNonNull(abilities.poll()).category);
 			abilityList.add(Objects.requireNonNull(abilities.poll()).category);
@@ -87,7 +80,7 @@ public class TodayLearningScheduler {
 			log.info(abilityList.toString());
 
 			// 인문, 사회, 과학/기술, 예술, 언어
-
+			// 선호 카테고리가 적으면 넣어주자
 			if( size < 3 ) {
 				while(categoryList.size() < 3){
 					Collections.shuffle(categories);
@@ -97,10 +90,13 @@ public class TodayLearningScheduler {
 			log.info(categoryList.toString());
 			log.info(abilityList.toString());
 
-			for( int idx = 0 ; idx < 3 ; idx++){
+			//오늘의 학습 3개를 만든다.
+			w: for( int idx = 0 ; idx < 3 ; idx++){
 				String type = abilityList.get(idx);
 				String category = categoryList.get(idx);
 				log.info( "String = " +  type );
+				//type 마다 3개씩 생성
+				int  count = 0 ;
 				if(type.equals("순서맞추기")){
 					List<ParagraphOrder> paragraphOrders = paragraphOrderRepository.findByCategory(type);
 					Collections.shuffle(paragraphOrders);
@@ -108,7 +104,9 @@ public class TodayLearningScheduler {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
 							if(Objects.equals(choiceSolved.getProblemId(), paragraphOrder.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
 						}
-
+						todayLearningRepository.save(makeEntity(userId,paragraphOrder.getId(),type,category));
+						count += 1;
+						if( count == 4) continue w;
 					}
 				}
 
@@ -119,16 +117,47 @@ public class TodayLearningScheduler {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
 							if(Objects.equals(choiceSolved.getProblemId(), sentenceInsert.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
 						}
-
+						todayLearningRepository.save(makeEntity(userId,sentenceInsert.getId(),type,category));
+						count += 1;
+						if( count == 4) continue w;
 					}
 				}
 				if(type.equals("어휘")){
+					List<Voca> vocaList = vocaRepository.findAll();
+					Collections.shuffle(vocaList);
+					l: for(Voca voca : vocaList) {
+						for(ChoiceSolved choiceSolved :choiceSolvedList) {
+							if(Objects.equals(choiceSolved.getProblemId(), voca.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
+						}
+						todayLearningRepository.save(makeEntity(userId,voca.getId(),type,category));
+						count += 1;
+						if( count == 4) continue w;
+					}
 
 				}
 				if(type.equals("정독훈련")){
-
+					List<Intensive> intensiveList = intensiveRepository.findByCategory(category);
+					Collections.shuffle(intensiveList);
+					l: for(Intensive intensive : intensiveList) {
+						for(ChoiceSolved choiceSolved :choiceSolvedList) {
+							if(Objects.equals(choiceSolved.getProblemId(), intensive.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
+						}
+						todayLearningRepository.save(makeEntity(userId,intensive.getId(),type,category));
+						count += 1;
+						if( count == 4) continue w;
+					}
 				}
 				if(type.equals("주제맞추기")){
+					List<TopicProblem> topicProblemList = topicRepository.findByCategory(category);
+					Collections.shuffle((topicProblemList));
+					l: for(TopicProblem topicProblem : topicProblemList) {
+						for(ChoiceSolved choiceSolved :choiceSolvedList) {
+							if(Objects.equals(choiceSolved.getProblemId(), topicProblem.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
+						}
+						todayLearningRepository.save(makeEntity(userId,topicProblem.getId(),type,category));
+						count += 1;
+						if( count == 4) continue w;
+					}
 
 				}
 			}
@@ -143,13 +172,13 @@ public class TodayLearningScheduler {
 	}
 
 
-	static TodayLearning makeEntity(int userId, int problemId,String type, String category){
+	static TodayLearning makeEntity(int userId, int problemId,String type,String category){
 		return TodayLearning.builder()
 			.userId(userId)
 			.problemId(problemId)
 			.type(type)
-			.category(category)
 			.correct(false)
+			.category(category)
 			.createAt(LocalDateTime.now())
 			.build();
 	}
