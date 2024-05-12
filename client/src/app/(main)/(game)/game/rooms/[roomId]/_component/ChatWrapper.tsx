@@ -15,7 +15,7 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
   // const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
 
-  const { connect, disconnect, messages, stompClient, sendMessage } = useWebsocketStore();
+  const { connect, disconnect, messages, stompClient, sendMessage, clearMessage } = useWebsocketStore();
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -33,8 +33,18 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
 
   useEffect(() => {
     // 메시지 비우기
-    return () => disconnect();
+    return () => {
+      disconnect();
+      clearMessage();
+    };
   }, [roomId, connect, disconnect]);
+
+  useEffect(() => {
+    const lastMsg = messages[messages.length - 1];
+    if (lastMsg && lastMsg.target !== String(myUserId) && lastMsg.type === 'ENTER') {
+      console.log('사용자를 추가하세요');
+    }
+  }, [messages]);
 
   return (
     <div className='h-full px-3 pt-3 pb-1 bg-ourLightGray/50 rounded-xl flex flex-col justify-between'>

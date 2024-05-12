@@ -12,6 +12,7 @@ interface WebSocketState {
   disconnect: () => void;
   startGame: (roodId: string) => void;
   sendMessage: (destination: string, body: any) => void;
+  clearMessage: () => void;
 }
 
 interface ChatMessageResponse {
@@ -71,6 +72,8 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
           console.log(message);
           const msg: ChatMessageResponse = JSON.parse(message.body);
           console.log('메세지: ', msg);
+          if (msg.type === 'ENTER')
+            
           set((prev) => ({ messages: [...prev.messages, msg] }));
         });
         client.subscribe(`/topic/rooms/${roomId}/timer`, (message: IMessage) => {
@@ -110,4 +113,5 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       });
     }
   },
+  clearMessage:()=>{set({messages:[]})},
 }));
