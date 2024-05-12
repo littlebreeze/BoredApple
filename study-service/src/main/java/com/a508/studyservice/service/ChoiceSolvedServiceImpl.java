@@ -4,6 +4,9 @@ import com.a508.studyservice.dto.request.ChoiceRequest;
 import com.a508.studyservice.dto.response.ChoiceSolvedResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.TodayLearning;
+import com.a508.studyservice.feign.UserServiceFeignClient;
+import com.a508.studyservice.global.common.code.ErrorCode;
+import com.a508.studyservice.global.common.exception.BaseException;
 import com.a508.studyservice.repository.*;
 
 import jakarta.transaction.Transactional;
@@ -29,12 +32,16 @@ public class ChoiceSolvedServiceImpl implements ChoiceSolvedService {
 	private final ParagraphOrderRepository paragraphOrderRepository;
 	private final VocaRepository vocaRepository;
 	private final TodayLearningRepository todayLearningRepository;
+	private final UserServiceFeignClient userServiceFeignClient;
+
 	@Override
 	public List<ChoiceSolvedResponse> postChoice(String token, ChoiceRequest choiceRequest) {
-		int userId = 1;
+		int userId = 0;
         /*
         userId , token을 통한 Feign 요청 보내야함
          */
+		if( token != null ) userId = userServiceFeignClient.getUserId(token);
+		else throw  new BaseException(ErrorCode.EXIST_TOKEN_ERROR);
 
 		String type = choiceRequest.getType();
 
