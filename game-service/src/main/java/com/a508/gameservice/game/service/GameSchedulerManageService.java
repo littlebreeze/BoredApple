@@ -12,11 +12,12 @@ import java.util.Map;
 public class GameSchedulerManageService {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final GameQuizService gameQuizService;
     private final Map<Integer, SchedulerService> gameSchedulerMap = new HashMap<>();
 
     // 방의 GameScheduler를 생성
-    public void addRoom(int roomId) {
-        SchedulerService gameScheduler = new SchedulerService(simpMessagingTemplate, roomId);
+    public void addRoom(int roomId, int quizCount) {
+        SchedulerService gameScheduler = new SchedulerService(gameQuizService, simpMessagingTemplate, roomId, quizCount);
         gameSchedulerMap.put(roomId, gameScheduler);
     }
 
