@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { IBasicProblem, BasicProblemResponse } from '@/types/Problem';
 
-export default function ReadResult() {
+export default function InsertResult() {
   const router = useRouter();
   const [problems, setProblems] = useState<BasicProblemResponse>([]);
   const [problemIndex, setProblemIndex] = useState(0);
