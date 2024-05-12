@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { IRankingList } from '@/types/Ranking';
 import { useGetRanking } from '@/queries/get-ranking';
 
+import trophy from '@/../public/game/trophy.svg';
 import first from '@/../public/game/1st.svg';
 import second from '@/../public/game/2nd.svg';
 import third from '@/../public/game/3rd.svg';
@@ -19,8 +20,7 @@ export default function GameLeftSection() {
         <div className='flex items-center justify-center w-1/3'>
           <Image
             className='w-full h-full'
-            src='/trophy.svg'
-            loading='eager'
+            src={trophy}
             width={400}
             height={400}
             alt='트로피'
