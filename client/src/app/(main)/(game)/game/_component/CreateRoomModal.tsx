@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { IRoom } from '@/types/Room';
+import { useRoomStore } from '@/stores/roomStore';
 
 export default function CreateRoomModal() {
   const [roomName, setRoomName] = useState<string>('');
@@ -14,6 +15,7 @@ export default function CreateRoomModal() {
   const [maxNum, setMaxNum] = useState<number>(1);
   const [quizCount, setQuizCount] = useState<number>(5);
   const modalStore = useModalStore();
+  const { addRoom } = useRoomStore();
   const router = useRouter();
 
   const resetState = () => {
@@ -28,11 +30,22 @@ export default function CreateRoomModal() {
     try {
       const res = await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms`, newRoom);
       const newRoomId = res.data.data.roomId;
+      console.log('방정보응답', res);
+      addRoom({
+        myNickname: res.data.data.myNickname,
+        myUserId: res.data.data.myUserId,
+        roomId: res.data.data.roomId,
+        maxNum: res.data.data.maxNum,
+        quizCount: res.data.data.quizCount,
+        creatorId: res.data.data.creatorId,
+        roomPlayerRes: res.data.data.roomPlayerRes ?? null,
+      });
       resetState();
       router.replace(`/game/rooms/${newRoomId}`);
     } catch (e) {
       console.error('방 생성 중 에러가 발생했습니다.', e);
       alert('방 생성 중 에러가 발생했습니다.');
+      router.back();
     }
   };
 
