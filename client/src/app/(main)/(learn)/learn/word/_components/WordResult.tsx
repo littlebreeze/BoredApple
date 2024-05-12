@@ -10,13 +10,12 @@ import { IBasicProblem, BasicProblemResponse } from '@/types/Problem';
 
 export default function WordResult() {
   const router = useRouter();
-  const [wordProblems, setWordProblems] = useState<BasicProblemResponse>([]);
-  const [wordProblemIndex, setWordProblemIndex] = useState(0);
-
+  const [problems, setWordProblems] = useState<BasicProblemResponse>([]);
+  const [problemIndex, setWordProblemIndex] = useState(0);
   const [progress, setProgress] = useState(1);
   const [selected, setSelected] = useState<number | null>(null);
 
-  const currWordProblem = wordProblems[wordProblemIndex];
+  const currProblem = problems[problemIndex];
 
   useEffect(() => {
     getWordData();
@@ -41,12 +40,12 @@ export default function WordResult() {
   };
 
   const optionTextColor = (option: number) => {
-    if (option === currWordProblem.answer && option === currWordProblem.userAnswer) {
+    if (option === currProblem.answer && option === currProblem.userAnswer) {
       return 'text-ourBlue font-semibold';
     } else {
-      if (option === currWordProblem.answer) {
+      if (option === currProblem.answer) {
         return 'text-ourBlue font-semibold';
-      } else if (option === currWordProblem.userAnswer) {
+      } else if (option === currProblem.userAnswer) {
         return 'text-ourRed line-through font-semibold';
       } else {
         return '';
@@ -55,13 +54,13 @@ export default function WordResult() {
   };
 
   const optionImage = (option: number) => {
-    if (currWordProblem.userAnswer === option) {
-      if (currWordProblem.userAnswer === currWordProblem.answer) {
+    if (currProblem.userAnswer === option) {
+      if (currProblem.userAnswer === currProblem.answer) {
         return checkTrue;
       } else {
         return checkFalse;
       }
-    } else if (option === currWordProblem.answer) {
+    } else if (option === currProblem.answer) {
       return checkTrue;
     } else {
       return unchecked;
@@ -92,6 +91,8 @@ export default function WordResult() {
             </div>
           )}
         </div>
+
+        {/* 문제 */}
         <div className='py-4'></div>
         <div className='flex'>
           <div className='mr-2'>어휘 퀴즈</div>
@@ -104,10 +105,11 @@ export default function WordResult() {
         <div>다음 문장의 의미에 부합하는 적절한 어휘를 고르시오.</div>
         <div className='py-2'></div>
 
-        {currWordProblem && (
+        {/* 지문 및 선택지 */}
+        {currProblem && (
           <div>
             <div className='flex gap-2'>
-              <div className='p-4 h-fit flex-1 font-Batang'>{currWordProblem.content}</div>
+              <div className='p-4 h-fit flex-1 font-Batang'>{currProblem.content}</div>
               <div>
                 <div className='py-12'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
@@ -117,7 +119,7 @@ export default function WordResult() {
                       className={`flex items-center p-2 m-1 rounded-xl ${optionTextColor(option)} bg-[#f2f2f2]`}
                     >
                       <Image className='w-4 h-4 mr-2' src={optionImage(option)} alt='선택' />
-                      <span>{currWordProblem[`option${option}` as keyof IBasicProblem]}</span>
+                      <span>{currProblem[`option${option}` as keyof IBasicProblem]}</span>
                     </div>
                   ))}
                 </div>
@@ -126,6 +128,7 @@ export default function WordResult() {
           </div>
         )}
 
+        {/* 버튼 */}
         <div className='flex border-t border-ourGray absolute bottom-4 w-full justify-end'>
           {progress >= 3 ? (
             <button
