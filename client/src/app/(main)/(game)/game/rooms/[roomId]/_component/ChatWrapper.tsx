@@ -1,6 +1,7 @@
 'use client';
 
 import { useGameRoomStore } from '@/stores/game-room-info';
+import { useGameScoreStore } from '@/stores/game-score';
 import { useWebsocketStore } from '@/stores/websocketStore';
 import { Client, IMessage } from '@stomp/stompjs';
 import axios from 'axios';
@@ -8,13 +9,11 @@ import axios from 'axios';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export default function ChatWrapper({ roomId }: { roomId: number }) {
-  const { myNickname, myUserId } = useGameRoomStore();
-  // const [stompClient, setStompClient] = useState<Client | null>(null);
-
   const messageEndRef = useRef<HTMLDivElement | null>(null);
-  // const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
 
+  const { myNickname, myUserId } = useGameRoomStore();
+  const { addPlayers } = useGameScoreStore();
   const { connect, disconnect, messages, stompClient, sendMessage, clearMessage } = useWebsocketStore();
 
   useEffect(() => {
@@ -51,6 +50,11 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
     const lastMsg = messages[messages.length - 1];
     if (lastMsg && Number(lastMsg.target) !== myUserId && lastMsg.type === 'ENTER') {
       console.log('사용자를 추가하세요');
+      addPlayers({
+        score: 0,
+        nickname: lastMsg.content,
+        id: lastMsg.target,
+      });
     }
   }, [messages]);
 
