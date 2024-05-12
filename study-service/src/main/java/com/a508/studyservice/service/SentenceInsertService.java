@@ -5,8 +5,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.a508.studyservice.dto.response.ProblemResponse;
+import com.a508.studyservice.dto.response.SentenceProblemResponse;
 
 public interface SentenceInsertService {
 
-	List<ProblemResponse> getSentenceProblems(String token, LocalDateTime date );
+	List<SentenceProblemResponse> getSentenceProblems(String token, LocalDateTime date );
 }

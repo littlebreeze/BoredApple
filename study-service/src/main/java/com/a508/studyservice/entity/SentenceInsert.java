@@ -19,7 +19,9 @@ public class SentenceInsert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     //정독 훈련
-    private String content;
+    private String content1;
+
+    private String content2;
 
     private String option1;
 
