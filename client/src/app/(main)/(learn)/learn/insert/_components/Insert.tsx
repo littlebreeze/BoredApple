@@ -17,7 +17,6 @@ export default function Insert() {
   const [selected, setSelected] = useState<number | null>(null);
   const [userAnswer, setUserAnswer] = useState<(number | null)[]>([]);
   const [problemId, setProblemId] = useState<(number | null)[]>([]);
-  const [start, setStart] = useState(false);
 
   const beginTime = useRef<number>(0);
   const currProblem = problems[problemIndex];
@@ -72,7 +71,6 @@ export default function Insert() {
       setProgress((prevProgress) => prevProgress + 1);
       setProblemIndex((prevIndex) => prevIndex + 1);
       setSelected(null);
-      setStart(false);
     }
   };
 
@@ -81,11 +79,6 @@ export default function Insert() {
     setUserAnswer((prevMyAnswer) => [...prevMyAnswer, selected]);
     setProblemId((prevProblemId) => [...prevProblemId, currProblem.problemId]);
     setSubmit(true);
-  };
-
-  // 시작 버튼 클릭
-  const handleStartClick = () => {
-    setStart(true);
   };
 
   // 선택지 클릭
