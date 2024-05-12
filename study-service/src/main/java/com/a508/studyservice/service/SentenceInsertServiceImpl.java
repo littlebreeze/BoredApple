@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.a508.studyservice.dto.response.SentenceProblemResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +34,7 @@ public class SentenceInsertServiceImpl  implements  SentenceInsertService{
 
 
     @Override
-    public List<ProblemResponse> getSentenceProblems(String token, LocalDateTime date) {
+    public List<SentenceProblemResponse> getSentenceProblems(String token, LocalDateTime date) {
         log.info(token);
         log.info(String.valueOf(date));
         int userId = 1;
@@ -50,7 +51,7 @@ public class SentenceInsertServiceImpl  implements  SentenceInsertService{
         log.info(todayLearnings.toString());
 
 
-        List<ProblemResponse> problemResponses = new ArrayList<>();
+        List<SentenceProblemResponse> problemResponses = new ArrayList<>();
         List<SentenceInsert> sentenceInsertList = new ArrayList<>();
 
         for( TodayLearning todayLearning : todayLearnings){
@@ -60,7 +61,7 @@ public class SentenceInsertServiceImpl  implements  SentenceInsertService{
         for(SentenceInsert sentenceInsert : sentenceInsertList){
 
             ChoiceSolved choiceSolved = choiceRepository.findByUserIdAndTypeAndProblemId(userId,type,sentenceInsert.getId());
-            ProblemResponse response = sentenceInsertToDto(sentenceInsert);
+            SentenceProblemResponse response = sentenceInsertToDto(sentenceInsert);
             if( choiceSolved != null ) {
                 response.setAnswer(choiceSolved.getAnswer());
                 response.setUserAnswer(choiceSolved.getUserAnswer());
@@ -74,15 +75,14 @@ public class SentenceInsertServiceImpl  implements  SentenceInsertService{
     }
 
 
-    public ProblemResponse sentenceInsertToDto (SentenceInsert sentenceInsert){
-        return ProblemResponse.builder()
+    public SentenceProblemResponse sentenceInsertToDto (SentenceInsert sentenceInsert){
+        return SentenceProblemResponse.builder()
                 .category(sentenceInsert.getCategory())
                 .type("문장삽입")
                 .problemId(sentenceInsert.getId())
                 .option1(sentenceInsert.getOption1())
                 .option2(sentenceInsert.getOption2())
                 .option3(sentenceInsert.getOption3())
-                .content(sentenceInsert.getContent())
                 .build();
 
     }
