@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserFeignResponse {
 	Integer userId;
-	List<String> categoryList;
+	List<String> categories;
 }
