@@ -31,7 +31,7 @@ export type InsertProblemResponse = IInsertProblem[];
 
 // 지문요약 문제 인터페이스
 export interface ISummaryProblem {
-  text: string;
+  content: string;
   userAnswer?: string;
   answer?: string;
   category?: string;
