@@ -16,7 +16,6 @@ import settings from '@/../public/learn/Settings.svg';
 // 3. 어휘
 // 4. 문장삽입
 // 5. 순서맞추기
-
 type LearningItemProps = {
   learningItem: LearningItemType;
 };

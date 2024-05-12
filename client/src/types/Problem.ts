@@ -4,9 +4,9 @@ export interface IBasicProblem {
   option1: string;
   option2: string;
   option3: string;
-  userAnswer: number | null;
-  answer: number | null;
-  category: string | null;
+  userAnswer?: number;
+  answer?: number;
+  category?: string;
   type: '어휘';
   problemId: number;
   correct: boolean;
@@ -20,11 +20,23 @@ export interface IInsertProblem {
   option1: string;
   option2: string;
   option3: string;
-  userAnswer: number | null;
-  answer: number | null;
-  category: string | null;
+  userAnswer?: number;
+  answer?: number;
+  category?: string;
   type: '어휘';
   problemId: number;
   correct: boolean;
 }
 export type InsertProblemResponse = IInsertProblem[];
+
+// 지문요약 문제 인터페이스
+export interface ISummaryProblem {
+  text: string;
+  userAnswer?: string;
+  answer?: string;
+  category?: string;
+  type: '어휘';
+  problemId: number;
+  similarity?: number;
+}
+export type SummaryProblemResponse = ISummaryProblem[];
