@@ -21,7 +21,7 @@ interface WebSocketState {
   startGame: (roodId: string) => void; // 게임 시작(START)
   sendMessage: (destination: string, body: any) => void; // 메세지 발행
   setIsGameRoundInProgress: () => void; // 라운드 on/off 조정
-  setCurrentRound: (round: number) => void; // 라운드 수 조정
+  setRoundCount: (round: number) => void; // 라운드 수 조정
 }
 
 interface ChatMessageResponse {
@@ -117,7 +117,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
     get().isGameRoundInProgress ? set({ isGameRoundInProgress: true }) : set({ isGameRoundInProgress: false });
   },
 
-  setCurrentRound: (round: number) => {
+  setRoundCount: (round: number) => {
     set({ roundCount: round });
   },
 }));
