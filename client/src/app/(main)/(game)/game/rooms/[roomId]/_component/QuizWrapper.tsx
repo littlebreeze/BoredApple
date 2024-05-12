@@ -6,6 +6,8 @@ import Image from 'next/image';
 import count_1 from '@/../public/game/count-1.svg';
 import count_2 from '@/../public/game/count-2.svg';
 import count_3 from '@/../public/game/count-3.svg';
+import { useGameRoomStore } from '@/stores/game-room-info';
+import { useEffect } from 'react';
 
 // 힌트 - 초성뽑기
 const INITIAL_CONSONANTS = [
@@ -31,7 +33,13 @@ const INITIAL_CONSONANTS = [
 ];
 
 export default function QuizWrapper({ roomId }: { roomId: string }) {
-  const { startGame, startTimer, isGaming, timer, roundCount, currentRound } = useWebsocketStore();
+  const { startGame, startTimer, isGaming, timer, roundCount, currentRound, setRoundCount } = useWebsocketStore();
+  const { quizCount } = useGameRoomStore();
+
+  useEffect(() => {
+    setRoundCount(quizCount as number);
+  }, []);
+
   // 더미
   const quiz: string = '가렴주구';
 
