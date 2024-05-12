@@ -6,10 +6,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { IRoom } from '@/types/Room';
-import { useRoomStore } from '@/stores/roomStore';
 
 import upFill from '@/../public/game/up-fill.svg';
 import downFill from '@/../public/game/up-fill.svg';
+import { useGameRoomStore } from '@/stores/game-room-info';
 
 export default function CreateRoomModal() {
   const [roomName, setRoomName] = useState<string>('');
@@ -18,7 +18,7 @@ export default function CreateRoomModal() {
   const [maxNum, setMaxNum] = useState<number>(1);
   const [quizCount, setQuizCount] = useState<number>(5);
   const modalStore = useModalStore();
-  const { addRoom } = useRoomStore();
+  const { setGameRoomInfo } = useGameRoomStore();
   const router = useRouter();
 
   const resetState = () => {
@@ -34,15 +34,7 @@ export default function CreateRoomModal() {
       const res = await instance.post(`https://k10a508.p.ssafy.io:8081/game-service/rooms`, newRoom);
       const newRoomId = res.data.data.roomId;
       console.log('방정보응답', res);
-      addRoom({
-        myNickname: res.data.data.myNickname,
-        myUserId: res.data.data.myUserId,
-        roomId: res.data.data.roomId,
-        maxNum: res.data.data.maxNum,
-        quizCount: res.data.data.quizCount,
-        creatorId: res.data.data.creatorId,
-        roomPlayerRes: res.data.data.roomPlayerRes ?? null,
-      });
+      setGameRoomInfo(res.data.data);
       resetState();
       router.replace(`/game/rooms/${newRoomId}`);
     } catch (e) {
