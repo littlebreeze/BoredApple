@@ -6,16 +6,21 @@ import QuizWrapper from './_component/QuizWrapper';
 import TimerWrapper from './_component/TimerWrapper';
 import { useWebsocketStore } from '@/stores/websocketStore';
 import { useEffect } from 'react';
+import { useRoomStore } from '@/stores/roomStore';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
   const { connect, disconnect } = useWebsocketStore();
+  const { getRoomById } = useRoomStore();
+  console.log(getRoomById(roomId));
 
   useEffect(() => {
     // roomId 있으면 연결
     if (roomId) connect(roomId);
     // unMount 될 때 disconnect
-    return () => disconnect();
+    return () => {
+      disconnect();
+    };
   }, [roomId, connect, disconnect]);
 
   return (
@@ -37,8 +42,8 @@ export default function Page() {
           <button className='w-full p-3 mt-3 text-white rounded-3xl bg-[#FF0000]'>게임나가기</button>
         </div>
         {/* 문제 및 힌트 */}
-        <div className='w-1/2 -z-10'>
-          <QuizWrapper />
+        <div className='w-1/2'>
+          <QuizWrapper roomId={roomId} />
         </div>
         {/* 시간 */}
         <div className='w-1/6'>
