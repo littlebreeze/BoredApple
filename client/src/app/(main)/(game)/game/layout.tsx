@@ -22,7 +22,7 @@ export default function Layout({
         <div className='px-5 '>
           <div className='w-[300px] mx-auto pt-7 pb-3'>
             <Image
-              className='w-full drop-shadow-[2px_2px_2px_rgba(0,0,0,0.2)]'
+              className='w-full drop-shadow-[2px_2px_2px_rgba(0,0,0,0.2)] z-20 relative'
               src='/game-title-2.svg'
               loading='eager'
               width={500}
