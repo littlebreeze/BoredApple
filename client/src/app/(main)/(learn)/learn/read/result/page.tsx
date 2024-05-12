@@ -3,7 +3,7 @@ import CloseButton from '../../_components/CloseButton';
 import ReadResult from '../_components/ReadResult';
 
 export const metadata: Metadata = {
-  title: '어휘퀴즈 - 오늘의 학습',
+  title: '정독훈련 - 오늘의 학습',
   description: '문해력 학습 서비스 심심한 사과의 오늘의 학습',
 };
 
