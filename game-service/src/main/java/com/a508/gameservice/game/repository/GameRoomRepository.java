@@ -1,13 +1,92 @@
 package com.a508.gameservice.game.repository;
 
+import com.a508.gameservice.exception.CustomException;
+import com.a508.gameservice.exception.ErrorCode;
+import com.a508.gameservice.game.data.PageRoomListDTO;
 import com.a508.gameservice.game.domain.GameRoom;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface GameRoomRepository extends CrudRepository<GameRoom, String> {
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-    Page<GameRoom> findAll(Pageable pageable);
+@Repository
+public class GameRoomRepository {
+    private final RedisTemplate<String, GameRoom> redisTemplate;
+    private static final String GAME_ROOM_HASH_KEY = "gameRoom:";
+
+    public GameRoomRepository(RedisTemplate<String, GameRoom> redisGameRoomTemplate) {
+        this.redisTemplate = redisGameRoomTemplate;
+    }
+
+    public void saveGameRoom(GameRoom gameRoom) {
+        redisTemplate.opsForValue().set(GAME_ROOM_HASH_KEY + gameRoom.getId(), gameRoom);
+    }
+
+    public GameRoom getGameRoom(String id) {
+        return redisTemplate.opsForValue().get(GAME_ROOM_HASH_KEY + id);
+    }
+
+    //정규식 패턴 검증을 통한 id 반환
+    public Set<Integer> getAllIds() {
+        Set<Integer> ids = new TreeSet<>();
+        Set<String> keys = redisTemplate.keys(GAME_ROOM_HASH_KEY + "*");
+        if (keys != null && !keys.isEmpty()) {
+            Pattern pattern = Pattern.compile(GAME_ROOM_HASH_KEY + "(\\d+)");
+            for (String key : keys) {
+                Matcher matcher = pattern.matcher(key);
+                if (matcher.find()) {
+                    String idStr = matcher.group(1);
+                    int id = Integer.parseInt(idStr);
+                    ids.add(id);
+                }
+            }
+        }
+        return ids;
+    }
+
+    public PageRoomListDTO getGameRoomsByPage(int pageNum) {
+        return getGameRoomsByPage(pageNum, 6);
+    }
+
+    public PageRoomListDTO getGameRoomsByPage(int pageNum, int pageSize) {
+        int start = (pageNum - 1) * pageSize;
+        int end = start + pageSize - 1;
+        Boolean isEndPage = false;
+        Set<Integer> ids = getAllIds();
+
+        List<GameRoom> gameRooms = new ArrayList<>();
+        int i = 0;
+        for (Integer id : ids) {
+            if (i >= start && i <= end) {
+                GameRoom gameRoom = getGameRoom(String.valueOf(id));
+                if (gameRoom != null) {
+                    gameRooms.add(gameRoom);
+                }else {
+                isEndPage = true;
+                break;
+                }
+            }
+            i++;
+        }
+
+        if (ids.size()<=end+1) isEndPage=true;
+        return PageRoomListDTO.builder()
+                .gameRoomList(gameRooms)
+                .isEndPage(isEndPage)
+                .build();
+    }
+
+    public void updateIsStarted(String roomId) {
+        GameRoom gameRoom = getGameRoom(roomId);
+        if (gameRoom != null) {
+            gameRoom.setIsStarted();
+            redisTemplate.opsForValue().set(GAME_ROOM_HASH_KEY + roomId, gameRoom);
+        } else {
+            throw new CustomException(ErrorCode.ROOM_IS_NOT_EXIST);
+        }
+    }
+
+
 }
