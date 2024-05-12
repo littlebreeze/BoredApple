@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { BasicProblemResponse } from '@/types/Problem';
 
-export default function Read() {
+export default function Insert() {
   const router = useRouter();
   const [problems, setProblems] = useState<BasicProblemResponse>([]);
   const [problemIndex, setProblemIndex] = useState(0);
@@ -38,7 +38,7 @@ export default function Read() {
         const spendTime = Math.round((endTime - beginTime.current) / 1000);
 
         const response = await instance.post('/study-service/solve/choice', {
-          type: '정독훈련',
+          type: '어휘',
           myAnswer: userAnswer,
           problemId: problemId,
           spendTime: spendTime,
