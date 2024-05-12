@@ -18,7 +18,7 @@ public class ChatController {
         String content = chatMessage.getMessage();
         String writer = "심심한 사과";
         if (chatMessage.getType() == MessageType.ENTER) {
-            content = chatMessage.getSender() + "님이 입장하셨습니다.";
+            content = chatMessage.getSender();
         } else if (chatMessage.getType() == MessageType.TALK) {
             writer = chatMessage.getSender();
         } else if (chatMessage.getType() == MessageType.CORRECT) {
