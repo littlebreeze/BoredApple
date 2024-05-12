@@ -1,5 +1,6 @@
-type QuizType = { problemType: string; isCorrect: boolean };
-export default function StudyRecordItem({ record }: { record: QuizType }) {
+import { Study } from '@/types/MypageRecord';
+
+export default function StudyRecordItem({ record }: { record: Study }) {
   return (
     <div className='flex gap-2'>
       <div>

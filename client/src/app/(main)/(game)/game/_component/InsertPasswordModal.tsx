@@ -1,20 +1,46 @@
 'use client';
 
+import { useGameRoomInfoStore } from '@/queries/get-room-info';
+import { useGameRoomStore } from '@/stores/game-room-info';
 import { useGameWaitStore } from '@/stores/game-wait';
-import { useState } from 'react';
+import { useWebsocketStore } from '@/stores/websocketStore';
+import instance from '@/utils/interceptor';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+type GameRoomDetail = {
+  myNickname: string | undefined;
+  myUserId: number | undefined;
+  roomId: number | undefined;
+  maxNum: number | undefined;
+  quizCount: number | undefined;
+  creatorId: number | undefined;
+  roomPlayerRes: { userId: number; nickname: string }[];
+};
 
 export default function InsertPasswordModal() {
+  const router = useRouter();
+  const { setGameRoomInfo, roomId, roomPlayerRes } = useGameRoomStore();
   const { roomList, selectedRoom, setIsShow } = useGameWaitStore();
+  const { data: roomData, isLoading, isError } = useGameRoomInfoStore(selectedRoom?.id);
   const [password, setPassword] = useState<string>('');
   const [isCorrect, setCorrect] = useState<boolean>(true);
+  const { connect, stompClient } = useWebsocketStore();
 
   const onClickPasswordCheck = () => {
     if (password === selectedRoom?.roomPassword) {
-      location.href = `game/rooms/${selectedRoom?.id}`;
+      if (!isLoading && !isError && roomData) {
+        // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
+        setGameRoomInfo(roomData.data.data);
+        setIsShow(false);
+        connect(String(selectedRoom?.id));
+
+        router.push(`/game/rooms/${selectedRoom?.id}`);
+      }
     } else {
       setCorrect(false);
     }
   };
+
   return (
     <>
       <div className='rounded-md absolute top-0 left-0 w-full h-full bg-ourBlack/30 flex justify-center items-center'>

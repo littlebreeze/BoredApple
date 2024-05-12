@@ -1,8 +1,23 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import InsertPasswordModal from './InsertPasswordModal';
 import { useGameWaitStore } from '@/stores/game-wait';
+import instance from '@/utils/interceptor';
+import { useGameRoomStore } from '@/stores/game-room-info';
+import { useRouter } from 'next/navigation';
+import { useGameRoomInfoStore } from '@/queries/get-room-info';
+import { useWebsocketStore } from '@/stores/websocketStore';
+
+type GameRoomDetail = {
+  myNickname: string | undefined;
+  myUserId: number | undefined;
+  roomId: number | undefined;
+  maxNum: number | undefined;
+  quizCount: number | undefined;
+  creatorId: number | undefined;
+  roomPlayerRes: { userId: number; nickname: string }[];
+};
 
 type GameRoomInfo = {
   id: number;
@@ -22,13 +37,25 @@ type Props = {
 };
 
 export default function GameRoomItem({ roomInfo }: Props) {
-  const { setIsShow, setSelectedRoom } = useGameWaitStore();
+  const router = useRouter();
+  const { data: roomData, isLoading, isError } = useGameRoomInfoStore(roomInfo?.id);
+  const { setGameRoomInfo } = useGameRoomStore();
+  const { setIsShow, setSelectedRoom, selectedRoom } = useGameWaitStore();
+  const { connect, stompClient } = useWebsocketStore();
   const onClickRoomItem = () => {
     if (!roomInfo?.isStarted && roomInfo?.nowNum !== roomInfo?.maxNum) {
       if (roomInfo?.isSecret) {
         setIsShow(true);
         setSelectedRoom(roomInfo);
-      } else location.href = `game/rooms/${roomInfo?.id}`;
+      } else {
+        if (!isLoading && !isError && roomData) {
+          // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
+          setGameRoomInfo(roomData.data.data);
+          connect(String(roomInfo?.id));
+
+          router.push(`/game/rooms/${roomInfo?.id}`);
+        }
+      }
     }
   };
 
