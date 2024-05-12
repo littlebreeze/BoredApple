@@ -50,7 +50,10 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
     <div className='h-full px-3 pt-3 pb-1 bg-ourLightGray/50 rounded-xl flex flex-col justify-between'>
       <div className='h-44 flex flex-col overflow-y-scroll'>
         {messages.map((m, idx) => (
-          <div key={idx} className='p-1 flex gap-3'>
+          <div
+            key={idx}
+            className='p-1 flex gap-3'
+          >
             <div className={`text-center w-2/12 border-r-2 ${m.writer === '심심한 사과' && 'font-bold text-ourTheme'}`}>
               {m.writer}
             </div>
