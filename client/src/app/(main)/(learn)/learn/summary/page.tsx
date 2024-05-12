@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import CloseButton from '../_components/CloseButton';
-import Insert from './_components/Insert';
+import Insert from './_components/Summary';
 
 export const metadata: Metadata = {
   title: '문장넣기 - 오늘의 학습',

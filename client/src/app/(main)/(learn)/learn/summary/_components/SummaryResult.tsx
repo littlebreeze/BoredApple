@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { InsertProblemResponse, IInsertProblem } from '@/types/Problem';
 
-export default function InsertResult() {
+export default function SummaryResult() {
   const router = useRouter();
   const [problems, setProblems] = useState<InsertProblemResponse>([]);
   const [problemIndex, setProblemIndex] = useState(0);
@@ -17,10 +17,10 @@ export default function InsertResult() {
   const currProblem = problems[problemIndex];
 
   useEffect(() => {
-    getReadData();
+    getSummaryData();
   }, []);
 
-  const getReadData = async () => {
+  const getSummaryData = async () => {
     try {
       const response = await instance.get(`/study-service/problem/sentence`);
       setProblems(response.data.data);
