@@ -22,7 +22,7 @@ type Res = {
 };
 
 export default function GameScoreBoard() {
-  const { players, addPlayers } = useGameScoreStore();
+  const { players, setPlayers } = useGameScoreStore();
   const { myNickname, myUserId, roomPlayerRes } = useGameRoomStore();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function GameScoreBoard() {
       (re: { userId: number; nickname: string }, idx: number) => new MemberScore(0, re.nickname, re.userId)
     );
     scoreList.push(new MemberScore(0, myNickname!, myUserId!));
-    addPlayers(scoreList);
+    setPlayers(scoreList);
   }, []);
 
   return (

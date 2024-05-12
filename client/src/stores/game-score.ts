@@ -8,12 +8,18 @@ type MemberScore = {
 
 interface GameScore {
   players: MemberScore[];
-  addPlayers: (player: MemberScore[]) => void;
+  setPlayers: (player: MemberScore[]) => void;
+  addPlayers: (player: MemberScore) => void;
 }
 
-export const useGameScoreStore = create<GameScore>((set) => ({
+export const useGameScoreStore = create<GameScore>((set, get) => ({
   players: [],
-  addPlayers: (players: MemberScore[]) => {
+  setPlayers: (players: MemberScore[]) => {
     set({ players: players });
+  },
+  addPlayers: (players: MemberScore) => {
+    let prev = get().players;
+    prev.push(players);
+    set({ players: prev });
   },
 }));
