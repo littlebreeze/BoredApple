@@ -14,8 +14,17 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
 
   const { myNickname, myUserId } = useGameRoomStore();
   const { addPlayers, exitPlayer, getScore } = useGameScoreStore();
-  const { connect, disconnect, messages, sendMessage, clearMessage, answer, stompClient, isCorrectAnswer } =
-    useWebsocketStore();
+  const {
+    connect,
+    disconnect,
+    messages,
+    sendMessage,
+    clearMessage,
+    answer,
+    stompClient,
+    isCorrectAnswer,
+    isGameRoundInProgress,
+  } = useWebsocketStore();
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -96,7 +105,7 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
             if (e.key === 'Enter') {
               setNewMessage('');
               sendMessage({
-                type: answer === newMessage && !isCorrectAnswer ? 'CORRECT' : 'TALK',
+                type: answer === newMessage && !isCorrectAnswer && !isGameRoundInProgress ? 'CORRECT' : 'TALK',
                 roomId: roomId,
                 sender: myNickname!,
                 senderId: myUserId!,
