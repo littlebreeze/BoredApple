@@ -54,7 +54,7 @@ public class GameRoomController {
     /**
      * 마이페이지 전적조회
      */
-    @GetMapping("record")
+    @GetMapping("/record")
     public MyBattleRecordRes getMyRecord(@RequestHeader(value = "Authorization") String token) {
         return gameRoomService.getMyRecord(token);
     }
