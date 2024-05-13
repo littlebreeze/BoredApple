@@ -29,7 +29,13 @@ export default function Page() {
   useEffect(() => {
     // unMount 될 때 disconnect
     return () => {
-      disconnect();
+      disconnect({
+        type: 'EXIT',
+        roomId: storedRoomId!,
+        sender: myNickname!,
+        senderId: myUserId!,
+        message: '나갑니다',
+      });
     };
   }, [roomId, connect, disconnect]);
 
@@ -52,7 +58,7 @@ export default function Page() {
       </div>
       <div className='w-2/3 h-60'>
         {/* 채팅창 */}
-        <ChatWrapper roomId={roomId} />
+        <ChatWrapper roomId={Number(roomId)} />
       </div>
     </div>
   );

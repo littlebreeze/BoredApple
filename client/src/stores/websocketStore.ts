@@ -1,6 +1,20 @@
 import { create } from 'zustand';
 import { Client, IMessage } from '@stomp/stompjs';
 
+interface ChatMessageRequest {
+  type: string;
+  roomId: number;
+  sender: string;
+  senderId: number;
+  message: string;
+}
+interface ChatMessageResponse {
+  type: string;
+  writer: string;
+  content: string;
+  target: number;
+}
+
 interface WebSocketState {
   stompClient: Client | null;
   messages: ChatMessageResponse[];
@@ -16,19 +30,13 @@ interface WebSocketState {
 
   // 웹소켓 연결, 끊기
   connect: (roomId: string) => void;
-  disconnect: () => void;
+  disconnect: (body: ChatMessageRequest) => void;
 
   startGame: (roodId: string) => void; // 게임 시작(START)
-  sendMessage: (destination: string, body: any) => void; // 메세지 발행
+  sendMessage: (body: ChatMessageRequest) => void; // 메세지 발행
   setIsGameRoundInProgress: () => void; // 라운드 on/off 조정
+  clearMessage: () => void; // 페이지 나가면서 메세지 초기화
   setRoundCount: (round: number) => void; // 라운드 수 조정
-}
-
-interface ChatMessageResponse {
-  type: string;
-  writer: string;
-  content: string;
-  target: string;
 }
 
 export const useWebsocketStore = create<WebSocketState>((set, get) => ({
@@ -72,19 +80,20 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
     client.activate();
     set({ stompClient: client });
   },
-  disconnect: () => {
+  disconnect: (body: ChatMessageRequest) => {
     const client = get().stompClient;
     if (client) {
+      get().sendMessage(body);
       client.deactivate();
       set({ stompClient: null });
     }
   },
 
-  sendMessage: (destination: string, body: object) => {
+  sendMessage: (body: ChatMessageRequest) => {
     const client = get().stompClient;
     if (client) {
       client.publish({
-        destination: destination,
+        destination: `/pub/ws/rooms/${body.roomId}/send`,
         body: JSON.stringify(body),
       });
     }
@@ -112,5 +121,8 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
 
   setRoundCount: (round: number) => {
     set({ roundCount: round });
+  },
+  clearMessage: () => {
+    set({ messages: [] });
   },
 }));
