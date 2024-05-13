@@ -243,7 +243,6 @@ export default function CreateRoomModal() {
           <button
             className='w-1/4 h-8 text-white rounded-lg bg-ourTheme'
             onClick={submitBtn}
-            disabled={!roomName}
           >
             확인
           </button>
