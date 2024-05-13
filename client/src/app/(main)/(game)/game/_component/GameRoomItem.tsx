@@ -6,7 +6,7 @@ import { useGameWaitStore } from '@/stores/game-wait';
 import instance from '@/utils/interceptor';
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useRouter } from 'next/navigation';
-import { useGameRoomInfoStore } from '@/queries/get-room-info';
+import { useGameRoomInfo } from '@/queries/get-room-info';
 import { useWebsocketStore } from '@/stores/websocketStore';
 
 type GameRoomDetail = {
@@ -38,7 +38,7 @@ type Props = {
 
 export default function GameRoomItem({ roomInfo }: Props) {
   const router = useRouter();
-  const { data: roomData, isLoading, isError } = useGameRoomInfoStore(roomInfo?.id);
+  const { data: roomData, isLoading, isError, error } = useGameRoomInfo(roomInfo?.id);
   const { setGameRoomInfo } = useGameRoomStore();
   const { setIsShow, setSelectedRoom, selectedRoom } = useGameWaitStore();
   const { connect, stompClient } = useWebsocketStore();
@@ -48,6 +48,8 @@ export default function GameRoomItem({ roomInfo }: Props) {
         setIsShow(true);
         setSelectedRoom(roomInfo);
       } else {
+        // 방 입장하는 부분 오류
+        if (isError) console.log(error);
         if (!isLoading && !isError && roomData) {
           // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
           setGameRoomInfo(roomData.data.data);
