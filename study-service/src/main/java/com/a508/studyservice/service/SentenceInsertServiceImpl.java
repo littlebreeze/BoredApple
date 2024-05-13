@@ -39,7 +39,7 @@ public class SentenceInsertServiceImpl  implements  SentenceInsertService{
         log.info(token);
         log.info(String.valueOf(date));
         int userId = 0;
-        if(token != null) {
+        if( token != null && token.length() >25) {
             String actualToken = token.substring(7);
             userId = userServiceFeignClient.getUserId(actualToken);
         }

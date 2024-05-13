@@ -19,7 +19,8 @@ public class FiveAbilityServiceImpl implements  FiveAbilityService{
 	private final FiveAbilityRepository fiveAbilityRepository;
 	@Override
 	public FeignUserScoreResponse getFiveAbility(String token) {
-		int userId = userServiceFeignClient.getUserId(token);
+		int userId = 0;
+		if( token != null && token.length() >25){ userId = userServiceFeignClient.getUserId(token);}
 		log.info(String.valueOf(userId));
 		FiveAbility fiveAbility = fiveAbilityRepository.findByUserId(userId);
 		if(fiveAbility ==null){
