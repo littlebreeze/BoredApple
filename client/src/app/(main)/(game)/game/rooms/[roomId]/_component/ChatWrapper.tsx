@@ -112,6 +112,7 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
               //   message: newMessage,
               // });
               // 재률 수정
+              setNewMessage('');
               sendMessage({
                 type: 'TALK',
                 roomId: roomId,
@@ -128,7 +129,6 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
                   message: newMessage,
                 });
               }
-              setNewMessage('');
               // 재률 수정 이까지
             }
           }}
