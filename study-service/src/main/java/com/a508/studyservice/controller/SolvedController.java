@@ -29,7 +29,7 @@ public class SolvedController {
 
     //5가지 능력
     @GetMapping("/five")
-    public ResponseEntity<SuccessResponse<?>> getFiveAbilityController(@RequestParam String token){
+    public ResponseEntity<SuccessResponse<?>> getFiveAbilityController(@RequestHeader(value = "Authorization") String token){
         return ResponseEntity.ok(
                 new SuccessResponse<>("success" ,fiveAbilityService.getFiveAbility(token)));
     }

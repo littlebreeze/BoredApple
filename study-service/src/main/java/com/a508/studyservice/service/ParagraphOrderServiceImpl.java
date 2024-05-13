@@ -36,7 +36,7 @@ public class ParagraphOrderServiceImpl implements  ParagraphOrderService{
     @Override
     public List<ProblemResponse> getParagraphProblems(String token, LocalDateTime date ) {
         int userId = 0;
-        if(token != null) {
+        if( token != null && token.length() >25) {
             String actualToken = token.substring(7);
             userId = userServiceFeignClient.getUserId(actualToken);
         }
