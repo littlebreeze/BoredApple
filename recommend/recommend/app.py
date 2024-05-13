@@ -72,11 +72,12 @@ def calculate_elo(rank, a, b, id, players):
     if players % 2 == 0:
         t = int((6 - players) / 2)
         res.append(int(32 * ea * evenrankmag[t + rank]))
+        res.append(a + int(32 * ea * evenrankmag[t + rank]))
         return res
 
     t = int((5 - players) / 2)
     res.append(int(32 * ea * oddrankmag[t + rank]))
-    res.append(a+int(32 * ea * oddrankmag[t + rank]))
+    res.append(a + int(32 * ea * oddrankmag[t + rank]))
     return res
 
 
