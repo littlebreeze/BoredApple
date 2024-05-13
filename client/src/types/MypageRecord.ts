@@ -7,6 +7,7 @@ export interface ARequest {
 // 출석 응답 데이터 : AttendanceRecord
 export interface AResponse {
   days: number;
+  ratio: number;
   registerDate: string;
 }
 
