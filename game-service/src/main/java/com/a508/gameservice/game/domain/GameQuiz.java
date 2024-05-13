@@ -4,28 +4,21 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BattleRecord {
+public class GameQuiz {
 
     @Id
     Integer id;
 
     @Column(nullable = false)
-    @ColumnDefault("0")
-    Integer victory;
+    String quiz;
 
     @Column(nullable = false)
-    @ColumnDefault("0")
-    Integer game;
-
-    @Column(nullable = false)
-    @ColumnDefault("1500")
-    Integer rating;
+    String answer;
 
 }
