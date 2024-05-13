@@ -17,6 +17,10 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
   } = useWebsocketStore();
 
   useEffect(() => {
+    console.log('게임상태', isGaming);
+  }, [isGaming]);
+
+  useEffect(() => {
     if (!isGaming || timer > 30) return;
 
     if (isGameRoundInProgress && timer === 0) {
