@@ -33,8 +33,9 @@ const INITIAL_CONSONANTS = [
 ];
 
 export default function QuizWrapper({ roomId }: { roomId: string }) {
-  const { startGame, isGaming, timer, roundCount, currentRound, setRoundCount, quiz, answer } = useWebsocketStore();
-  const { quizCount } = useGameRoomStore();
+  const { startGame, isGaming, timer, roundCount, currentRound, setRoundCount, quiz, answer, isGameRoundInProgress } =
+    useWebsocketStore();
+  const { quizCount, myUserId, creatorId } = useGameRoomStore();
 
   useEffect(() => {
     setRoundCount(quizCount as number);
@@ -75,7 +76,7 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
           {currentRound} / {roundCount}
         </div>
         <div className='flex items-center justify-center flex-1 px-5 text-lg font-semibold font-Batang'>
-          {isGaming ? (
+          {isGaming && isGameRoundInProgress ? (
             timer == 33 ? (
               <Image
                 width={80}
@@ -103,20 +104,21 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
         </div>
       </div>
       <div className='flex justify-center h-16 gap-3 mt-5'>
-        {!isGaming ? (
+        {isGaming ? (
+          isGameRoundInProgress ? (
+            timer <= 20 && createHint1(answer.length)
+          ) : (
+            '곧 다음 문제가 나옵니다!'
+          )
+        ) : myUserId === creatorId ? (
           <button
             className='w-1/2 text-3xl text-white rounded-3xl bg-ourRed'
-            onClick={() => {
-              startGame(roomId);
-              console.log('시작');
-            }}
+            onClick={() => startGame(roomId)}
           >
             게임시작
           </button>
-        ) : timer > 20 ? (
-          <></>
         ) : (
-          createHint1(answer.length)
+          <div>방장이 게임시작 버튼을 누르면 게임이 시작됩니다.</div>
         )}
       </div>
     </>
