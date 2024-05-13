@@ -38,7 +38,10 @@ export default function GameScoreBoard() {
     <div className='flex flex-col gap-1 p-3 bg-white rounded-xl'>
       <div className='text-center'>점수</div>
       {players?.map((player, idx) => (
-        <div key={idx} className='flex justify-between'>
+        <div
+          key={idx}
+          className='flex justify-between'
+        >
           <div>{player.nickname}</div>
           <div>{player.score}</div>
         </div>
