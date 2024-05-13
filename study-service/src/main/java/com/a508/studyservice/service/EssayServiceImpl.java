@@ -46,7 +46,7 @@ public class EssayServiceImpl  implements  EssayService{
         String actualToken = token.substring(7);
         userId = userServiceFeignClient.getUserId(actualToken);
         }
-        log.info("topic 주제에 들어온 userId : " + String.valueOf(userId));
+        log.info("topic 주제에 들어온 userId : " + userId);
         log.info(token);
 
         /*
@@ -96,8 +96,8 @@ public class EssayServiceImpl  implements  EssayService{
             strings[1] = request.getMyAnswer().get(idx);
            SimilarityResponse similarityResponse = similarityServiceFeignClient.essaySimilarity(strings);
             int similarity = similarityResponse.getRatio();
-            log.info("유사도의 결과값은 : " + String.valueOf(similarity));
-            EssaySolved essaySolved = essayRepository.save( EssaySolved.builder()
+            log.info("유사도의 결과값은 : " + similarity);
+            essayRepository.save( EssaySolved.builder()
                             .problemId(request.getProblemId().get(idx))
                             .answer(topicProblem.getAnswer())
                             .category(type)
