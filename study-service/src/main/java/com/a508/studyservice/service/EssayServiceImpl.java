@@ -12,6 +12,7 @@ import com.a508.studyservice.dto.request.EssayRequest;
 import com.a508.studyservice.dto.response.EssayResponse;
 import com.a508.studyservice.dto.response.SimilarityResponse;
 import com.a508.studyservice.entity.EssaySolved;
+import com.a508.studyservice.entity.FiveAbility;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.entity.TopicProblem;
 import com.a508.studyservice.feign.SimilarityServiceFeignClient;
@@ -19,6 +20,7 @@ import com.a508.studyservice.feign.UserServiceFeignClient;
 import com.a508.studyservice.global.common.code.ErrorCode;
 import com.a508.studyservice.global.common.exception.BaseException;
 import com.a508.studyservice.repository.EssayRepository;
+import com.a508.studyservice.repository.FiveAbilityRepository;
 import com.a508.studyservice.repository.TodayLearningRepository;
 import com.a508.studyservice.repository.TopicRepository;
 
@@ -36,6 +38,8 @@ public class EssayServiceImpl  implements  EssayService{
     private final TodayLearningRepository todayLearningRepository;
     private final UserServiceFeignClient userServiceFeignClient;
     private final SimilarityServiceFeignClient similarityServiceFeignClient;
+    private final FiveAbilityRepository fiveAbilityRepository;
+
 
 
     @Override
@@ -97,6 +101,31 @@ public class EssayServiceImpl  implements  EssayService{
            SimilarityResponse similarityResponse = similarityServiceFeignClient.essaySimilarity(strings);
             int similarity = similarityResponse.getRatio();
             log.info("유사도의 결과값은 : " + similarity);
+
+            if( similarity >= 60) {
+                FiveAbility fiveAbility = fiveAbilityRepository.findByUserId(userId);
+                if(fiveAbility ==null){
+                    fiveAbility = fiveAbilityRepository.save(FiveAbility.builder()
+                        .userId(userId)
+                        .fact(1)
+                        .inference(1)
+                        .voca(1)
+                        .recognition(1)
+                        .speed(1)
+                        .build());
+                }
+                fiveAbilityRepository.save(FiveAbility.builder()
+                    .userId(userId)
+                    .fact(fiveAbility.getFact() )
+                    .inference(fiveAbility.getInference())
+                    .voca(fiveAbility.getVoca())
+                    .recognition(fiveAbility.getRecognition()+1)
+                    .speed(fiveAbility.getSpeed())
+                    .build());
+
+
+            }
+
             essayRepository.save( EssaySolved.builder()
                             .problemId(request.getProblemId().get(idx))
                             .answer(topicProblem.getAnswer())
