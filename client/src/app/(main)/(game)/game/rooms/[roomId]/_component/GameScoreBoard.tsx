@@ -27,7 +27,7 @@ export default function GameScoreBoard() {
 
   useEffect(() => {
     const res: Res[] = roomPlayerRes;
-    let scoreList =
+    let scoreList: MemberScore[] =
       res?.map((re: { userId: number; nickname: string }, idx: number) => new MemberScore(0, re.nickname, re.userId)) ??
       [];
     scoreList.push(new MemberScore(0, myNickname!, myUserId!));

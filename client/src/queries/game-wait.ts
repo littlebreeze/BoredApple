@@ -16,12 +16,14 @@ type GameRoomInfo = {
 };
 
 type GRResponse = {
-  data: GameRoomInfo[];
+  data: { gameRoomResList: GameRoomInfo[]; isEndPage: boolean };
 };
 
 // async - await 함수 작성
 const getGameRoomList = async (pageNum: number) => {
-  const response = await instance.get<GRResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms/${pageNum}`);
+  const response = await instance.get<GRResponse>(
+    `${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms/${pageNum}`
+  );
   return response;
 };
 
