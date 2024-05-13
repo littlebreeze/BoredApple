@@ -6,6 +6,8 @@ import Image from 'next/image';
 import count_1 from '@/../public/game/count-1.svg';
 import count_2 from '@/../public/game/count-2.svg';
 import count_3 from '@/../public/game/count-3.svg';
+import { useGameRoomStore } from '@/stores/game-room-info';
+import { useEffect } from 'react';
 
 // 힌트 - 초성뽑기
 const INITIAL_CONSONANTS = [
@@ -31,9 +33,13 @@ const INITIAL_CONSONANTS = [
 ];
 
 export default function QuizWrapper({ roomId }: { roomId: string }) {
-  const { startGame, startTimer, isGaming, timer, roundCount, currentRound } = useWebsocketStore();
-  // 더미
-  const quiz: string = '가렴주구';
+  const { startGame, isGaming, timer, roundCount, currentRound, setRoundCount, quiz, answer, isGameRoundInProgress } =
+    useWebsocketStore();
+  const { quizCount, myUserId, creatorId } = useGameRoomStore();
+
+  useEffect(() => {
+    setRoundCount(quizCount as number);
+  }, []);
 
   // 힌트 - 초성뽑기
   const createHint2 = (text: string) => {
@@ -58,7 +64,7 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
         key={idx}
         className='flex items-center justify-center w-16 text-3xl text-white bg-ourGreen rounded-xl'
       >
-        {timer > 10 ? '' : timer === 0 ? quiz[idx] : createHint2(quiz)[idx]}
+        {timer > 10 ? '' : timer === 0 ? answer[idx] : createHint2(answer)[idx]}
       </div>
     ));
   };
@@ -70,7 +76,7 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
           {currentRound} / {roundCount}
         </div>
         <div className='flex items-center justify-center flex-1 px-5 text-lg font-semibold font-Batang'>
-          {isGaming ? (
+          {isGaming && isGameRoundInProgress ? (
             timer == 33 ? (
               <Image
                 width={80}
@@ -90,7 +96,7 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
                 alt='카운트-1'
               />
             ) : (
-              '세금을 가혹하게 거두어들이고, 무리하게 재물을 빼앗음. 세금을 가혹하게 거두어들이고, 무리하게 재물을 빼앗음.'
+              quiz
             )
           ) : (
             '게임 대기 중'
@@ -98,21 +104,21 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
         </div>
       </div>
       <div className='flex justify-center h-16 gap-3 mt-5'>
-        {!isGaming ? (
+        {isGaming ? (
+          isGameRoundInProgress ? (
+            timer <= 20 && createHint1(answer.length)
+          ) : (
+            '곧 다음 문제가 나옵니다!'
+          )
+        ) : myUserId === creatorId ? (
           <button
             className='w-1/2 text-3xl text-white rounded-3xl bg-ourRed'
-            onClick={() => {
-              startGame(roomId);
-              startTimer(33);
-              console.log('시작');
-            }}
+            onClick={() => startGame(roomId)}
           >
             게임시작
           </button>
-        ) : timer > 20 ? (
-          <></>
         ) : (
-          createHint1(quiz.length)
+          <div>방장이 게임시작 버튼을 누르면 게임이 시작됩니다.</div>
         )}
       </div>
     </>

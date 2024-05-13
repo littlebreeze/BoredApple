@@ -27,8 +27,6 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    // roomId 있으면 연결
-    // if (roomId) connect(roomId);
     // unMount 될 때 disconnect
     return () => {
       disconnect({
