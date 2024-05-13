@@ -28,4 +28,15 @@ public class BattleRecord {
     @ColumnDefault("1500")
     Integer rating;
 
+    public void gameUp() {
+        this.game = game+1;
+    }
+
+    public void victoryUp() {
+        this.victory = victory+1;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
 }
