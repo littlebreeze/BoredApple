@@ -67,6 +67,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
             case 'ENTER':
             case 'EXIT':
               set((prev) => ({ messages: [...prev.messages, res] }));
+              break;
             case 'CORRECT':
               set({ isCorrectAnswer: true });
               set((prev) => ({ messages: [...prev.messages, res] }));
