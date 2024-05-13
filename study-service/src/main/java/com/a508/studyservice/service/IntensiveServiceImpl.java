@@ -35,7 +35,7 @@ public class IntensiveServiceImpl  implements  IntensiveService{
     @Override
     public List<ProblemResponse> getIntensiveProblems(String token,LocalDateTime dateTime) {
         int userId = 0;
-        if(token != null) {
+        if( token != null && token.length() >25) {
             String actualToken = token.substring(7);
             userId = userServiceFeignClient.getUserId(actualToken);
         }

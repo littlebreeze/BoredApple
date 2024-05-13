@@ -5,11 +5,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.a508.studyservice.dto.response.SentenceProblemResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.a508.studyservice.dto.response.ProblemResponse;
+import com.a508.studyservice.dto.response.SentenceProblemResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.SentenceInsert;
 import com.a508.studyservice.entity.TodayLearning;
@@ -39,7 +38,7 @@ public class SentenceInsertServiceImpl  implements  SentenceInsertService{
         log.info(token);
         log.info(String.valueOf(date));
         int userId = 0;
-        if(token != null) {
+        if( token != null && token.length() >25) {
             String actualToken = token.substring(7);
             userId = userServiceFeignClient.getUserId(actualToken);
         }
