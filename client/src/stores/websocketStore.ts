@@ -38,7 +38,7 @@ interface WebSocketState {
   setIsGameRoundInProgress: () => void; // 라운드 on/off 조정
   clearMessage: () => void; // 페이지 나가면서 메세지 초기화
   setRoundCount: (round: number) => void; // 라운드 수 조정
-  setCurrentRound: () => void; // 현재 라운드 +1
+  setCurrentRound: (round: number) => void; // 현재 라운드 +1
   endGame: (roomId: string) => void;
 }
 
@@ -142,8 +142,8 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
     set({ roundCount: round });
   },
 
-  setCurrentRound: () => {
-    set({ currentRound: get().currentRound + 1 });
+  setCurrentRound: (round: number) => {
+    set({ currentRound: round });
   },
 
   clearMessage: () => {
