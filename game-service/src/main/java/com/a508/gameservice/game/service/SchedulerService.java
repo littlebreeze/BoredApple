@@ -51,7 +51,7 @@ public class SchedulerService {
         GameQuiz gameQuiz = gameQuizList.get(roundCnt);
         // 스케줄링 작업 시작
         scheduledTask = scheduler.scheduleAtFixedRate(() -> {
-            simpMessagingTemplate.convertAndSend("/topic/time/rooms/" + roomId, timeCnt);
+            if (timeCnt>=0) simpMessagingTemplate.convertAndSend("/topic/time/rooms/" + roomId, timeCnt);
             if (timeCnt == 30) {
                 ChatMessageRes quiz = ChatMessageRes.builder().type(MessageType.QUIZ).content(gameQuiz.getQuiz()).build();
                 simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, quiz);
@@ -59,7 +59,7 @@ public class SchedulerService {
                 simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, answer);
             }
             timeCnt--;
-            if (timeCnt == -1) stopTask();
+            if (timeCnt <= -1) stopTask();
         }, 0, 1, TimeUnit.SECONDS);
         roundCnt++;
     }
@@ -71,7 +71,6 @@ public class SchedulerService {
     }
 
     public void getQuizList() {
-        System.out.println("SchedulerService 74줄");
         gameQuizList = gameQuizService.getQuiz(quizCount);
         roundCnt = 0;
     }
