@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.a508.studyservice.dto.request.EssayRequest;
 import com.a508.studyservice.dto.response.EssayResponse;
+import com.a508.studyservice.dto.response.SimilarityResponse;
 import com.a508.studyservice.entity.EssaySolved;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.entity.TopicProblem;
+import com.a508.studyservice.feign.SimilarityServiceFeignClient;
 import com.a508.studyservice.feign.UserServiceFeignClient;
 import com.a508.studyservice.global.common.code.ErrorCode;
 import com.a508.studyservice.global.common.exception.BaseException;
@@ -33,6 +35,7 @@ public class EssayServiceImpl  implements  EssayService{
     private final TopicRepository topicRepository;
     private final TodayLearningRepository todayLearningRepository;
     private final UserServiceFeignClient userServiceFeignClient;
+    private final SimilarityServiceFeignClient similarityServiceFeignClient;
 
 
     @Override
@@ -78,23 +81,22 @@ public class EssayServiceImpl  implements  EssayService{
     @Override
     public List<EssayResponse> postEssayProblem(String token, EssayRequest request) {
         log.info(request.toString());
+        if(token == null ) throw new BaseException(ErrorCode.NOT_AUTHORIZATION_POST);
+        String actualToken = token.substring(7);
+        int userId = userServiceFeignClient.getUserId(actualToken);
 
-        int userId = 1;
-        /*
-        token 로직 처리 필요 (feign)
-         */
         String type = "주제맞추기";
         List<EssayResponse> essayResponses = new ArrayList<>();
         int size = request.getProblemId().size();
 
         for( int idx = 0 ; idx  < size ; idx++){
             TopicProblem topicProblem = topicRepository.findById(request.getProblemId().get(idx)).orElseThrow(()-> new BaseException(ErrorCode.NOT_EXIST_QUESTION));
-            /*
-            feign 요청을 통한 Essay의 유사도 받아오기
-             */
-
-            int similarity = 77;
-
+            String[] strings = new String[2];
+            strings[0] = topicProblem.getAnswer();
+            strings[1] = request.getMyAnswer().get(idx);
+           SimilarityResponse similarityResponse = similarityServiceFeignClient.essaySimilarity(strings);
+            int similarity = similarityResponse.getRatio();
+            log.info("유사도의 결과값은 : " + String.valueOf(similarity));
             EssaySolved essaySolved = essayRepository.save( EssaySolved.builder()
                             .problemId(request.getProblemId().get(idx))
                             .answer(topicProblem.getAnswer())
@@ -114,6 +116,23 @@ public class EssayServiceImpl  implements  EssayService{
                             .build());
             log.info(topicProblem.toString());
         }
+        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime startDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN); // 오늘의 시작
+        LocalDateTime endDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX); // 오늘의 끝
+
+        List<TodayLearning> todayLearnings = todayLearningRepository.findByUserIdAndCreateAtBetweenAndType(userId,startDate,endDate,type);
+        for (TodayLearning todayLearning :todayLearnings) {
+            todayLearningRepository.save(TodayLearning.builder()
+                .id(todayLearning.getId())
+                .userId(todayLearning.getUserId())
+                .problemId(todayLearning.getProblemId())
+                .type(todayLearning.getType())
+                .category(todayLearning.getCategory())
+                .correct(true)
+                .createAt(todayLearning.getCreateAt())
+                .build());
+        }
+
 
         return essayResponses;
     }

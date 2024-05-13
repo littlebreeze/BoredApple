@@ -61,6 +61,7 @@ public enum ErrorCode {
 	// 오늘의 학습 문제가 생성되지 않음
 	NO_TODAY_LEARNING(405, "G-999", "Scheduler not activated" ),
 
+	NOT_AUTHORIZATION_POST(409,"G-999","당신은 정답을 낼 자격이 없습니다."),
 	// 그러한 문제는 존재하지 않습니다.
 	NOT_EXIST_QUESTION(406,"G-999", "Problem is not exist" );
 
