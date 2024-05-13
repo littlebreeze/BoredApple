@@ -27,9 +27,7 @@ export default function GameRightSection() {
   const { pageNum, setPageNum } = useGameWaitStore();
   const { data, isLoading } = useGameRoomList(pageNum);
 
-  const { isShow } = useGameWaitStore();
-
-  const { roomList, setRoomList } = useGameWaitStore();
+  const { isShow, roomList, setRoomList, isEndPage, setIsEndPage } = useGameWaitStore();
   const [duplList, setDuplList] = useState<(GameRoomInfo | undefined)[]>(new Array(6).fill(undefined));
 
   const generateRoomItems = (list: GameRoomInfo[]): (GameRoomInfo | undefined)[] => {
@@ -46,7 +44,8 @@ export default function GameRightSection() {
     console.log(data);
     if (data?.data) {
       console.log(data.data.data);
-      setRoomList(data.data.data);
+      setIsEndPage(data.data.data.isEndPage);
+      setRoomList(data.data.data.gameRoomResList);
     } else {
       setRoomList([]);
     }
@@ -77,7 +76,7 @@ export default function GameRightSection() {
       <div className='flex flex-row py-4 gap-1 px-8 md:gap-3 md:px-8 lg:gap-6 lg:px-20'>
         <PagingBtn title='이전' activate={pageNum !== 1} />
         {/* <PagingBtn title='다음' activate={roomList.length > 0 && roomList[0].isEndPage} /> */}
-        <PagingBtn title='다음' activate={true} />
+        <PagingBtn title='다음' activate={!isEndPage} />
       </div>
     </div>
   );
