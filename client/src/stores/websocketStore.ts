@@ -40,7 +40,6 @@ interface WebSocketState {
   clearMessage: () => void; // 페이지 나가면서 메세지 초기화
   setRoundCount: (round: number) => void; // 라운드 수 조정
   endGame: (roomId: string) => void;
-  setIsCorrectAnswer: (tmp: boolean) => void;
 }
 
 export const useWebsocketStore = create<WebSocketState>((set, get) => ({
@@ -88,7 +87,8 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         // 시간 구독
         client.subscribe(`/topic/time/rooms/${roomId}`, (message: IMessage) => {
           set({ timer: parseInt(message.body) });
-          if (parseInt(message.body) === 33) set({ isGameRoundInProgress: true, currentRound: get().currentRound + 1 });
+          if (parseInt(message.body) === 33)
+            set({ isGameRoundInProgress: true, currentRound: get().currentRound + 1, isCorrectAnswer: false });
         });
       },
     });
@@ -159,9 +159,5 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         body: JSON.stringify({ message: 'END' }),
       });
     }
-  },
-
-  setIsCorrectAnswer: (tmp: boolean) => {
-    set({ isCorrectAnswer: tmp });
   },
 }));

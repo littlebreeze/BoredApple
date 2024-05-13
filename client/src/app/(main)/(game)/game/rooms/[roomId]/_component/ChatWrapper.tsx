@@ -14,7 +14,8 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
 
   const { myNickname, myUserId } = useGameRoomStore();
   const { addPlayers, exitPlayer, getScore } = useGameScoreStore();
-  const { connect, disconnect, messages, sendMessage, clearMessage, answer, stompClient } = useWebsocketStore();
+  const { connect, disconnect, messages, sendMessage, clearMessage, answer, stompClient, isCorrectAnswer } =
+    useWebsocketStore();
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -64,7 +65,10 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
     <div className='h-full px-3 pt-3 pb-1 bg-ourLightGray/50 rounded-xl flex flex-col justify-between'>
       <div className='h-44 flex flex-col overflow-y-scroll'>
         {messages.map((m, idx) => (
-          <div key={idx} className='p-1 flex gap-3'>
+          <div
+            key={idx}
+            className='p-1 flex gap-3'
+          >
             <div className={`text-center w-2/12 border-r-2 ${m.writer === '심심한 사과' && 'font-bold text-ourTheme'}`}>
               {m.writer}
             </div>
@@ -92,7 +96,7 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
             if (e.key === 'Enter') {
               setNewMessage('');
               sendMessage({
-                type: answer === newMessage ? 'CORRECT' : 'TALK',
+                type: answer === newMessage && !isCorrectAnswer ? 'CORRECT' : 'TALK',
                 roomId: roomId,
                 sender: myNickname!,
                 senderId: myUserId!,
