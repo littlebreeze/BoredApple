@@ -19,6 +19,7 @@ public class GameSchedulerManageService {
     public void addRoom(int roomId, int quizCount) {
         SchedulerService gameScheduler = new SchedulerService(gameQuizService, simpMessagingTemplate, roomId, quizCount);
         gameSchedulerMap.put(roomId, gameScheduler);
+        gameScheduler.getQuizList();
     }
 
     // 방을 제거
