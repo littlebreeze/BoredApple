@@ -1,15 +1,16 @@
 package com.a508.gameservice.game.controller;
 
-import com.a508.gameservice.game.data.GameRoomListRes;
-import com.a508.gameservice.game.data.GameRoomReq;
-import com.a508.gameservice.game.data.JoinRoomRes;
-import com.a508.gameservice.game.data.RankingRes;
+import com.a508.gameservice.game.data.*;
 import com.a508.gameservice.game.service.GameRoomService;
 import com.a508.gameservice.game.service.GameSchedulerManageService;
 import com.a508.gameservice.response.SuccessResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 @RequiredArgsConstructor
@@ -53,4 +54,25 @@ public class GameRoomController {
     public SuccessResponse<RankingRes> getRankings(HttpServletRequest request) {
         return new SuccessResponse<>(gameRoomService.getRankings(request));
     }
+
+    /**
+     * 마이페이지 전적조회 feign
+     */
+    @GetMapping("/record")
+    public MyBattleRecordRes getMyRecord(@RequestHeader(value = "Authorization") String token) {
+        return gameRoomService.getMyRecord(token);
+    }
+
+    /**
+     게임 결과
+     */
+    @PostMapping("/results")
+    public SuccessResponse<Map<String, List<ResultRes>>> getResult(@RequestBody ResultListReq resultListReq) {
+        Map<String, List<ResultRes>> data = new TreeMap<>();
+        data.put("ResultList", gameRoomService.getResult(resultListReq));
+        return new SuccessResponse<>(data);
+
+    }
+
+
 }
