@@ -12,6 +12,7 @@ import com.a508.studyservice.dto.response.ProblemResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.ParagraphOrder;
 import com.a508.studyservice.entity.TodayLearning;
+import com.a508.studyservice.feign.UserServiceFeignClient;
 import com.a508.studyservice.global.common.code.ErrorCode;
 import com.a508.studyservice.global.common.exception.BaseException;
 import com.a508.studyservice.repository.ChoiceRepository;
@@ -30,15 +31,15 @@ public class ParagraphOrderServiceImpl implements  ParagraphOrderService{
     private final ParagraphOrderRepository paragraphOrderRepository;
     private final TodayLearningRepository todayLearningRepository;
     private  final ChoiceRepository choiceRepository;
-
+    private final UserServiceFeignClient userServiceFeignClient;
 
     @Override
     public List<ProblemResponse> getParagraphProblems(String token, LocalDateTime date ) {
-        int userId = 1;
-        /*
-        token 활용 user Feign 해야함
-         */
-
+        int userId = 0;
+        if(token != null) {
+            String actualToken = token.substring(7);
+            userId = userServiceFeignClient.getUserId(actualToken);
+        }
         LocalDateTime startDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN); // 오늘의 시작
         LocalDateTime endDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX); // 오늘의 끝
         String type = "순서맞추기";

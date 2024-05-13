@@ -4,6 +4,7 @@ import com.a508.studyservice.dto.response.ProblemResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.entity.Voca;
+import com.a508.studyservice.feign.UserServiceFeignClient;
 import com.a508.studyservice.global.common.code.ErrorCode;
 import com.a508.studyservice.global.common.exception.BaseException;
 import com.a508.studyservice.repository.ChoiceRepository;
@@ -28,15 +29,16 @@ public class VocaServiceImpl implements  VocaService {
     private final TodayLearningRepository todayLearningRepository;
     private final VocaRepository vocaRepository;
     private final ChoiceRepository choiceRepository;
-
+    private final UserServiceFeignClient userServiceFeignClient;
 
 
     @Override
     public List<ProblemResponse> getVocaProblem(String token, LocalDateTime date) {
-        int userId = 1;
-        /*
-        token을 활용한 userFeign 후 로직 처리 추가 되어야함.
-         */
+        int userId = 0;
+        if(token != null) {
+            String actualToken = token.substring(7);
+            userId = userServiceFeignClient.getUserId(actualToken);
+        }
         LocalDateTime startDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN); // 오늘의 시작
         LocalDateTime endDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX); // 오늘의 끝
         String type = "어휘";
