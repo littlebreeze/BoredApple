@@ -33,8 +33,23 @@ const INITIAL_CONSONANTS = [
 ];
 
 export default function QuizWrapper({ roomId }: { roomId: string }) {
-  const { startGame, isGaming, timer, roundCount, currentRound, setRoundCount, quiz, answer, isGameRoundInProgress } =
-    useWebsocketStore();
+  const {
+    startGame,
+    isGaming,
+    timer,
+    roundCount,
+    currentRound,
+    setRoundCount,
+    quiz,
+    answer,
+    isGameRoundInProgress,
+    isCorrectAnswer,
+    setIsCorrectAnswer,
+    setIsGameRoundInProgress,
+    setCurrentRound,
+    startRound,
+    endGame,
+  } = useWebsocketStore();
   const { quizCount, myUserId, creatorId } = useGameRoomStore();
 
   useEffect(() => {
@@ -64,10 +79,28 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
         key={idx}
         className='flex items-center justify-center w-16 text-3xl text-white bg-ourGreen rounded-xl'
       >
-        {timer > 10 ? '' : timer === 0 ? answer[idx] : createHint2(answer)[idx]}
+        {isCorrectAnswer ? answer[idx] : timer > 10 ? '' : timer === 0 ? answer[idx] : createHint2(answer)[idx]}
       </div>
     ));
   };
+
+  useEffect(() => {
+    if (!isGaming) return;
+
+    if (isGameRoundInProgress && isCorrectAnswer) {
+      setIsGameRoundInProgress();
+      if (currentRound < roundCount) {
+        const timeout = setTimeout(() => {
+          setIsCorrectAnswer(false);
+          setCurrentRound(currentRound + 1);
+          startRound(roomId);
+        }, 3000);
+        return () => clearTimeout(timeout);
+      } else if (currentRound >= roundCount) {
+        endGame(roomId);
+      }
+    }
+  }, [isCorrectAnswer, isGaming, isGameRoundInProgress]);
 
   return (
     <>
