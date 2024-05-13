@@ -1,8 +1,18 @@
 package com.a508.studyservice.controller;
 
+import java.time.LocalDateTime;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.a508.studyservice.dto.request.ChoiceRequest;
 import com.a508.studyservice.dto.request.EssayRequest;
-import com.a508.studyservice.dto.response.EssayResponse;
 import com.a508.studyservice.global.common.response.SuccessResponse;
 import com.a508.studyservice.service.ChoiceSolvedService;
 import com.a508.studyservice.service.EssayService;
@@ -10,11 +20,6 @@ import com.a508.studyservice.service.FiveAbilityService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/study-service/solve")
@@ -29,7 +34,7 @@ public class SolvedController {
 
     //5가지 능력
     @GetMapping("/five")
-    public ResponseEntity<SuccessResponse<?>> getFiveAbilityController(@RequestParam String token){
+    public ResponseEntity<SuccessResponse<?>> getFiveAbilityController(@RequestHeader(value = "Authorization") String token){
         return ResponseEntity.ok(
                 new SuccessResponse<>("success" ,fiveAbilityService.getFiveAbility(token)));
     }
