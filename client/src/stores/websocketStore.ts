@@ -5,14 +5,14 @@ interface WebSocketState {
   stompClient: Client | null;
   messages: ChatMessageResponse[];
   timer: number;
-  // 타이머 관련(임시)
-  startTimer: (duration: number) => void;
-  intervalId: number | null;
 
   isGaming: boolean; // 게임이 진행중인가?
   isGameRoundInProgress: boolean; // 라운드가 진행중인가?
   roundCount: number; // 전체 몇라운드인지?
   currentRound: number; // 현재 몇라운드인지?
+
+  quiz: string; // 문제
+  answer: string; // 정답
 
   // 웹소켓 연결, 끊기
   connect: (roomId: string) => void;
@@ -35,11 +35,12 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
   stompClient: null,
   messages: [],
   timer: 0,
-  intervalId: null,
   isGaming: false,
   isGameRoundInProgress: false,
   roundCount: 5,
   currentRound: 1,
+  quiz: '',
+  answer: '',
 
   connect: (roomId: string) => {
     const client = new Client({
@@ -48,14 +49,22 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       onConnect: () => {
         // 채팅 구독
         client.subscribe(`/topic/chat/rooms/${roomId}`, (message: IMessage) => {
-          console.log(message);
-          const msg: ChatMessageResponse = JSON.parse(message.body);
-          console.log('메세지: ', msg);
-          set((prev) => ({ messages: [...prev.messages, msg] }));
+          const res: ChatMessageResponse = JSON.parse(message.body);
+          switch (res.type) {
+            case 'TALK':
+              set((prev) => ({ messages: [...prev.messages, res] }));
+              break;
+            case 'QUIZ':
+              set({ quiz: res.content });
+              break;
+            case 'ANSWER':
+              set({ answer: res.content });
+              break;
+          }
+          console.log('메세지: ', res);
         });
         // 시간 구독
-        client.subscribe(`topic/time/rooms/${roomId}`, (message: IMessage) => {
-          console.log(message);
+        client.subscribe(`/topic/time/rooms/${roomId}`, (message: IMessage) => {
           set({ timer: parseInt(message.body) });
         });
       },
@@ -85,32 +94,16 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
     const client = get().stompClient;
     if (client) {
       client.publish({
-        destination: `/app/rooms/${roomId}/startGame`,
-        body: JSON.stringify({ type: 'START', message: 'START' }),
+        destination: `/pub/ws/quiz/rooms/${roomId}/send`,
+        body: JSON.stringify({ message: 'START' }),
+      });
+      client.publish({
+        destination: `/pub/ws/quiz/rooms/${roomId}/send`,
+        body: JSON.stringify({ message: 'ROUND' }),
       });
     }
     if (get().currentRound == 1) set({ isGaming: true });
     set({ isGameRoundInProgress: true });
-  },
-
-  startTimer: (duration: number) => {
-    const existingIntervalId = get().intervalId;
-
-    if (existingIntervalId !== null) {
-      clearInterval(existingIntervalId);
-    }
-
-    const intervalId = window.setInterval(() => {
-      const { timer } = get();
-      if (timer <= 0) {
-        clearInterval(intervalId);
-        set({ isGameRoundInProgress: false });
-      } else {
-        set((state) => ({ timer: state.timer - 1 }));
-      }
-    }, 1000);
-
-    set({ timer: duration, intervalId });
   },
 
   setIsGameRoundInProgress: () => {

@@ -3,7 +3,7 @@
 import { useWebsocketStore } from '@/stores/websocketStore';
 
 export default function TimerWrapper({ roomId }: { roomId: string }) {
-  const { timer, startGame, startTimer, isGaming } = useWebsocketStore();
+  const { timer, isGaming } = useWebsocketStore();
   if (!isGaming || timer > 30) return null;
   return (
     <>

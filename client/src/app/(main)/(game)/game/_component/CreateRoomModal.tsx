@@ -10,6 +10,7 @@ import { IRoom } from '@/types/Room';
 import upFill from '@/../public/game/up-fill.svg';
 import downFill from '@/../public/game/up-fill.svg';
 import { useGameRoomStore } from '@/stores/game-room-info';
+import { useWebsocketStore } from '@/stores/websocketStore';
 
 export default function CreateRoomModal() {
   const [roomName, setRoomName] = useState<string>('');
@@ -20,6 +21,7 @@ export default function CreateRoomModal() {
   const modalStore = useModalStore();
   const { setGameRoomInfo } = useGameRoomStore();
   const router = useRouter();
+  const { connect } = useWebsocketStore();
 
   const resetState = () => {
     setRoomName('');
@@ -31,11 +33,12 @@ export default function CreateRoomModal() {
 
   const createRoom = async (newRoom: IRoom) => {
     try {
-      const res = await instance.post(`https://k10a508.p.ssafy.io:8081/game-service/rooms`, newRoom);
+      const res = await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms`, newRoom);
       const newRoomId = res.data.data.roomId;
       console.log('방정보응답', res);
       setGameRoomInfo(res.data.data);
       resetState();
+      connect(newRoomId);
       router.replace(`/game/rooms/${newRoomId}`);
     } catch (e) {
       console.error('방 생성 중 에러가 발생했습니다.', e);
