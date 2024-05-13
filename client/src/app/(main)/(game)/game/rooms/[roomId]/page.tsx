@@ -21,9 +21,14 @@ export default function Page() {
     roomPlayerRes,
   } = useGameRoomStore();
 
-  const { connect, disconnect } = useWebsocketStore();
+  const { connect, disconnect, stompClient } = useWebsocketStore();
   useEffect(() => {
     console.log(roomPlayerRes);
+  }, []);
+
+  useEffect(() => {
+    if (!stompClient) connect(roomId);
+    // unMount 될 때 disconnect
     return () => {
       disconnect({
         type: 'EXIT',
