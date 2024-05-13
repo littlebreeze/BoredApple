@@ -8,18 +8,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
-import com.a508.studyservice.dto.response.FeignList;
-import com.a508.studyservice.feign.UserServiceFeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.a508.studyservice.dto.response.TodayLearningResponse;
-import com.a508.studyservice.dto.response.UserFeignResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.Intensive;
 import com.a508.studyservice.entity.SentenceInsert;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.entity.TopicProblem;
+import com.a508.studyservice.feign.UserServiceFeignClient;
 import com.a508.studyservice.repository.ChoiceRepository;
 import com.a508.studyservice.repository.IntensiveRepository;
 import com.a508.studyservice.repository.SentenceInsertRepository;
@@ -84,7 +82,6 @@ public class TodayLearningServiceImpl implements TodayLearningService {
             }
 
             TreeSet<String> treeSet = new TreeSet<>();
-            List<Boolean> booleanList = new ArrayList<>();
 
             for(TodayLearning todayLearning : todayLearnings)treeSet.add(todayLearning.getType());
 
@@ -159,9 +156,9 @@ public class TodayLearningServiceImpl implements TodayLearningService {
         List<SentenceInsert> sentenceInsertList = sentenceInsertRepository.findByCategory(sec);
         List<TopicProblem> topicProblemList = topicRepository.findByCategory(thi);
 
-        log.info( "정독훈련의 문제들의 값이 들어온지 : " +String.valueOf(intensiveList.size()));
-        log.info("정독훈련의 문제들의 값이 들어온지 : "+ String.valueOf(sentenceInsertList.size()));
-        log.info("정독훈련의 문제들의 값이 들어온지 : "+ String.valueOf(topicProblemList.size()));
+        log.info( "정독훈련의 문제들의 값이 들어온지 : " +(intensiveList.size()));
+        log.info("정독훈련의 문제들의 값이 들어온지 : "+ (sentenceInsertList.size()));
+        log.info("정독훈련의 문제들의 값이 들어온지 : "+ (topicProblemList.size()));
         for(int idx = 0 ; idx < 3 ; idx++){
             todayLearningRepository.save(makeEntity(userId, intensiveList.get(idx).getId(), "정독훈련", fir));
             todayLearningRepository.save(makeEntity(userId, sentenceInsertList.get(idx).getId(), "문장삽입", fir));
