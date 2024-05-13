@@ -105,7 +105,7 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
             if (e.key === 'Enter') {
               setNewMessage('');
               sendMessage({
-                type: answer === newMessage && !isCorrectAnswer && isGameRoundInProgress ? 'CORRECT' : 'TALK',
+                type: answer === newMessage && !isCorrectAnswer && !isGameRoundInProgress ? 'CORRECT' : 'TALK',
                 roomId: roomId,
                 sender: myNickname!,
                 senderId: myUserId!,
