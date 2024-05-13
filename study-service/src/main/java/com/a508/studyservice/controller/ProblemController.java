@@ -35,7 +35,6 @@ public class ProblemController {
     private final ParagraphOrderService paragraphOrderService;
     private final SentenceInsertService sentenceInsertService;
     private final TodayLearningService todayLearningService;
-    private final TopicProblemService topicProblemService;
     private final VocaService vocaService;
 
     private final TodayLearningScheduler todayLearningScheduler;
