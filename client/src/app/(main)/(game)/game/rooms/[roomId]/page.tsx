@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import ChatWrapper from './_component/ChatWrapper';
 import GameScoreBoard from './_component/GameScoreBoard';
 import { useGameRoomStore } from '@/stores/game-room-info';
@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import QuizWrapper from './_component/QuizWrapper';
 import TimerWrapper from './_component/TimerWrapper';
 import { useWebsocketStore } from '@/stores/websocketStore';
+import { useGameRoomInfo } from '@/queries/get-room-info';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -21,13 +22,20 @@ export default function Page() {
     roomPlayerRes,
   } = useGameRoomStore();
 
+  const router = useRouter();
   const { connect, disconnect, stompClient } = useWebsocketStore();
+  const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(parseInt(roomId));
+  const { setGameRoomInfo } = useGameRoomStore();
+
   useEffect(() => {
     console.log(roomPlayerRes);
   }, []);
 
   useEffect(() => {
-    if (!stompClient) connect(roomId);
+    if (!stompClient) {
+      connect(roomId);
+      if (roomData) setGameRoomInfo(roomData?.data.data);
+    }
     // unMount 될 때 disconnect
     return () => {
       disconnect({
@@ -51,7 +59,14 @@ export default function Page() {
         {/* 점수판 */}
         <div className='w-1/6'>
           <GameScoreBoard />
-          <button className='w-full p-3 mt-3 text-white rounded-3xl bg-[#FF0000]'>게임나가기</button>
+          <button
+            className='w-full p-3 mt-3 text-white rounded-3xl bg-[#FF0000]'
+            onClick={() => {
+              router.back();
+            }}
+          >
+            게임나가기
+          </button>
         </div>
         {/* 문제 및 힌트 */}
         <div className='w-1/2'>
