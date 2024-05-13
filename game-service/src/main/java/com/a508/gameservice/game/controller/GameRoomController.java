@@ -1,9 +1,6 @@
 package com.a508.gameservice.game.controller;
 
-import com.a508.gameservice.game.data.GameRoomListRes;
-import com.a508.gameservice.game.data.GameRoomReq;
-import com.a508.gameservice.game.data.JoinRoomRes;
-import com.a508.gameservice.game.data.RankingRes;
+import com.a508.gameservice.game.data.*;
 import com.a508.gameservice.game.service.GameRoomService;
 import com.a508.gameservice.game.service.GameSchedulerManageService;
 import com.a508.gameservice.response.SuccessResponse;
@@ -53,4 +50,14 @@ public class GameRoomController {
     public SuccessResponse<RankingRes> getRankings(HttpServletRequest request) {
         return new SuccessResponse<>(gameRoomService.getRankings(request));
     }
+
+    /**
+     * 마이페이지 전적조회
+     */
+    @GetMapping("record")
+    public MyBattleRecordRes getMyRecord(@RequestHeader(value = "Authorization") String token) {
+        return gameRoomService.getMyRecord(token);
+    }
+
+
 }
