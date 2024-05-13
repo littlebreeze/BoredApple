@@ -24,6 +24,7 @@ interface WebSocketState {
   isGameRoundInProgress: boolean; // 라운드가 진행중인가?
   roundCount: number; // 전체 몇라운드인지?
   currentRound: number; // 현재 몇라운드인지?
+  isCorrectAnswer: boolean;
 
   quiz: string; // 문제
   answer: string; // 정답
@@ -40,6 +41,7 @@ interface WebSocketState {
   setRoundCount: (round: number) => void; // 라운드 수 조정
   setCurrentRound: (round: number) => void; // 현재 라운드 +1
   endGame: (roomId: string) => void;
+  setIsCorrectAnswer: (tmp: boolean) => void;
 }
 
 export const useWebsocketStore = create<WebSocketState>((set, get) => ({
@@ -50,6 +52,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
   isGameRoundInProgress: false,
   roundCount: 5,
   currentRound: 1,
+  isCorrectAnswer: false,
   quiz: '',
   answer: '',
 
@@ -67,6 +70,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
             case 'EXIT':
             case 'CORRECT':
               set((prev) => ({ messages: [...prev.messages, res] }));
+              set({ isCorrectAnswer: true });
               break;
             case 'QUIZ':
               set({ quiz: res.content });
@@ -159,5 +163,9 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       });
     }
     set({ isGaming: false });
+  },
+
+  setIsCorrectAnswer: (tmp: boolean) => {
+    set({ isCorrectAnswer: tmp });
   },
 }));
