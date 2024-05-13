@@ -42,7 +42,7 @@ export default function GameRightSection() {
   const generateRoomItems = (list: GameRoomInfo[]): (GameRoomInfo | undefined)[] => {
     let duplicatedList: (GameRoomInfo | undefined)[] = [];
     for (let idx = 0; idx < 6; idx++) {
-      if (idx < roomList.length) duplicatedList.push(list[idx]);
+      if (roomList && idx < roomList.length) duplicatedList.push(list[idx]);
       else duplicatedList.push(undefined);
     }
     return duplicatedList;
