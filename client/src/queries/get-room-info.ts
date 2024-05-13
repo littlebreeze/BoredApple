@@ -25,6 +25,6 @@ const getGameRoomInfo = (roomId: number | undefined) => {
 };
 
 // useQuery 리턴하는 Hook
-export const useGameRoomInfoStore = (roomId: number | undefined) => {
+export const useGameRoomInfo = (roomId: number | undefined) => {
   return useQuery({ queryKey: ['getGameRoomList', roomId], queryFn: () => getGameRoomInfo(roomId) });
 };
