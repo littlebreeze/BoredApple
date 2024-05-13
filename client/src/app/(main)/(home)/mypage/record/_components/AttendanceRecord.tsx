@@ -22,7 +22,10 @@ export default function AttendanceRecord() {
   const [attendance, setAttendance] = useState<AResponse>();
 
   useEffect(() => {
-    getAttendanceData(yearMonth).then((value) => setAttendance(value.data.data));
+    getAttendanceData(yearMonth).then((value) => {
+      setAttendance(value.data.data);
+      console.log(attendance);
+    });
   }, [yearMonth]);
   return (
     <div className='flex flex-col'>
@@ -44,7 +47,7 @@ export default function AttendanceRecord() {
       </div>
       <div className='grid grid-cols-2 gap-2'>
         <RecordDetailItem title={'출석일수'} content={attendance ? attendance?.days + '일' : '-'} />
-        <RecordDetailItem title={'출석율'} content={'4일'} />
+        <RecordDetailItem title={'출석율'} content={attendance ? attendance?.ratio + '%' : '-'} />
         <RecordDetailItem
           title={'심심한 사과와 처음 만난 날'}
           content={attendance ? attendance!.registerDate.toString() : '-'}
