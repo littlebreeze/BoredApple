@@ -26,7 +26,7 @@ public class UserController {
 	 * feign
 	 */
 	@GetMapping("/userId")
-	public Integer getUserIdByToken(@RequestParam String token) {
+	public Integer getUserIdByToken(@RequestHeader(value = "Authorization") String token) {
 		return tokenProvider.getUserByToken(token).getId();
 	}
 
