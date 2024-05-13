@@ -33,15 +33,12 @@ const INITIAL_CONSONANTS = [
 ];
 
 export default function QuizWrapper({ roomId }: { roomId: string }) {
-  const { startGame, startTimer, isGaming, timer, roundCount, currentRound, setRoundCount } = useWebsocketStore();
+  const { startGame, isGaming, timer, roundCount, currentRound, setRoundCount, quiz, answer } = useWebsocketStore();
   const { quizCount } = useGameRoomStore();
 
   useEffect(() => {
     setRoundCount(quizCount as number);
   }, []);
-
-  // 더미
-  const quiz: string = '가렴주구';
 
   // 힌트 - 초성뽑기
   const createHint2 = (text: string) => {
@@ -66,7 +63,7 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
         key={idx}
         className='flex items-center justify-center w-16 text-3xl text-white bg-ourGreen rounded-xl'
       >
-        {timer > 10 ? '' : timer === 0 ? quiz[idx] : createHint2(quiz)[idx]}
+        {timer > 10 ? '' : timer === 0 ? answer[idx] : createHint2(answer)[idx]}
       </div>
     ));
   };
@@ -98,7 +95,7 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
                 alt='카운트-1'
               />
             ) : (
-              '세금을 가혹하게 거두어들이고, 무리하게 재물을 빼앗음. 세금을 가혹하게 거두어들이고, 무리하게 재물을 빼앗음.'
+              quiz
             )
           ) : (
             '게임 대기 중'
@@ -111,7 +108,6 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
             className='w-1/2 text-3xl text-white rounded-3xl bg-ourRed'
             onClick={() => {
               startGame(roomId);
-              startTimer(33);
               console.log('시작');
             }}
           >
@@ -120,7 +116,7 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
         ) : timer > 20 ? (
           <></>
         ) : (
-          createHint1(quiz.length)
+          createHint1(answer.length)
         )}
       </div>
     </>
