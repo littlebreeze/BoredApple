@@ -1,24 +1,31 @@
 package com.a508.studyservice.service;
 
-import com.a508.studyservice.dto.request.ChoiceRequest;
-import com.a508.studyservice.dto.response.ChoiceSolvedResponse;
-import com.a508.studyservice.entity.ChoiceSolved;
-import com.a508.studyservice.entity.TodayLearning;
-import com.a508.studyservice.feign.UserServiceFeignClient;
-import com.a508.studyservice.global.common.code.ErrorCode;
-import com.a508.studyservice.global.common.exception.BaseException;
-import com.a508.studyservice.repository.*;
-
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.a508.studyservice.dto.request.ChoiceRequest;
+import com.a508.studyservice.dto.response.ChoiceSolvedResponse;
+import com.a508.studyservice.entity.ChoiceSolved;
+import com.a508.studyservice.entity.FiveAbility;
+import com.a508.studyservice.entity.TodayLearning;
+import com.a508.studyservice.feign.UserServiceFeignClient;
+import com.a508.studyservice.global.common.code.ErrorCode;
+import com.a508.studyservice.global.common.exception.BaseException;
+import com.a508.studyservice.repository.ChoiceRepository;
+import com.a508.studyservice.repository.FiveAbilityRepository;
+import com.a508.studyservice.repository.IntensiveRepository;
+import com.a508.studyservice.repository.ParagraphOrderRepository;
+import com.a508.studyservice.repository.SentenceInsertRepository;
+import com.a508.studyservice.repository.TodayLearningRepository;
+import com.a508.studyservice.repository.VocaRepository;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Transactional
 @Service
@@ -33,6 +40,7 @@ public class ChoiceSolvedServiceImpl implements ChoiceSolvedService {
 	private final VocaRepository vocaRepository;
 	private final TodayLearningRepository todayLearningRepository;
 	private final UserServiceFeignClient userServiceFeignClient;
+	private final FiveAbilityRepository fiveAbilityRepository;
 
 	@Override
 	public List<ChoiceSolvedResponse> postChoice(String token, ChoiceRequest choiceRequest) {
@@ -81,6 +89,61 @@ public class ChoiceSolvedServiceImpl implements ChoiceSolvedService {
 				}
 				default -> false;
 			};
+			if( flag ){
+				FiveAbility fiveAbility = fiveAbilityRepository.findByUserId(userId);
+				if(fiveAbility ==null){
+					fiveAbility = fiveAbilityRepository.save(FiveAbility.builder()
+						.userId(userId)
+						.fact(1)
+						.inference(1)
+						.voca(1)
+						.recognition(1)
+						.speed(1)
+						.build());
+				}
+
+				if( type.equals("정독훈련")) {
+					fiveAbilityRepository.save(FiveAbility.builder()
+						.userId(userId)
+						.fact(fiveAbility.getFact() +1)
+						.inference(fiveAbility.getInference())
+						.voca(fiveAbility.getVoca())
+						.recognition(fiveAbility.getRecognition())
+						.speed(fiveAbility.getSpeed())
+						.build());
+					;}
+				if( type.equals("순서맞추기")) {
+					fiveAbilityRepository.save(FiveAbility.builder()
+						.userId(userId)
+						.fact(fiveAbility.getFact() )
+						.inference(fiveAbility.getInference())
+						.voca(fiveAbility.getVoca())
+						.recognition(fiveAbility.getRecognition())
+						.speed(fiveAbility.getSpeed()+1)
+						.build());
+				}
+				if( type.equals("문장삽입")) {
+					fiveAbilityRepository.save(FiveAbility.builder()
+						.userId(userId)
+						.fact(fiveAbility.getFact() )
+						.inference(fiveAbility.getInference()+1)
+						.voca(fiveAbility.getVoca())
+						.recognition(fiveAbility.getRecognition())
+						.speed(fiveAbility.getSpeed())
+						.build());
+				}
+				if( type.equals("어휘")) {
+					fiveAbilityRepository.save(FiveAbility.builder()
+						.userId(userId)
+						.fact(fiveAbility.getFact() )
+						.inference(fiveAbility.getInference())
+						.voca(fiveAbility.getVoca()+1)
+						.recognition(fiveAbility.getRecognition())
+						.speed(fiveAbility.getSpeed())
+						.build());
+				}
+
+			}
 			ChoiceSolved savedChoiceSolved = choiceRepository.save(ChoiceSolved.builder()
 				.answer(answer)
 				.correct(flag)
