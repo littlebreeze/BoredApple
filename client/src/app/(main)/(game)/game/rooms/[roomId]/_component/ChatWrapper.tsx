@@ -33,15 +33,6 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
   useEffect(() => {
     // 메시지 비우기
     return () => {
-      // sendMessage(`/pub/ws/rooms/${roomId}/send`, {
-      //   type: 'EXIT',
-      //   roomId: roomId,
-      //   sender: myNickname!,
-      //   senderId: myUserId!,
-      //   message: newMessage,
-      // });
-      // alert('사라진다');
-      // disconnect();
       clearMessage();
     };
   }, [roomId, connect, disconnect]);
@@ -72,8 +63,10 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
               {m.writer}
             </div>
             <div
-              className={`pl-2 w-10/12 ${Number(m.target) !== myUserId && 'text-ourTheme font-bold '} 
-              ${m.type === 'EXIT' && ' text-rose-500 '}`}
+              className={`pl-2 w-10/12 
+              ${Number(m.target) !== myUserId && m.type === 'ENTER' && 'text-ourTheme'} 
+              ${m.type === 'EXIT' && ' text-rose-500 '}
+              ${m.type === 'CORRECT' && ' text-ourTheme font-bold '}`}
             >
               {m.content}
               {m.type === 'ENTER' && '님이 입장하셨습니다.'}
