@@ -63,12 +63,12 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         client.subscribe(`/topic/chat/rooms/${roomId}`, (message: IMessage) => {
           const res: ChatMessageResponse = JSON.parse(message.body);
           switch (res.type) {
+            case 'CORRECT':
+              set({ isCorrectAnswer: true });
             case 'TALK':
             case 'ENTER':
             case 'EXIT':
-            case 'CORRECT':
               set((prev) => ({ messages: [...prev.messages, res] }));
-              set({ isCorrectAnswer: true });
               break;
             case 'QUIZ':
               set({ quiz: res.content });
