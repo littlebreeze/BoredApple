@@ -1,5 +1,5 @@
 import MyInfo from './_components/MyInfo';
-import MyPageNav from './_components/MyPageNav';
+import MyPageNav from './analysis/_components/MyPageNav';
 
 export default function MyPageLayout({
   children,
