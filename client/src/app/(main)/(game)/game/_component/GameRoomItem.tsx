@@ -38,9 +38,9 @@ type Props = {
 
 export default function GameRoomItem({ roomInfo }: Props) {
   const router = useRouter();
-  const { data: roomData, isLoading, isError, error } = useGameRoomInfo(roomInfo?.id);
   const { setGameRoomInfo } = useGameRoomStore();
   const { setIsShow, setSelectedRoom, selectedRoom } = useGameWaitStore();
+  const { data: roomData, isLoading, isError, error } = useGameRoomInfo(roomInfo?.id, selectedRoom?.id);
   const { connect, stompClient } = useWebsocketStore();
   const onClickRoomItem = () => {
     if (!roomInfo?.isStarted && roomInfo?.nowNum !== roomInfo?.maxNum) {
