@@ -48,7 +48,10 @@ public class TodayLearningServiceImpl implements TodayLearningService {
         public List<TodayLearningResponse> getTodayLearning(String token) {
 
         int userId = 0;
-        if( token != null) { userId = userServiceFeignClient.getUserId(token);}
+        log.info(token);
+        if( token != null) {
+            String actualToken = token.substring(7);
+            userId = userServiceFeignClient.getUserId(actualToken);}
         log.info("userId = " + userId );
         log.info(" token 정보가 들어옵니다. ");
             List<String> personalCategories = new ArrayList<>();
