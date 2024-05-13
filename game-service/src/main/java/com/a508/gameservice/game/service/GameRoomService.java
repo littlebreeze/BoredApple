@@ -5,6 +5,7 @@ import com.a508.gameservice.exception.ErrorCode;
 import com.a508.gameservice.game.data.*;
 import com.a508.gameservice.game.domain.BattleRecord;
 import com.a508.gameservice.game.domain.GameRoom;
+import com.a508.gameservice.game.domain.RoomPlayer;
 import com.a508.gameservice.game.repository.BattleRecordRepository;
 import com.a508.gameservice.game.repository.GameRoomRepository;
 import com.a508.gameservice.game.repository.RoomPlayerRepository;
@@ -87,11 +88,13 @@ public class GameRoomService {
                 .isSecret(gameRoomReq.getIsSecret())
                 .isStarted(false)
                 .maxNum(gameRoomReq.getMaxNum()).build();
-//        gameRoomRepository.save(gameRoom);
 
         gameRoomRepository.saveGameRoom(gameRoom);
         //방 입장
-        roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId);
+        RoomPlayer roomPlayer = RoomPlayer.builder().userId(userId)
+//                .joinGameTime(LocalDateTime.now())
+                .build();
+        roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId, roomPlayer);
 
         return JoinRoomRes.builder()
                 .myNickname(userServiceClient.getNicknameByUserId(userId))
@@ -122,12 +125,18 @@ public class GameRoomService {
     public synchronized void createRoomPlayer(HttpServletRequest request, Integer roomId) {
         int userId = getUserId(request);
         if (roomPlayerRepository.playerCnt(String.valueOf(roomId)) < gameRoomRepository.getGameRoom(String.valueOf(roomId)).getMaxNum()) {
-            roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId);
+            RoomPlayer roomPlayer = RoomPlayer.builder().userId(userId)
+//                    .joinGameTime(LocalDateTime.now())
+                    .build();
+            roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId, roomPlayer);
         } else {
             throw new CustomException(ErrorCode.PLAYER_IS_FULL_ERROR);
         }
     }
 
+    /**
+     * 방정보
+     */
     public JoinRoomRes getRoomInfo(HttpServletRequest request, Integer roomId) {
         int userId = getUserId(request);
         GameRoom gameRoom = gameRoomRepository.getGameRoom(String.valueOf(roomId));
@@ -160,6 +169,9 @@ public class GameRoomService {
                 .build();
     }
 
+    /**
+     * 랭킹 조회
+     */
     public RankingRes getRankings(HttpServletRequest request) {
         int userId = getUserId(request);
         //일단 내 랭킹이있는지 확인
@@ -211,11 +223,17 @@ public class GameRoomService {
 
     }
 
+    /**
+     * request->토큰으로 내 id 반환
+     */
     public int getUserId(HttpServletRequest request) {
         String accessToken = request.getHeader(AUTHORIZATION_HEADER).substring(7);
         return userServiceClient.getUserIdByToken(accessToken);
     }
 
+    /**
+     * 게임 상태 변경
+     */
     public void updateIsStarted(Integer roomId) {
         gameRoomRepository.updateIsStarted(String.valueOf(roomId));
     }
