@@ -18,5 +18,5 @@ public class RoomPlayer {
     @Id
     private Integer userId;
 
-//    private LocalDateTime joinGameTime;
+    private String joinGameTime;
 }

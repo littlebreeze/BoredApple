@@ -38,6 +38,8 @@ public class ChatController {
             service.stopTask();
         } else if (chatMessage.getType() == MessageType.EXIT) {
             content = chatMessage.getSender() + "님이 퇴장하셨습니다.";
+            //퇴장하기
+            gameRoomService.removeRoomPlayer(roomId,chatMessage.getSenderId());
         }
 
         return ChatMessageRes.builder()

@@ -38,4 +38,8 @@ public class GameRoom {
     public void setIsStarted() {
         this.isStarted = !isStarted;
     }
+
+    public void setRoomCreatorId(int userId){
+        this.roomCreatorId=userId;
+    }
 }

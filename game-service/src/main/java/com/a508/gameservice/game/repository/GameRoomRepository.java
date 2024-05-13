@@ -88,5 +88,8 @@ public class GameRoomRepository {
         }
     }
 
+    public void removeGameRoom(String roomId){
+        redisTemplate.delete(GAME_ROOM_HASH_KEY + roomId);
+    }
 
 }
