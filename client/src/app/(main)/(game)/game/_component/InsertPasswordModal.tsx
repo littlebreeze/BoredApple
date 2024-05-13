@@ -21,7 +21,7 @@ export default function InsertPasswordModal() {
   const router = useRouter();
   const { setGameRoomInfo, roomId, roomPlayerRes } = useGameRoomStore();
   const { roomList, selectedRoom, setIsShow } = useGameWaitStore();
-  const { data: roomData, isLoading, isError } = useGameRoomInfo(selectedRoom?.id);
+  const { data: roomData, isLoading, isError } = useGameRoomInfo(selectedRoom?.id, selectedRoom?.id);
   const [password, setPassword] = useState<string>('');
   const [isCorrect, setCorrect] = useState<boolean>(true);
   const { connect, stompClient } = useWebsocketStore();
