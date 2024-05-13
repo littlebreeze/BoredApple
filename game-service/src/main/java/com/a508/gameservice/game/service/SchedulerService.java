@@ -71,6 +71,7 @@ public class SchedulerService {
     }
 
     public void getQuizList() {
+        System.out.println("SchedulerService 74줄");
         gameQuizList = gameQuizService.getQuiz(quizCount);
         roundCnt = 0;
     }
