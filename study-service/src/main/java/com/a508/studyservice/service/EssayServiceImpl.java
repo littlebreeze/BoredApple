@@ -13,6 +13,7 @@ import com.a508.studyservice.dto.response.EssayResponse;
 import com.a508.studyservice.entity.EssaySolved;
 import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.entity.TopicProblem;
+import com.a508.studyservice.feign.UserServiceFeignClient;
 import com.a508.studyservice.global.common.code.ErrorCode;
 import com.a508.studyservice.global.common.exception.BaseException;
 import com.a508.studyservice.repository.EssayRepository;
@@ -31,12 +32,18 @@ public class EssayServiceImpl  implements  EssayService{
     private final EssayRepository essayRepository;
     private final TopicRepository topicRepository;
     private final TodayLearningRepository todayLearningRepository;
+    private final UserServiceFeignClient userServiceFeignClient;
 
 
     @Override
     public List<EssayResponse> getProblemList(String token, LocalDateTime date) {
+
         int userId = 0;
-        if( token == null) userId = 1;
+        String actualToken = token.substring(7);
+        userId = userServiceFeignClient.getUserId(actualToken);
+        log.info("topic 주제에 들어온 userId : " + String.valueOf(userId));
+        log.info(token);
+
         /*
         * User Feign 필요
         * */
