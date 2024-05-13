@@ -46,7 +46,7 @@ export default function Page() {
         message: '나갑니다',
       });
     };
-  }, [roomId, connect, disconnect]);
+  }, [roomId, connect, disconnect, roomData]);
 
   // useEffect(() => {
   //   // unMount 될 때 disconnect
