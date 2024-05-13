@@ -136,9 +136,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         destination: `/pub/ws/quiz/rooms/${roomId}/send`,
         body: JSON.stringify({ message: 'ROUND' }),
       });
-      set({ timer: 33 });
     }
-    set({ isGameRoundInProgress: true });
   },
 
   setIsGameRoundInProgress: () => {
