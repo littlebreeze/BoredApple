@@ -337,4 +337,39 @@ public class GameRoomService {
 
         return resultResList;
     }
+    public void removeRoomPlayer(Integer roomId, Integer senderId) {
+        String id = String.valueOf(roomId);
+        //방에 나 혼자
+        if (roomPlayerRepository.playerCnt(id) == 1) {
+            gameRoomRepository.removeGameRoom(id);
+            gameSchedulerManageService.removeRoom(roomId);
+            roomPlayerRepository.removePlayerToRoom(id, senderId);
+        }
+        //내가 방장일 경우
+        else if (gameRoomRepository.getGameRoom(id).getRoomCreatorId().equals(senderId)) {
+            roomPlayerRepository.removePlayerToRoom(id, senderId);
+            //방장 새로 지정
+            List<RoomPlayer> roomPlayers = roomPlayerRepository.getRoomPlayers(id);
+            List<RoomPlayerDateTimeDTO> dateList = new ArrayList<>();
+            for (int i = 0; i < roomPlayers.size(); i++) {
+                RoomPlayer roomPlayer = roomPlayers.get(i);
+                LocalDateTime dateTime = LocalDateTime.parse(roomPlayer.getJoinGameTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+                dateList.add(RoomPlayerDateTimeDTO.builder()
+                        .userId(roomPlayer.getUserId())
+                        .joinGameTime(dateTime)
+                        .build()
+                );
+            }
+            dateList.sort(Comparator.comparing(RoomPlayerDateTimeDTO::getJoinGameTime));
+            GameRoom gameRoom = gameRoomRepository.getGameRoom(id);
+            gameRoom.setRoomCreatorId(dateList.get(0).getUserId());
+            gameRoomRepository.saveGameRoom(gameRoom);
+        }
+        else {
+            roomPlayerRepository.removePlayerToRoom(id, senderId);
+        }
+
+
+    }
 }
