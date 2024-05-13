@@ -14,28 +14,31 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
 
   const { myNickname, myUserId } = useGameRoomStore();
   const { addPlayers, exitPlayer, getScore } = useGameScoreStore();
-  const { connect, disconnect, messages, sendMessage, clearMessage, answer } = useWebsocketStore();
+  const { connect, disconnect, messages, sendMessage, clearMessage, answer, stompClient } = useWebsocketStore();
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   useEffect(() => {
-    sendMessage({
-      type: 'ENTER',
-      roomId: roomId,
-      sender: myNickname!,
-      senderId: myUserId!,
-      message: newMessage,
-    });
-    // 메시지 비우기
-    return () => {
-      clearMessage();
-    };
-  }, []);
+    if (stompClient)
+      sendMessage({
+        type: 'ENTER',
+        roomId: roomId,
+        sender: myNickname!,
+        senderId: myUserId!,
+        message: newMessage,
+      });
+    // // 메시지 비우기
+    // return () => {
+    //   clearMessage();
+    // };
+  }, [roomId, connect, disconnect]);
 
-  // useEffect(() => {
-  // }, [roomId, connect, disconnect]);
+  useEffect(() => {
+    // 마운트 될때 비우고
+    clearMessage();
+  }, []);
 
   useEffect(() => {
     const lastMsg = messages[messages.length - 1];
