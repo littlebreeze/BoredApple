@@ -13,8 +13,8 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
   const [newMessage, setNewMessage] = useState<string>('');
 
   const { myNickname, myUserId } = useGameRoomStore();
-  const { addPlayers, exitPlayer } = useGameScoreStore();
-  const { connect, disconnect, messages, stompClient, sendMessage, clearMessage } = useWebsocketStore();
+  const { addPlayers, exitPlayer, getScore } = useGameScoreStore();
+  const { connect, disconnect, messages, sendMessage, clearMessage, answer } = useWebsocketStore();
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -51,6 +51,9 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
       } else if (lastMsg.type === 'EXIT') {
         exitPlayer(lastMsg.target);
       }
+    } else if (lastMsg && lastMsg.type === 'CORRECT') {
+      console.log(lastMsg.target, '의 점수를 올리세요');
+      getScore(lastMsg.target);
     }
   }, [messages]);
 
@@ -86,7 +89,7 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
             if (e.key === 'Enter') {
               setNewMessage('');
               sendMessage({
-                type: 'TALK',
+                type: answer === newMessage ? 'CORRECT' : 'TALK',
                 roomId: roomId,
                 sender: myNickname!,
                 senderId: myUserId!,
