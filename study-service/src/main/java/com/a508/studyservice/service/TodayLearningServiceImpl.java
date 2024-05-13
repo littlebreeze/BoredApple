@@ -47,7 +47,7 @@ public class TodayLearningServiceImpl implements TodayLearningService {
 
         int userId = 0;
         log.info(token);
-        if( token != null && token.length() >10) {
+        if( token != null && token.length() >25) {
             String actualToken = token.substring(7);
             userId = userServiceFeignClient.getUserId(actualToken);}
         log.info("userId = " + userId );
