@@ -22,11 +22,11 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
     if (isGameRoundInProgress && timer === 0) {
       setIsGameRoundInProgress();
       if (currentRound < roundCount) {
-        setCurrentRound();
         setTimeout(() => {
+          setCurrentRound(currentRound + 1);
           startRound(roomId);
         }, 3000);
-      } else {
+      } else if (currentRound >= roundCount) {
         endGame(roomId);
       }
     }
@@ -34,8 +34,8 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
     timer,
     isGaming,
     isGameRoundInProgress,
-    roundCount,
     currentRound,
+    roundCount,
     roomId,
     setIsGameRoundInProgress,
     setCurrentRound,
