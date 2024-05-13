@@ -7,48 +7,34 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
   const {
     timer,
     isGaming,
-    startRound,
     isGameRoundInProgress,
+    isCorrectAnswer,
     setIsGameRoundInProgress,
-    roundCount,
     currentRound,
-    setCurrentRound,
+    roundCount,
+    setIsCorrectAnswer,
+    startRound,
     endGame,
   } = useWebsocketStore();
 
   useEffect(() => {
-    console.log('게임상태', isGaming);
-  }, [isGaming]);
-
-  useEffect(() => {
     if (!isGaming || timer > 30) return;
 
-    if (isGameRoundInProgress && timer === 0) {
+    if (isGameRoundInProgress && (isCorrectAnswer || timer === 0)) {
       setIsGameRoundInProgress();
       if (currentRound < roundCount) {
-        setTimeout(() => {
-          setCurrentRound(currentRound + 1);
+        const timeout = setTimeout(() => {
+          setIsCorrectAnswer(false);
           startRound(roomId);
         }, 3000);
+        return () => clearTimeout(timeout);
       } else if (currentRound >= roundCount) {
         endGame(roomId);
       }
     }
-  }, [
-    timer,
-    isGaming,
-    isGameRoundInProgress,
-    currentRound,
-    roundCount,
-    roomId,
-    setIsGameRoundInProgress,
-    setCurrentRound,
-    startRound,
-    endGame,
-  ]);
+  }, [timer, isCorrectAnswer, isGaming, isGameRoundInProgress]);
 
   if (!isGaming || timer > 30) return null;
-
   return (
     <>
       <div className='flex flex-col w-full p-3 bg-white rounded-xl'>
