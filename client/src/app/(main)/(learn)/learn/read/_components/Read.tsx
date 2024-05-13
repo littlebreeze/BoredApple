@@ -169,12 +169,12 @@ export default function Read() {
                 </div>
               ) : (
                 // 지문 및 선택지
-                <div>
-                  <div>
-                    <div className='p-4 h-fit flex-1 font-Batang select-none'>
-                      {currProblem.content.split('|')[currSentence]} &nbsp;
-                    </div>
+                <div className='flex flex-1 gap-2'>
+                  {/* 지문 */}
+                  <div className='flex-1 p-4 h-fit'>
+                    <div className='font-Batang select-none'>{currProblem.content.split('|')[currSentence]} &nbsp;</div>
                   </div>
+                  {/* 선택지 */}
                   <div>
                     <div className='py-12'></div>
                     <div className='w-96 bg-white rounded-xl p-4'>

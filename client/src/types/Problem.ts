@@ -1,4 +1,4 @@
-// 기본문제 인터페이스(어휘, 정독훈련)
+// 기본문제 인터페이스(어휘, 정독훈련, 문장순서배열)
 export interface IBasicProblem {
   content: string;
   option1: string;
@@ -34,7 +34,6 @@ export interface ISummaryProblem {
   content: string;
   userAnswer?: string;
   answer?: string;
-  category?: string;
   type: '어휘';
   problemId: number;
   similarity?: number;

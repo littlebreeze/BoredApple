@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import instance from '@/utils/interceptor';
-import Image from 'next/image';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { SummaryProblemResponse } from '@/types/Problem';
@@ -13,6 +12,7 @@ export default function Summary() {
   const [progress, setProgress] = useState(1);
   const [submit, setSubmit] = useState(false);
   const [userAnswer, setUserAnswer] = useState<(string | null)[]>([]);
+  const [input, setInput] = useState('');
   const [problemId, setProblemId] = useState<(number | null)[]>([]);
 
   const beginTime = useRef<number>(0);
@@ -32,19 +32,19 @@ export default function Summary() {
         const endTime = Date.now();
         const spendTime = Math.round((endTime - beginTime.current) / 1000);
 
-        // const response = await instance.post('/study-service/solve/choice', {
-        //   type: '문장삽입',
-        //   myAnswer: userAnswer,
-        //   problemId: problemId,
-        //   spendTime: spendTime,
-        // });
+        const response = await instance.post('/study-service/solve/essay', {
+          type: '주제맞추기',
+          myAnswer: userAnswer,
+          problemId: problemId,
+          spendTime: spendTime,
+        });
 
         Swal.fire({
           title: '학습을 완료했어요!',
           text: '결과 페이지로 이동할게요.',
           confirmButtonColor: '#0064FF',
         });
-        router.push('/learn/insert/result');
+        router.push('/learn/summary/result');
       };
       postData();
     }
@@ -53,7 +53,7 @@ export default function Summary() {
   // 문제 데이터 가져오기
   const getSummaryData = async () => {
     try {
-      const response = await instance.get(`/study-service/problem/sentence`);
+      const response = await instance.get(`/study-service/problem/topic`);
       setProblems(response.data.data);
     } catch (error) {
       // error
@@ -62,21 +62,26 @@ export default function Summary() {
 
   // 다음 버튼 클릭
   const handleNextClick = () => {
-    // if (selected !== null) {
-    // input이 null이 아닐 때 조건문처리
-    setUserAnswer((prevMyAnswer) => [...prevMyAnswer, 'input']); // input 데이터 이입력
-    setProblemId((prevProblemId) => [...prevProblemId, currProblem.problemId]);
-    setProgress((prevProgress) => prevProgress + 1);
-    setProblemIndex((prevIndex) => prevIndex + 1);
-    // input null 처리
-    // }
+    if (input !== '') {
+      setUserAnswer((prevMyAnswer) => [...prevMyAnswer, input]);
+      setProblemId((prevProblemId) => [...prevProblemId, currProblem.problemId]);
+      setProgress((prevProgress) => prevProgress + 1);
+      setProblemIndex((prevIndex) => prevIndex + 1);
+      setInput('');
+    }
   };
 
   // 학습 완료 버튼 클릭
   const handleFinishClick = () => {
-    setUserAnswer((prevMyAnswer) => [...prevMyAnswer, 'input']); // input 데이터 이입력
+    setUserAnswer((prevMyAnswer) => [...prevMyAnswer, input]);
     setProblemId((prevProblemId) => [...prevProblemId, currProblem.problemId]);
     setSubmit(true);
+  };
+
+  // 정답 입력 시 글자 수 감지
+  const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const input = event.target.value;
+    setInput(input);
   };
 
   return (
@@ -122,74 +127,55 @@ export default function Summary() {
         {currProblem && (
           <div>
             <div className='flex gap-2'>
+              {/* 지문 */}
               <div>
-                <div className='p-4 h-fit flex-1 '>
+                <div className='p-4 h-fit flex-1'>
                   <span className='font-Batang'>{currProblem.content}</span>
                 </div>
               </div>
               <div>
                 <div className='py-12'></div>
-
-                {/* <div className='w-96 bg-white rounded-xl p-4'>
-                  <div
-                    className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                      selected === 1 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                    } `}
-                    onClick={() => handleOptionClick(1)}
-                  >
-                    <Image className='w-4 h-4 mr-2' src={selected === 1 ? checked : unchecked} alt='선택' />
-                    <span>{currProblem.option1}</span>
-                  </div>
-                  <div
-                    className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                      selected === 2 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                    } `}
-                    onClick={() => handleOptionClick(2)}
-                  >
-                    <Image className='w-4 h-4 mr-2' src={selected === 2 ? checked : unchecked} alt='선택' />
-                    <span>{currProblem.option2}</span>
-                  </div>
-                  <div
-                    className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                      selected === 3 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                    } `}
-                    onClick={() => handleOptionClick(3)}
-                  >
-                    <Image className='w-4 h-4 mr-2' src={selected === 3 ? checked : unchecked} alt='선택' />
-                    <span>{currProblem.option3}</span>
-                  </div>
-                </div> */}
+                <div className='bg-white p-4 rounded-lg'>
+                  <textarea
+                    className='h-40 w-96 outline-none resize-none'
+                    name='input'
+                    value={input}
+                    onChange={handleTextareaChange}
+                    maxLength={100}
+                    cols={30}
+                    rows={8}
+                  ></textarea>
+                  <div className=' select-none text-xs text-ourGray text-end'>{input ? input.length : 0} / 100 자</div>
+                </div>
               </div>
             </div>
           </div>
         )}
 
         {/* 버튼 */}
-        {/* <div className='flex border-t border-ourGray absolute bottom-4 w-full justify-end'>
+        <div className='flex border-t border-ourGray absolute bottom-4 w-full justify-end'>
           {progress >= 3 ? (
             <button
               className={`mt-4 px-12 p-2 w-40 ${
-                selected !== null ? 'bg-ourTheme' : 'bg-ourGray cursor-not-allowed'
+                input !== '' ? 'bg-ourTheme' : 'bg-ourGray cursor-not-allowed'
               } rounded-3xl text-white duration-[0.2s] hover:brightness-90`}
               onClick={handleFinishClick}
-              disabled={selected === null}
+              disabled={input === ''}
             >
               학습 완료
             </button>
           ) : (
             <button
               className={`mt-4 px-12 p-2 w-40 ${
-                selected !== null ? 'bg-ourBlue' : 'bg-ourGray'
-              } rounded-3xl text-white duration-[0.2s] ${
-                selected === null ? 'cursor-not-allowed' : 'hover:bg-ourTheme/80'
-              }`}
+                input !== '' ? 'bg-ourBlue' : 'bg-ourGray'
+              } rounded-3xl text-white duration-[0.2s] ${input === '' ? 'cursor-not-allowed' : 'hover:bg-ourTheme/80'}`}
               onClick={handleNextClick}
-              disabled={selected === null}
+              disabled={input === ''}
             >
               다음
             </button>
           )}
-        </div> */}
+        </div>
       </div>
     </div>
   );
