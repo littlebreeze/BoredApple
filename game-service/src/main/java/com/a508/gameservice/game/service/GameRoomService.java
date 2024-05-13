@@ -239,4 +239,33 @@ public class GameRoomService {
     }
 
 
+    public MyBattleRecordRes getMyRecord(String token) {
+        int userId = userServiceClient.getUserIdByToken(token);
+        BattleRecord myBattleRecord = battleRecordRepository.findById(userId).orElseGet(() ->
+                battleRecordRepository.save(
+                        BattleRecord.builder()
+                                .id(userId)
+                                .game(0)
+                                .rating(1500)
+                                .victory(0)
+                                .build()
+                )
+        );
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "rating");
+        List<BattleRecord> battleRecords = battleRecordRepository.findAll(sort);
+        Integer myRanking = -1;
+        for (int i = 0; i < (battleRecords.size() > 100 ? 100 : battleRecords.size()); i++) {
+            if (userId == battleRecords.get(i).getId()) {
+                myRanking = i + 1;
+            }
+        }
+        return MyBattleRecordRes.builder()
+                .game(myBattleRecord.getGame())
+                .victory(myBattleRecord.getVictory())
+                .rating(myBattleRecord.getRating())
+                .ranking(myRanking)
+                .odds(myBattleRecord.getVictory() / myBattleRecord.getGame() * 100)
+                .build();
+    }
 }
