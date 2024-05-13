@@ -7,6 +7,7 @@ import UpsideAnimation from './_component/UpsideAnimation';
 import LeftSideAnimation from './_component/LeftSideAnimation';
 import RightSideAnimation from './_component/RightSideAnimation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: '심심한 사과, 당신의 문해력 지키미',
@@ -66,7 +67,7 @@ export default function Page() {
           <SituationCard svg={'situation4'} content={`말할 때 '그거 있잖아' 반복하기`} />
         </div>
       </div>
-      <div className='px-5 md:px-10 lg:px-28 pt-36 flex flex-col justify-center gap-10'>
+      <div className='px-5 md:px-10 lg:px-44 pt-36 flex flex-col justify-center gap-10'>
         <div className='text-center font-semibold text-base md:text-xl lg:text-xl mb-10'>
           이런 문해력 고민{' '}
           <mark className='bg-ourGreen/30 mr-1'>
@@ -87,7 +88,9 @@ export default function Page() {
                 <li>인지 능력, 추론 능력 등을 기를 수 있는 다양한 문제</li>
               </ul>
             </div>
-            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 bg-blue-100  '>사진</div>
+            <div className='w-full md:w-1/2 lg:w-1/2 h-80 bg-blue-100'>
+              <Image fill src={`/about/explain.svg`} loading='eager' alt='' />
+            </div>
           </div>
         </UpsideAnimation>
         <div className='w-full flex flex-col-reverse gap-5 md:flex-row lg:flex-row justify-center'>
