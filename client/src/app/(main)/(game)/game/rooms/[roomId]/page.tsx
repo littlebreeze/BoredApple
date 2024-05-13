@@ -33,7 +33,7 @@ export default function Page() {
         message: '나갑니다',
       });
     };
-  }, []);
+  }, [roomId, connect, disconnect]);
 
   // useEffect(() => {
   //   // unMount 될 때 disconnect
