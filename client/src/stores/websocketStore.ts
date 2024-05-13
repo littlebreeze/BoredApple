@@ -63,6 +63,9 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
           const res: ChatMessageResponse = JSON.parse(message.body);
           switch (res.type) {
             case 'TALK':
+            case 'ENTER':
+            case 'EXIT':
+            case 'CORRECT':
               set((prev) => ({ messages: [...prev.messages, res] }));
               break;
             case 'QUIZ':

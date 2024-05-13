@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import instance from '@/utils/interceptor';
+import { useGameWaitStore } from '@/stores/game-wait';
 
 type GameRoomDetail = {
   myNickname: string | undefined;
@@ -25,6 +26,16 @@ const getGameRoomInfo = (roomId: number | undefined) => {
 };
 
 // useQuery 리턴하는 Hook
-export const useGameRoomInfoStore = (roomId: number | undefined) => {
-  return useQuery({ queryKey: ['getGameRoomList', roomId], queryFn: () => getGameRoomInfo(roomId) });
+export const useGameRoomInfo = (roomId: number | undefined, selectedRoomId: number | undefined) => {
+  const getCondition = roomId !== undefined && selectedRoomId !== undefined && selectedRoomId === roomId;
+  return useQuery({
+    queryKey: ['getGameRoomList', roomId],
+    queryFn: () => {
+      if (getCondition) {
+        return getGameRoomInfo(roomId);
+      } else {
+        return Promise.resolve(null); // 데이터 요청을 보내지 않음
+      }
+    },
+  });
 };
