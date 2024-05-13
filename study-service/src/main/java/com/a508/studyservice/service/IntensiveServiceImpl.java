@@ -4,6 +4,7 @@ import com.a508.studyservice.dto.response.ProblemResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.Intensive;
 import com.a508.studyservice.entity.TodayLearning;
+import com.a508.studyservice.feign.UserServiceFeignClient;
 import com.a508.studyservice.global.common.code.ErrorCode;
 import com.a508.studyservice.global.common.exception.BaseException;
 import com.a508.studyservice.repository.ChoiceRepository;
@@ -28,14 +29,16 @@ public class IntensiveServiceImpl  implements  IntensiveService{
     private final IntensiveRepository intensiveRepository;
     private final TodayLearningRepository todayLearningRepository;
     private final ChoiceRepository choiceRepository;
+    private final UserServiceFeignClient userServiceFeignClient;
 
 
     @Override
     public List<ProblemResponse> getIntensiveProblems(String token,LocalDateTime dateTime) {
-        int userId = 1;
-        /*
-        User Feign  메소드 추가 필요
-         */
+        int userId = 0;
+        if(token != null) {
+            String actualToken = token.substring(7);
+            userId = userServiceFeignClient.getUserId(actualToken);
+        }
 
         if( dateTime == null) dateTime = LocalDateTime.now();
         LocalDateTime startDate = LocalDateTime.of(dateTime.toLocalDate(), LocalTime.MIN); // 오늘의 시작
@@ -43,8 +46,6 @@ public class IntensiveServiceImpl  implements  IntensiveService{
         String type = "정독훈련";
 
         List<TodayLearning> todayLearnings = todayLearningRepository.findByUserIdAndCreateAtBetweenAndType(userId,startDate,endDate,type);
-        log.info(todayLearnings.toString());
-        if( todayLearnings.isEmpty()) todayLearnings = todayLearningRepository.findByUserId(0);  // 테스트용
         log.info(todayLearnings.toString());
         List<Intensive> intensiveList = new ArrayList<>();
         List<ProblemResponse> problemResponses = new ArrayList<>();
