@@ -19,10 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +32,7 @@ public class GameRoomService {
     private final RoomPlayerRepository roomPlayerRepository;
     private final UserServiceClient userServiceClient;
     private final BattleRecordRepository battleRecordRepository;
+    private final GameSchedulerManageService gameSchedulerManageService;
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     /**
@@ -98,7 +98,7 @@ public class GameRoomService {
         gameRoomRepository.saveGameRoom(gameRoom);
         //방 입장
         RoomPlayer roomPlayer = RoomPlayer.builder().userId(userId)
-//                .joinGameTime(LocalDateTime.now())
+                .joinGameTime(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                 .build();
         roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId, roomPlayer);
 
@@ -132,7 +132,7 @@ public class GameRoomService {
         int userId = getUserId(request);
         if (roomPlayerRepository.playerCnt(String.valueOf(roomId)) < gameRoomRepository.getGameRoom(String.valueOf(roomId)).getMaxNum()) {
             RoomPlayer roomPlayer = RoomPlayer.builder().userId(userId)
-//                    .joinGameTime(LocalDateTime.now())
+                    .joinGameTime(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                     .build();
             roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId, roomPlayer);
         } else {
