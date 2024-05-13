@@ -1,6 +1,6 @@
 'use client';
 
-import { useGameRoomInfoStore } from '@/queries/get-room-info';
+import { useGameRoomInfo } from '@/queries/get-room-info';
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useGameWaitStore } from '@/stores/game-wait';
 import { useWebsocketStore } from '@/stores/websocketStore';
@@ -21,7 +21,7 @@ export default function InsertPasswordModal() {
   const router = useRouter();
   const { setGameRoomInfo, roomId, roomPlayerRes } = useGameRoomStore();
   const { roomList, selectedRoom, setIsShow } = useGameWaitStore();
-  const { data: roomData, isLoading, isError } = useGameRoomInfoStore(selectedRoom?.id);
+  const { data: roomData, isLoading, isError } = useGameRoomInfo(selectedRoom?.id);
   const [password, setPassword] = useState<string>('');
   const [isCorrect, setCorrect] = useState<boolean>(true);
   const { connect, stompClient } = useWebsocketStore();
