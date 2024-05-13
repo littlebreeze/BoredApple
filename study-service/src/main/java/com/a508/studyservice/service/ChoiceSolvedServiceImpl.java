@@ -111,7 +111,7 @@ public class ChoiceSolvedServiceImpl implements ChoiceSolvedService {
 						.recognition(fiveAbility.getRecognition())
 						.speed(fiveAbility.getSpeed())
 						.build());
-					;}
+					}
 				if( type.equals("순서맞추기")) {
 					fiveAbilityRepository.save(FiveAbility.builder()
 						.userId(userId)
