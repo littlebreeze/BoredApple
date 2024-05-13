@@ -24,10 +24,6 @@ export default function Page() {
   const { connect, disconnect } = useWebsocketStore();
   useEffect(() => {
     console.log(roomPlayerRes);
-  }, []);
-
-  useEffect(() => {
-    // unMount 될 때 disconnect
     return () => {
       disconnect({
         type: 'EXIT',
@@ -37,7 +33,12 @@ export default function Page() {
         message: '나갑니다',
       });
     };
-  }, [roomId, connect, disconnect]);
+  }, []);
+
+  // useEffect(() => {
+  //   // unMount 될 때 disconnect
+
+  // }, [roomId, connect, disconnect]);
 
   return (
     <div className='flex flex-col items-center'>

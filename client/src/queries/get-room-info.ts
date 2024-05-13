@@ -26,16 +26,12 @@ const getGameRoomInfo = (roomId: number | undefined) => {
 };
 
 // useQuery 리턴하는 Hook
-export const useGameRoomInfo = (roomId: number | undefined, selectedRoomId: number | undefined) => {
-  const getCondition = roomId !== undefined && selectedRoomId !== undefined && selectedRoomId === roomId;
+export const useGameRoomInfo = (roomId: number | undefined) => {
   return useQuery({
     queryKey: ['getGameRoomList', roomId],
     queryFn: () => {
-      if (getCondition) {
-        return getGameRoomInfo(roomId);
-      } else {
-        return Promise.resolve(null); // 데이터 요청을 보내지 않음
-      }
+      if (roomId) return getGameRoomInfo(roomId);
+      else return Promise.resolve(null);
     },
   });
 };

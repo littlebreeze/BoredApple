@@ -9,6 +9,10 @@ import { useGameWaitStore } from '@/stores/game-wait';
 import InsertPasswordModal from './InsertPasswordModal';
 import { useGameRoomList } from '@/queries/game-wait';
 import axios from 'axios';
+import { useGameRoomInfo } from '@/queries/get-room-info';
+import { useWebsocketStore } from '@/stores/websocketStore';
+import { useRouter } from 'next/navigation';
+import { useGameRoomStore } from '@/stores/game-room-info';
 
 type GameRoomInfo = {
   id: number;
@@ -24,10 +28,15 @@ type GameRoomInfo = {
 };
 
 export default function GameRightSection() {
+  const router = useRouter();
+
   const { pageNum, setPageNum } = useGameWaitStore();
   const { data, isLoading } = useGameRoomList(pageNum);
 
-  const { isShow, roomList, setRoomList, isEndPage, setIsEndPage } = useGameWaitStore();
+  const { isShow, roomList, setRoomList, isEndPage, setIsEndPage, selectedRoom, setSelectedRoom } = useGameWaitStore();
+  const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(selectedRoom?.id);
+  const { connect, stompClient } = useWebsocketStore();
+  const { setGameRoomInfo } = useGameRoomStore();
   const [duplList, setDuplList] = useState<(GameRoomInfo | undefined)[]>(new Array(6).fill(undefined));
 
   const generateRoomItems = (list: GameRoomInfo[]): (GameRoomInfo | undefined)[] => {
@@ -41,9 +50,7 @@ export default function GameRightSection() {
 
   // 페이지 바뀌면 방 목록 요청
   useEffect(() => {
-    console.log(data);
     if (data?.data) {
-      console.log(data.data.data);
       setIsEndPage(data.data.data.isEndPage);
       setRoomList(data.data.data.gameRoomResList);
     } else {
@@ -55,6 +62,22 @@ export default function GameRightSection() {
   useEffect(() => {
     setDuplList(generateRoomItems(roomList));
   }, [roomList]);
+
+  useEffect(() => {
+    if (!isLoading && !isError && roomData) {
+      if (!selectedRoom?.isSecret) {
+        // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
+        setGameRoomInfo(roomData.data.data);
+        connect(String(selectedRoom?.id));
+
+        router.push(`/game/rooms/${selectedRoom?.id}`);
+      }
+    }
+  }, [selectedRoom, getLoading]);
+
+  useEffect(() => {
+    return () => setSelectedRoom(null);
+  }, []);
 
   return (
     <div className='relative'>

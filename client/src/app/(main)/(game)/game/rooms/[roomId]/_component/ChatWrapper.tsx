@@ -28,14 +28,14 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
       senderId: myUserId!,
       message: newMessage,
     });
-  }, []);
-
-  useEffect(() => {
     // 메시지 비우기
     return () => {
       clearMessage();
     };
-  }, [roomId, connect, disconnect]);
+  }, []);
+
+  // useEffect(() => {
+  // }, [roomId, connect, disconnect]);
 
   useEffect(() => {
     const lastMsg = messages[messages.length - 1];
