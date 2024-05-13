@@ -9,12 +9,18 @@ import com.a508.gameservice.game.domain.RoomPlayer;
 import com.a508.gameservice.game.repository.BattleRecordRepository;
 import com.a508.gameservice.game.repository.GameRoomRepository;
 import com.a508.gameservice.game.repository.RoomPlayerRepository;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -239,4 +245,96 @@ public class GameRoomService {
     }
 
 
+    public MyBattleRecordRes getMyRecord(String token) {
+        int userId = userServiceClient.getUserIdByToken(token);
+        BattleRecord myBattleRecord = battleRecordRepository.findById(userId).orElseGet(() ->
+                battleRecordRepository.save(
+                        BattleRecord.builder()
+                                .id(userId)
+                                .game(0)
+                                .rating(1500)
+                                .victory(0)
+                                .build()
+                )
+        );
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "rating");
+        List<BattleRecord> battleRecords = battleRecordRepository.findAll(sort);
+        Integer myRanking = -1;
+        for (int i = 0; i < (battleRecords.size() > 100 ? 100 : battleRecords.size()); i++) {
+            if (userId == battleRecords.get(i).getId()) {
+                myRanking = i + 1;
+            }
+        }
+        return MyBattleRecordRes.builder()
+                .game(myBattleRecord.getGame())
+                .victory(myBattleRecord.getVictory())
+                .rating(myBattleRecord.getRating())
+                .ranking(myRanking)
+                .odds(myBattleRecord.getVictory() / myBattleRecord.getGame() * 100)
+                .build();
+    }
+
+
+    public List<ResultRes> getResult(ResultListReq resultListReq) {
+        if (resultListReq.getResultReqList() == null || resultListReq.getResultReqList().isEmpty()) {
+            throw new CustomException(ErrorCode.RESULT_IS_EMPTY);
+        }
+
+        List<List<Integer>> data = new ArrayList<>();
+        for (ResultReq resultReq : resultListReq.getResultReqList()) {
+            List<Integer> element = Arrays.asList(
+                    resultReq.getRanking(), resultReq.getUserId(),
+                    battleRecordRepository.findById(resultReq.getUserId()).orElseThrow().getRating());
+            data.add(element);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<List<List<Integer>>> requestEntity = new HttpEntity<>(data, headers);
+        // RestTemplate을 사용하여 HTTP 요청 보내기
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> response = rt.exchange(
+                "http://k10a508.p.ssafy.io:8082/elo",
+                HttpMethod.POST,
+                requestEntity,
+                String.class
+        );
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<List<Integer>>>() {
+        }.getType();
+
+        //파이썬 서버 반환 - [랭킹, userId, 차이, 갱신레이팅]
+        List<List<Integer>> resultList = gson.fromJson(response.getBody(), type);
+
+        List<Integer> userIdList = new ArrayList<>();
+        for (int i = 0; i < resultList.size(); i++) {
+            userIdList.add(resultList.get(i).get(1));
+        }
+        List<String> userNicknameList = userServiceClient.getNicknameByUserId(
+                UserListReq.builder().idList(userIdList).build()
+        ).getNicknameList();
+
+        List<ResultRes> resultResList = new ArrayList<>();
+        for (int i = 0; i < resultList.size(); i++) {
+            List<Integer> result = resultList.get(i);
+            resultResList.add(ResultRes.builder()
+                    .userNickname(userNicknameList.get(i))
+                    .ranking(result.get(0))
+                    .diff(result.get(2))
+                    .rating(result.get(3))
+                    .build());
+            BattleRecord battleRecord = battleRecordRepository.findById(result.get(1)).orElseThrow();
+            //db 업데이트
+            if (result.get(0) == 1) {
+                battleRecord.victoryUp();
+            }
+            battleRecord.gameUp();
+            battleRecord.setRating(result.get(3));
+            battleRecordRepository.save(battleRecord);
+        }
+
+        return resultResList;
+    }
 }
