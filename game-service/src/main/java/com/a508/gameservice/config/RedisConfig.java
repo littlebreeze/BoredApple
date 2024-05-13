@@ -1,5 +1,6 @@
 package com.a508.gameservice.config;
 import com.a508.gameservice.game.domain.GameRoom;
+import com.a508.gameservice.game.domain.RoomPlayer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,5 +60,25 @@ public class RedisConfig {
 
         return redisTemplate;
     }
+
+    @Bean
+    public RedisTemplate<String, RoomPlayer> redisRoomPlayerTemplate() {
+        RedisTemplate<String, RoomPlayer> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
+
+        // Key는 String으로, Value는 JSON 형식으로 직렬화
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(RoomPlayer.class));
+
+        // Hash를 사용할 경우 시리얼라이저
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RoomPlayer.class));
+
+        // 모든 경우
+        redisTemplate.setDefaultSerializer(new Jackson2JsonRedisSerializer<>(RoomPlayer.class));
+
+        return redisTemplate;
+    }
+
 
 }
