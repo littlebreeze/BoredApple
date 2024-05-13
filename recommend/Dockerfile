@@ -19,9 +19,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install -r requirements.txt
 
 
-
 COPY . .
 
 EXPOSE 8082
 
-CMD ["app.py"]
+CMD python -m recommend.app
