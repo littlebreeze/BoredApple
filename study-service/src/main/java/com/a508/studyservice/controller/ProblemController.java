@@ -48,9 +48,10 @@ public class ProblemController {
     //오늘의 학습
     @GetMapping("/today")
     public ResponseEntity<SuccessResponse<?>> getTodayController(@RequestHeader(value = "Authorization", required = false) String token){
-        log.info(token);
+        String actualToken = token.substring(7);
+        log.info(actualToken);
         return ResponseEntity.ok(
-                new SuccessResponse<>("success" ,todayLearningService.getTodayLearning(token)));
+                new SuccessResponse<>("success" ,todayLearningService.getTodayLearning(actualToken)));
     }
 
     // 정독 훈련
