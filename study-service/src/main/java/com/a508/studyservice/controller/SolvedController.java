@@ -27,6 +27,7 @@ public class SolvedController {
     private final FiveAbilityService fiveAbilityService;
 
 
+    //5가지 능력
     @GetMapping("/five")
     public ResponseEntity<SuccessResponse<?>> getFiveAbilityController(@RequestParam String token){
         return ResponseEntity.ok(
