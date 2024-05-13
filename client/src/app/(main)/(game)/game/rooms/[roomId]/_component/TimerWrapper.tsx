@@ -13,7 +13,6 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
     setIsGameRoundInProgress,
     currentRound,
     roundCount,
-    setIsCorrectAnswer,
     startRound,
     endGame,
   } = useWebsocketStore();
@@ -27,7 +26,6 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
       setIsGameRoundInProgress();
       if (currentRound < roundCount) {
         const timeout = setTimeout(() => {
-          setIsCorrectAnswer(false);
           if (myUserId === creatorId) startRound(roomId);
         }, 3000);
         return () => clearTimeout(timeout);
