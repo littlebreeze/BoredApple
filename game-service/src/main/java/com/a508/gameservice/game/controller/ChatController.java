@@ -3,6 +3,7 @@ package com.a508.gameservice.game.controller;
 import com.a508.gameservice.game.data.ChatMessageReq;
 import com.a508.gameservice.game.data.ChatMessageRes;
 import com.a508.gameservice.game.data.MessageType;
+import com.a508.gameservice.game.data.QuizMessageReq;
 import com.a508.gameservice.game.service.GameRoomService;
 import com.a508.gameservice.game.service.GameSchedulerManageService;
 import com.a508.gameservice.game.service.SchedulerService;
@@ -46,18 +47,19 @@ public class ChatController {
     }
 
     @MessageMapping("/ws/quiz/rooms/{roomId}/send")
-    public void sendQuiz(@DestinationVariable Integer roomId, @Payload String message) {
+    public void sendQuiz(@DestinationVariable Integer roomId, @Payload QuizMessageReq quizMessageReq) {
+        String message = quizMessageReq.getMessage();
         if (message.equals("START")) {
             //방정보 게임 중
             gameRoomService.updateIsStarted(roomId);
-            SchedulerService service = gameSchedulerManageService.getGameScheduler(roomId);
-            service.getQuizList();
         } else if (message.equals("ROUND")) {
             SchedulerService service = gameSchedulerManageService.getGameScheduler(roomId);
             service.startRound();
         } else if (message.equals("END")) {
             //방정보 게임 중 X
             gameRoomService.updateIsStarted(roomId);
+            SchedulerService service = gameSchedulerManageService.getGameScheduler(roomId);
+            service.getQuizList();
         }
     }
 
