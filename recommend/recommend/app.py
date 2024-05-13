@@ -89,7 +89,9 @@ def scorecal():
             if i == j: continue
             eloavg = eloavg + int(j[1])
         print(int(eloavg / len(data)))
-        newelo.append(calculate_elo(i[0], i[2], int(eloavg / len(data)), i[1], len(data)))
+        t=calculate_elo(i[0], i[2], int(eloavg / len(data)), i[1], len(data))
+        newelo.append(t)
+        newelo.append(i[2]+t)
 
     return newelo
 
