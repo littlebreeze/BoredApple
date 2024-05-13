@@ -41,6 +41,7 @@ export default function Page() {
   useEffect(() => {
     // unMount 될 때 disconnect
     return () => {
+      console.log('나가면서메세지보내기');
       disconnect({
         type: 'EXIT',
         roomId: storedRoomId!,

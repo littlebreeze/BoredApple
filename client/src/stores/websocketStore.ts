@@ -102,15 +102,14 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       get().sendMessage(body);
       client.deactivate();
       // 연결해제할때도비우고
-      console.log('연결해제');
       set({ stompClient: null, messages: [] });
     }
   },
 
   sendMessage: (body: ChatMessageRequest) => {
     const client = get().stompClient;
-    if (client) {
-      client.publish({
+    if (client?.active && client?.connected) {
+      client?.publish({
         destination: `/pub/ws/rooms/${body.roomId}/send`,
         body: JSON.stringify(body),
       });
