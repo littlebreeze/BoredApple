@@ -55,7 +55,7 @@ def tokenize_by_jamo(st):
 
 
 mecabrc_path = "/usr/local/lib/python3.10/site-packages/mecab_ko_dic/dicdir/mecabrc"
-mecab = MeCab.Tagger(f'-d /usr/local/lib/python3.10/site-packages/mecab_ko -r {mecabrc_path}')
+mecab = MeCab.Tagger(f'-d /usr/local/lib/python3.10/site-packages/mecab_ko_dic -r {mecabrc_path}')
 
 
 app = Flask(__name__)
