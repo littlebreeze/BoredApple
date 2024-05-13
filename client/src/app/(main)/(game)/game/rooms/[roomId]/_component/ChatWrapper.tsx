@@ -103,14 +103,33 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyUp={(e) => {
             if (e.key === 'Enter') {
-              setNewMessage('');
+              // setNewMessage('');
+              // sendMessage({
+              //   type: answer === newMessage ? 'CORRECT' : 'TALK',
+              //   roomId: roomId,
+              //   sender: myNickname!,
+              //   senderId: myUserId!,
+              //   message: newMessage,
+              // });
+              // 재률 수정
               sendMessage({
-                type: !isGameRoundInProgress ? 'TALK' : answer === newMessage && !isCorrectAnswer ? 'CORRECT' : 'TALK',
+                type: 'TALK',
                 roomId: roomId,
                 sender: myNickname!,
                 senderId: myUserId!,
                 message: newMessage,
               });
+              if (isGameRoundInProgress && !isCorrectAnswer && answer === newMessage) {
+                sendMessage({
+                  type: 'CORRECT',
+                  roomId: roomId,
+                  sender: myNickname!,
+                  senderId: myUserId!,
+                  message: newMessage,
+                });
+              }
+              setNewMessage('');
+              // 재률 수정 이까지
             }
           }}
         />
