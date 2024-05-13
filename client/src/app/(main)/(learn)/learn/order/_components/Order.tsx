@@ -115,30 +115,31 @@ export default function Order() {
     }
   };
 
+  let value: number;
+  switch (selected) {
+    case 1:
+      value = 123;
+      break;
+    case 2:
+      value = 132;
+      break;
+    case 3:
+      value = 213;
+      break;
+    case 4:
+      value = 231;
+      break;
+    case 5:
+      value = 312;
+      break;
+    case 6:
+      value = 321;
+      break;
+  }
+
   // 다음 버튼 클릭
   const handleNextClick = () => {
     if (selected !== null) {
-      let value: number;
-      switch (selected) {
-        case 1:
-          value = 123;
-          break;
-        case 2:
-          value = 132;
-          break;
-        case 3:
-          value = 213;
-          break;
-        case 4:
-          value = 231;
-          break;
-        case 5:
-          value = 312;
-          break;
-        case 6:
-          value = 321;
-          break;
-      }
       setUserAnswer((prevMyAnswer) => [...prevMyAnswer, value]);
       setProblemId((prevProblemId) => [...prevProblemId, currProblem.problemId]);
       setProgress((prevProgress) => prevProgress + 1);
@@ -225,6 +226,7 @@ export default function Order() {
                 </div>
               </div>
 
+              {/* 선택지 */}
               <div>
                 <div className='py-12'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
