@@ -17,11 +17,8 @@ public class GameSchedulerManageService {
 
     // 방의 GameScheduler를 생성
     public void addRoom(int roomId, int quizCount) {
-        System.out.println("GameScheduler20번째 줄");
         SchedulerService gameScheduler = new SchedulerService(gameQuizService, simpMessagingTemplate, roomId, quizCount);
-        System.out.println("GameScheduler22번째 줄");
         gameSchedulerMap.put(roomId, gameScheduler);
-        System.out.println("GameScheduler24번째 줄");
         gameScheduler.getQuizList();
     }
 
