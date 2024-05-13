@@ -55,6 +55,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
   answer: '',
 
   connect: (roomId: string) => {
+    console.log('웹소켓연결');
     const client = new Client({
       brokerURL: 'wss://k10a508.p.ssafy.io:8081/game-service/ws',
       reconnectDelay: 5000,
@@ -103,6 +104,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       get().sendMessage(body);
       client.deactivate();
       // 연결해제할때도비우고
+      console.log('연결해제');
       set({ stompClient: null, messages: [] });
     }
   },
