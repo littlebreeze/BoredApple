@@ -120,10 +120,10 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         destination: `/pub/ws/quiz/rooms/${roomId}/send`,
         body: JSON.stringify({ message: 'ROUND' }),
       });
+      set({ isGaming: true });
+      set({ isGameRoundInProgress: true });
+      set({ currentRound: 1 });
     }
-    if (get().currentRound == 1) set({ isGaming: true });
-    set({ isGameRoundInProgress: true });
-    set({ currentRound: 1 });
   },
 
   startRound: (roomId: string) => {
