@@ -54,7 +54,7 @@ def tokenize_by_jamo(st):
     return vn
 
 
-mecab = MeCab.Tagger('-d /usr/local/lib/mecab/dic/mecab-ko-dic')
+mecab = MeCab.Tagger('-d /usr/local/lib/python3.10/site-packages/mecab_ko_dic')
 
 app = Flask(__name__)
 
