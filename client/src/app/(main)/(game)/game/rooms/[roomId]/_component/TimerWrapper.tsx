@@ -1,5 +1,6 @@
 'use client';
 
+import { useGameRoomStore } from '@/stores/game-room-info';
 import { useWebsocketStore } from '@/stores/websocketStore';
 import { useEffect } from 'react';
 
@@ -17,6 +18,8 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
     endGame,
   } = useWebsocketStore();
 
+  const { myUserId, creatorId } = useGameRoomStore();
+
   useEffect(() => {
     if (!isGaming || timer > 30) return;
 
@@ -25,11 +28,11 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
       if (currentRound < roundCount) {
         const timeout = setTimeout(() => {
           setIsCorrectAnswer(false);
-          startRound(roomId);
+          if (myUserId === creatorId) startRound(roomId);
         }, 3000);
         return () => clearTimeout(timeout);
       } else if (currentRound >= roundCount) {
-        endGame(roomId);
+        if (myUserId === creatorId) endGame(roomId);
       }
     }
   }, [timer, isCorrectAnswer, isGaming, isGameRoundInProgress]);
