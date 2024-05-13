@@ -76,6 +76,7 @@ def calculate_elo(rank, a, b, id, players):
 
     t = int((5 - players) / 2)
     res.append(int(32 * ea * oddrankmag[t + rank]))
+    res.append(a+int(32 * ea * oddrankmag[t + rank]))
     return res
 
 
@@ -89,9 +90,8 @@ def scorecal():
             if i == j: continue
             eloavg = eloavg + int(j[1])
         print(int(eloavg / len(data)))
-        t=calculate_elo(i[0], i[2], int(eloavg / len(data)), i[1], len(data))
-        newelo.append(t)
-        newelo.append(i[2]+t)
+
+        newelo.append(calculate_elo(i[0], i[2], int(eloavg / len(data)), i[1], len(data)))
 
     return newelo
 
