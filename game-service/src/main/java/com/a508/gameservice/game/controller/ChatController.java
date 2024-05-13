@@ -12,6 +12,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -20,6 +21,7 @@ public class ChatController {
 
     private final GameSchedulerManageService gameSchedulerManageService;
     private final GameRoomService gameRoomService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/ws/rooms/{roomId}/send")
     @SendTo("/topic/chat/rooms/{roomId}")
@@ -52,11 +54,15 @@ public class ChatController {
         if (message.equals("START")) {
             //방정보 게임 중
             gameRoomService.updateIsStarted(roomId);
+            ChatMessageRes start = ChatMessageRes.builder().type(MessageType.START).content("START").build();
+            simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, start);
         } else if (message.equals("ROUND")) {
             SchedulerService service = gameSchedulerManageService.getGameScheduler(roomId);
             service.startRound();
         } else if (message.equals("END")) {
             //방정보 게임 중 X
+            ChatMessageRes end = ChatMessageRes.builder().type(MessageType.END).content("END").build();
+            simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, end);
             gameRoomService.updateIsStarted(roomId);
             SchedulerService service = gameSchedulerManageService.getGameScheduler(roomId);
             service.getQuizList();
