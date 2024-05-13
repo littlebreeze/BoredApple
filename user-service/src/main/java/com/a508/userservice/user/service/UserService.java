@@ -1,16 +1,17 @@
 package com.a508.userservice.user.service;
 
-import com.a508.userservice.user.data.AllUserCategoryRes;
-import com.a508.userservice.user.data.UserCategoryRes;
-import com.a508.userservice.user.data.UserListReq;
-import com.a508.userservice.user.data.UserListRes;
+import com.a508.userservice.user.data.*;
 import com.a508.userservice.user.domain.User;
+import com.a508.userservice.user.domain.UserAttendance;
 import com.a508.userservice.user.domain.UserCategory;
+import com.a508.userservice.user.repository.UserAttendanceRepository;
 import com.a508.userservice.user.repository.UserCategoryRepository;
 import com.a508.userservice.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final UserCategoryRepository userCategoryRepository;
+	private final UserAttendanceRepository userAttendanceRepository;
 
 	public User getUser(int userId) {
 		return userRepository.findById(userId).orElseThrow();
@@ -103,5 +105,44 @@ public class UserService {
 
 		allUserCategoryRes.setUsers(userCategoryInfos);
 		return allUserCategoryRes;
+	}
+
+	public void UserAttendanceCheck(int userId, LocalDate date) {
+
+		UserAttendance userAttendance = UserAttendance.builder().userId(userId).attendanceDate(date).build();
+		List<UserAttendance> Attchk = userAttendanceRepository.findByUserIdAndDate(userId, date);
+
+		if (Attchk.isEmpty()) {
+
+			userAttendanceRepository.save(userAttendance);
+		}
+	}
+
+	public AttendanceRes UserAttendance(int userId, int year, int month) {
+
+		UserAttendanceCheck(userId, LocalDate.now());
+
+		LocalDate yearmonth = LocalDate.of(year, month, 1);
+
+		LocalDateTime createDate = userRepository.findById(userId).orElseThrow().getCreatedDate();
+
+
+		List<UserAttendance> userAttendances = userAttendanceRepository.findByUserId(userId);
+
+		int useratt = 0;
+		int startdate = 0;
+		if (createDate.getYear() == year && createDate.getMonthValue() == month)
+			startdate = createDate.getDayOfMonth() - 1;
+		for (UserAttendance attendance : userAttendances) {
+			if (attendance.getAttendanceDate().getYear() == year && attendance.getAttendanceDate().getMonthValue() == month) {
+				useratt++;
+			}
+		}
+		return AttendanceRes.builder().days(useratt).ratio((int) (useratt / (double) (LocalDate.now().getDayOfMonth() - startdate) * 100)).registerDate(createDate.toLocalDate()).build();
+	}
+
+	public String getNickname(Integer userId) {
+
+		return userRepository.findById(userId).orElseThrow().getNickname();
 	}
 }

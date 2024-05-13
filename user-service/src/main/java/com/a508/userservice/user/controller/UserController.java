@@ -3,7 +3,6 @@ package com.a508.userservice.user.controller;
 import com.a508.userservice.common.jwt.TokenProvider;
 import com.a508.userservice.common.response.SuccessResponse;
 import com.a508.userservice.user.data.*;
-import com.a508.userservice.user.repository.UserCategoryRepository;
 import com.a508.userservice.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +46,12 @@ public class UserController {
 	public AllUserCategoryRes allUserCategory() {
 
 		return userService.getAllUserCategory();
+	}
+
+	@GetMapping("/nickname")
+	public String getNickname(HttpServletRequest request) {
+
+		return userService.getNickname(tokenProvider.getUserIdByToken(request));
 	}
 
 	@PostMapping("/nickname")
@@ -106,11 +111,12 @@ public class UserController {
 	@PostMapping("/attendance")
 	public SuccessResponse<AttendanceRes> getAttendanceInfo(HttpServletRequest request, @RequestBody YearMonthReq date) {
 
-		return new SuccessResponse<>(AttendanceRes.builder().days(10).registerDate(LocalDate.now()).build());
+		return new SuccessResponse<>(userService.UserAttendance(1, date.getYear(), date.getMonth()));
 	}
 
 	@PostMapping("/monthstudy")
 	public SuccessResponse<MonthlyStudyRes> getStudyByMonth(HttpServletRequest request, @RequestBody YearMonthReq date) {
+
 		return new SuccessResponse<>(MonthlyStudyRes.builder().daysCompleteLearning(3).mostLearnedStudy("정독훈련").mostReadCategory("과학/기술").build());
 	}
 

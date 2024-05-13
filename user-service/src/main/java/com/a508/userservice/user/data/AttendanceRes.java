@@ -11,7 +11,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class AttendanceRes {
 
-	private int days;
+	private Integer days;
+
+	private Integer ratio;
 
 	private LocalDate registerDate;
 }
