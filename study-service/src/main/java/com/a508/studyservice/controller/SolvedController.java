@@ -6,6 +6,8 @@ import com.a508.studyservice.dto.response.EssayResponse;
 import com.a508.studyservice.global.common.response.SuccessResponse;
 import com.a508.studyservice.service.ChoiceSolvedService;
 import com.a508.studyservice.service.EssayService;
+import com.a508.studyservice.service.FiveAbilityService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,13 +24,13 @@ public class SolvedController {
 
     private final EssayService essayService;
     private final ChoiceSolvedService choiceSolved;
+    private final FiveAbilityService fiveAbilityService;
 
 
     @GetMapping("/five")
-    public ResponseEntity<SuccessResponse<?>> getFiveAbilityController(@RequestHeader(value = "Authorization", required = false) String token){
-
+    public ResponseEntity<SuccessResponse<?>> getFiveAbilityController(@RequestParam String token){
         return ResponseEntity.ok(
-                new SuccessResponse<>("success" ," "));
+                new SuccessResponse<>("success" ,fiveAbilityService.getFiveAbility(token)));
     }
 
     @GetMapping("/specific/{date}")
