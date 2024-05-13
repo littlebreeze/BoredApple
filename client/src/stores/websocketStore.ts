@@ -45,7 +45,7 @@ interface WebSocketState {
 export const useWebsocketStore = create<WebSocketState>((set, get) => ({
   stompClient: null,
   messages: [],
-  timer: 0,
+  timer: 33,
   isGaming: false,
   isGameRoundInProgress: false,
   roundCount: 5,
@@ -129,6 +129,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         destination: `/pub/ws/quiz/rooms/${roomId}/send`,
         body: JSON.stringify({ message: 'ROUND' }),
       });
+      set({ timer: 33 });
     }
     set({ isGameRoundInProgress: true });
   },
