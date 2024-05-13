@@ -12,4 +12,5 @@ public class EssayRequest {
 
     List<Integer> problemId;
 
+    Integer spendTime;
 }
