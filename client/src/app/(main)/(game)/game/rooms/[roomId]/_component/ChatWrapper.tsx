@@ -103,33 +103,15 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyUp={(e) => {
             if (e.key === 'Enter') {
-              // setNewMessage('');
-              // sendMessage({
-              //   type: answer === newMessage ? 'CORRECT' : 'TALK',
-              //   roomId: roomId,
-              //   sender: myNickname!,
-              //   senderId: myUserId!,
-              //   message: newMessage,
-              // });
-              // 재률 수정
               setNewMessage('');
+              // 조건문 수정... 정답일때 TALK도 보내야 할듯!
               sendMessage({
-                type: 'TALK',
+                type: !isGameRoundInProgress ? 'TALK' : answer === newMessage && !isCorrectAnswer ? 'CORRECT' : 'TALK',
                 roomId: roomId,
                 sender: myNickname!,
                 senderId: myUserId!,
                 message: newMessage,
               });
-              if (isGameRoundInProgress && !isCorrectAnswer && answer === newMessage) {
-                sendMessage({
-                  type: 'CORRECT',
-                  roomId: roomId,
-                  sender: myNickname!,
-                  senderId: myUserId!,
-                  message: newMessage,
-                });
-              }
-              // 재률 수정 이까지
             }
           }}
         />
