@@ -44,11 +44,6 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
     answer,
     isGameRoundInProgress,
     isCorrectAnswer,
-    setIsCorrectAnswer,
-    setIsGameRoundInProgress,
-    setCurrentRound,
-    startRound,
-    endGame,
   } = useWebsocketStore();
   const { quizCount, myUserId, creatorId } = useGameRoomStore();
 
@@ -83,24 +78,6 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
       </div>
     ));
   };
-
-  useEffect(() => {
-    if (!isGaming) return;
-
-    if (isGameRoundInProgress && isCorrectAnswer) {
-      setIsGameRoundInProgress();
-      if (currentRound < roundCount) {
-        const timeout = setTimeout(() => {
-          setIsCorrectAnswer(false);
-          setCurrentRound(currentRound + 1);
-          startRound(roomId);
-        }, 3000);
-        return () => clearTimeout(timeout);
-      } else if (currentRound >= roundCount) {
-        endGame(roomId);
-      }
-    }
-  }, [isCorrectAnswer, isGaming, isGameRoundInProgress]);
 
   return (
     <>
