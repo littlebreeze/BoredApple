@@ -40,6 +40,11 @@ export default function Page() {
     };
   }, [roomId, connect, disconnect]);
 
+  // useEffect(() => {
+  //   // unMount 될 때 disconnect
+
+  // }, [roomId, connect, disconnect]);
+
   return (
     <div className='flex flex-col items-center'>
       <div className='relative flex justify-center w-full gap-10 -top-8'>

@@ -100,7 +100,8 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
     if (client) {
       get().sendMessage(body);
       client.deactivate();
-      set({ stompClient: null });
+      // 연결해제할때도비우고
+      set({ stompClient: null, messages: [] });
     }
   },
 
