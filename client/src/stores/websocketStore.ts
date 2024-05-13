@@ -39,7 +39,6 @@ interface WebSocketState {
   setIsGameRoundInProgress: () => void; // 라운드 on/off 조정
   clearMessage: () => void; // 페이지 나가면서 메세지 초기화
   setRoundCount: (round: number) => void; // 라운드 수 조정
-  setCurrentRound: (round: number) => void; // 현재 라운드 +1
   endGame: (roomId: string) => void;
   setIsCorrectAnswer: (tmp: boolean) => void;
 }
@@ -78,12 +77,18 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
             case 'ANSWER':
               set({ answer: res.content });
               break;
+            case 'START':
+              set({ isGaming: true, isGameRoundInProgress: true, currentRound: 1 });
+              break;
+            case 'END':
+              set({ isGaming: false });
           }
           console.log('메세지: ', res);
         });
         // 시간 구독
         client.subscribe(`/topic/time/rooms/${roomId}`, (message: IMessage) => {
           set({ timer: parseInt(message.body) });
+          if (parseInt(message.body) === 33) set({ isGameRoundInProgress: true, currentRound: get().currentRound + 1 });
         });
       },
     });
@@ -121,9 +126,6 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         destination: `/pub/ws/quiz/rooms/${roomId}/send`,
         body: JSON.stringify({ message: 'ROUND' }),
       });
-      set({ isGaming: true });
-      set({ isGameRoundInProgress: true });
-      set({ currentRound: 1 });
     }
   },
 
@@ -147,10 +149,6 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
     set({ roundCount: round });
   },
 
-  setCurrentRound: (round: number) => {
-    set({ currentRound: round });
-  },
-
   clearMessage: () => {
     set({ messages: [] });
   },
@@ -163,7 +161,6 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         body: JSON.stringify({ message: 'END' }),
       });
     }
-    set({ isGaming: false });
   },
 
   setIsCorrectAnswer: (tmp: boolean) => {
