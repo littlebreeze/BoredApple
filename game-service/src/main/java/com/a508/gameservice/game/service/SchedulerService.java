@@ -51,15 +51,15 @@ public class SchedulerService {
         GameQuiz gameQuiz = gameQuizList.get(roundCnt);
         // 스케줄링 작업 시작
         scheduledTask = scheduler.scheduleAtFixedRate(() -> {
+            simpMessagingTemplate.convertAndSend("/topic/time/rooms/" + roomId, timeCnt);
             if (timeCnt == 30) {
                 ChatMessageRes quiz = ChatMessageRes.builder().type(MessageType.QUIZ).content(gameQuiz.getQuiz()).build();
                 simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, quiz);
                 ChatMessageRes answer = ChatMessageRes.builder().type(MessageType.ANSWER).content(gameQuiz.getAnswer()).build();
                 simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, answer);
             }
-            simpMessagingTemplate.convertAndSend("/topic/time/rooms/" + roomId, "{\"time\":" + timeCnt + "}");
             timeCnt--;
-            if (timeCnt == 0) stopTask();
+            if (timeCnt == -1) stopTask();
         }, 0, 1, TimeUnit.SECONDS);
         roundCnt++;
     }
