@@ -20,7 +20,10 @@ public class FiveAbilityServiceImpl implements  FiveAbilityService{
 	@Override
 	public FeignUserScoreResponse getFiveAbility(String token) {
 		int userId = 0;
-		if( token != null && token.length() >25){ userId = userServiceFeignClient.getUserId(token);}
+		if( token != null && token.length() >25){
+			String actualToken = token.substring(7);
+
+			userId = userServiceFeignClient.getUserId(actualToken);}
 		log.info(String.valueOf(userId));
 		FiveAbility fiveAbility = fiveAbilityRepository.findByUserId(userId);
 		if(fiveAbility ==null){
