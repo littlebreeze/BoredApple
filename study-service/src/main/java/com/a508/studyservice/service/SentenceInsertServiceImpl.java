@@ -13,6 +13,7 @@ import com.a508.studyservice.dto.response.ProblemResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.SentenceInsert;
 import com.a508.studyservice.entity.TodayLearning;
+import com.a508.studyservice.feign.UserServiceFeignClient;
 import com.a508.studyservice.global.common.code.ErrorCode;
 import com.a508.studyservice.global.common.exception.BaseException;
 import com.a508.studyservice.repository.ChoiceRepository;
@@ -31,18 +32,17 @@ public class SentenceInsertServiceImpl  implements  SentenceInsertService{
     private final SentenceInsertRepository sentenceInsertRepository;
     private final TodayLearningRepository todayLearningRepository;
     private final ChoiceRepository choiceRepository;
-
+    private final UserServiceFeignClient userServiceFeignClient;
 
     @Override
     public List<SentenceProblemResponse> getSentenceProblems(String token, LocalDateTime date) {
         log.info(token);
         log.info(String.valueOf(date));
-        int userId = 1;
-        /*
-        userId 불러오는 feign 필요
-         */
-
-//        if( token == null)  {userId =1; }
+        int userId = 0;
+        if(token != null) {
+            String actualToken = token.substring(7);
+            userId = userServiceFeignClient.getUserId(actualToken);
+        }
         LocalDateTime startDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN); // 오늘의 시작
         LocalDateTime endDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX); // 오늘의 끝
         String type = "문장삽입";

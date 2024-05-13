@@ -39,8 +39,10 @@ public class EssayServiceImpl  implements  EssayService{
     public List<EssayResponse> getProblemList(String token, LocalDateTime date) {
 
         int userId = 0;
+        if(token != null) {
         String actualToken = token.substring(7);
         userId = userServiceFeignClient.getUserId(actualToken);
+        }
         log.info("topic 주제에 들어온 userId : " + String.valueOf(userId));
         log.info(token);
 
@@ -120,6 +122,7 @@ public class EssayServiceImpl  implements  EssayService{
     public EssayResponse topicToDto (TopicProblem topicProblem){
         return EssayResponse.builder()
                 .content(topicProblem.getContent())
+                .problemId(topicProblem.getId())
                 .type("주제맞추기")
                 .build();
 
