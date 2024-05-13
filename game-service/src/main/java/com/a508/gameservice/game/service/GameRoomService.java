@@ -19,10 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +32,7 @@ public class GameRoomService {
     private final RoomPlayerRepository roomPlayerRepository;
     private final UserServiceClient userServiceClient;
     private final BattleRecordRepository battleRecordRepository;
+    private final GameSchedulerManageService gameSchedulerManageService;
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     /**
@@ -98,7 +98,7 @@ public class GameRoomService {
         gameRoomRepository.saveGameRoom(gameRoom);
         //방 입장
         RoomPlayer roomPlayer = RoomPlayer.builder().userId(userId)
-//                .joinGameTime(LocalDateTime.now())
+                .joinGameTime(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                 .build();
         roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId, roomPlayer);
 
@@ -132,7 +132,7 @@ public class GameRoomService {
         int userId = getUserId(request);
         if (roomPlayerRepository.playerCnt(String.valueOf(roomId)) < gameRoomRepository.getGameRoom(String.valueOf(roomId)).getMaxNum()) {
             RoomPlayer roomPlayer = RoomPlayer.builder().userId(userId)
-//                    .joinGameTime(LocalDateTime.now())
+                    .joinGameTime(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                     .build();
             roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId, roomPlayer);
         } else {
@@ -336,5 +336,40 @@ public class GameRoomService {
         }
 
         return resultResList;
+    }
+    public void removeRoomPlayer(Integer roomId, Integer senderId) {
+        String id = String.valueOf(roomId);
+        //방에 나 혼자
+        if (roomPlayerRepository.playerCnt(id) == 1) {
+            gameRoomRepository.removeGameRoom(id);
+            gameSchedulerManageService.removeRoom(roomId);
+            roomPlayerRepository.removePlayerToRoom(id, senderId);
+        }
+        //내가 방장일 경우
+        else if (gameRoomRepository.getGameRoom(id).getRoomCreatorId().equals(senderId)) {
+            roomPlayerRepository.removePlayerToRoom(id, senderId);
+            //방장 새로 지정
+            List<RoomPlayer> roomPlayers = roomPlayerRepository.getRoomPlayers(id);
+            List<RoomPlayerDateTimeDTO> dateList = new ArrayList<>();
+            for (int i = 0; i < roomPlayers.size(); i++) {
+                RoomPlayer roomPlayer = roomPlayers.get(i);
+                LocalDateTime dateTime = LocalDateTime.parse(roomPlayer.getJoinGameTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+                dateList.add(RoomPlayerDateTimeDTO.builder()
+                        .userId(roomPlayer.getUserId())
+                        .joinGameTime(dateTime)
+                        .build()
+                );
+            }
+            dateList.sort(Comparator.comparing(RoomPlayerDateTimeDTO::getJoinGameTime));
+            GameRoom gameRoom = gameRoomRepository.getGameRoom(id);
+            gameRoom.setRoomCreatorId(dateList.get(0).getUserId());
+            gameRoomRepository.saveGameRoom(gameRoom);
+        }
+        else {
+            roomPlayerRepository.removePlayerToRoom(id, senderId);
+        }
+
+
     }
 }
