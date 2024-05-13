@@ -1,8 +1,6 @@
 package com.a508.gameservice.game.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -13,6 +11,7 @@ import lombok.*;
 public class GameQuiz {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @Column(nullable = false)
