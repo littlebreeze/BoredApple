@@ -1,6 +1,8 @@
 import math
 from flask import Flask
 from flask import request
+from flask import jsonify
+
 import fasttext
 
 model = fasttext.load_model("fasttext.bin")
@@ -142,7 +144,7 @@ def similarity():
         if c2[i] == 0:
             sim -= 1
     finalsim = (sim / 100 + sensim) / 2
-    return str(int(finalsim * 100))
+    return jsonify({"ratio": str(int(finalsim * 100))})
 
 
 @app.route('/hello', methods=['GET'])
