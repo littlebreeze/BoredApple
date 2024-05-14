@@ -18,7 +18,7 @@ export default function MyGraph({ ability }: { ability: number[] }) {
     datasets: [
       {
         // 데이터
-        data: ability,
+        data: ability.length ? ability : [0, 0, 0, 0, 0],
         // 배경
         backgroundColor: 'rgba(72,147,255,0.3)',
         // border

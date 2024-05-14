@@ -104,8 +104,10 @@ export default function GameLeftSection() {
                 height={500}
                 alt='3등'
               />
-            ) : (
+            ) : rankings && rankings?.myRanking <= 99 ? (
               rankings?.myRanking
+            ) : (
+              '99+'
             )}
           </div>
           <div className='flex items-center justify-center flex-1 text-xs truncate'>{rankings?.myNickname}</div>
