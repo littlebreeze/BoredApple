@@ -40,4 +40,10 @@ export const useGameScoreStore = create<GameScore>((set, get) => ({
     console.log(filtered);
     set({ players: filtered });
   },
+  clearScore: () => {
+    let filtered = get().players;
+    filtered = filtered.map((player) => ({ ...player, score: 0 }));
+    console.log(filtered);
+    set({ players: filtered });
+  },
 }));
