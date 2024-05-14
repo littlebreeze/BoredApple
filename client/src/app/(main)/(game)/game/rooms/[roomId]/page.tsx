@@ -31,12 +31,13 @@ export default function Page() {
     console.log(roomPlayerRes);
   }, []);
 
-  useEffect(() => {
-    if (!stompClient) {
-      connect(roomId);
-      if (roomData) setGameRoomInfo(roomData?.data.data);
-    }
-  }, [roomId, connect, disconnect, roomData]);
+  //
+  // useEffect(() => {
+  //   if (!stompClient) {
+  //     connect(roomId);
+  //     if (roomData) setGameRoomInfo(roomData?.data.data);
+  //   }
+  // }, [roomId, connect, disconnect, roomData]);
 
   useEffect(() => {
     // unMount 될 때 disconnect
