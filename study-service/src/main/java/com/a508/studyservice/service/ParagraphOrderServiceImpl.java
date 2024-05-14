@@ -50,6 +50,7 @@ public class ParagraphOrderServiceImpl implements  ParagraphOrderService{
         List<ProblemResponse> problemResponses = new ArrayList<>();
 
         for( TodayLearning todayLearning : todayLearnings){
+            log.info("오늘의 학습 순서 :" + todayLearning);
             orderList.add(paragraphOrderRepository.findById(todayLearning.getProblemId()).orElseThrow(() -> new BaseException(ErrorCode.BAD_REQUEST_ERROR)) );
         }
 

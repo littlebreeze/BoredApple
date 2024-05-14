@@ -62,6 +62,7 @@ public class ChoiceSolvedServiceImpl implements ChoiceSolvedService {
 
 		int size = choiceRequest.getMyAnswer().size();
 		for (int idx = 0; idx < size; idx++) {
+			log.info("객관식 값들을 순횐합니다 " +  (idx+1) +"번 째");
 			Integer answer = -1;
 			boolean flag = switch (type) {
 				case "정독훈련" -> {
@@ -109,6 +110,7 @@ public class ChoiceSolvedServiceImpl implements ChoiceSolvedService {
 
 				if( type.equals("정독훈련")) {
 					fiveAbilityRepository.save(FiveAbility.builder()
+						.id(fiveAbility.getId())
 						.userId(userId)
 						.fact(fiveAbility.getFact() +1)
 						.inference(fiveAbility.getInference())
@@ -119,6 +121,7 @@ public class ChoiceSolvedServiceImpl implements ChoiceSolvedService {
 					}
 				if( type.equals("순서맞추기")) {
 					fiveAbilityRepository.save(FiveAbility.builder()
+						.id(fiveAbility.getId())
 						.userId(userId)
 						.fact(fiveAbility.getFact() )
 						.inference(fiveAbility.getInference())
@@ -129,6 +132,7 @@ public class ChoiceSolvedServiceImpl implements ChoiceSolvedService {
 				}
 				if( type.equals("문장삽입")) {
 					fiveAbilityRepository.save(FiveAbility.builder()
+						.id(fiveAbility.getId())
 						.userId(userId)
 						.fact(fiveAbility.getFact() )
 						.inference(fiveAbility.getInference()+1)
@@ -139,6 +143,7 @@ public class ChoiceSolvedServiceImpl implements ChoiceSolvedService {
 				}
 				if( type.equals("어휘")) {
 					fiveAbilityRepository.save(FiveAbility.builder()
+						.id(fiveAbility.getId())
 						.userId(userId)
 						.fact(fiveAbility.getFact() )
 						.inference(fiveAbility.getInference())
@@ -158,6 +163,7 @@ public class ChoiceSolvedServiceImpl implements ChoiceSolvedService {
 				.userAnswer(choiceRequest.getMyAnswer().get(idx))
 				.spendTime(choiceRequest.getSpendTime())
 				.build());
+
 			log.info(savedChoiceSolved.toString());
 
 			LocalDateTime date = LocalDateTime.now();
