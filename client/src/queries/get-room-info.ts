@@ -14,14 +14,13 @@ type GameRoomDetail = {
 };
 
 const getGameRoomInfo = (roomId: number | undefined) => {
-  const response = instance.get<{ data: GameRoomDetail }>(
-    `${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players`,
-    {
+  const response = instance
+    .get<{ data: GameRoomDetail }>(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players`, {
       params: {
         roomId: roomId, // roomId를 요청에 포함시킵니다.
       },
-    }
-  );
+    })
+    .catch();
   return response;
 };
 
