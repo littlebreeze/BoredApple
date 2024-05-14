@@ -3,6 +3,18 @@
 export default function MyStrength({ abilities }: { abilities: number[][] }) {
   const avg: number[] = abilities[0] ?? [];
   const diff: number[] = abilities[1]?.map((n, idx) => n - avg[idx]) ?? [];
+
+  if (!avg.length)
+    return (
+      <div className='flex flex-col items-center justify-center h-5/6'>
+        <div className='pb-3'>분석 데이터가 부족합니다.</div>
+        <div>
+          <span className='text-ourTheme font-semibold pb-1'>오늘의 학습</span>을 통해
+        </div>
+        <div>나의 강점&약점을 파악해보세요.</div>
+      </div>
+    );
+
   return (
     <>
       {diff[0] >= 0 ? (
