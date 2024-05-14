@@ -27,6 +27,8 @@ interface GameRoomInfo {
   setGameRoomInfo: (info: GameRoomDetail) => void;
   setCreatorId: (userId: number) => void;
   clearGameRoomInfo: () => void;
+  resultModalIsShow: boolean;
+  setResultModalIsShow: (state: boolean) => void;
 }
 
 export const useGameRoomStore = create<GameRoomInfo>((set) => ({
@@ -58,4 +60,6 @@ export const useGameRoomStore = create<GameRoomInfo>((set) => ({
       roomPlayerRes: [],
     });
   },
+  resultModalIsShow: false,
+  setResultModalIsShow: (state: boolean) => set({ resultModalIsShow: state }),
 }));
