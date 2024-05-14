@@ -5,6 +5,7 @@ import { useGameWaitStore } from '@/stores/game-wait';
 import { useGameScoreStore } from '@/stores/game-score';
 import { useEffect, useState } from 'react';
 import instance from '@/utils/interceptor';
+import { useWebsocketStore } from '@/stores/websocketStore';
 
 type RequestItem = {
   ranking: number;
@@ -29,10 +30,11 @@ const postGameResult = async (playerScores: RequestItem[]) => {
 };
 
 export default function GameResultsModal() {
-  const { resultModalIsShow, setResultModalIsShow } = useGameRoomStore();
-  const { selectedRoom } = useGameWaitStore();
+  const { resultModalIsShow, setResultModalIsShow, roomId } = useGameRoomStore();
+  const {} = useGameWaitStore();
   const { clearScore, players } = useGameScoreStore();
   const [gameResults, setGameResults] = useState<ResponseItem[]>();
+  const { stompClient, gameResult } = useWebsocketStore();
 
   useEffect(() => {
     console.log('나왔다');
@@ -51,28 +53,46 @@ export default function GameResultsModal() {
         };
       }
     });
-    // console.log('requestarr', requestarr);
-    postGameResult(requestarr)
-      .then((value) => setGameResults(value.data.data.ResultList))
-      .catch((error) => console.log(error));
-  }, []);
+    console.log('requestarr', requestarr);
+    // postGameResult(requestarr)
+    //   .then((value) => setGameResults(value.data.data.ResultList))
+    //   .catch((error) => console.log(error));
+    stompClient?.publish({
+      destination: `/pub/ws/result/rooms/${roomId}/send`,
+      body: JSON.stringify({
+        resultReqList: [
+          { ranking: 1, userId: 1 },
+          { ranking: 2, userId: 7 },
+          { ranking: 2, userId: 11 },
+        ],
+      }),
+    });
+    console.log('#####게임결과', gameResult);
+    setGameResults([
+      { ranking: 1, userNickname: '뛰뛰', rating: 1515, diff: 15 },
+      { ranking: 2, userNickname: '뿅뿅', rating: 1500, diff: 0 },
+      { ranking: 3, userNickname: '정윤', rating: 1545, diff: -15 },
+    ]);
+
+    return setResultModalIsShow(false);
+  }, [stompClient?.active, stompClient?.connected]);
+
+  useEffect(() => {
+    console.log(gameResult);
+  }, [gameResult]);
   return (
     <>
       <div className='z-30 rounded-md absolute top-0 left-0 w-full h-screen bg-ourBlack/30 flex justify-center items-center'>
-        <div className='gap-7 w-1/2 md:w-3/5 lg:w-2/5 h-2/5 bg-ourLightGray rounded-xl flex flex-col justify-center items-center'>
-          <div className='flex flex-row items-baseline gap-1 justify-center'>
-            <div className='text-ourTheme font-bold text-2xl w-1/3 truncate'>{selectedRoom?.roomName}</div>
-            <div className='font-bold text-xl'>에 입장</div>
+        <div className='gap-7 w-2/3 h-2/3 bg-ourLightGray rounded-xl flex flex-col justify-center items-center'>
+          <div className='flex'>
+            {/* <div>{selectedRoom?.roomName}</div> */}
+            <div className=''>가나다라마사아자차카</div>
+            <div>방 게임 결과</div>
           </div>
-
-          <div
-            className={`px-7 py-2 bg-ourTheme rounded-full text-white cursor-pointer`}
-            onClick={() => {
-              setResultModalIsShow(false);
-              clearScore();
-            }}
-          >
-            확인
+          <div className='bg-yellow-200'>
+            {gameResults?.map((result, idx) => (
+              <div key={idx}>{result.ranking}</div>
+            ))}
           </div>
         </div>
       </div>
