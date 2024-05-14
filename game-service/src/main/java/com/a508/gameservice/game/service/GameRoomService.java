@@ -216,7 +216,7 @@ public class GameRoomService {
                     .build());
         }
         Integer myRanking = -1;
-        for (int i = 0; i < (battleRecords.size() > 100 ? 100 : battleRecords.size()); i++) {
+        for (int i = 0; i < (battleRecords.size() > 99 ? 99 : battleRecords.size()); i++) {
             if (userId == battleRecords.get(i).getId()) {
                 myRanking = i + 1;
             }
