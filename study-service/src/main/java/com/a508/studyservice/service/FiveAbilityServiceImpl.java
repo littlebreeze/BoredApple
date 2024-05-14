@@ -1,5 +1,7 @@
 package com.a508.studyservice.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.a508.studyservice.dto.response.FeignUserScoreResponse;
@@ -43,6 +45,43 @@ public class FiveAbilityServiceImpl implements  FiveAbilityService{
 			.voca(fiveAbility.getVoca())
 			.recognition(fiveAbility.getRecognition())
 			.speed(fiveAbility.getSpeed())
+			.build();
+	}
+
+	@Override
+	public FeignUserScoreResponse getAverageFiveAbility() {
+
+		List<FiveAbility> fiveAbilityList = fiveAbilityRepository.findAll();
+
+		 Integer fact = 0;
+		 Integer inference = 0;
+		 Integer voca = 0;
+		 Integer recognition = 0;
+		 Integer speed = 0;
+
+		for(FiveAbility fiveAbility : fiveAbilityList){
+			fact += fiveAbility.getFact();
+			inference += fiveAbility.getInference();
+			voca += fiveAbility.getVoca();
+			recognition += fiveAbility.getRecognition();
+			speed += fiveAbility.getSpeed();
+		}
+
+
+		int size = 1;
+		size = Math.max(size , fiveAbilityList.size());
+		fact /= size;
+		inference /= size;
+		voca /= size;
+		recognition /=size;
+		speed /= size;
+
+		return FeignUserScoreResponse.builder()
+			.speed(speed)
+			.fact(fact)
+			.inference(inference)
+			.voca(voca)
+			.recognition(recognition)
 			.build();
 	}
 }

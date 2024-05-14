@@ -39,6 +39,12 @@ public class SolvedController {
                 new SuccessResponse<>("success" ,fiveAbilityService.getFiveAbility(token)));
     }
 
+    @GetMapping("/five/average")
+    public ResponseEntity<SuccessResponse<?>> getAverageFiveAbilityController(@RequestHeader(value = "Authorization") String token){
+        return ResponseEntity.ok(
+            new SuccessResponse<>("success" ,fiveAbilityService.getAverageFiveAbility()));
+    }
+
     @GetMapping("/specific/{date}")
     public ResponseEntity<SuccessResponse<?>> getSpecificStudyController(@PathVariable("date")LocalDateTime date, @RequestHeader(value = "Authorization", required = false) String token){
         return ResponseEntity.ok(
