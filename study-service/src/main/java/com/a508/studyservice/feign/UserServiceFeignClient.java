@@ -8,7 +8,7 @@ import com.a508.studyservice.dto.response.FeignList;
 
 import feign.Headers;
 
-@FeignClient(name = "user-server", url = "https://k10a508.p.ssafy.io:8081/user-service")
+@FeignClient(name = "user-server")
 public interface UserServiceFeignClient {
 
     @GetMapping("/userId")
