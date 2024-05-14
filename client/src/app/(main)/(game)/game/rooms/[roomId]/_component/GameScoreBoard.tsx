@@ -23,7 +23,7 @@ type Res = {
 
 export default function GameScoreBoard() {
   const { players, setPlayers } = useGameScoreStore();
-  const { myNickname, myUserId, roomPlayerRes } = useGameRoomStore();
+  const { myNickname, myUserId, roomPlayerRes, creatorId } = useGameRoomStore();
 
   useEffect(() => {
     const res: Res[] = roomPlayerRes;
@@ -35,14 +35,14 @@ export default function GameScoreBoard() {
   }, []);
 
   return (
-    <div className='flex flex-col gap-1 p-3 bg-white rounded-xl'>
+    <div className='flex flex-col gap-1 px-5 py-3 bg-white rounded-xl w-full'>
       <div className='text-center'>점수</div>
       {players?.map((player, idx) => (
-        <div
-          key={idx}
-          className='flex justify-between'
-        >
-          <div>{player.nickname}</div>
+        <div key={idx} className='flex justify-between'>
+          <div className='font-bold'>
+            {player.nickname}
+            <span className='font-normal'>{player.id === creatorId && ' ♛'}</span>
+          </div>
           <div>{player.score}</div>
         </div>
       ))}
