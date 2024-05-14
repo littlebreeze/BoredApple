@@ -21,7 +21,8 @@ export default function SituationCard({ svg, content }: { svg: string; content: 
         height={100}
         width={100}
         alt=''
-        className='h-2/5 sm:h-2/3 md:h-2/5 lg:h-2/5'
+        priority
+        className='h-2/5 sm:h-2/3 md:h-2/5 lg:h-2/5 w-auto'
       />
       <div className='text-base font-bold text-center md:text-lg lg:text-lg text-ourDarkGray'>{content}</div>
     </div>
