@@ -83,16 +83,18 @@ public class UserController {
 	public SuccessResponse<List<List<Double>>> userAbility(HttpServletRequest request) {
 
 		System.out.println(1);
-		UserAbilityRes userAbilityRes = studyServiceClient.GetUserAbility(request.getHeader(AUTHORIZATION_HEADER));
-		System.out.println(userAbilityRes.getUserId());
+		Object userAbilityRes = studyServiceClient.GetUserAbility(request.getHeader(AUTHORIZATION_HEADER));
+
+		System.out.println(userAbilityRes);
+//		System.out.println(userAbilityRes.getUserId());
 		UserAbilityRes avgAbilityRes = studyServiceClient.GetAvgAbility();
 		System.out.println(avgAbilityRes.getFact());
 		List<Double> a1 = new ArrayList<>(), a2 = new ArrayList<>();
-		a1.add(userAbilityRes.getFact() / 10.0);
-		a1.add(userAbilityRes.getInference() / 10.0);
-		a1.add(userAbilityRes.getVoca() / 10.0);
-		a1.add(userAbilityRes.getRecognition() / 10.0);
-		a1.add(userAbilityRes.getSpeed() / 10.0);
+//		a1.add(userAbilityRes.getFact() / 10.0);
+//		a1.add(userAbilityRes.getInference() / 10.0);
+//		a1.add(userAbilityRes.getVoca() / 10.0);
+//		a1.add(userAbilityRes.getRecognition() / 10.0);
+//		a1.add(userAbilityRes.getSpeed() / 10.0);
 
 		a2.add(avgAbilityRes.getFact() / 10.0);
 		a2.add(avgAbilityRes.getInference() / 10.0);
