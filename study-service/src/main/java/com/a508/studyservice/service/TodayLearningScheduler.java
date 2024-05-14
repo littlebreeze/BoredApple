@@ -41,7 +41,7 @@ public class TodayLearningScheduler {
 	private static final List<String> categories = new ArrayList<>(Arrays.asList("인문", "사회", "과학", "예술", "기술"));
 
 	@Transactional
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 30 9 * * ?")
 	public void makeTodayLearning()throws NoSuchAlgorithmException{
 
 
@@ -65,6 +65,17 @@ public class TodayLearningScheduler {
 			List<ChoiceSolved> choiceSolvedList = choiceRepository.findByUserId(userId);
 			List<EssaySolved> essaySolvedList = essayRepository.findByUserId(userId);
 			FiveAbility fiveAbility = fiveAbilityRepository.findByUserId(userId);
+			if(fiveAbility == null ) {
+				fiveAbility = FiveAbility.builder()
+					.userId(userId)
+					.fact(1)
+					.inference(1)
+					.voca(1)
+					.recognition(1)
+					.speed(1)
+					.build();
+				fiveAbilityRepository.save(fiveAbility);
+			}
 			PriorityQueue<Ability> abilities = new PriorityQueue<>();
 			abilities.add( new Ability("정독훈련", fiveAbility.getFact()));
 			abilities.add( new Ability("순서맞추기", fiveAbility.getInference()));
