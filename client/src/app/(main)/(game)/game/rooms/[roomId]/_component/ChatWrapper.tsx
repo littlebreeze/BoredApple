@@ -52,9 +52,9 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
 
   useEffect(() => {
     const lastMsg = messages[messages.length - 1];
+    console.log('바뀐마지막메세지입니다', lastMsg);
     if (lastMsg && Number(lastMsg.target) !== myUserId) {
       if (lastMsg.type === 'ENTER') {
-        
         addPlayers({
           score: 0,
           nickname: lastMsg.content,
@@ -64,7 +64,9 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
       } else if (lastMsg.type === 'EXIT') {
         exitPlayer(lastMsg.target);
       }
-    } else if (lastMsg && lastMsg.type === 'CORRECT') {
+    }
+    if (lastMsg && lastMsg.type === 'CORRECT') {
+      console.log('점수반영하세요', lastMsg);
       getScore(lastMsg.target);
     }
   }, [messages]);
