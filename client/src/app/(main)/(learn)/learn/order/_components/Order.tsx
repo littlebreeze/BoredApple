@@ -79,14 +79,7 @@ export default function Order() {
         const endTime = Date.now();
         const spendTime = Math.round((endTime - beginTime.current) / 1000);
 
-        // const response = await instance.post('/study-service/solve/choice', {
-        //   type: '순서맞추기',
-        //   myAnswer: userAnswer,
-        //   problemId: problemId,
-        //   spendTime: spendTime,
-        // });
-
-        console.log({
+        const response = await instance.post('/study-service/solve/choice', {
           type: '순서맞추기',
           myAnswer: userAnswer,
           problemId: problemId,
@@ -108,9 +101,8 @@ export default function Order() {
   const getOrderData = async () => {
     try {
       const response = await instance.get(`/study-service/problem/order`);
-      // setProblems(response.data.data);
-      // console.log(response.data.data);
-      setProblems(temp.data);
+      setProblems(response.data.data);
+      console.log(response.data.data);
     } catch (error) {
       // error
     }
