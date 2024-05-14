@@ -48,8 +48,13 @@ public class ChoiceSolvedServiceImpl implements ChoiceSolvedService {
         /*
         userId , token을 통한 Feign 요청 보내야함
          */
-		if( token != null && token.length() >25) userId = userServiceFeignClient.getUserId(token);
+		if( token != null && token.length() >25) {
+			String actualToken = token.substring(7);
+			userId = userServiceFeignClient.getUserId(actualToken);
+		}
 		else throw  new BaseException(ErrorCode.EXIST_TOKEN_ERROR);
+
+		log.info("객관식 문제 정답을 제출한 사람은 : " + (userId));
 
 		String type = choiceRequest.getType();
 
