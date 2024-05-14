@@ -2,16 +2,21 @@ package com.a508.studyservice.service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.TreeSet;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.a508.studyservice.dto.response.DayResponse;
+import com.a508.studyservice.dto.response.MonthResponse;
 import com.a508.studyservice.dto.response.TodayLearningResponse;
+import com.a508.studyservice.dto.response.TotalResponse;
 import com.a508.studyservice.entity.ChoiceSolved;
 import com.a508.studyservice.entity.Intensive;
 import com.a508.studyservice.entity.SentenceInsert;
@@ -109,6 +114,168 @@ public class TodayLearningServiceImpl implements TodayLearningService {
             }
             return todayLearningResponses;
         }
+
+    @Override
+    public List<MonthResponse> getMonths(LocalDateTime dateTime, String token) {
+        log.info( "Month 데이터를 받아옵니다 요청자 : " + token);
+        int userid = userServiceFeignClient.getUserId(token);
+        List<MonthResponse> monthResponses = new ArrayList<>();
+
+        YearMonth currentYearMonth = YearMonth.of(dateTime.getYear(), dateTime.getMonth());
+
+        // 해당 월의 첫 번째 날
+        LocalDateTime firstDayOfMonth = currentYearMonth.atDay(1).atStartOfDay();
+
+        // 해당 월의 마지막 날
+        LocalDateTime lastDayOfMonth = currentYearMonth.atEndOfMonth().atTime(23, 59, 59);
+
+        List<TodayLearning> todayLearnings = todayLearningRepository.findByUserIdAndCreateAtBetween(userid,firstDayOfMonth,lastDayOfMonth);
+        int[] cnt = new int[32];
+        for (TodayLearning todayLearning : todayLearnings){
+            if(todayLearning.isCorrect()) {cnt[todayLearning.getCreateAt().getDayOfMonth()] +=1; }
+        }
+        for (int idx = 1 ; idx <= lastDayOfMonth.getDayOfMonth() ; idx++){
+            int value = cnt[idx] / 3;
+            monthResponses.add(new MonthResponse(value));
+        }
+        return monthResponses;
+    }
+
+    @Override
+    public List<DayResponse> getDays(LocalDateTime dateTime, String token) {
+        log.info( "Day 데이터를 받아옵니다 요청자 : " + token);
+        int userid = userServiceFeignClient.getUserId(token);
+        List<DayResponse> dayResponses = new ArrayList<>();
+
+
+        LocalDateTime startDate = LocalDateTime.of(dateTime.toLocalDate(), LocalTime.MIN); // 오늘의 시작
+        LocalDateTime endDate = LocalDateTime.of(dateTime.toLocalDate(), LocalTime.MAX); // 오늘의 끝
+
+        List<TodayLearning> todayLearnings = todayLearningRepository.findByUserIdAndCreateAtBetween(userid,startDate,endDate);
+
+        boolean intensiveDay = false;
+        boolean insertDay = false;
+        boolean sentenceDay = false;
+        boolean topicDay = false;
+        boolean vocaDay = false;
+
+        for (TodayLearning todayLearning : todayLearnings) {
+            if( todayLearning.isCorrect()) {
+                if(todayLearning.getType().equals("정독훈련") && !intensiveDay){
+                    intensiveDay = true;
+                    dayResponses.add(new DayResponse("정독훈련",true));
+                }
+
+                if(todayLearning.getType().equals("순서맞추기") && !sentenceDay){
+                    sentenceDay = true;
+                    dayResponses.add(new DayResponse("순서맞추기",true));
+                }
+
+                if(todayLearning.getType().equals("문장삽입") && !insertDay){
+                    insertDay = true;
+                    dayResponses.add( new DayResponse("문장삽입",true));
+                }
+
+                if(todayLearning.getType().equals("주제맞추기") && !topicDay){
+                    topicDay = true;
+                    dayResponses.add(new DayResponse("주제맞추기",true));
+                }
+
+                if(todayLearning.getType().equals("어휘") && !vocaDay){
+                    vocaDay = true;
+                    dayResponses.add( new DayResponse("어휘",true));
+                }
+            }
+        }
+
+        return dayResponses;
+    }
+
+    @Override
+    public TotalResponse getTotal(LocalDateTime dateTime,String token) {
+        log.info( "월별 총제적 데이터를 받아옵니다 요청자 : " + token);
+        int userid = userServiceFeignClient.getUserId(token);
+
+        YearMonth currentYearMonth = YearMonth.of(dateTime.getYear(), dateTime.getMonth());
+
+        // 해당 월의 첫 번째 날
+        LocalDateTime firstDayOfMonth = currentYearMonth.atDay(1).atStartOfDay();
+
+        // 해당 월의 마지막 날
+        LocalDateTime lastDayOfMonth = currentYearMonth.atEndOfMonth().atTime(23, 59, 59);
+
+        List<TodayLearning> todayLearnings = todayLearningRepository.findByUserIdAndCreateAtBetween(userid,firstDayOfMonth,lastDayOfMonth);
+
+        int size = Math.max(todayLearnings.size(),1);
+        int minus = 0;
+
+
+        //과학 , 기술 , 예술, 인문, 사회
+        int science=0, tech=0 , art=0, human = 0, social = 0;
+        int intensive=0, sentence=0, insert = 0, topic = 0, voca = 0;
+
+
+
+        for( TodayLearning todayLearning : todayLearnings){
+            String type = todayLearning.getType();
+            String category = todayLearning.getCategory();
+            if( type.equals("정독훈련")){intensive +=1;}
+            if( type.equals("순서맞추기")){sentence+=1;}
+            if( type.equals("문장삽입")){insert+=1;}
+            if( type.equals("주제맞추기")){topic+=1;}
+            if( type.equals("어휘")){voca+=1;}
+            if( category.equals("과학")) {science+=1;}
+            if( category.equals("기술")) {tech+=1;}
+            if( category.equals("예술")) {art+=1;}
+            if( category.equals("인문")) {human+=1;}
+            if( category.equals("사회")) {social+=1;}
+            if(todayLearning.isCorrect()) minus += 1;
+        }
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(Collections.reverseOrder());
+        priorityQueue.add(science);
+        priorityQueue.add(tech);
+        priorityQueue.add(art);
+        priorityQueue.add(human);
+        priorityQueue.add(social);
+
+        int categoryMax= 0;
+        if(!priorityQueue.isEmpty())categoryMax= priorityQueue.poll();
+        priorityQueue.clear();
+
+        priorityQueue.add(intensive);
+        priorityQueue.add(sentence);
+        priorityQueue.add(insert);
+        priorityQueue.add(topic);
+        priorityQueue.add(voca);
+        int typeMax= 0;
+        if(!priorityQueue.isEmpty())categoryMax= priorityQueue.poll();
+        TotalResponse totalResponse = new TotalResponse();
+        if( categoryMax != 0 ) {
+            if (categoryMax == science)
+                totalResponse.setCategory("과학");
+            if (categoryMax == tech)
+                totalResponse.setCategory("기술");
+            if (categoryMax == art)
+                totalResponse.setCategory("예술");
+            if (categoryMax == human)
+                totalResponse.setCategory("인문");
+            if (categoryMax == social)
+                totalResponse.setCategory("사회");
+        }
+        if(typeMax != 0) {
+            if(typeMax == intensive) { totalResponse.setType("정독훈련");}
+            if(typeMax == sentence) {totalResponse.setType("순서맞추기");}
+            if(typeMax == insert) {totalResponse.setType("문장삽입");}
+            if(typeMax == topic) {totalResponse.setType("주제맞추기");}
+            if(typeMax == voca) {totalResponse.setType("어휘");}
+        }
+
+        return null;
+    }
+
+
+
+
 
 
     // 더미 오늘의 학습 팩토리 매서드
