@@ -128,6 +128,8 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       useGameRoomStore.getState().clearGameRoomInfo();
       // 웹소켓 스토어 초기화
       get().clearWebsocketStore();
+      console.log('active ', client.active);
+      console.log('connected', client.connected);
     }
   },
 
