@@ -31,7 +31,7 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
   }, [messages]);
 
   useEffect(() => {
-    if (stompClient)
+    if (stompClient?.active || stompClient?.connected)
       sendMessage({
         type: 'ENTER',
         roomId: roomId,
@@ -43,18 +43,18 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
     // return () => {
     //   clearMessage();
     // };
-  }, [roomId, connect, disconnect]);
+  }, [stompClient?.active, stompClient?.connected]);
 
-  useEffect(() => {
-    // 마운트 될때 비우고
-    clearMessage();
-  }, []);
+  // useEffect(() => {
+  //   // 마운트 될때 비우고
+  //   clearMessage();
+  // }, []);
 
   useEffect(() => {
     const lastMsg = messages[messages.length - 1];
     if (lastMsg && Number(lastMsg.target) !== myUserId) {
       if (lastMsg.type === 'ENTER') {
-        console.log('사용자를 추가하세요');
+        
         addPlayers({
           score: 0,
           nickname: lastMsg.content,
@@ -65,7 +65,6 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
         exitPlayer(lastMsg.target);
       }
     } else if (lastMsg && lastMsg.type === 'CORRECT') {
-      console.log(lastMsg.target, '의 점수를 올리세요');
       getScore(lastMsg.target);
     }
   }, [messages]);
@@ -74,10 +73,7 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
     <div className='h-full px-3 pt-3 pb-1 bg-ourLightGray/50 rounded-xl flex flex-col justify-between'>
       <div className='h-44 flex flex-col overflow-y-scroll'>
         {messages.map((m, idx) => (
-          <div
-            key={idx}
-            className='p-1 flex gap-3'
-          >
+          <div key={idx} className='p-1 flex gap-3'>
             <div className={`text-center w-2/12 border-r-2 ${m.writer === '심심한 사과' && 'font-bold text-ourTheme'}`}>
               {m.writer}
             </div>

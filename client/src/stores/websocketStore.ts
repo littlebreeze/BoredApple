@@ -55,6 +55,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
   answer: '',
 
   connect: (roomId: string) => {
+    console.log('웹소켓연결');
     const client = new Client({
       brokerURL: 'wss://k10a508.p.ssafy.io:8081/game-service/ws',
       reconnectDelay: 5000,
@@ -107,8 +108,8 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
 
   sendMessage: (body: ChatMessageRequest) => {
     const client = get().stompClient;
-    if (client) {
-      client.publish({
+    if (client?.active && client?.connected) {
+      client?.publish({
         destination: `/pub/ws/rooms/${body.roomId}/send`,
         body: JSON.stringify(body),
       });
