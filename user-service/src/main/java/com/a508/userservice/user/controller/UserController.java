@@ -84,9 +84,12 @@ public class UserController {
 
 		UserAbilityRes userAbilityRes = studyServiceClient.GetUserAbility(request.getHeader(AUTHORIZATION_HEADER).substring(7));
 
+		System.out.println(userAbilityRes.getFact());
+
 		UserAbilityRes avgAbilityRes = studyServiceClient.GetAvgAbility();
 
 		System.out.println(avgAbilityRes.getFact());
+
 		List<Double> a1 = new ArrayList<>(), a2 = new ArrayList<>();
 		a1.add(userAbilityRes.getFact() / 10.0);
 		a1.add(userAbilityRes.getInference() / 10.0);
