@@ -40,11 +40,17 @@ export default function GameRecord() {
         <RecordDetailItem title={'총 경기 횟수'} content={gameRecord ? gameRecord!.numberOfGame + '번' : '-'} />
         <RecordDetailItem
           title={'승률'}
-          content={gameRecord ? gameRecord!.numberOfGame / gameRecord!.numberOfWin + '%' : '-'}
+          content={
+            gameRecord && gameRecord!.numberOfGame ? gameRecord!.numberOfGame / gameRecord!.numberOfWin + '%' : '-'
+          }
         />
         <RecordDetailItem
           title={'랭킹(*점수)'}
-          content={gameRecord ? gameRecord!.rank + '위(*' + gameRecord!.rating + ')' : '-'}
+          content={
+            gameRecord
+              ? (Number(gameRecord!.rank) === -1 ? '99+' : gameRecord!.rank) + '위(*' + gameRecord!.rating + ')'
+              : '-'
+          }
         />
       </div>
     </div>
