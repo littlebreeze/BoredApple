@@ -29,49 +29,6 @@ export default function Order() {
     getOrderData();
   }, []);
 
-  // 임시 데이터
-  const temp = {
-    status: 'success',
-    data: [
-      {
-        content: '우리는 어떤 시대에 살고 있을까?',
-        option1: '과거를 돌아보면 우리의 미래를 알 수 있다.',
-        option2: '빛의 속도로 여행하면 시간은 역행할까?',
-        option3: '문명의 발전과 함께 우리의 삶은 어떻게 변해왔을까?',
-        userAnswer: null,
-        answer: null,
-        category: '인문',
-        type: '순서맞추기',
-        problemId: 1,
-        correct: false,
-      },
-      {
-        content: '인간은 왜 존재하는가?',
-        option1: '사랑은 인간의 본능일까?',
-        option2: '자유란 무엇인가?',
-        option3: '행복은 어떻게 얻을 수 있는가?',
-        userAnswer: null,
-        answer: null,
-        category: '인문',
-        type: '순서맞추기',
-        problemId: 6,
-        correct: false,
-      },
-      {
-        content: '과거는 어떻게 현재와 연결되어 있는가?',
-        option1: '세계 문화의 다양성은 우리에게 무엇을 가르쳐 주는가?',
-        option2: '종교는 우리의 삶에 어떤 영향을 끼치는가?',
-        option3: '문명의 충돌은 어떻게 해결되어야 하는가?',
-        userAnswer: null,
-        answer: null,
-        category: '인문',
-        type: '순서맞추기',
-        problemId: 11,
-        correct: false,
-      },
-    ],
-  };
-
   // 서버에 푼 문제 데이터 요청 전송
   useEffect(() => {
     if (submit === true) {
@@ -142,7 +99,7 @@ export default function Order() {
 
   // 학습 완료 버튼 클릭
   const handleFinishClick = () => {
-    setUserAnswer((prevMyAnswer) => [...prevMyAnswer, selected]);
+    setUserAnswer((prevMyAnswer) => [...prevMyAnswer, value]);
     setProblemId((prevProblemId) => [...prevProblemId, currProblem.problemId]);
     setSubmit(true);
   };
