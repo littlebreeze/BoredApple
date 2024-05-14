@@ -67,8 +67,8 @@ export default function Quiz() {
       {/* 선지 */}
       <div className='w-full p-10 my-4'>
         {currentQuiz.options.map((optionObj, index) => (
-          <div className={`mt-1 cursor-pointer`} onClick={() => handleOptionClick(index)} key={index}>
-            <span className={`flex items-center `}>
+          <div className={`mt-1`} key={index}>
+            <span className={`cursor-pointer flex items-center w-fit pr-4`} onClick={() => handleOptionClick(index)}>
               <span
                 className={`rounded-full border border-gray-300 min-w-[14px] min-h-[14px] flex items-center justify-center mr-2 ${
                   selectedOption === index ? 'bg-ourYellow' : ''
