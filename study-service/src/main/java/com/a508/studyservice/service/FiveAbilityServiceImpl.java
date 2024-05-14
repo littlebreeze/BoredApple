@@ -24,7 +24,7 @@ public class FiveAbilityServiceImpl implements  FiveAbilityService{
 		int userId = 0;
 
 		userId = userServiceFeignClient.getUserId(token);
-		log.info(String.valueOf(userId));
+		log.info(String.valueOf(" 27번째 줄 요청" + userId));
 		FiveAbility fiveAbility = fiveAbilityRepository.findByUserId(userId);
 		if(fiveAbility ==null){
 			fiveAbility = fiveAbilityRepository.save(FiveAbility.builder()
