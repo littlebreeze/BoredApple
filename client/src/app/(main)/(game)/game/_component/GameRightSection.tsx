@@ -1,4 +1,5 @@
 'use client';
+import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
 import MakeRoomBtn from './MakeRoomBtn';
 import GameRoomItem from './GameRoomItem';
@@ -9,6 +10,10 @@ import { useGameWaitStore } from '@/stores/game-wait';
 import InsertPasswordModal from './InsertPasswordModal';
 import { useGameRoomList } from '@/queries/game-wait';
 import axios from 'axios';
+import { useGameRoomInfo } from '@/queries/get-room-info';
+import { useWebsocketStore } from '@/stores/websocketStore';
+import { useRouter } from 'next/navigation';
+import { useGameRoomStore } from '@/stores/game-room-info';
 
 type GameRoomInfo = {
   id: number;
@@ -24,16 +29,21 @@ type GameRoomInfo = {
 };
 
 export default function GameRightSection() {
-  const { pageNum, setPageNum } = useGameWaitStore();
-  const { data, isLoading } = useGameRoomList(pageNum);
+  const router = useRouter();
 
-  const { isShow, roomList, setRoomList, isEndPage, setIsEndPage } = useGameWaitStore();
+  const { pageNum, setPageNum } = useGameWaitStore();
+  const { data, isLoading, refetch, isFetching } = useGameRoomList(pageNum);
+
+  const { isShow, roomList, setRoomList, isEndPage, setIsEndPage, selectedRoom, setSelectedRoom } = useGameWaitStore();
+  const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(selectedRoom?.id);
+  const { connect, stompClient } = useWebsocketStore();
+  const { setGameRoomInfo } = useGameRoomStore();
   const [duplList, setDuplList] = useState<(GameRoomInfo | undefined)[]>(new Array(6).fill(undefined));
 
   const generateRoomItems = (list: GameRoomInfo[]): (GameRoomInfo | undefined)[] => {
     let duplicatedList: (GameRoomInfo | undefined)[] = [];
     for (let idx = 0; idx < 6; idx++) {
-      if (idx < roomList.length) duplicatedList.push(list[idx]);
+      if (roomList && idx < roomList.length) duplicatedList.push(list[idx]);
       else duplicatedList.push(undefined);
     }
     return duplicatedList;
@@ -41,20 +51,43 @@ export default function GameRightSection() {
 
   // 페이지 바뀌면 방 목록 요청
   useEffect(() => {
-    console.log(data);
     if (data?.data) {
-      console.log(data.data.data);
       setIsEndPage(data.data.data.isEndPage);
       setRoomList(data.data.data.gameRoomResList);
     } else {
       setRoomList([]);
     }
-  }, [isLoading, pageNum]);
+  }, [isLoading, pageNum, isFetching]);
 
   // 방 목록이 바뀌면 출력용 리스트 변경
   useEffect(() => {
     setDuplList(generateRoomItems(roomList));
   }, [roomList]);
+
+  useEffect(() => {
+    if (isError)
+      Swal.fire({
+        title: '방에 입장할 수 없습니다!',
+        text: '방 상태가 변경되었습니다. 새로고침 버튼을 눌러주세요!',
+        confirmButtonColor: '#0064FF',
+      });
+    if (!isLoading && !isError && roomData) {
+      if (!selectedRoom?.isSecret) {
+        // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
+        const roomDataData = roomData.data.data;
+        setGameRoomInfo({ ...roomDataData, roomName: selectedRoom?.roomName });
+        connect(String(selectedRoom?.id));
+
+        router.push(`/game/rooms/${selectedRoom?.id}`);
+      }
+    }
+  }, [selectedRoom, getLoading]);
+
+  useEffect(() => {
+    return () => {
+      setSelectedRoom(null);
+    };
+  }, []);
 
   return (
     <div className='relative'>
@@ -64,7 +97,7 @@ export default function GameRightSection() {
           <MakeRoomBtn />
           <QuickStartGameBtn />
         </div>
-        <div className='w-1/4 lg:w-1/5 lg:px-5 px-4 py-3 mr-2 bg-ourGray/50 rounded-xl'>
+        <div className='w-1/4 lg:w-1/5 lg:px-5 px-4 py-3 mr-2 bg-ourGray/50 rounded-xl' onClick={() => refetch()}>
           <RefreshRoomsBtn />
         </div>
       </div>

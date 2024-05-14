@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { IRoom } from '@/types/Room';
 
 import upFill from '@/../public/game/up-fill.svg';
-import downFill from '@/../public/game/up-fill.svg';
+import downFill from '@/../public/game/down-fill.svg';
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useWebsocketStore } from '@/stores/websocketStore';
 
@@ -36,7 +36,8 @@ export default function CreateRoomModal() {
       const res = await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms`, newRoom);
       const newRoomId = res.data.data.roomId;
       console.log('방정보응답', res);
-      setGameRoomInfo(res.data.data);
+      const resData = res.data.data;
+      setGameRoomInfo({ ...resData, roomName: newRoom.roomName });
       resetState();
       connect(newRoomId);
       router.replace(`/game/rooms/${newRoomId}`);
@@ -54,6 +55,10 @@ export default function CreateRoomModal() {
   };
 
   const submitBtn = () => {
+    if (!roomName.trim()) {
+      alert('방 제목을 입력해 주세요.');
+      return;
+    }
     createRoom({
       roomName: roomName,
       isSecret: isSecret,

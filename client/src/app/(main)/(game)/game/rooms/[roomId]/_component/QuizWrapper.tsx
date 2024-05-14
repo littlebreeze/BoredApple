@@ -33,8 +33,18 @@ const INITIAL_CONSONANTS = [
 ];
 
 export default function QuizWrapper({ roomId }: { roomId: string }) {
-  const { startGame, isGaming, timer, roundCount, currentRound, setRoundCount, quiz, answer, isGameRoundInProgress } =
-    useWebsocketStore();
+  const {
+    startGame,
+    isGaming,
+    timer,
+    roundCount,
+    currentRound,
+    setRoundCount,
+    quiz,
+    answer,
+    isGameRoundInProgress,
+    isCorrectAnswer,
+  } = useWebsocketStore();
   const { quizCount, myUserId, creatorId } = useGameRoomStore();
 
   useEffect(() => {
@@ -64,7 +74,19 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
         key={idx}
         className='flex items-center justify-center w-16 text-3xl text-white bg-ourGreen rounded-xl'
       >
-        {timer > 10 ? '' : timer === 0 ? answer[idx] : createHint2(answer)[idx]}
+        {isCorrectAnswer ? answer[idx] : timer > 10 ? '' : timer === 0 ? answer[idx] : createHint2(answer)[idx]}
+      </div>
+    ));
+  };
+
+  // 정답 띄워주기
+  const viewAnswer = (length: number) => {
+    return Array.from({ length }, (_, idx) => (
+      <div
+        key={idx}
+        className='flex items-center justify-center w-16 text-3xl text-white bg-ourGreen rounded-xl font-bold'
+      >
+        {answer[idx]}
       </div>
     ));
   };
@@ -106,8 +128,13 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
       <div className='flex justify-center h-16 gap-3 mt-5'>
         {isGaming ? (
           isGameRoundInProgress ? (
-            timer <= 20 && createHint1(answer.length)
+            isCorrectAnswer || timer == 0 ? (
+              viewAnswer(answer.length)
+            ) : (
+              timer <= 20 && createHint1(answer.length)
+            )
           ) : (
+            //   timer <= 20 && createHint1(answer.length)
             '곧 다음 문제가 나옵니다!'
           )
         ) : myUserId === creatorId ? (

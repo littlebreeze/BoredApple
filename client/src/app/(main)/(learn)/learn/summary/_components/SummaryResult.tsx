@@ -1,16 +1,13 @@
 'use client';
 import { useState, useEffect } from 'react';
 import instance from '@/utils/interceptor';
-import checkTrue from '@/../public/learn/check-true.svg';
-import checkFalse from '@/../public/learn/check-false.svg';
-import unchecked from '@/../public/learn/unchecked.svg';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { InsertProblemResponse, IInsertProblem } from '@/types/Problem';
+import { SummaryProblemResponse } from '@/types/Problem';
+import ProgressBar from '../../_components/ProgressBar';
 
 export default function SummaryResult() {
   const router = useRouter();
-  const [problems, setProblems] = useState<InsertProblemResponse>([]);
+  const [problems, setProblems] = useState<SummaryProblemResponse>([]);
   const [problemIndex, setProblemIndex] = useState(0);
   const [progress, setProgress] = useState(1);
 
@@ -22,10 +19,22 @@ export default function SummaryResult() {
 
   const getSummaryData = async () => {
     try {
-      const response = await instance.get(`/study-service/problem/sentence`);
+      const response = await instance.get(`/study-service/problem/topic`);
       setProblems(response.data.data);
     } catch (error) {
       // error
+    }
+  };
+
+  // 별 개수 설정
+  const getStars = (similarity: number) => {
+    const stars = ['★ ☆ ☆', '★ ★ ☆', '★ ★ ★'];
+    if (similarity >= 75) {
+      return stars[2];
+    } else if (similarity >= 50) {
+      return stars[1];
+    } else {
+      return stars[0];
     }
   };
 
@@ -38,71 +47,23 @@ export default function SummaryResult() {
     router.push('/home');
   };
 
-  const optionTextColor = (option: number) => {
-    if (option === currProblem.answer && option === currProblem.userAnswer) {
-      return 'text-ourBlue font-semibold';
-    } else {
-      if (option === currProblem.answer) {
-        return 'text-ourBlue font-semibold';
-      } else if (option === currProblem.userAnswer) {
-        return 'text-ourRed line-through font-semibold';
-      } else {
-        return '';
-      }
-    }
-  };
-
-  const optionImage = (option: number) => {
-    if (currProblem.userAnswer === option) {
-      if (currProblem.userAnswer === currProblem.answer) {
-        return checkTrue;
-      } else {
-        return checkFalse;
-      }
-    } else if (option === currProblem.answer) {
-      return checkTrue;
-    } else {
-      return unchecked;
-    }
-  };
-
   return (
     <div>
       <div>
         {/* 상태 바 */}
-        <div>
-          {progress === 1 ? (
-            <div className='flex gap-3'>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourGray'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourGray'></div>
-            </div>
-          ) : progress === 2 ? (
-            <div className='flex gap-3'>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourGray'></div>
-            </div>
-          ) : (
-            <div className='flex gap-3'>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-            </div>
-          )}
-        </div>
+        <ProgressBar progress={progress} />
 
         {/* 문제 */}
         <div className='py-4'></div>
         <div className='flex'>
-          <div className='mr-2'>문장 넣기</div>
+          <div className='mr-2'>지문 요약</div>
           <div>
             <span className='text-ourBlue'>{progress}</span>
             <span className='text-ourBlack'> / 3</span>
           </div>
         </div>
         <div className='py-1'></div>
-        <div>다음 글을 읽고 문맥상 빈칸에 들어가기에 알맞은 내용을 골라주세요</div>
+        <div>다음 글을 읽고 문단의 핵심 내용을 담아 한 문장으로 요약해보세요.</div>
         <div className='py-2'></div>
 
         {/* 지문 및 선택지 */}
@@ -110,24 +71,28 @@ export default function SummaryResult() {
           <div>
             <div className='flex gap-2'>
               <div className='p-4 h-fit flex-1 font-Batang'>
-                <span className='font-Batang'>{currProblem.content1}</span>
-                <span className='select-none font-bold font-Batang bg-white p-1 rounded-lg px-4 mx-2'>
-                  &nbsp;?&nbsp;
-                </span>
-                <span className='font-Batang'>{currProblem.content2}</span>
+                <span className='font-Batang'>{currProblem.content}</span>
               </div>
-              <div>
-                <div className='py-12'></div>
-                <div className='w-96 bg-white rounded-xl p-4'>
-                  {[1, 2, 3].map((option) => (
-                    <div
-                      key={option}
-                      className={`flex items-center p-2 m-1 rounded-xl ${optionTextColor(option)} bg-[#f2f2f2]`}
-                    >
-                      <Image className='w-4 h-4 mr-2' src={optionImage(option)} alt='선택' />
-                      <span>{currProblem[`option${option}` as keyof IInsertProblem]}</span>
-                    </div>
-                  ))}
+              <div className='bg-white rounded-xl p-4 w-96'>
+                <div className='flex gap-2'>
+                  <div className='w-fit flex flex-col justify-center p-1 px-2 text-black text-xs rounded-full bg-ourGreen'>
+                    {getStars(currProblem.similarity!)}
+                  </div>
+                  <div className='font-semibold w-fit p-1 px-3 text-white rounded-full bg-black text-xs flex items-center'>
+                    {currProblem.similarity}% 유사
+                  </div>
+                </div>
+                <div className='py-4'></div>
+                <div className='font-semibold'>나의 답안</div>
+                <div className='py-1'></div>
+                <div className='bg-[#f2f2f2] p-3 rounded-xl'>
+                  <div>{currProblem.userAnswer}</div>
+                </div>
+                <div className='py-4'></div>
+                <div className='text-ourTheme font-semibold'>심심한 사과의 답안</div>
+                <div className='py-1'></div>
+                <div className='bg-[#f2f2f2] p-3 rounded-xl'>
+                  <div className='text-ourTheme'>{currProblem.answer}</div>
                 </div>
               </div>
             </div>

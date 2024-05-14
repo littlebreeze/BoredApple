@@ -7,13 +7,13 @@ import unchecked from '@/../public/learn/unchecked.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { IBasicProblem, BasicProblemResponse } from '@/types/Problem';
+import ProgressBar from '../../_components/ProgressBar';
 
 export default function WordResult() {
   const router = useRouter();
   const [problems, setWordProblems] = useState<BasicProblemResponse>([]);
   const [problemIndex, setWordProblemIndex] = useState(0);
   const [progress, setProgress] = useState(1);
-  const [selected, setSelected] = useState<number | null>(null);
 
   const currProblem = problems[problemIndex];
 
@@ -70,27 +70,8 @@ export default function WordResult() {
   return (
     <div>
       <div>
-        <div>
-          {progress === 1 ? (
-            <div className='flex gap-3'>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourGray'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourGray'></div>
-            </div>
-          ) : progress === 2 ? (
-            <div className='flex gap-3'>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourGray'></div>
-            </div>
-          ) : (
-            <div className='flex gap-3'>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-            </div>
-          )}
-        </div>
+        {/* 상태 바 */}
+        <ProgressBar progress={progress} />
 
         {/* 문제 */}
         <div className='py-4'></div>

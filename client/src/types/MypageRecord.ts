@@ -33,6 +33,7 @@ export interface RResponse {
 // StudyRecord
 export interface SResponse {
   daysCompleteLearning: number;
+  completePercentage: number;
   mostLearnedStudy: string;
   mostReadCategory: string;
 }
