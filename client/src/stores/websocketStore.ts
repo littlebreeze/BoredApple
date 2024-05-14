@@ -118,10 +118,10 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
     const client = get().stompClient;
     if (client) {
       get().sendMessage(body);
-      client.deactivate();
       // 구독 해제
       get().chatSubscription?.unsubscribe();
       get().timerSubscription?.unsubscribe();
+      client.deactivate();
       // 방 상태 초기화
       useGameRoomStore.getState().clearGameRoomInfo();
       // 웹소켓 스토어 초기화
