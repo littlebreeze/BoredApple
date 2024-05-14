@@ -31,12 +31,15 @@ spring:
             filters:
               - RewritePath=/user-service/(?<segment>.*), /$\{segment}
               - AuthorizationHeaderFilter
-          - id: game-service
-            uri: lb://GAME-SERVICE
+          - id: game-service-ws
+            uri: wss://k10a508.p.ssafy.io:8081/game-service/ws
             predicates:
               - Path=/game-service/ws/**
             filters:
-              - RewritePath=/game-service/(?<segment>.*), /$\{segment}
+              - name: RewritePath
+                args:
+                  regexp: /game-service/ws/(?<segment>.*)
+                  replacement: /$\{segment}
           - id: game-service
             uri: lb://GAME-SERVICE
             predicates:
