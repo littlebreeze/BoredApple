@@ -24,6 +24,7 @@ spring:
               - Method= POST
             filters:
               - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+              - RewritePath=/study-service/(?<segment>.*), /$\{segment}
           - id: user-service
             uri: lb://USER-SERVICE
             predicates:
