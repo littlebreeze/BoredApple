@@ -122,14 +122,25 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       get().chatSubscription?.unsubscribe();
       get().timerSubscription?.unsubscribe();
       client.deactivate();
-      // 강제 종료 메서드
-      client.forceDisconnect();
-      // 방 상태 초기화
-      useGameRoomStore.getState().clearGameRoomInfo();
-      // 웹소켓 스토어 초기화
-      get().clearWebsocketStore();
-      console.log('active ', client.active);
-      console.log('connected', client.connected);
+      client.onDisconnect = () => {
+        console.log('WebSocket disconnected');
+
+        console.log('active:', client.active);
+        console.log('connected:', client.connected);
+
+        // 방 상태 초기화
+        useGameRoomStore.getState().clearGameRoomInfo();
+        // 웹소켓 스토어 초기화
+        get().clearWebsocketStore();
+      };
+      // // 강제 종료 메서드
+      // client.forceDisconnect();
+      // // 방 상태 초기화
+      // useGameRoomStore.getState().clearGameRoomInfo();
+      // // 웹소켓 스토어 초기화
+      // get().clearWebsocketStore();
+      // console.log('active ', client.active);
+      // console.log('connected', client.connected);
     }
   },
 
