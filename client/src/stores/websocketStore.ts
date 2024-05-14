@@ -111,6 +111,8 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       client.deactivate();
       // 연결해제할때도비우고
       set({ stompClient: null, messages: [] });
+      set({ isGaming: false });
+      useGameRoomStore.getState().clearGameRoomInfo();
     }
   },
 
