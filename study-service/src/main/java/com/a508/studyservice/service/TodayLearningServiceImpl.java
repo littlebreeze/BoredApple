@@ -219,6 +219,7 @@ public class TodayLearningServiceImpl implements TodayLearningService {
 
 
 
+
         for( TodayLearning todayLearning : todayLearnings){
             String type = todayLearning.getType();
             String category = todayLearning.getCategory();
@@ -274,7 +275,11 @@ public class TodayLearningServiceImpl implements TodayLearningService {
             if(typeMax == voca) {totalResponse.setType("어휘");}
         }
 
-        return null;
+        totalResponse.setTotalCnt(minus);
+        double va = (double) minus/size;
+        totalResponse.setCompletePercent(va);
+
+        return totalResponse;
     }
 
 
