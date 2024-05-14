@@ -3,12 +3,12 @@
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useGameWaitStore } from '@/stores/game-wait';
 import { useGameScoreStore } from '@/stores/game-score';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import instance from '@/utils/interceptor';
 
 type RequestItem = {
   ranking: number;
-  userId: 3;
+  userId: number;
 };
 
 type ResponseItem = {
@@ -32,15 +32,16 @@ export default function GameResultsModal() {
   const { resultModalIsShow, setResultModalIsShow } = useGameRoomStore();
   const { selectedRoom } = useGameWaitStore();
   const { clearScore, players } = useGameScoreStore();
+  const [gameResults, setGameResults] = useState<ResponseItem[]>();
 
   useEffect(() => {
     console.log('나왔다');
     let copyPlayers = [...players];
     // 점수별 내림차순 정렬 => 순위...
     copyPlayers.sort((a, b) => b.score - a.score);
-    console.log('copyPlayers', copyPlayers);
+    // console.log('copyPlayers', copyPlayers);
     let rank = 1;
-    const requestarr = players.map((player, idx) => {
+    const requestarr: RequestItem[] = players.map((player, idx) => {
       if (idx === 0) return { ranking: rank, userId: player.id };
       else {
         if (players[idx - 1].score !== player.score) rank++;
@@ -50,7 +51,10 @@ export default function GameResultsModal() {
         };
       }
     });
-    console.log('requestarr', requestarr);
+    // console.log('requestarr', requestarr);
+    postGameResult(requestarr)
+      .then((value) => setGameResults(value.data.data.ResultList))
+      .catch((error) => console.log(error));
   }, []);
   return (
     <>
