@@ -118,7 +118,8 @@ public class TodayLearningServiceImpl implements TodayLearningService {
     @Override
     public List<MonthResponse> getMonths(LocalDateTime dateTime, String token) {
         log.info( "Month 데이터를 받아옵니다 요청자 : " + token);
-        int userid = userServiceFeignClient.getUserId(token);
+        String actualToken = token.substring(7);
+        int userid = userServiceFeignClient.getUserId(actualToken);
         List<MonthResponse> monthResponses = new ArrayList<>();
 
         YearMonth currentYearMonth = YearMonth.of(dateTime.getYear(), dateTime.getMonth());
@@ -144,7 +145,8 @@ public class TodayLearningServiceImpl implements TodayLearningService {
     @Override
     public List<DayResponse> getDays(LocalDateTime dateTime, String token) {
         log.info( "Day 데이터를 받아옵니다 요청자 : " + token);
-        int userid = userServiceFeignClient.getUserId(token);
+        String actualToken = token.substring(7);
+        int userid = userServiceFeignClient.getUserId(actualToken);
         List<DayResponse> dayResponses = new ArrayList<>();
 
 
@@ -194,7 +196,8 @@ public class TodayLearningServiceImpl implements TodayLearningService {
     @Override
     public TotalResponse getTotal(LocalDateTime dateTime,String token) {
         log.info( "월별 총제적 데이터를 받아옵니다 요청자 : " + token);
-        int userid = userServiceFeignClient.getUserId(token);
+        String actualToken = token.substring(7);
+        int userid = userServiceFeignClient.getUserId(actualToken);
 
         YearMonth currentYearMonth = YearMonth.of(dateTime.getYear(), dateTime.getMonth());
 
@@ -248,7 +251,8 @@ public class TodayLearningServiceImpl implements TodayLearningService {
         priorityQueue.add(topic);
         priorityQueue.add(voca);
         int typeMax= 0;
-        if(!priorityQueue.isEmpty())categoryMax= priorityQueue.poll();
+
+        if(!priorityQueue.isEmpty())typeMax= priorityQueue.poll();
         TotalResponse totalResponse = new TotalResponse();
         if( categoryMax != 0 ) {
             if (categoryMax == science)
