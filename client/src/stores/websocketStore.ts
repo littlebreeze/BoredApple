@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Client, IMessage } from '@stomp/stompjs';
+import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import { useGameRoomStore } from './game-room-info';
 
 interface ChatMessageRequest {
@@ -30,6 +30,10 @@ interface WebSocketState {
   quiz: string; // 문제
   answer: string; // 정답
 
+  // 구독 목록
+  chatSubscription: StompSubscription | null;
+  timerSubscription: StompSubscription | null;
+
   // 웹소켓 연결, 끊기
   connect: (roomId: string) => void;
   disconnect: (body: ChatMessageRequest) => void;
@@ -57,6 +61,9 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
   quiz: '',
   answer: '',
 
+  chatSubscription: null,
+  timerSubscription: null,
+
   connect: (roomId: string) => {
     console.log('웹소켓연결');
     const client = new Client({
@@ -64,7 +71,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       reconnectDelay: 5000,
       onConnect: () => {
         // 채팅 구독
-        client.subscribe(`/topic/chat/rooms/${roomId}`, (message: IMessage) => {
+        const chatSubscription = client.subscribe(`/topic/chat/rooms/${roomId}`, (message: IMessage) => {
           const res: ChatMessageResponse = JSON.parse(message.body);
           switch (res.type) {
             case 'CORRECT':
@@ -91,7 +98,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
           console.log('메세지: ', res);
         });
         // 시간 구독
-        client.subscribe(`/topic/time/rooms/${roomId}`, (message: IMessage) => {
+        const timerSubscription = client.subscribe(`/topic/time/rooms/${roomId}`, (message: IMessage) => {
           set({ timer: parseInt(message.body) });
           if (parseInt(message.body) === 33)
             set({
@@ -101,19 +108,24 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
               answer: '',
             });
         });
+
+        set({ stompClient: client, chatSubscription, timerSubscription });
       },
     });
     client.activate();
-    set({ stompClient: client });
   },
   disconnect: (body: ChatMessageRequest) => {
     const client = get().stompClient;
     if (client) {
       get().sendMessage(body);
       client.deactivate();
-      // 연결해제할때도비우고
-      get().clearWebsocketStore();
+      // 구독 해제
+      get().chatSubscription?.unsubscribe();
+      get().timerSubscription?.unsubscribe();
+      // 방 상태 초기화
       useGameRoomStore.getState().clearGameRoomInfo();
+      // 웹소켓 스토어 초기화
+      get().clearWebsocketStore();
     }
   },
 
@@ -185,6 +197,8 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       isCorrectAnswer: false,
       quiz: '',
       answer: '',
+      chatSubscription: null,
+      timerSubscription: null,
     });
   },
 }));
