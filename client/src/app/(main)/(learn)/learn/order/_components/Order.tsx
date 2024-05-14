@@ -100,7 +100,7 @@ export default function Order() {
   // 문제 데이터 가져오기
   const getOrderData = async () => {
     try {
-      const response = await instance.get(`/study-service/problem/order`);
+      const response = await instance.get('/study-service/problem/order');
       setProblems(response.data.data);
       console.log(response.data.data);
     } catch (error) {

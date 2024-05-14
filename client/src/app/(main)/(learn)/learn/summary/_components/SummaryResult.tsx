@@ -112,10 +112,15 @@ export default function SummaryResult() {
                 <span className='font-Batang'>{currProblem.content}</span>
               </div>
               <div className='bg-white rounded-xl p-4 w-96'>
-                <div className='w-fit flex flex-col justify-center p-1 px-2 text-white text-[8px] rounded-full bg-ourTheme'>
-                  {getStars(currProblem.similarity!)}
+                <div className='flex gap-2'>
+                  <div className='w-fit flex flex-col justify-center p-1 px-2 text-black text-xs rounded-full bg-ourGreen'>
+                    {getStars(currProblem.similarity!)}
+                  </div>
+                  <div className='font-semibold w-fit p-1 px-3 text-white rounded-full bg-black text-xs flex items-center'>
+                    {currProblem.similarity}% 유사
+                  </div>
                 </div>
-                <div className='py-1 p-2 rounded-xl'></div>
+                <div className='py-4'></div>
                 <div className='font-semibold'>나의 답안</div>
                 <div className='py-1'></div>
                 <div className='bg-[#f2f2f2] p-3 rounded-xl'>
