@@ -32,22 +32,30 @@ spring:
             filters:
               - RewritePath=/user-service/(?<segment>.*), /$\{segment}
               - AuthorizationHeaderFilter
-          - id: game-service-ws
-            uri: wss://k10a508.p.ssafy.io:8081/game-service/ws
+
+#          - id: game-service-ws
+#            uri: wss://k10a508.p.ssafy.io:8081/game-service/ws
+#            predicates:
+#              - Path=/game-service/ws/**
+#            filters:
+#              - name: RewritePath
+#                args:
+#                  regexp: /game-service/ws/(?<segment>.*)
+#                  replacement: /$\{segment}
+          - id: game-service
+            uri: lb://GAME-SERVICE
             predicates:
-              - Path=/game-service/ws/**
+              - Path=/game-service/rankings
             filters:
-              - name: RewritePath
-                args:
-                  regexp: /game-service/ws/(?<segment>.*)
-                  replacement: /$\{segment}
+              - RewritePath=/game-service/(?<segment>.*), /$\{segment}
+              - AuthorizationHeaderFilter
           - id: game-service
             uri: lb://GAME-SERVICE
             predicates:
               - Path=/game-service/**
             filters:
               - RewritePath=/game-service/(?<segment>.*), /$\{segment}
-              - AuthorizationHeaderFilter
+
           - id: study-service
             uri: lb://STUDY-SERVICE
             predicates:
