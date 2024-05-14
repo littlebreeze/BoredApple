@@ -70,7 +70,12 @@ export default function GameRoomItem({ roomInfo }: Props) {
             {roomInfo.isStarted && <div className='text-sm text-ourTheme'>게임중</div>}
           </div>
           <div className='w-3/5 flex flex-col justify-between'>
-            <div className='font-semibold text-base sm:text-2xl md:text-2xl lg:text-2xl'>{roomInfo!.roomName}</div>
+            <div
+              className='font-semibold text-base sm:text-2xl md:text-2xl lg:text-2xl truncate'
+              title={roomInfo!.roomName}
+            >
+              {roomInfo!.roomName}
+            </div>
             <div className='text-ourDarkGray text-sm'>{roomInfo!.roomCreatorName}의 방</div>
           </div>
           <div className='w-1/5 flex flex-col justify-between items-end'>
