@@ -1,7 +1,7 @@
 'use client';
 import axios from 'axios';
 
-// axios 인스턴스
+// axios 기본 인스턴스
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   headers: {
@@ -11,12 +11,13 @@ const instance = axios.create({
   },
 });
 
-// refresh axios 인스턴스
+// refresh token 재생성용 axios 인스턴스
 const refreshInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
 });
 
 // 인스턴스의 요청 인터셉터
+// 요청 시마다 기본적으로 적용
 instance.interceptors.request.use(
   (config) => {
     // 요청 전달 전 미리 헤더에 엑세스 토큰 저장
@@ -30,6 +31,7 @@ instance.interceptors.request.use(
 );
 
 // 인스턴스의 응답 인터셉터
+// 응답 시마다 기본적으로 적용
 instance.interceptors.response.use(
   (response) => {
     // 2xx 상태 코드 시 이 함수 트리거: 응답 데이터가 있는 작업 수행
@@ -38,8 +40,8 @@ instance.interceptors.response.use(
   async (error) => {
     // 2xx 이외 상태 코드 시 이 함수 트리거: 응답 오류가 있는 작업 수행
 
+    // 토큰이 만료되거나 유효하지 않은 경우
     if (error.response.status == 401) {
-      // 토큰이 만료되거나 유효하지 않은 경우
       const originRequest = error.config;
 
       try {
@@ -71,7 +73,7 @@ const regenerateRefreshToken = async () => {
     'Content-Type': 'text/plain;charset=utf-8',
   };
   const refreshToken = localStorage.getItem('refreshToken');
-  const response = await refreshInstance.post('/login/oauth/token', refreshToken, { headers: headers });
+  const response = await refreshInstance.post('/oauth/token', refreshToken, { headers: headers });
   return response;
 };
 

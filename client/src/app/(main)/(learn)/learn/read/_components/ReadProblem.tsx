@@ -13,7 +13,7 @@ const ReadProblem: React.FC<{ progress: number }> = ({ progress }) => {
         </div>
       </div>
       <div className='py-1'></div>
-      <div>각 문장을 정확히 끊어 읽고 가장 적절한 선택지를 고르세요. 준비됐다면 시작 버튼을 눌러주세요!</div>
+      <div>일정 시간 동안 보이는 각 문장을 읽고 가장 적절한 선택지를 고르세요. 준비됐다면 시작 버튼을 눌러주세요!</div>
       <div className='py-2'></div>
     </>
   );
