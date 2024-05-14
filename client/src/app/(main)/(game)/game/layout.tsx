@@ -37,16 +37,6 @@ export default function Layout({
           </RQProvider>
         </div>
       </div>
-      <Link href={'/home'} className='absolute bottom-10 right-10 z-30 w-16 h-16 duration-150 hover:w-20 hover:h-20'>
-        <Image
-          className='w-full drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)] z-20 relative'
-          src='/game/icon-image.svg'
-          loading='eager'
-          fill
-          alt='학습페이지로'
-          title='학습페이지로'
-        />
-      </Link>
     </div>
   );
 }
