@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
+  // path 설정 예제
   // const { pathname } = req.nextUrl;
   // const url = req.nextUrl.clone();
   // if (pathname === '/quiz') {
