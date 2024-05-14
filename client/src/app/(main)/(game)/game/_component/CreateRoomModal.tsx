@@ -36,7 +36,8 @@ export default function CreateRoomModal() {
       const res = await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms`, newRoom);
       const newRoomId = res.data.data.roomId;
       console.log('방정보응답', res);
-      setGameRoomInfo(res.data.data);
+      const resData = res.data.data;
+      setGameRoomInfo({ ...resData, roomName: newRoom.roomName });
       resetState();
       connect(newRoomId);
       router.replace(`/game/rooms/${newRoomId}`);
@@ -98,10 +99,7 @@ export default function CreateRoomModal() {
                       defaultChecked
                       onChange={(e) => setQuizCount(Number(e.target.value))}
                     />
-                    <label
-                      htmlFor='5quiz'
-                      className='w-full py-1 text-sm font-medium text-gray-900 ms-2'
-                    >
+                    <label htmlFor='5quiz' className='w-full py-1 text-sm font-medium text-gray-900 ms-2'>
                       5개
                     </label>
                   </div>
@@ -116,10 +114,7 @@ export default function CreateRoomModal() {
                       name='quizCountRadio'
                       onChange={(e) => setQuizCount(Number(e.target.value))}
                     />
-                    <label
-                      htmlFor='10quiz'
-                      className='w-full py-1 text-sm font-medium text-gray-900 ms-2'
-                    >
+                    <label htmlFor='10quiz' className='w-full py-1 text-sm font-medium text-gray-900 ms-2'>
                       10개
                     </label>
                   </div>
@@ -134,10 +129,7 @@ export default function CreateRoomModal() {
                       name='quizCountRadio'
                       onChange={(e) => setQuizCount(Number(e.target.value))}
                     />
-                    <label
-                      htmlFor='15quiz'
-                      className='w-full py-1 text-sm font-medium text-gray-900 ms-2'
-                    >
+                    <label htmlFor='15quiz' className='w-full py-1 text-sm font-medium text-gray-900 ms-2'>
                       15개
                     </label>
                   </div>
@@ -163,14 +155,7 @@ export default function CreateRoomModal() {
                     setMaxNum(maxNum < 6 ? maxNum + 1 : maxNum);
                   }}
                 >
-                  <Image
-                    className='h-full pl-2'
-                    src={upFill}
-                    loading='eager'
-                    width={20}
-                    height={20}
-                    alt='up'
-                  />
+                  <Image className='h-full pl-2' src={upFill} loading='eager' width={20} height={20} alt='up' />
                 </div>
                 <div
                   className='flex items-center justify-center cursor-pointer'
@@ -178,13 +163,7 @@ export default function CreateRoomModal() {
                     setMaxNum(maxNum > 1 ? maxNum - 1 : maxNum);
                   }}
                 >
-                  <Image
-                    className='h-full pl-2'
-                    src={downFill}
-                    width={20}
-                    height={20}
-                    alt='down'
-                  />
+                  <Image className='h-full pl-2' src={downFill} width={20} height={20} alt='down' />
                 </div>
               </div>
             </div>
@@ -205,18 +184,8 @@ export default function CreateRoomModal() {
                 }}
               />
               <div className='flex items-center justify-center gap-1'>
-                <label
-                  htmlFor='secret-chk'
-                  className='flex items-center justify-center w-full gap-1 text-sm'
-                >
-                  <Image
-                    className='h-full pl-2'
-                    src='/rock.svg'
-                    loading='eager'
-                    width={20}
-                    height={20}
-                    alt='비밀방'
-                  />
+                <label htmlFor='secret-chk' className='flex items-center justify-center w-full gap-1 text-sm'>
+                  <Image className='h-full pl-2' src='/rock.svg' loading='eager' width={20} height={20} alt='비밀방' />
                   비밀방
                 </label>
                 <input
@@ -234,16 +203,10 @@ export default function CreateRoomModal() {
           </div>
         </div>
         <div className='flex justify-around mt-4'>
-          <button
-            className='w-1/4 h-8 text-white rounded-lg bg-ourDarkGray'
-            onClick={closeModal}
-          >
+          <button className='w-1/4 h-8 text-white rounded-lg bg-ourDarkGray' onClick={closeModal}>
             취소
           </button>
-          <button
-            className='w-1/4 h-8 text-white rounded-lg bg-ourTheme'
-            onClick={submitBtn}
-          >
+          <button className='w-1/4 h-8 text-white rounded-lg bg-ourTheme' onClick={submitBtn}>
             확인
           </button>
         </div>

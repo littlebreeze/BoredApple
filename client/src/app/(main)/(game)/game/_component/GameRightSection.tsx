@@ -74,7 +74,8 @@ export default function GameRightSection() {
     if (!isLoading && !isError && roomData) {
       if (!selectedRoom?.isSecret) {
         // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
-        setGameRoomInfo(roomData.data.data);
+        const roomDataData = roomData.data.data;
+        setGameRoomInfo({ ...roomDataData, roomName: selectedRoom?.roomName });
         connect(String(selectedRoom?.id));
 
         router.push(`/game/rooms/${selectedRoom?.id}`);
