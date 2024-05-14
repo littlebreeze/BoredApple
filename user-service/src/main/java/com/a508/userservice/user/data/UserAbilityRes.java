@@ -11,16 +11,16 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UserAbilityRes {
 
-	private int userId;
+	private Integer userId;
 
-	private int fact;
+	private Integer fact;
 
-	private int inference;
+	private Integer inference;
 
-	private int voca;
+	private Integer voca;
 
-	private int recognition;
+	private Integer recognition;
 
-	private int speed;
+	private Integer speed;
 
 }
