@@ -94,6 +94,8 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
               useGameRoomStore.getState().setCreatorId(res.target);
             case 'END':
               set({ isGaming: false });
+              // 게임 끝...일때 결과 요청
+              useGameRoomStore.getState().setResultModalIsShow(true);
           }
           console.log('메세지: ', res);
         });

@@ -9,6 +9,7 @@ import QuizWrapper from './_component/QuizWrapper';
 import TimerWrapper from './_component/TimerWrapper';
 import { useWebsocketStore } from '@/stores/websocketStore';
 import { useGameRoomInfo } from '@/queries/get-room-info';
+import GameResultsModal from './_component/GameResultsModal';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -25,7 +26,7 @@ export default function Page() {
   const router = useRouter();
   const { connect, disconnect, stompClient } = useWebsocketStore();
   const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(parseInt(roomId));
-  const { setGameRoomInfo } = useGameRoomStore();
+  const { setGameRoomInfo, resultModalIsShow } = useGameRoomStore();
 
   useEffect(() => {
     console.log(roomPlayerRes);
@@ -55,6 +56,7 @@ export default function Page() {
 
   return (
     <div className='flex flex-col items-center'>
+      {resultModalIsShow && <GameResultsModal />}
       <div className='relative flex justify-center w-full gap-10 -top-8'>
         {/* 점수판 */}
         <div className='w-1/6'>
@@ -77,7 +79,7 @@ export default function Page() {
           <TimerWrapper roomId={roomId} />
         </div>
       </div>
-      <div className='w-2/3 h-60'>
+      <div className='w-1/2 h-60'>
         {/* 채팅창 */}
         <ChatWrapper roomId={Number(roomId)} />
       </div>

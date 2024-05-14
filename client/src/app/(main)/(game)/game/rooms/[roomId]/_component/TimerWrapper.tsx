@@ -30,6 +30,7 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
         }, 3000);
         return () => clearTimeout(timeout);
       } else if (currentRound >= roundCount) {
+        //게임 끝나기 전에 결과..보여주기....
         if (myUserId === creatorId) endGame(roomId);
       }
     }
