@@ -1,12 +1,10 @@
 package com.a508.studyservice.controller;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -52,25 +50,25 @@ public class SolvedController {
     }
 
     @GetMapping("/day")
-    public ResponseEntity<SuccessResponse<?>> getSpecificStudyController( @RequestHeader(value = "Authorization", required = false) String token,
-                                                                            @RequestParam(required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date){
+    public ResponseEntity<SuccessResponse<?>> getSpecificStudyController( @RequestHeader(value = "Authorization") String token,
+                                                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date){
         return ResponseEntity.ok(
-                new SuccessResponse<>("success" ," "));
+                new SuccessResponse<>("success" ,todayLearningService.getDays(date.atTime(0,0),token)));
     }
 
 
     @GetMapping("/month")
     public ResponseEntity<SuccessResponse<?>>  getMonthStudyController (@RequestHeader(value = "Authorization", required = false) String token,
-                                                                        @RequestParam(required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date){
+                                                                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date){
         return ResponseEntity.ok(
-                new SuccessResponse<>("success" ," "));
+                new SuccessResponse<>("success" ,todayLearningService.getMonths(date.atTime(0,0),token)));
     }
 
     @GetMapping("/total")
     public ResponseEntity<SuccessResponse<?>>  getTotalStudyController (@RequestHeader(value = "Authorization", required = false) String token,
-                                                                        @RequestParam(required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date){
+                                                                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date){
         return ResponseEntity.ok(
-            new SuccessResponse<>("success" ," "));
+            new SuccessResponse<>("success" ,todayLearningService.getTotal(date.atTime(0,0),token)));
     }
 
     @PostMapping("/choice")
