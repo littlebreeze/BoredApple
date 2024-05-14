@@ -1,6 +1,14 @@
 import { create } from 'zustand';
 import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import { useGameRoomStore } from './game-room-info';
+import { useGameScoreStore } from './game-score';
+
+type ResultResponseItem = {
+  ranking: number;
+  userNickname: string;
+  rating: number;
+  diff: number;
+};
 
 interface ChatMessageRequest {
   type: string;
@@ -9,6 +17,7 @@ interface ChatMessageRequest {
   senderId: number;
   message: string;
 }
+
 interface ChatMessageResponse {
   type: string;
   writer: string;
@@ -30,9 +39,12 @@ interface WebSocketState {
   quiz: string; // 문제
   answer: string; // 정답
 
+  gameResult: ResultResponseItem[];
+
   // 구독 목록
   chatSubscription: StompSubscription | null;
   timerSubscription: StompSubscription | null;
+  resultSubscription: StompSubscription | null;
 
   // 웹소켓 연결, 끊기
   connect: (roomId: string) => void;
@@ -60,9 +72,11 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
   isCorrectAnswer: false,
   quiz: '',
   answer: '',
+  gameResult: [],
 
   chatSubscription: null,
   timerSubscription: null,
+  resultSubscription: null,
 
   connect: (roomId: string) => {
     console.log('웹소켓연결');
@@ -89,6 +103,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
               break;
             case 'START':
               set({ isGaming: true, isGameRoundInProgress: true, currentRound: 1 });
+              useGameRoomStore.getState().setResultModalIsShow(false);
               break;
             case 'MANAGER':
               useGameRoomStore.getState().setCreatorId(res.target);
@@ -96,6 +111,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
               set({ isGaming: false });
               // 게임 끝...일때 결과 요청
               useGameRoomStore.getState().setResultModalIsShow(true);
+              useGameScoreStore.getState().clearScore();
           }
           console.log('메세지: ', res);
         });
@@ -111,7 +127,15 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
             });
         });
 
-        set({ stompClient: client, chatSubscription, timerSubscription });
+        // 결과 구독
+        const resultSubscription = client.subscribe(`/topic/result/rooms/${roomId}`, (message: IMessage) => {
+          const messageBody = JSON.parse(message.body);
+
+          console.log('결과구독', messageBody);
+          set({ gameResult: messageBody.resultResList });
+        });
+
+        set({ stompClient: client, chatSubscription, timerSubscription, resultSubscription });
       },
     });
     client.activate();
@@ -123,6 +147,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       // 구독 해제
       get().chatSubscription?.unsubscribe();
       get().timerSubscription?.unsubscribe();
+      get().resultSubscription?.unsubscribe();
       client.deactivate();
       // 연결 끊기
       client.onDisconnect = () => {
@@ -204,6 +229,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       answer: '',
       chatSubscription: null,
       timerSubscription: null,
+      resultSubscription: null,
     });
   },
 }));

@@ -30,7 +30,8 @@ export default function InsertPasswordModal() {
     if (password === selectedRoom?.roomPassword) {
       if (!isLoading && !isError && roomData) {
         // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
-        setGameRoomInfo(roomData.data.data);
+        const roomDataData = roomData.data.data;
+        setGameRoomInfo({ ...roomDataData, roomName: selectedRoom?.roomName });
         setIsShow(false);
         connect(String(selectedRoom?.id));
 
@@ -54,7 +55,13 @@ export default function InsertPasswordModal() {
             </svg>
           </div>
           <div className='flex flex-row items-baseline gap-1 justify-center'>
-            <div className='text-ourTheme font-bold text-2xl w-1/3 truncate'>{selectedRoom?.roomName}</div>
+            <div
+              className={`text-ourTheme font-bold text-2xl ${
+                String(selectedRoom?.roomName).length > 6 ? 'w-1/3 truncate' : ''
+              }`}
+            >
+              {selectedRoom?.roomName}
+            </div>
             <div className='font-bold text-xl'>에 입장</div>
           </div>
           <input
