@@ -41,7 +41,9 @@ export default function GameRecord() {
         <RecordDetailItem
           title={'승률'}
           content={
-            gameRecord && gameRecord!.numberOfGame ? gameRecord!.numberOfGame / gameRecord!.numberOfWin + '%' : '-'
+            gameRecord && gameRecord!.numberOfGame
+              ? (gameRecord!.numberOfWin / gameRecord!.numberOfGame).toFixed(3)
+              : '-'
           }
         />
         <RecordDetailItem
