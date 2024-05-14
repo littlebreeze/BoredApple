@@ -16,4 +16,6 @@ public class RecordRes {
 	private int rating;
 
 	private int rank;
+
+	private int odd;
 }

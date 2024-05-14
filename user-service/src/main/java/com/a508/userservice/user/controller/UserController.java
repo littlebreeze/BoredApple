@@ -3,6 +3,7 @@ package com.a508.userservice.user.controller;
 import com.a508.userservice.common.jwt.TokenProvider;
 import com.a508.userservice.common.response.SuccessResponse;
 import com.a508.userservice.user.data.*;
+import com.a508.userservice.user.service.GameServiceClient;
 import com.a508.userservice.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class UserController {
 
 	private final TokenProvider tokenProvider;
 	private final UserService userService;
+	private final GameServiceClient gameServiceClient;
 
 	/**
 	 * feign
@@ -123,7 +125,8 @@ public class UserController {
 	@GetMapping("/record")
 	public SuccessResponse<RecordRes> getMatchRecord(HttpServletRequest request) {
 
-		return new SuccessResponse<>(RecordRes.builder().numberOfWin(5).numberOfGame(15).rating(1549).rank(7).build());
+		MyBattleRecordRes record = gameServiceClient.getMyRecord(request.getHeader("Authorization"));
+		return new SuccessResponse<>(RecordRes.builder().numberOfWin(record.getVictory()).numberOfGame(record.getGame()).rating(record.getRating()).rank(record.getRanking()).odd(record.getOdds()).build());
 	}
 
 
