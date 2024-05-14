@@ -17,6 +17,7 @@ import com.a508.studyservice.global.common.response.SuccessResponse;
 import com.a508.studyservice.service.ChoiceSolvedService;
 import com.a508.studyservice.service.EssayService;
 import com.a508.studyservice.service.FiveAbilityService;
+import com.a508.studyservice.service.TodayLearningService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ public class SolvedController {
     private final EssayService essayService;
     private final ChoiceSolvedService choiceSolved;
     private final FiveAbilityService fiveAbilityService;
+    private  final TodayLearningService todayLearningService;
 
 
     //5가지 능력
@@ -45,7 +47,7 @@ public class SolvedController {
             new SuccessResponse<>("success" ,fiveAbilityService.getAverageFiveAbility()));
     }
 
-    @GetMapping("/specific/{date}")
+    @GetMapping("/day/{date}")
     public ResponseEntity<SuccessResponse<?>> getSpecificStudyController(@PathVariable("date")LocalDateTime date, @RequestHeader(value = "Authorization", required = false) String token){
         return ResponseEntity.ok(
                 new SuccessResponse<>("success" ," "));
