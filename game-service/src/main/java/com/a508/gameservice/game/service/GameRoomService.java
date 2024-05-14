@@ -268,12 +268,15 @@ public class GameRoomService {
                 myRanking = i + 1;
             }
         }
+        int odds = 0;
+        if (myBattleRecord.getGame() != 0) odds = myBattleRecord.getVictory() / myBattleRecord.getGame() * 100;
+
         return MyBattleRecordRes.builder()
                 .game(myBattleRecord.getGame())
                 .victory(myBattleRecord.getVictory())
                 .rating(myBattleRecord.getRating())
                 .ranking(myRanking)
-                .odds(myBattleRecord.getVictory() / myBattleRecord.getGame() * 100)
+                .odds(odds)
                 .build();
     }
 
@@ -339,6 +342,7 @@ public class GameRoomService {
 
         return resultResList;
     }
+
     public void removeRoomPlayer(Integer roomId, Integer senderId) {
         String id = String.valueOf(roomId);
         //방에 나 혼자
@@ -370,8 +374,7 @@ public class GameRoomService {
             //방장 정보 새로 전송
             ChatMessageRes manager = ChatMessageRes.builder().type(MessageType.MANAGER).target(dateList.get(0).getUserId()).build();
             simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, manager);
-        }
-        else {
+        } else {
             roomPlayerRepository.removePlayerToRoom(id, senderId);
         }
 
