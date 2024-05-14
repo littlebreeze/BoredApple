@@ -53,8 +53,8 @@ export default function InsertPasswordModal() {
               />
             </svg>
           </div>
-          <div className='flex flex-row items-baseline gap-1'>
-            <div className='text-ourTheme font-bold text-2xl'>{selectedRoom?.roomName}</div>
+          <div className='flex flex-row items-baseline gap-1 justify-center'>
+            <div className='text-ourTheme font-bold text-2xl w-1/3 truncate'>{selectedRoom?.roomName}</div>
             <div className='font-bold text-xl'>에 입장</div>
           </div>
           <input
