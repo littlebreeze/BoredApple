@@ -25,6 +25,7 @@ interface GameRoomInfo {
   creatorId: number | undefined;
   roomPlayerRes: { userId: number; nickname: string }[];
   setGameRoomInfo: (info: GameRoomDetail) => void;
+  setCreatorId: (userId: number) => void;
   clearGameRoomInfo: () => void;
 }
 
@@ -41,6 +42,11 @@ export const useGameRoomStore = create<GameRoomInfo>((set) => ({
       ...info,
     });
   },
+
+  setCreatorId: (userId: number) => {
+    set({ creatorId: userId });
+  },
+
   clearGameRoomInfo: () => {
     set({
       myNickname: undefined,
