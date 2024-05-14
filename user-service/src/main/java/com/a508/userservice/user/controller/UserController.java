@@ -16,10 +16,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import static com.a508.userservice.common.jwt.TokenProvider.AUTHORIZATION_HEADER;
+
 @RestController
 @RequiredArgsConstructor
 public class UserController {
 
+	private static final String AUTHORIZATION_HEADER = "Authorization";
 	private final TokenProvider tokenProvider;
 	private final UserService userService;
 	private final GameServiceClient gameServiceClient;
@@ -125,7 +128,7 @@ public class UserController {
 	@GetMapping("/record")
 	public SuccessResponse<RecordRes> getMatchRecord(HttpServletRequest request) {
 
-		MyBattleRecordRes record = gameServiceClient.getMyRecord(request.getHeader("Authorization"));
+		MyBattleRecordRes record = gameServiceClient.getMyRecord(request.getHeader(AUTHORIZATION_HEADER).substring(7));
 		return new SuccessResponse<>(RecordRes.builder().numberOfWin(record.getVictory()).numberOfGame(record.getGame()).rating(record.getRating()).rank(record.getRanking()).odd(record.getOdds()).build());
 	}
 
@@ -137,7 +140,6 @@ public class UserController {
 	public UserListRes getNicknameByUserId(@RequestBody UserListReq userListReq) {
 		return userService.getNicknameByUserIdList(userListReq);
 	}
-
 
 	/**
 	 * feign
