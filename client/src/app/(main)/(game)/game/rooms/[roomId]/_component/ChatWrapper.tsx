@@ -103,13 +103,19 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
             if (e.key === 'Enter') {
               setNewMessage('');
               // 조건문 수정... 정답일때 TALK도 보내야 할듯!
-              sendMessage({
-                type: !isGameRoundInProgress ? 'TALK' : answer === newMessage && !isCorrectAnswer ? 'CORRECT' : 'TALK',
-                roomId: roomId,
-                sender: myNickname!,
-                senderId: myUserId!,
-                message: newMessage,
-              });
+              if (newMessage.trim() !== '') {
+                sendMessage({
+                  type: !isGameRoundInProgress
+                    ? 'TALK'
+                    : answer === newMessage && !isCorrectAnswer
+                    ? 'CORRECT'
+                    : 'TALK',
+                  roomId: roomId,
+                  sender: myNickname!,
+                  senderId: myUserId!,
+                  message: newMessage,
+                });
+              }
             }
           }}
         />
