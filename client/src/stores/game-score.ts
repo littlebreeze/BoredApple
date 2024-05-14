@@ -12,6 +12,7 @@ interface GameScore {
   addPlayers: (player: MemberScore) => void;
   exitPlayer: (playerId: number) => void;
   getScore: (playerId: number) => void;
+  clearScore: () => void;
 }
 
 export const useGameScoreStore = create<GameScore>((set, get) => ({
