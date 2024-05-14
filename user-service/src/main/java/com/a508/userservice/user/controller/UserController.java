@@ -4,6 +4,7 @@ import com.a508.userservice.common.jwt.TokenProvider;
 import com.a508.userservice.common.response.SuccessResponse;
 import com.a508.userservice.user.data.*;
 import com.a508.userservice.user.service.GameServiceClient;
+import com.a508.userservice.user.service.StudyServiceClient;
 import com.a508.userservice.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class UserController {
 	private final TokenProvider tokenProvider;
 	private final UserService userService;
 	private final GameServiceClient gameServiceClient;
+	private final StudyServiceClient studyServiceClient;
 
 	/**
 	 * feign
@@ -80,9 +82,23 @@ public class UserController {
 	@GetMapping("/ability")
 	public SuccessResponse<List<List<Double>>> userAbility(HttpServletRequest request) {
 
+		UserAbilityRes userAbilityRes = studyServiceClient.GetUserAbility(request.getHeader(AUTHORIZATION_HEADER).substring(7));
+		UserAbilityRes avgAbilityRes = studyServiceClient.GetAvgAbility();
+		List<Double> a1 = new ArrayList<>(), a2 = new ArrayList<>();
+		a1.add(userAbilityRes.getFact() / 10.0);
+		a1.add(userAbilityRes.getInference() / 10.0);
+		a1.add(userAbilityRes.getVoca() / 10.0);
+		a1.add(userAbilityRes.getRecognition() / 10.0);
+		a1.add(userAbilityRes.getSpeed() / 10.0);
+
+		a2.add(avgAbilityRes.getFact() / 10.0);
+		a2.add(avgAbilityRes.getInference() / 10.0);
+		a2.add(avgAbilityRes.getVoca() / 10.0);
+		a2.add(avgAbilityRes.getRecognition() / 10.0);
+		a2.add(avgAbilityRes.getSpeed() / 10.0);
+
 		List<List<Double>> data = new ArrayList<>();
-		List<Double> a1 = Arrays.asList(4.1, 2.2, 3.7, 4.1, 1.5);
-		List<Double> a2 = Arrays.asList(3.1, 3.2, 4.3, 3.4, 3.5);
+
 		data.add(a1);
 		data.add(a2);
 		return new SuccessResponse<>(data);
