@@ -25,14 +25,15 @@ export default function Page() {
 
   const router = useRouter();
   const { connect, disconnect, stompClient } = useWebsocketStore();
-  const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(parseInt(roomId));
+  // const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(parseInt(roomId));
   const { setGameRoomInfo, resultModalIsShow } = useGameRoomStore();
 
   useEffect(() => {
     console.log(roomPlayerRes);
+    // myUserId 없으면 game으로 보내기
+    if (!myUserId) router.replace('/game');
   }, []);
 
-  //
   // useEffect(() => {
   //   if (!stompClient) {
   //     connect(roomId);
