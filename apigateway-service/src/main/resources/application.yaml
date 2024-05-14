@@ -34,6 +34,12 @@ spring:
           - id: game-service
             uri: lb://GAME-SERVICE
             predicates:
+              - Path=/game-service/ws/**
+            filters:
+              - RewritePath=/game-service/(?<segment>.*), /$\{segment}
+          - id: game-service
+            uri: lb://GAME-SERVICE
+            predicates:
               - Path=/game-service/**
             filters:
               - RewritePath=/game-service/(?<segment>.*), /$\{segment}
