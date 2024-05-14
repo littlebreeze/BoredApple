@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div className='bg-white'>
+    <div className='bg-white '>
       <Header />
       <div className='bg-ourTheme pt-32 pb-10 overflow-hidden'>
         <div className='flex flex-col items-center text-center gap-9'>
