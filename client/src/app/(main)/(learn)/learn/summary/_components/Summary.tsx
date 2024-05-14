@@ -4,6 +4,7 @@ import instance from '@/utils/interceptor';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { SummaryProblemResponse } from '@/types/Problem';
+import ProgressBar from '../../_components/ProgressBar';
 
 export default function Summary() {
   const router = useRouter();
@@ -88,27 +89,7 @@ export default function Summary() {
     <div>
       <div>
         {/* 상태 바 */}
-        <div>
-          {progress === 1 ? (
-            <div className='flex gap-3'>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourGray'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourGray'></div>
-            </div>
-          ) : progress === 2 ? (
-            <div className='flex gap-3'>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourGray'></div>
-            </div>
-          ) : (
-            <div className='flex gap-3'>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-            </div>
-          )}
-        </div>
+        <ProgressBar progress={progress} />
 
         {/* 문제 */}
         <div className='py-4'></div>
