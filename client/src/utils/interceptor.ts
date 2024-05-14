@@ -1,6 +1,19 @@
 'use client';
 import axios from 'axios';
 
+// 변수에 저장한다는 게 무엇인지?
+// 실행 중인 자바스크립트 메모리에 값이 있는 경우에는 외부에서 접근이 어렵다.
+// accessToken을 zustand persist를 활용해서 저장하면 안된다.
+// persist는 새로고침해도 값 날아가지 말라고 쓴다
+// 상태관리는 새로고침하면 값이 날라가는건데 안 날아가면 로컬스토리지 / 세션스토리지 / 쿠키에 박는 것이다.
+// 결국 이거는 여전히 local storage 쓰는 거랑 같음
+// 새로고침하는 유저는 그렇게 많지 않을 것 -> 전역으로 재발급 하면 된다.
+// 결국 그냥 로직 짜서 재발급 받아라!!!
+
+// 스토어 만들어서 상태관리 사용하세요 그냥
+
+// 쿠키에 저장한다는 게 무엇인지?
+
 // axios 기본 인스턴스
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
@@ -40,15 +53,14 @@ instance.interceptors.response.use(
   async (error) => {
     // 2xx 이외 상태 코드 시 이 함수 트리거: 응답 오류가 있는 작업 수행
 
-    // 토큰이 만료되거나 유효하지 않은 경우
+    // 토큰이 만료되거나 유효하지 않은 경우 토큰 재발급
     if (error.response.status == 401) {
       const originRequest = error.config;
 
       try {
-        // 토큰 재발급
         const response = await regenerateRefreshToken();
 
-        //
+        // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
         if (response.status == 200) {
           const newAccessToken = response.data.data.accessToken;
           localStorage.setItem('accessToken', response.data.data.accessToken);
@@ -57,7 +69,7 @@ instance.interceptors.response.use(
           return axios(originRequest);
         }
       } catch (error) {
-        // 토큰 재발급 실패 시 로그인 요청
+        // 토큰 재발급 실패 시 로그인 요청 페이지로 이동
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         window.location.replace('/login');
