@@ -53,10 +53,6 @@ export default function GameResultsModal() {
         };
       }
     });
-    console.log('requestarr', requestarr);
-    // postGameResult(requestarr)
-    //   .then((value) => setGameResults(value.data.data.ResultList))
-    //   .catch((error) => console.log(error));
     stompClient?.publish({
       destination: `/pub/ws/result/rooms/${roomId}/send`,
       body: JSON.stringify({
