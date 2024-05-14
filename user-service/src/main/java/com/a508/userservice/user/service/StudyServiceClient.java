@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface StudyServiceClient {
 
 	@GetMapping("/solve/five")
-	public UserAbilityRes GetUserAbility(@RequestHeader("Authorization") String token);
+	public UserAbilityRes GetUserAbility(@RequestHeader(value = "Authorization") String token);
 
 	@GetMapping("/solve/five/average")
 	public UserAbilityRes GetAvgAbility();
