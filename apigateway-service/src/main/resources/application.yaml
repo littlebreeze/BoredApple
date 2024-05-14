@@ -20,21 +20,32 @@ spring:
           - id: user-service
             uri: lb://USER-SERVICE
             predicates:
+              - Path=/user-service/oauth2/**
+              - Method= POST
+            filters:
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
               - Path=/user-service/**
             filters:
               - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+              - AuthorizationHeaderFilter
           - id: game-service
             uri: lb://GAME-SERVICE
             predicates:
               - Path=/game-service/**
             filters:
               - RewritePath=/game-service/(?<segment>.*), /$\{segment}
+              - AuthorizationHeaderFilter
           - id: study-service
             uri: lb://STUDY-SERVICE
             predicates:
               - Path=/study-service/**
             filters:
               - RewritePath=/study-service/(?<segment>.*), /$\{segment}
+              - AuthorizationHeaderFilter
+
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
       global-cors:
