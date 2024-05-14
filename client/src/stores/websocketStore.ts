@@ -89,7 +89,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         client.subscribe(`/topic/time/rooms/${roomId}`, (message: IMessage) => {
           set({ timer: parseInt(message.body) });
           if (parseInt(message.body) === 33)
-            set({ isGameRoundInProgress: true, currentRound: get().currentRound + 1, isCorrectAnswer: false });
+            set({ isGameRoundInProgress: true, currentRound: get().currentRound + 1, isCorrectAnswer: false, answer: '', });
         });
       },
     });

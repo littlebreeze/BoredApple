@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { IRoom } from '@/types/Room';
 
 import upFill from '@/../public/game/up-fill.svg';
-import downFill from '@/../public/game/up-fill.svg';
+import downFill from '@/../public/game/down-fill.svg';
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useWebsocketStore } from '@/stores/websocketStore';
 
