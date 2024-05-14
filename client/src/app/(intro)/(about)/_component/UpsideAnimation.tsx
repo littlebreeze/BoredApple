@@ -42,7 +42,7 @@ export default function UpsideAnimation({ children }: Props) {
   return (
     // <div className=''>
     <div
-      className={`px-0 md:px-14 lg:px-14 flex flex-col gap-5 md:flex-row lg:flex-row justify-center transition-all ease-in-out duration-700 ",
+      className={`flex flex-col gap-5 md:flex-row lg:flex-row justify-center transition-all ease-in-out duration-700 ",
     ${visible ? 'opacity-100' : 'opacity-0 pt-14'}`}
       ref={ref}
     >
