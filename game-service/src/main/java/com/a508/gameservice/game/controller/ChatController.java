@@ -1,9 +1,6 @@
 package com.a508.gameservice.game.controller;
 
-import com.a508.gameservice.game.data.ChatMessageReq;
-import com.a508.gameservice.game.data.ChatMessageRes;
-import com.a508.gameservice.game.data.MessageType;
-import com.a508.gameservice.game.data.QuizMessageReq;
+import com.a508.gameservice.game.data.*;
 import com.a508.gameservice.game.service.GameRoomService;
 import com.a508.gameservice.game.service.GameSchedulerManageService;
 import com.a508.gameservice.game.service.SchedulerService;
@@ -69,6 +66,13 @@ public class ChatController {
             SchedulerService service = gameSchedulerManageService.getGameScheduler(roomId);
             service.getQuizList();
         }
+    }
+
+    @MessageMapping("/ws/result/rooms/{roomId}/send")
+    @SendTo("/topic/result/rooms/{roomId}")
+    public ResultListRes sendResult(@DestinationVariable Integer roomId, @Payload ResultListReq resultListReq) {
+       return ResultListRes.builder()
+               .resultResList(gameRoomService.getResult(resultListReq)).build();
     }
 
 }

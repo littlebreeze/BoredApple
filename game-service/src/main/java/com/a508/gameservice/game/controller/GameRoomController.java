@@ -63,16 +63,5 @@ public class GameRoomController {
         return gameRoomService.getMyRecord(token);
     }
 
-    /**
-     게임 결과
-     */
-    @PostMapping("/results")
-    public SuccessResponse<Map<String, List<ResultRes>>> getResult(@RequestBody ResultListReq resultListReq) {
-        Map<String, List<ResultRes>> data = new TreeMap<>();
-        data.put("ResultList", gameRoomService.getResult(resultListReq));
-        return new SuccessResponse<>(data);
-
-    }
-
 
 }
