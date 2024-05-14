@@ -25,7 +25,7 @@ export default function Page() {
 
   const router = useRouter();
   const { connect, disconnect, stompClient } = useWebsocketStore();
-  const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(parseInt(roomId));
+  // const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(parseInt(roomId));
   const { setGameRoomInfo, resultModalIsShow } = useGameRoomStore();
 
   useEffect(() => {

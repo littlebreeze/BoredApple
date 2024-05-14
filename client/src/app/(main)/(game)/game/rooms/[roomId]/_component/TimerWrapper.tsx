@@ -52,7 +52,7 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
         ) : timer > 10 ? (
           <div className='text-sm text-ourDarkGray mt-3 text-center'>곧 초성 힌트가 나와요</div>
         ) : (
-          <></>
+          <div className='text-sm text-ourDarkGray mt-3 text-center'>&nbsp;</div>
         )}
       </div>
     </>
