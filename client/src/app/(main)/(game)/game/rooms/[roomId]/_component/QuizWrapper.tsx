@@ -79,6 +79,27 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
     ));
   };
 
+  // 정답 띄워주기
+  const viewAnswer = (length: number) => {
+    return Array.from({ length }, (_, idx) => (
+      <div
+        key={idx}
+        className='flex items-center justify-center w-16 text-3xl text-ourTheme bg-ourGreen rounded-xl font-bold'
+      >
+        {answer[idx]}
+      </div>
+    ));
+  };
+
+  useEffect(() => {
+    if (!isGaming || timer > 30) return;
+
+    if (isGameRoundInProgress && (isCorrectAnswer || timer === 0)) {
+      // 정답을 띄워줘야함
+      viewAnswer(answer.length);
+    }
+  }, [timer, isCorrectAnswer, isGaming, isGameRoundInProgress]);
+
   return (
     <>
       <div className='flex flex-col w-full h-56 p-3 bg-white rounded-xl'>
@@ -116,8 +137,13 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
       <div className='flex justify-center h-16 gap-3 mt-5'>
         {isGaming ? (
           isGameRoundInProgress ? (
-            timer <= 20 && createHint1(answer.length)
+            isCorrectAnswer || timer == 0 ? (
+              viewAnswer(answer.length)
+            ) : (
+              timer <= 20 && createHint1(answer.length)
+            )
           ) : (
+            //   timer <= 20 && createHint1(answer.length)
             '곧 다음 문제가 나옵니다!'
           )
         ) : myUserId === creatorId ? (
