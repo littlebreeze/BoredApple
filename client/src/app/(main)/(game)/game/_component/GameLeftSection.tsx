@@ -26,7 +26,7 @@ export default function GameLeftSection() {
             alt='트로피'
           />
         </div>
-        <div className='pt-5 text-xl text-white'>{rankingList[0]?.nickname}</div>
+        <div className='mt-1 text-xl text-ourDarkGray font-bold'>{rankingList[0]?.nickname}</div>
       </div>
       <div className='flex flex-col w-full h-full gap-2 pt-2 mt-5 text-sm bg-white rounded-lg'>
         <div className='flex pb-1 text-center border-b text-ourDarkGray'>
