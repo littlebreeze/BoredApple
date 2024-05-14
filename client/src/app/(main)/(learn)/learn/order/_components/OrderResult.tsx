@@ -94,24 +94,30 @@ export default function OrderResult() {
           <div>
             <div className='flex gap-2'>
               <div className='flex-1'>
-                {/* 초기 문장 */}
-                <div className='pl-4 pt-4 pb-2 font-Batang select-none text-sm'>{currProblem.content}</div>
+                <div className='max-h-32 mt-2 bg-ourGray mr-4 leading-7 p-4  font-Batang select-none text-sm overflow-y-scroll scrollbar-hide'>
+                  {currProblem.content}
+                </div>
 
                 {/* 순서 단락 */}
-                <div>
-                  <div className='py-2'></div>
-                  <div className='bg-white rounded-xl p-4 flex flex-col gap-2'>
-                    <div className=' p-4 rounded-xl text-sm bg-ourLightGray'>
-                      <span className='mr-3 font-semibold'>가</span>
-                      <span className='font-Batang'>{currProblem.option1}</span>
+                <div className='mt-2 bg-ourGray mr-4 '>
+                  <div className='p-4 flex flex-col gap-2 max-h-80 overflow-y-scroll scrollbar-hide'>
+                    <div className='p-4 rounded-xl text-sm bg-ourLightGray'>
+                      <div className='flex leading-7 '>
+                        <span className='font-Batang mr-3 font-semibold '>가</span>
+                        <span className='font-Batang'>{currProblem.option1}</span>
+                      </div>
                     </div>
-                    <div className=' p-4 rounded-xl text-sm bg-ourLightGray'>
-                      <span className='mr-3 font-semibold'>나</span>
-                      <span className='font-Batang'>{currProblem.option2}</span>
+                    <div className='leading-7 p-4 rounded-xl text-sm bg-ourLightGray'>
+                      <div className='flex leading-7 '>
+                        <span className='font-Batang mr-3 font-semibold '>나</span>
+                        <span className='font-Batang'>{currProblem.option2}</span>
+                      </div>
                     </div>
-                    <div className=' p-4 rounded-xl text-sm bg-ourLightGray'>
-                      <span className='mr-3 font-semibold'>다</span>
-                      <span className='font-Batang'>{currProblem.option3}</span>
+                    <div className='leading-7 p-4 rounded-xl text-sm bg-ourLightGray'>
+                      <div className='flex leading-7 '>
+                        <span className='font-Batang mr-3 font-semibold '>다</span>
+                        <span className='font-Batang'>{currProblem.option3}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -119,7 +125,7 @@ export default function OrderResult() {
 
               {/* 선택지 */}
               <div>
-                <div className='py-12'></div>
+                <div className='pt-2'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
                   {options.map((option) => (
                     <div

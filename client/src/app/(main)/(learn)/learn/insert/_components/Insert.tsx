@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { InsertProblemResponse } from '@/types/Problem';
 import ProgressBar from '../../_components/ProgressBar';
-import InsertProblem from './insertProblem';
+import InsertProblem from './InsertProblem';
 
 export default function Insert() {
   const router = useRouter();
@@ -152,14 +152,13 @@ export default function Insert() {
         {currProblem && (
           <div>
             <div className='flex gap-2'>
-              <div>
-                <div className='p-4 h-fit flex-1'>
-                  <span className='font-Batang leading-7'>{currProblem.content1}</span>
-                  <span className='select-none font-bold font-Batang bg-white p-1 rounded-lg px-4 mx-2'>
-                    &nbsp;?&nbsp;
-                  </span>
-                  <span className='font-Batang leading-7'>{currProblem.content2}</span>
-                </div>
+              {/* 지문 */}
+              <div className='mt-2 p-4 h-fit flex-1 bg-ourGray mr-4'>
+                <span className='font-Batang leading-7'>{currProblem.content1}</span>
+                <span className='select-none font-bold font-Batang bg-white p-1 rounded-lg px-4 mx-2'>
+                  &nbsp;?&nbsp;
+                </span>
+                <span className='font-Batang leading-7'>{currProblem.content2}</span>
               </div>
               <div>
                 <div className='pt-2'></div>

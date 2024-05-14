@@ -80,10 +80,12 @@ export default function ReadResult() {
         {/* 지문 및 선택지 */}
         {currProblem && (
           <div>
-            <div className='flex gap-2'>
-              <div className='p-4 h-fit flex-1 font-Batang'> {currProblem.content.replace(/\|/g, '')}</div>
+            <div className='flex gap-2 '>
+              <div className='leading-7 p-4 h-fit flex-1 font-Batang bg-ourGray mr-4 mt-2 '>
+                {currProblem.content.replace(/\|/g, '')}
+              </div>
               <div>
-                <div className='py-12'></div>
+                <div className='pt-2'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
                   {[1, 2, 3].map((option) => (
                     <div

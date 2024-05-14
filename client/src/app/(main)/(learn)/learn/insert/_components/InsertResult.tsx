@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { InsertProblemResponse, IInsertProblem } from '@/types/Problem';
 import ProgressBar from '../../_components/ProgressBar';
-import InsertProblem from './insertProblem';
+import InsertProblem from './InsertProblem';
 
 export default function InsertResult() {
   const router = useRouter();
@@ -132,7 +132,7 @@ export default function InsertResult() {
         {currProblem && (
           <div>
             <div className='flex gap-2'>
-              <div className='p-4 h-fit flex-1 font-Batang'>
+              <div className='p-4 h-fit flex-1 font-Batang mt-2 bg-ourGray mr-4'>
                 <span className='font-Batang leading-7'>{currProblem.content1}</span>
                 <span className='select-none font-bold font-Batang bg-white p-1 rounded-lg px-4 mx-2'>
                   &nbsp;?&nbsp;
