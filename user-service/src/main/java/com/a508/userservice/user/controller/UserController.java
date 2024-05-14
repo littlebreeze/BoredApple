@@ -83,7 +83,7 @@ public class UserController {
 	public SuccessResponse<List<List<Double>>> userAbility(HttpServletRequest request) {
 
 		System.out.println(1);
-		UserAbilityRes userAbilityRes = studyServiceClient.GetUserAbility(request.getHeader(AUTHORIZATION_HEADER).substring(7));
+		UserAbilityRes userAbilityRes = studyServiceClient.GetUserAbility(request.getHeader(AUTHORIZATION_HEADER));
 		System.out.println(userAbilityRes.getUserId());
 		UserAbilityRes avgAbilityRes = studyServiceClient.GetAvgAbility();
 		System.out.println(avgAbilityRes.getFact());
