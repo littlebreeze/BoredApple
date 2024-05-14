@@ -113,7 +113,7 @@ export default function OrderResult() {
                 </div>
 
                 {/* 선택지 */}
-                <div>
+                {/* <div>
                   <div className='py-12'></div>
                   <div className='w-96 bg-white rounded-xl p-4'>
                     <div className='flex'>
@@ -177,7 +177,7 @@ export default function OrderResult() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
