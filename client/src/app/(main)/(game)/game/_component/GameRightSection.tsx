@@ -31,7 +31,7 @@ export default function GameRightSection() {
   const router = useRouter();
 
   const { pageNum, setPageNum } = useGameWaitStore();
-  const { data, isLoading } = useGameRoomList(pageNum);
+  const { data, isLoading, refetch, isFetching } = useGameRoomList(pageNum);
 
   const { isShow, roomList, setRoomList, isEndPage, setIsEndPage, selectedRoom, setSelectedRoom } = useGameWaitStore();
   const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(selectedRoom?.id);
@@ -56,7 +56,7 @@ export default function GameRightSection() {
     } else {
       setRoomList([]);
     }
-  }, [isLoading, pageNum]);
+  }, [isLoading, pageNum, isFetching]);
 
   // 방 목록이 바뀌면 출력용 리스트 변경
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function GameRightSection() {
           <MakeRoomBtn />
           <QuickStartGameBtn />
         </div>
-        <div className='w-1/4 lg:w-1/5 lg:px-5 px-4 py-3 mr-2 bg-ourGray/50 rounded-xl'>
+        <div className='w-1/4 lg:w-1/5 lg:px-5 px-4 py-3 mr-2 bg-ourGray/50 rounded-xl' onClick={() => refetch()}>
           <RefreshRoomsBtn />
         </div>
       </div>
