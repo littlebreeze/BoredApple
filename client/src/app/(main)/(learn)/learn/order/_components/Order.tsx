@@ -100,9 +100,8 @@ export default function Order() {
   // 문제 데이터 가져오기
   const getOrderData = async () => {
     try {
-      const response = await instance.get(`/study-service/problem/order`);
+      const response = await instance.get('/study-service/problem/order');
       setProblems(response.data.data);
-      console.log(response.data.data);
     } catch (error) {
       // error
     }
@@ -202,65 +201,59 @@ export default function Order() {
               <div>
                 <div className='py-12'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
-                  <div className='flex'>
-                    <div
-                      className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                        selected === 1 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                      } `}
-                      onClick={() => handleOptionClick(1)}
-                    >
-                      <Image className='w-4 h-4 mr-2' src={selected === 1 ? checked : unchecked} alt='선택' />
-                      <span>가 - 나 - 다</span>
-                    </div>
-                    <div
-                      className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                        selected === 2 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                      } `}
-                      onClick={() => handleOptionClick(2)}
-                    >
-                      <Image className='w-4 h-4 mr-2' src={selected === 2 ? checked : unchecked} alt='선택' />
-                      <span>가 - 다 - 나</span>
-                    </div>
+                  <div
+                    className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
+                      selected === 1 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
+                    } `}
+                    onClick={() => handleOptionClick(1)}
+                  >
+                    <Image className='w-4 h-4 mr-2' src={selected === 1 ? checked : unchecked} alt='선택' />
+                    <span>가 - 나 - 다</span>
                   </div>
-                  <div className='flex'>
-                    <div
-                      className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                        selected === 3 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                      } `}
-                      onClick={() => handleOptionClick(3)}
-                    >
-                      <Image className='w-4 h-4 mr-2' src={selected === 3 ? checked : unchecked} alt='선택' />
-                      <span>나 - 가 - 다</span>
-                    </div>
-                    <div
-                      className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                        selected === 4 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                      } `}
-                      onClick={() => handleOptionClick(4)}
-                    >
-                      <Image className='w-4 h-4 mr-2' src={selected === 4 ? checked : unchecked} alt='선택' />
-                      <span>나 - 다 - 가</span>
-                    </div>
+                  <div
+                    className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
+                      selected === 2 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
+                    } `}
+                    onClick={() => handleOptionClick(2)}
+                  >
+                    <Image className='w-4 h-4 mr-2' src={selected === 2 ? checked : unchecked} alt='선택' />
+                    <span>가 - 다 - 나</span>
                   </div>
-                  <div className='flex'>
-                    <div
-                      className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                        selected === 5 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                      } `}
-                      onClick={() => handleOptionClick(5)}
-                    >
-                      <Image className='w-4 h-4 mr-2' src={selected === 5 ? checked : unchecked} alt='선택' />
-                      <span>다 - 가 - 나</span>
-                    </div>
-                    <div
-                      className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                        selected === 6 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                      } `}
-                      onClick={() => handleOptionClick(6)}
-                    >
-                      <Image className='w-4 h-4 mr-2' src={selected === 6 ? checked : unchecked} alt='선택' />
-                      <span>다 - 나 - 가</span>
-                    </div>
+                  <div
+                    className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
+                      selected === 3 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
+                    } `}
+                    onClick={() => handleOptionClick(3)}
+                  >
+                    <Image className='w-4 h-4 mr-2' src={selected === 3 ? checked : unchecked} alt='선택' />
+                    <span>나 - 가 - 다</span>
+                  </div>
+                  <div
+                    className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
+                      selected === 4 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
+                    } `}
+                    onClick={() => handleOptionClick(4)}
+                  >
+                    <Image className='w-4 h-4 mr-2' src={selected === 4 ? checked : unchecked} alt='선택' />
+                    <span>나 - 다 - 가</span>
+                  </div>
+                  <div
+                    className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
+                      selected === 5 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
+                    } `}
+                    onClick={() => handleOptionClick(5)}
+                  >
+                    <Image className='w-4 h-4 mr-2' src={selected === 5 ? checked : unchecked} alt='선택' />
+                    <span>다 - 가 - 나</span>
+                  </div>
+                  <div
+                    className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
+                      selected === 6 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
+                    } `}
+                    onClick={() => handleOptionClick(6)}
+                  >
+                    <Image className='w-4 h-4 mr-2' src={selected === 6 ? checked : unchecked} alt='선택' />
+                    <span>다 - 나 - 가</span>
                   </div>
                 </div>
               </div>

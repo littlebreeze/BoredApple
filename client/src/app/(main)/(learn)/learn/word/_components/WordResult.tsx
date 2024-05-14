@@ -14,7 +14,6 @@ export default function WordResult() {
   const [problems, setWordProblems] = useState<BasicProblemResponse>([]);
   const [problemIndex, setWordProblemIndex] = useState(0);
   const [progress, setProgress] = useState(1);
-  const [selected, setSelected] = useState<number | null>(null);
 
   const currProblem = problems[problemIndex];
 
