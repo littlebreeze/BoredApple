@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProgressBar = ({ progress }) => {
+const ProgressBar: React.FC<{ progress: number }> = ({progress}) => {
   return (
     <div className='flex gap-3'>
       <div className={`flex-1 rounded-3xl p-1 ${progress >= 1 ? 'bg-ourBlue' : 'bg-ourGray'}`}></div>
