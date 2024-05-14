@@ -2,6 +2,13 @@ import { create } from 'zustand';
 import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import { useGameRoomStore } from './game-room-info';
 
+type ResultResponseItem = {
+  ranking: number;
+  userNickname: string;
+  rating: number;
+  diff: number;
+};
+
 interface ChatMessageRequest {
   type: string;
   roomId: number;
@@ -9,6 +16,7 @@ interface ChatMessageRequest {
   senderId: number;
   message: string;
 }
+
 interface ChatMessageResponse {
   type: string;
   writer: string;
@@ -30,9 +38,12 @@ interface WebSocketState {
   quiz: string; // 문제
   answer: string; // 정답
 
+  gameResult: ResultResponseItem[];
+
   // 구독 목록
   chatSubscription: StompSubscription | null;
   timerSubscription: StompSubscription | null;
+  resultSubscription: StompSubscription | null;
 
   // 웹소켓 연결, 끊기
   connect: (roomId: string) => void;
@@ -60,9 +71,11 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
   isCorrectAnswer: false,
   quiz: '',
   answer: '',
+  gameResult: [],
 
   chatSubscription: null,
   timerSubscription: null,
+  resultSubscription: null,
 
   connect: (roomId: string) => {
     console.log('웹소켓연결');
@@ -111,7 +124,13 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
             });
         });
 
-        set({ stompClient: client, chatSubscription, timerSubscription });
+        // 결과 구독
+        const resultSubscription = client.subscribe(`/topic/result/rooms/${roomId}`, (message: IMessage) => {
+          console.log('결과구독', JSON.parse(message.body));
+          set({ gameResult: JSON.parse(message.body) });
+        });
+
+        set({ stompClient: client, chatSubscription, timerSubscription, resultSubscription });
       },
     });
     client.activate();
@@ -123,6 +142,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       // 구독 해제
       get().chatSubscription?.unsubscribe();
       get().timerSubscription?.unsubscribe();
+      get().resultSubscription?.unsubscribe();
       client.deactivate();
       client.onDisconnect = () => {
         console.log('WebSocket disconnected');
@@ -216,6 +236,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       answer: '',
       chatSubscription: null,
       timerSubscription: null,
+      resultSubscription: null,
     });
   },
 }));
