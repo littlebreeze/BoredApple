@@ -41,6 +41,8 @@ interface WebSocketState {
   clearMessage: () => void; // 페이지 나가면서 메세지 초기화
   setRoundCount: (round: number) => void; // 라운드 수 조정
   endGame: (roomId: string) => void;
+
+  clearWebsocketStore: () => void;
 }
 
 export const useWebsocketStore = create<WebSocketState>((set, get) => ({
@@ -110,8 +112,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       get().sendMessage(body);
       client.deactivate();
       // 연결해제할때도비우고
-      set({ stompClient: null, messages: [] });
-      set({ isGaming: false });
+      get().clearWebsocketStore();
       useGameRoomStore.getState().clearGameRoomInfo();
     }
   },
@@ -170,5 +171,20 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         body: JSON.stringify({ message: 'END' }),
       });
     }
+  },
+
+  clearWebsocketStore: () => {
+    set({
+      stompClient: null,
+      messages: [],
+      timer: 33,
+      isGaming: false,
+      isGameRoundInProgress: false,
+      roundCount: 5,
+      currentRound: 1,
+      isCorrectAnswer: false,
+      quiz: '',
+      answer: '',
+    });
   },
 }));
