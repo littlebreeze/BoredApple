@@ -82,8 +82,8 @@ public class UserController {
 	@GetMapping("/ability")
 	public SuccessResponse<List<List<Double>>> userAbility(HttpServletRequest request) {
 
-		Object userAbilityRes = studyServiceClient.GetUserAbility(request.getHeader(AUTHORIZATION_HEADER).substring(7));
-		System.out.println(userAbilityRes);
+		SuccessResponse<Object> userAbilityRes = studyServiceClient.GetUserAbility(request.getHeader(AUTHORIZATION_HEADER).substring(7));
+		System.out.println(userAbilityRes.getData());
 
 		SuccessResponse<UserAbilityRes> avgAbilityRes = studyServiceClient.GetAvgAbility();
 
