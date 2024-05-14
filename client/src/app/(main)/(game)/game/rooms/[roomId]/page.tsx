@@ -25,7 +25,7 @@ export default function Page() {
   const router = useRouter();
   const { connect, disconnect, stompClient } = useWebsocketStore();
   const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(parseInt(roomId));
-  const { setGameRoomInfo } = useGameRoomStore();
+  const { setGameRoomInfo, clearGameRoomInfo } = useGameRoomStore();
 
   useEffect(() => {
     console.log(roomPlayerRes);
@@ -49,6 +49,7 @@ export default function Page() {
         senderId: myUserId!,
         message: '나갑니다',
       });
+      clearGameRoomInfo();
     };
   }, []);
 

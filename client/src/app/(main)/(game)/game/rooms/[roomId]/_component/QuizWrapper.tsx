@@ -84,21 +84,12 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
     return Array.from({ length }, (_, idx) => (
       <div
         key={idx}
-        className='flex items-center justify-center w-16 text-3xl text-ourTheme bg-ourGreen rounded-xl font-bold'
+        className='flex items-center justify-center w-16 text-3xl text-white bg-ourGreen rounded-xl font-bold'
       >
         {answer[idx]}
       </div>
     ));
   };
-
-  useEffect(() => {
-    if (!isGaming || timer > 30) return;
-
-    if (isGameRoundInProgress && (isCorrectAnswer || timer === 0)) {
-      // 정답을 띄워줘야함
-      viewAnswer(answer.length);
-    }
-  }, [timer, isCorrectAnswer, isGaming, isGameRoundInProgress]);
 
   return (
     <>
