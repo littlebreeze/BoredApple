@@ -1,7 +1,7 @@
 'use client';
 import axios from 'axios';
 
-// axios instance
+// axios 인스턴스
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   headers: {
@@ -11,22 +11,12 @@ const instance = axios.create({
   },
 });
 
-// refresh axios instance
+// refresh axios 인스턴스
 const refreshInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
 });
 
-// request refresh token (in request body)
-const regenerateRefreshToken = async () => {
-  const headers = {
-    'Content-Type': 'text/plain;charset=utf-8',
-  };
-  const refreshToken = localStorage.getItem('refreshToken');
-  const response = await refreshInstance.post('/login/oauth/token', refreshToken, { headers: headers });
-  return response;
-};
-
-// request interceptor
+// 인스턴스의 요청 인터셉터
 instance.interceptors.request.use(
   (config) => {
     // 요청 전달 전 미리 헤더에 엑세스 토큰 저장
@@ -39,22 +29,24 @@ instance.interceptors.request.use(
   }
 );
 
-// response interceptor
+// 인스턴스의 응답 인터셉터
 instance.interceptors.response.use(
   (response) => {
-    // 2xx 상태 코드 시 이 함수 트리거
-    // 응답 데이터가 있는 작업 수행
+    // 2xx 상태 코드 시 이 함수 트리거: 응답 데이터가 있는 작업 수행
     return response;
   },
   async (error) => {
-    // 2xx 이외 상태 코드 시 이 함수 트리거
-    // 응답 오류가 있는 작업 수행
+    // 2xx 이외 상태 코드 시 이 함수 트리거: 응답 오류가 있는 작업 수행
+
     if (error.response.status == 401) {
+      // 토큰이 만료되거나 유효하지 않은 경우
       const originRequest = error.config;
 
       try {
         // 토큰 재발급
         const response = await regenerateRefreshToken();
+
+        //
         if (response.status == 200) {
           const newAccessToken = response.data.data.accessToken;
           localStorage.setItem('accessToken', response.data.data.accessToken);
@@ -72,5 +64,15 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// refresh token 재생성 요청
+const regenerateRefreshToken = async () => {
+  const headers = {
+    'Content-Type': 'text/plain;charset=utf-8',
+  };
+  const refreshToken = localStorage.getItem('refreshToken');
+  const response = await refreshInstance.post('/login/oauth/token', refreshToken, { headers: headers });
+  return response;
+};
 
 export default instance;
