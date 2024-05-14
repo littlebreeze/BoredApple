@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import { useGameRoomStore } from './game-room-info';
+import { useGameScoreStore } from './game-score';
 
 type ResultResponseItem = {
   ranking: number;
@@ -102,6 +103,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
               break;
             case 'START':
               set({ isGaming: true, isGameRoundInProgress: true, currentRound: 1 });
+              useGameRoomStore.getState().setResultModalIsShow(false);
               break;
             case 'MANAGER':
               useGameRoomStore.getState().setCreatorId(res.target);
@@ -109,7 +111,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
               set({ isGaming: false });
               // 게임 끝...일때 결과 요청
               useGameRoomStore.getState().setResultModalIsShow(true);
-              useGameRoomStore.getState().clearGameRoomInfo();
+              useGameScoreStore.getState().clearScore();
           }
           console.log('메세지: ', res);
         });
@@ -127,8 +129,10 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
 
         // 결과 구독
         const resultSubscription = client.subscribe(`/topic/result/rooms/${roomId}`, (message: IMessage) => {
-          console.log('결과구독', JSON.parse(message.body));
-          set({ gameResult: JSON.parse(message.body) });
+          const messageBody = JSON.parse(message.body);
+
+          console.log('결과구독', messageBody);
+          set({ gameResult: messageBody.resultResList });
         });
 
         set({ stompClient: client, chatSubscription, timerSubscription, resultSubscription });
