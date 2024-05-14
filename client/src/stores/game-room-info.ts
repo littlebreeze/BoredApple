@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 type GameRoomDetail = {
+  roomName: string | undefined;
   myNickname: string | undefined;
   myUserId: number | undefined;
   roomId: number | undefined;
@@ -17,6 +18,7 @@ type Score = {
 };
 
 interface GameRoomInfo {
+  roomName: string | undefined;
   myNickname: string | undefined;
   myUserId: number | undefined;
   roomId: number | undefined;
@@ -32,6 +34,7 @@ interface GameRoomInfo {
 }
 
 export const useGameRoomStore = create<GameRoomInfo>((set) => ({
+  roomName: undefined,
   myNickname: undefined,
   myUserId: undefined,
   roomId: undefined,
