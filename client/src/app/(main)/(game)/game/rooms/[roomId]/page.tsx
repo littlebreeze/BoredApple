@@ -36,8 +36,12 @@ export default function Page() {
       connect(roomId);
       if (roomData) setGameRoomInfo(roomData?.data.data);
     }
+  }, [roomId, connect, disconnect, roomData]);
+
+  useEffect(() => {
     // unMount 될 때 disconnect
     return () => {
+      console.log('나가면서메세지보내기');
       disconnect({
         type: 'EXIT',
         roomId: storedRoomId!,
@@ -46,12 +50,7 @@ export default function Page() {
         message: '나갑니다',
       });
     };
-  }, [roomId, connect, disconnect, roomData]);
-
-  // useEffect(() => {
-  //   // unMount 될 때 disconnect
-
-  // }, [roomId, connect, disconnect]);
+  }, []);
 
   return (
     <div className='flex flex-col items-center'>
