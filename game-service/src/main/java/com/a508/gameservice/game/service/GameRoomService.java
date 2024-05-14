@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -33,6 +34,7 @@ public class GameRoomService {
     private final UserServiceClient userServiceClient;
     private final BattleRecordRepository battleRecordRepository;
     private final GameSchedulerManageService gameSchedulerManageService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     /**
@@ -365,6 +367,9 @@ public class GameRoomService {
             GameRoom gameRoom = gameRoomRepository.getGameRoom(id);
             gameRoom.setRoomCreatorId(dateList.get(0).getUserId());
             gameRoomRepository.saveGameRoom(gameRoom);
+            //방장 정보 새로 전송
+            ChatMessageRes manager = ChatMessageRes.builder().type(MessageType.MANAGER).target(dateList.get(0).getUserId()).build();
+            simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, manager);
         }
         else {
             roomPlayerRepository.removePlayerToRoom(id, senderId);
