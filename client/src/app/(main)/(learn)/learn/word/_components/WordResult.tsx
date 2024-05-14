@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { IBasicProblem, BasicProblemResponse } from '@/types/Problem';
 import ProgressBar from '../../_components/ProgressBar';
+import WordProblem from './WordProblem';
 
 export default function WordResult() {
   const router = useRouter();
@@ -74,17 +75,7 @@ export default function WordResult() {
         <ProgressBar progress={progress} />
 
         {/* 문제 */}
-        <div className='py-4'></div>
-        <div className='flex'>
-          <div className='mr-2'>어휘 퀴즈</div>
-          <div>
-            <span className='text-ourBlue'>{progress}</span>
-            <span className='text-ourBlack'> / 3</span>
-          </div>
-        </div>
-        <div className='py-1'></div>
-        <div>다음 문장의 의미에 부합하는 적절한 어휘를 고르시오.</div>
-        <div className='py-2'></div>
+        <WordProblem progress={progress} />
 
         {/* 지문 및 선택지 */}
         {currProblem && (
