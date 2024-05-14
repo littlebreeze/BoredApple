@@ -36,12 +36,12 @@ export default function Insert() {
         const endTime = Date.now();
         const spendTime = Math.round((endTime - beginTime.current) / 1000);
 
-        // const response = await instance.post('/study-service/solve/choice', {
-        //   type: '문장삽입',
-        //   myAnswer: userAnswer,
-        //   problemId: problemId,
-        //   spendTime: spendTime,
-        // });
+        const response = await instance.post('/study-service/solve/choice', {
+          type: '문장삽입',
+          myAnswer: userAnswer,
+          problemId: problemId,
+          spendTime: spendTime,
+        });
 
         Swal.fire({
           title: '학습을 완료했어요!',

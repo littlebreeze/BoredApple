@@ -21,6 +21,49 @@ export default function OrderResult() {
     getOrderData();
   }, []);
 
+  // 임시 데이터
+  const temp = {
+    status: 'success',
+    data: [
+      {
+        content: '우리는 어떤 시대에 살고 있을까?',
+        option1: '과거를 돌아보면 우리의 미래를 알 수 있다.',
+        option2: '빛의 속도로 여행하면 시간은 역행할까?',
+        option3: '문명의 발전과 함께 우리의 삶은 어떻게 변해왔을까?',
+        userAnswer: 213,
+        answer: 321,
+        category: '인문',
+        type: '순서맞추기',
+        problemId: 1,
+        correct: false,
+      },
+      {
+        content: '인간은 왜 존재하는가?',
+        option1: '사랑은 인간의 본능일까?',
+        option2: '자유란 무엇인가?',
+        option3: '행복은 어떻게 얻을 수 있는가?',
+        userAnswer: 231,
+        answer: 231,
+        category: '인문',
+        type: '순서맞추기',
+        problemId: 6,
+        correct: false,
+      },
+      {
+        content: '과거는 어떻게 현재와 연결되어 있는가?',
+        option1: '세계 문화의 다양성은 우리에게 무엇을 가르쳐 주는가?',
+        option2: '종교는 우리의 삶에 어떤 영향을 끼치는가?',
+        option3: '문명의 충돌은 어떻게 해결되어야 하는가?',
+        userAnswer: 123,
+        answer: 132,
+        category: '인문',
+        type: '순서맞추기',
+        problemId: 11,
+        correct: false,
+      },
+    ],
+  };
+
   const getOrderData = async () => {
     try {
       const response = await instance.get(`/study-service/problem/order`);
@@ -40,32 +83,43 @@ export default function OrderResult() {
   };
 
   const optionTextColor = (option: number) => {
-    if (option === currProblem.answer && option === currProblem.userAnswer) {
-      return 'text-ourBlue font-semibold';
+    const userAnswer = currProblem.userAnswer;
+    const correctAnswer = currProblem.answer;
+
+    if (userAnswer === correctAnswer && option === correctAnswer) {
+      return 'bg-[#f2f2f2] text-ourBlue select-none';
+    } else if (option === correctAnswer) {
+      return 'bg-[#f2f2f2] text-ourBlue select-none';
+    } else if (option === userAnswer) {
+      return 'bg-[#f2f2f2] text-ourRed line-through select-none';
     } else {
-      if (option === currProblem.answer) {
-        return 'text-ourBlue font-semibold';
-      } else if (option === currProblem.userAnswer) {
-        return 'text-ourRed line-through font-semibold';
-      } else {
-        return '';
-      }
+      return 'bg-[#f2f2f2] text-black select-none';
     }
   };
 
   const optionImage = (option: number) => {
-    if (currProblem.userAnswer === option) {
-      if (currProblem.userAnswer === currProblem.answer) {
-        return checkTrue;
-      } else {
-        return checkFalse;
-      }
-    } else if (option === currProblem.answer) {
+    const userAnswer = currProblem.userAnswer;
+    const correctAnswer = currProblem.answer;
+
+    if (userAnswer === correctAnswer && option === correctAnswer) {
       return checkTrue;
+    } else if (option === correctAnswer) {
+      return checkTrue;
+    } else if (option === userAnswer) {
+      return checkFalse;
     } else {
       return unchecked;
     }
   };
+
+  const options = [
+    { id: 1, label: '가 - 나 - 다', value: 123 },
+    { id: 2, label: '가 - 다 - 나', value: 132 },
+    { id: 3, label: '나 - 가 - 다', value: 213 },
+    { id: 4, label: '나 - 다 - 가', value: 231 },
+    { id: 5, label: '다 - 가 - 나', value: 312 },
+    { id: 6, label: '다 - 나 - 가', value: 321 },
+  ];
 
   return (
     <div>
@@ -93,6 +147,7 @@ export default function OrderResult() {
               <div className='flex-1'>
                 {/* 초기 문장 */}
                 <div className='pl-4 pt-4 pb-2 font-Batang select-none text-sm'>{currProblem.content}</div>
+
                 {/* 순서 단락 */}
                 <div>
                   <div className='py-2'></div>
@@ -111,77 +166,27 @@ export default function OrderResult() {
                     </div>
                   </div>
                 </div>
+              </div>
 
-                {/* 선택지 */}
-                {/* <div>
-                  <div className='py-12'></div>
-                  <div className='w-96 bg-white rounded-xl p-4'>
-                    <div className='flex'>
-                      <div
-                        className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                          selected === 1 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                        } `}
-                        onClick={() => handleOptionClick(1)}
-                      >
-                        <Image className='w-4 h-4 mr-2' src={selected === 1 ? checked : unchecked} alt='선택' />
-                        <span>가 - 나 - 다</span>
-                      </div>
-                      <div
-                        className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                          selected === 2 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                        } `}
-                        onClick={() => handleOptionClick(2)}
-                      >
-                        <Image className='w-4 h-4 mr-2' src={selected === 2 ? checked : unchecked} alt='선택' />
-                        <span>가 - 다 - 나</span>
-                      </div>
+              {/* 선택지 */}
+              <div>
+                <div className='py-12'></div>
+                <div className='w-96 bg-white rounded-xl p-4'>
+                  {options.map((option) => (
+                    <div
+                      key={option.id}
+                      className={`flex items-center p-2 m-1 rounded-xl ${optionTextColor(option.value)}`}
+                    >
+                      <Image className='w-4 h-4 mr-2' src={optionImage(option.value)} alt='선택' />
+                      <span>{option.label}</span>
                     </div>
-                    <div className='flex'>
-                      <div
-                        className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                          selected === 3 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                        } `}
-                        onClick={() => handleOptionClick(3)}
-                      >
-                        <Image className='w-4 h-4 mr-2' src={selected === 3 ? checked : unchecked} alt='선택' />
-                        <span>나 - 가 - 다</span>
-                      </div>
-                      <div
-                        className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                          selected === 4 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                        } `}
-                        onClick={() => handleOptionClick(4)}
-                      >
-                        <Image className='w-4 h-4 mr-2' src={selected === 4 ? checked : unchecked} alt='선택' />
-                        <span>나 - 다 - 가</span>
-                      </div>
-                    </div>
-                    <div className='flex'>
-                      <div
-                        className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                          selected === 5 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                        } `}
-                        onClick={() => handleOptionClick(5)}
-                      >
-                        <Image className='w-4 h-4 mr-2' src={selected === 5 ? checked : unchecked} alt='선택' />
-                        <span>다 - 가 - 나</span>
-                      </div>
-                      <div
-                        className={`flex-1 cursor-pointer flex items-center p-2 m-1 rounded-xl ${
-                          selected === 6 ? 'bg-black text-white' : 'bg-[#f2f2f2]'
-                        } `}
-                        onClick={() => handleOptionClick(6)}
-                      >
-                        <Image className='w-4 h-4 mr-2' src={selected === 6 ? checked : unchecked} alt='선택' />
-                        <span>다 - 나 - 가</span>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         )}
+
         {/* 버튼 */}
         <div className='flex border-t border-ourGray absolute bottom-4 w-full justify-end'>
           {progress >= 3 ? (
