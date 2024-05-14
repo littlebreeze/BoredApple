@@ -14,34 +14,48 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
 
   const { myNickname, myUserId } = useGameRoomStore();
   const { addPlayers, exitPlayer, getScore } = useGameScoreStore();
-  const { connect, disconnect, messages, sendMessage, clearMessage, answer } = useWebsocketStore();
+  const {
+    connect,
+    disconnect,
+    messages,
+    sendMessage,
+    clearMessage,
+    answer,
+    stompClient,
+    isCorrectAnswer,
+    isGameRoundInProgress,
+    timer,
+  } = useWebsocketStore();
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   useEffect(() => {
-    sendMessage({
-      type: 'ENTER',
-      roomId: roomId,
-      sender: myNickname!,
-      senderId: myUserId!,
-      message: newMessage,
-    });
-  }, []);
+    if (stompClient?.active || stompClient?.connected)
+      sendMessage({
+        type: 'ENTER',
+        roomId: roomId,
+        sender: myNickname!,
+        senderId: myUserId!,
+        message: newMessage,
+      });
+    // // 메시지 비우기
+    // return () => {
+    //   clearMessage();
+    // };
+  }, [stompClient?.active, stompClient?.connected]);
 
-  useEffect(() => {
-    // 메시지 비우기
-    return () => {
-      clearMessage();
-    };
-  }, [roomId, connect, disconnect]);
+  // useEffect(() => {
+  //   // 마운트 될때 비우고
+  //   clearMessage();
+  // }, []);
 
   useEffect(() => {
     const lastMsg = messages[messages.length - 1];
+    console.log('바뀐마지막메세지입니다', lastMsg);
     if (lastMsg && Number(lastMsg.target) !== myUserId) {
       if (lastMsg.type === 'ENTER') {
-        console.log('사용자를 추가하세요');
         addPlayers({
           score: 0,
           nickname: lastMsg.content,
@@ -51,8 +65,9 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
       } else if (lastMsg.type === 'EXIT') {
         exitPlayer(lastMsg.target);
       }
-    } else if (lastMsg && lastMsg.type === 'CORRECT') {
-      console.log(lastMsg.target, '의 점수를 올리세요');
+    }
+    if (lastMsg && lastMsg.type === 'CORRECT') {
+      console.log('점수반영하세요', lastMsg);
       getScore(lastMsg.target);
     }
   }, [messages]);
@@ -61,7 +76,10 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
     <div className='h-full px-3 pt-3 pb-1 bg-ourLightGray/50 rounded-xl flex flex-col justify-between'>
       <div className='h-44 flex flex-col overflow-y-scroll'>
         {messages.map((m, idx) => (
-          <div key={idx} className='p-1 flex gap-3'>
+          <div
+            key={idx}
+            className='p-1 flex gap-3'
+          >
             <div className={`text-center w-2/12 border-r-2 ${m.writer === '심심한 사과' && 'font-bold text-ourTheme'}`}>
               {m.writer}
             </div>
@@ -88,13 +106,21 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
           onKeyUp={(e) => {
             if (e.key === 'Enter') {
               setNewMessage('');
-              sendMessage({
-                type: answer === newMessage ? 'CORRECT' : 'TALK',
-                roomId: roomId,
-                sender: myNickname!,
-                senderId: myUserId!,
-                message: newMessage,
-              });
+              // 조건문 수정... 정답일때 TALK도 보내야 할듯!
+              if (newMessage.trim() !== '') {
+                sendMessage({
+                  type:
+                    !isGameRoundInProgress || timer === 0
+                      ? 'TALK'
+                      : answer === newMessage && !isCorrectAnswer
+                      ? 'CORRECT'
+                      : 'TALK',
+                  roomId: roomId,
+                  sender: myNickname!,
+                  senderId: myUserId!,
+                  message: newMessage,
+                });
+              }
             }
           }}
         />

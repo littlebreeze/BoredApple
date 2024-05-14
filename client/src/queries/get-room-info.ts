@@ -14,28 +14,23 @@ type GameRoomDetail = {
 };
 
 const getGameRoomInfo = (roomId: number | undefined) => {
-  const response = instance.get<{ data: GameRoomDetail }>(
-    `${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players`,
-    {
+  const response = instance
+    .get<{ data: GameRoomDetail }>(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players`, {
       params: {
         roomId: roomId, // roomId를 요청에 포함시킵니다.
       },
-    }
-  );
+    })
+    .catch();
   return response;
 };
 
 // useQuery 리턴하는 Hook
-export const useGameRoomInfo = (roomId: number | undefined, selectedRoomId: number | undefined) => {
-  const getCondition = roomId !== undefined && selectedRoomId !== undefined && selectedRoomId === roomId;
+export const useGameRoomInfo = (roomId: number | undefined) => {
   return useQuery({
     queryKey: ['getGameRoomList', roomId],
     queryFn: () => {
-      if (getCondition) {
-        return getGameRoomInfo(roomId);
-      } else {
-        return Promise.resolve(null); // 데이터 요청을 보내지 않음
-      }
+      if (roomId) return getGameRoomInfo(roomId);
+      else return Promise.resolve(null);
     },
   });
 };

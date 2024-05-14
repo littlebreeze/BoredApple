@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { InsertProblemResponse } from '@/types/Problem';
+import ProgressBar from '../../_components/ProgressBar';
 
 export default function Insert() {
   const router = useRouter();
@@ -35,12 +36,12 @@ export default function Insert() {
         const endTime = Date.now();
         const spendTime = Math.round((endTime - beginTime.current) / 1000);
 
-        // const response = await instance.post('/study-service/solve/choice', {
-        //   type: '문장삽입',
-        //   myAnswer: userAnswer,
-        //   problemId: problemId,
-        //   spendTime: spendTime,
-        // });
+        const response = await instance.post('/study-service/solve/choice', {
+          type: '문장삽입',
+          myAnswer: userAnswer,
+          problemId: problemId,
+          spendTime: spendTime,
+        });
 
         Swal.fire({
           title: '학습을 완료했어요!',
@@ -90,27 +91,7 @@ export default function Insert() {
     <div>
       <div>
         {/* 상태 바 */}
-        <div>
-          {progress === 1 ? (
-            <div className='flex gap-3'>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourGray'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourGray'></div>
-            </div>
-          ) : progress === 2 ? (
-            <div className='flex gap-3'>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourGray'></div>
-            </div>
-          ) : (
-            <div className='flex gap-3'>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-              <div className='flex-1 rounded-3xl p-1 bg-ourBlue'></div>
-            </div>
-          )}
-        </div>
+        <ProgressBar progress={progress} />
 
         {/* 문제 */}
         <div className='py-4'></div>
