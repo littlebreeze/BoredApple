@@ -60,10 +60,10 @@ export default function Page() {
       {resultModalIsShow && <GameResultsModal />}
       <div className='relative flex justify-center w-full gap-10 -top-8'>
         {/* 점수판 */}
-        <div className='w-1/6'>
+        <div className='w-1/6 flex flex-col justify-between items-center'>
           <GameScoreBoard />
           <button
-            className='w-full p-3 mt-3 text-white rounded-3xl bg-[#FF0000]'
+            className='w-4/5 p-3 mt-3 text-white rounded-3xl bg-[#FF0000] mb-1'
             onClick={() => {
               router.back();
             }}
