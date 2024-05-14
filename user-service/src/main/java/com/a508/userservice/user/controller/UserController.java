@@ -82,19 +82,19 @@ public class UserController {
 	@GetMapping("/ability")
 	public SuccessResponse<List<List<Double>>> userAbility(HttpServletRequest request) {
 
-		SuccessResponse<Object> userAbilityRes = studyServiceClient.GetUserAbility(request.getHeader(AUTHORIZATION_HEADER).substring(7));
-		System.out.println(userAbilityRes.getData());
+		fiveDto userAbilityRes = studyServiceClient.GetUserAbility(request.getHeader(AUTHORIZATION_HEADER).substring(7));
+		System.out.println(userAbilityRes.getData().getVoca());
 
-		SuccessResponse<UserAbilityRes> avgAbilityRes = studyServiceClient.GetAvgAbility();
+		fiveDto avgAbilityRes = studyServiceClient.GetAvgAbility();
 
 		System.out.println(avgAbilityRes.getData().getFact());
 
 		List<Double> a1 = new ArrayList<>(), a2 = new ArrayList<>();
-//		a1.add(userAbilityRes.getData().getFact() / 10.0);
-//		a1.add(userAbilityRes.getData().getInference() / 10.0);
-//		a1.add(userAbilityRes.getData().getVoca() / 10.0);
-//		a1.add(userAbilityRes.getData().getRecognition() / 10.0);
-//		a1.add(userAbilityRes.getData().getSpeed() / 10.0);
+		a1.add(userAbilityRes.getData().getFact() / 10.0);
+		a1.add(userAbilityRes.getData().getInference() / 10.0);
+		a1.add(userAbilityRes.getData().getVoca() / 10.0);
+		a1.add(userAbilityRes.getData().getRecognition() / 10.0);
+		a1.add(userAbilityRes.getData().getSpeed() / 10.0);
 
 		a2.add(avgAbilityRes.getData().getFact() / 10.0);
 		a2.add(avgAbilityRes.getData().getInference() / 10.0);
