@@ -1,4 +1,5 @@
 'use client';
+import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
 import MakeRoomBtn from './MakeRoomBtn';
 import GameRoomItem from './GameRoomItem';
@@ -64,6 +65,12 @@ export default function GameRightSection() {
   }, [roomList]);
 
   useEffect(() => {
+    if (isError)
+      Swal.fire({
+        title: '방에 입장할 수 없습니다!',
+        text: '방 상태가 변경되었습니다. 새로고침 버튼을 눌러주세요!',
+        confirmButtonColor: '#0064FF',
+      });
     if (!isLoading && !isError && roomData) {
       if (!selectedRoom?.isSecret) {
         // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
@@ -76,7 +83,9 @@ export default function GameRightSection() {
   }, [selectedRoom, getLoading]);
 
   useEffect(() => {
-    return () => setSelectedRoom(null);
+    return () => {
+      setSelectedRoom(null);
+    };
   }, []);
 
   return (
