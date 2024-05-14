@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/study-service/problem")
+@RequestMapping("/problem")
 @RequiredArgsConstructor
 @Slf4j
 public class ProblemController {
