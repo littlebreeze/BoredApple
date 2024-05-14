@@ -43,7 +43,7 @@ public class SolvedController {
     }
 
     @GetMapping("/five/average")
-    public ResponseEntity<SuccessResponse<?>> getAverageFiveAbilityController(@RequestHeader(value = "Authorization") String token){
+    public ResponseEntity<SuccessResponse<?>> getAverageFiveAbilityController(){
         return ResponseEntity.ok(
             new SuccessResponse<>("success" ,fiveAbilityService.getAverageFiveAbility()));
     }
