@@ -7,7 +7,7 @@ type GameRoomDetail = {
   maxNum: number | undefined;
   quizCount: number | undefined;
   creatorId: number | undefined;
-  roomPlayerRes: { userId: number; nickname: string }[];
+  roomPlayerRes?: { userId: number; nickname: string }[];
 };
 
 type Score = {
@@ -25,6 +25,8 @@ interface GameRoomInfo {
   creatorId: number | undefined;
   roomPlayerRes: { userId: number; nickname: string }[];
   setGameRoomInfo: (info: GameRoomDetail) => void;
+  setCreatorId: (userId: number) => void;
+  clearGameRoomInfo: () => void;
 }
 
 export const useGameRoomStore = create<GameRoomInfo>((set) => ({
@@ -38,6 +40,22 @@ export const useGameRoomStore = create<GameRoomInfo>((set) => ({
   setGameRoomInfo: (info: GameRoomDetail) => {
     set({
       ...info,
+    });
+  },
+
+  setCreatorId: (userId: number) => {
+    set({ creatorId: userId });
+  },
+
+  clearGameRoomInfo: () => {
+    set({
+      myNickname: undefined,
+      myUserId: undefined,
+      roomId: undefined,
+      maxNum: undefined,
+      quizCount: undefined,
+      creatorId: undefined,
+      roomPlayerRes: [],
     });
   },
 }));

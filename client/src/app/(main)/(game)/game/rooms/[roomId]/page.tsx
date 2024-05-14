@@ -1,10 +1,14 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import ChatWrapper from './_component/ChatWrapper';
 import GameScoreBoard from './_component/GameScoreBoard';
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useEffect } from 'react';
+import QuizWrapper from './_component/QuizWrapper';
+import TimerWrapper from './_component/TimerWrapper';
+import { useWebsocketStore } from '@/stores/websocketStore';
+import { useGameRoomInfo } from '@/queries/get-room-info';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -18,46 +22,63 @@ export default function Page() {
     roomPlayerRes,
   } = useGameRoomStore();
 
+  const router = useRouter();
+  const { connect, disconnect, stompClient } = useWebsocketStore();
+  const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(parseInt(roomId));
+  const { setGameRoomInfo } = useGameRoomStore();
+
   useEffect(() => {
     console.log(roomPlayerRes);
   }, []);
 
+  useEffect(() => {
+    if (!stompClient) {
+      connect(roomId);
+      if (roomData) setGameRoomInfo(roomData?.data.data);
+    }
+  }, [roomId, connect, disconnect, roomData]);
+
+  useEffect(() => {
+    // unMount 될 때 disconnect
+    return () => {
+      console.log('나가면서메세지보내기');
+      disconnect({
+        type: 'EXIT',
+        roomId: storedRoomId!,
+        sender: myNickname!,
+        senderId: myUserId!,
+        message: '나갑니다',
+      });
+    };
+  }, []);
+
   return (
     <div className='flex flex-col items-center'>
-      <div className='relative flex justify-center w-full gap-10 -z-50 -top-8'>
+      <div className='relative flex justify-center w-full gap-10 -top-8'>
         {/* 점수판 */}
         <div className='w-1/6'>
           <GameScoreBoard />
-          <button className='w-full p-3 mt-3 text-white rounded-3xl bg-[#FF0000]'>게임나가기</button>
+          <button
+            className='w-full p-3 mt-3 text-white rounded-3xl bg-[#FF0000]'
+            onClick={() => {
+              router.back();
+            }}
+          >
+            게임나가기
+          </button>
         </div>
         {/* 문제 및 힌트 */}
         <div className='w-1/2'>
-          <div className='flex flex-col w-full h-56 p-3 bg-white rounded-xl'>
-            <div>4 / 20</div>
-            <div className='flex items-center justify-center flex-1 px-5 text-lg font-semibold font-Batang'>
-              세금을 가혹하게 거두어들이고, 무리하게 재물을 빼앗음.
-              세금을 가혹하게 거두어들이고, 무리하게 재물을 빼앗음.
-            </div>
-          </div>
-          <div className='flex justify-center h-16 gap-3 mt-5'>
-            <div className='flex items-center justify-center w-16 text-3xl text-white bg-ourGreen rounded-xl'>ㄱ</div>
-            <div className='flex items-center justify-center w-16 text-3xl text-white bg-ourGreen rounded-xl'>ㄹ</div>
-            <div className='flex items-center justify-center w-16 text-3xl text-white bg-ourGreen rounded-xl'>ㅈ</div>
-            <div className='flex items-center justify-center w-16 text-3xl text-white bg-ourGreen rounded-xl'>ㄱ</div>
-            {/* <button className='w-1/2 text-3xl text-white rounded-3xl bg-ourRed'>게임시작</button> */}
-          </div>
+          <QuizWrapper roomId={roomId} />
         </div>
         {/* 시간 */}
         <div className='w-1/6'>
-          <div className='flex flex-col items-center p-3 bg-white rounded-xl'>
-            <div>남은 시간</div>
-            <div>0:00</div>
-          </div>
+          <TimerWrapper roomId={roomId} />
         </div>
       </div>
       <div className='w-2/3 h-60'>
         {/* 채팅창 */}
-        <ChatWrapper roomId={roomId} />
+        <ChatWrapper roomId={Number(roomId)} />
       </div>
     </div>
   );

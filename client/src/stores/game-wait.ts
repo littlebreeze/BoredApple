@@ -20,6 +20,8 @@ interface gameWaitState {
   setSelectedRoom: (item: GameRoomInfo | null) => void;
   roomList: GameRoomInfo[];
   setRoomList: (list: GameRoomInfo[]) => void;
+  isEndPage: boolean;
+  setIsEndPage: (flag: boolean) => void;
   pageNum: number;
   setPageNum: (page: number) => void;
 }
@@ -36,6 +38,10 @@ export const useGameWaitStore = create<gameWaitState>((set) => ({
   roomList: [],
   setRoomList: (list: GameRoomInfo[]) => {
     set({ roomList: list });
+  },
+  isEndPage: false,
+  setIsEndPage: (flag: boolean) => {
+    set({ isEndPage: flag });
   },
   // 페이지 시작번호 여기서 바꾸기
   pageNum: 1,

@@ -9,6 +9,10 @@ import { useGameWaitStore } from '@/stores/game-wait';
 import InsertPasswordModal from './InsertPasswordModal';
 import { useGameRoomList } from '@/queries/game-wait';
 import axios from 'axios';
+import { useGameRoomInfo } from '@/queries/get-room-info';
+import { useWebsocketStore } from '@/stores/websocketStore';
+import { useRouter } from 'next/navigation';
+import { useGameRoomStore } from '@/stores/game-room-info';
 
 type GameRoomInfo = {
   id: number;
@@ -24,18 +28,21 @@ type GameRoomInfo = {
 };
 
 export default function GameRightSection() {
+  const router = useRouter();
+
   const { pageNum, setPageNum } = useGameWaitStore();
   const { data, isLoading } = useGameRoomList(pageNum);
 
-  const { isShow } = useGameWaitStore();
-
-  const { roomList, setRoomList } = useGameWaitStore();
+  const { isShow, roomList, setRoomList, isEndPage, setIsEndPage, selectedRoom, setSelectedRoom } = useGameWaitStore();
+  const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(selectedRoom?.id);
+  const { connect, stompClient } = useWebsocketStore();
+  const { setGameRoomInfo } = useGameRoomStore();
   const [duplList, setDuplList] = useState<(GameRoomInfo | undefined)[]>(new Array(6).fill(undefined));
 
   const generateRoomItems = (list: GameRoomInfo[]): (GameRoomInfo | undefined)[] => {
     let duplicatedList: (GameRoomInfo | undefined)[] = [];
     for (let idx = 0; idx < 6; idx++) {
-      if (idx < roomList.length) duplicatedList.push(list[idx]);
+      if (roomList && idx < roomList.length) duplicatedList.push(list[idx]);
       else duplicatedList.push(undefined);
     }
     return duplicatedList;
@@ -43,10 +50,9 @@ export default function GameRightSection() {
 
   // 페이지 바뀌면 방 목록 요청
   useEffect(() => {
-    console.log(data);
     if (data?.data) {
-      console.log(data.data.data);
-      setRoomList(data.data.data);
+      setIsEndPage(data.data.data.isEndPage);
+      setRoomList(data.data.data.gameRoomResList);
     } else {
       setRoomList([]);
     }
@@ -56,6 +62,22 @@ export default function GameRightSection() {
   useEffect(() => {
     setDuplList(generateRoomItems(roomList));
   }, [roomList]);
+
+  useEffect(() => {
+    if (!isLoading && !isError && roomData) {
+      if (!selectedRoom?.isSecret) {
+        // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
+        setGameRoomInfo(roomData.data.data);
+        connect(String(selectedRoom?.id));
+
+        router.push(`/game/rooms/${selectedRoom?.id}`);
+      }
+    }
+  }, [selectedRoom, getLoading]);
+
+  useEffect(() => {
+    return () => setSelectedRoom(null);
+  }, []);
 
   return (
     <div className='relative'>
@@ -77,7 +99,7 @@ export default function GameRightSection() {
       <div className='flex flex-row py-4 gap-1 px-8 md:gap-3 md:px-8 lg:gap-6 lg:px-20'>
         <PagingBtn title='이전' activate={pageNum !== 1} />
         {/* <PagingBtn title='다음' activate={roomList.length > 0 && roomList[0].isEndPage} /> */}
-        <PagingBtn title='다음' activate={true} />
+        <PagingBtn title='다음' activate={!isEndPage} />
       </div>
     </div>
   );
