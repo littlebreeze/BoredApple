@@ -65,6 +65,7 @@ public class EssayServiceImpl  implements  EssayService{
 
         List<EssayResponse> problemResponses = new ArrayList<>();
         for( TodayLearning todayLearning : todayLearnings){
+            log.info("오늘의 학습 : " + todayLearning);
             TopicProblem topicProblem = topicRepository.findById(todayLearning.getProblemId()).orElseThrow(() -> new BaseException(ErrorCode.BAD_REQUEST_ERROR));
             problemResponses.add(topicToDto(topicProblem));
         }
@@ -85,10 +86,12 @@ public class EssayServiceImpl  implements  EssayService{
     @Override
     public List<EssayResponse> postEssayProblem(String token, EssayRequest request) {
         log.info(request.toString());
+        int userId = 0;
         if(token == null ) throw new BaseException(ErrorCode.NOT_AUTHORIZATION_POST);
-        String actualToken = token.substring(7);
-        int userId = userServiceFeignClient.getUserId(actualToken);
-
+        if( token.length() >25) {
+            String actualToken = token.substring(7);
+            userId = userServiceFeignClient.getUserId(actualToken);
+        }
         String type = "주제맞추기";
         List<EssayResponse> essayResponses = new ArrayList<>();
         int size = request.getProblemId().size();
