@@ -30,9 +30,10 @@ export default function Page() {
 
   useEffect(() => {
     console.log(roomPlayerRes);
+    // myUserId 없으면 game으로 보내기
+    if (!myUserId) router.replace('/game');
   }, []);
 
-  //
   // useEffect(() => {
   //   if (!stompClient) {
   //     connect(roomId);
