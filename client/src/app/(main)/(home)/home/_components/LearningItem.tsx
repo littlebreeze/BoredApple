@@ -160,7 +160,7 @@ const LearningItem2 = ({
         </div>
         <div className='flex gap-2'>
           <div className='p-1 px-2 text-xs font-semibold bg-white rounded-lg'>인지능력</div>
-          <div className='flex flex-col justify-center p-1 px-2 text text-[8px] rounded-lg bg-white'>{stars}</div>
+          <div className='flex flex-col justify-center p-1 px-2 text-[8px] rounded-lg bg-white'>{stars}</div>
         </div>
       </div>
       <div className='flex flex-col items-end justify-between'>

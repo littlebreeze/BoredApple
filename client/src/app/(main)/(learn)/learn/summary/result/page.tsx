@@ -3,7 +3,7 @@ import CloseButton from '../../_components/CloseButton';
 import InsertResult from '../_components/SummaryResult';
 
 export const metadata: Metadata = {
-  title: '문장넣기 - 오늘의 학습',
+  title: '지문요약 - 오늘의 학습',
   description: '문해력 학습 서비스 심심한 사과의 오늘의 학습',
 };
 
