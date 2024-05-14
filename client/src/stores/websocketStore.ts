@@ -122,6 +122,8 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       get().chatSubscription?.unsubscribe();
       get().timerSubscription?.unsubscribe();
       client.deactivate();
+      // 강제 종료 메서드
+      client.forceDisconnect();
       // 방 상태 초기화
       useGameRoomStore.getState().clearGameRoomInfo();
       // 웹소켓 스토어 초기화
