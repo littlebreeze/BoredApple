@@ -44,6 +44,7 @@ spring:
               - Path=/study-service/**
             filters:
               - RewritePath=/study-service/(?<segment>.*), /$\{segment}
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
               - AuthorizationHeaderFilter
 
       default-filters:
