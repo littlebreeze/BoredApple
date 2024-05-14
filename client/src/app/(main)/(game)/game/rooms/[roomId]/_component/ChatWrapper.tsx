@@ -1,40 +1,75 @@
 'use client';
 
 import { useGameRoomStore } from '@/stores/game-room-info';
+import { useGameScoreStore } from '@/stores/game-score';
 import { useWebsocketStore } from '@/stores/websocketStore';
 import { Client, IMessage } from '@stomp/stompjs';
 import axios from 'axios';
 
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
-export default function ChatWrapper({ roomId }: { roomId: string }) {
-  const { myNickname, myUserId } = useGameRoomStore();
-  // const [stompClient, setStompClient] = useState<Client | null>(null);
-
+export default function ChatWrapper({ roomId }: { roomId: number }) {
   const messageEndRef = useRef<HTMLDivElement | null>(null);
-  // const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
 
-  const { connect, disconnect, messages, stompClient, sendMessage } = useWebsocketStore();
+  const { myNickname, myUserId } = useGameRoomStore();
+  const { addPlayers, exitPlayer, getScore } = useGameScoreStore();
+  const {
+    connect,
+    disconnect,
+    messages,
+    sendMessage,
+    clearMessage,
+    answer,
+    stompClient,
+    isCorrectAnswer,
+    isGameRoundInProgress,
+  } = useWebsocketStore();
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   useEffect(() => {
-    sendMessage(`/pub/ws/rooms/${roomId}/send`, {
-      type: 'ENTER',
-      roomId: roomId,
-      sender: myNickname!,
-      senderId: myUserId!,
-      message: newMessage,
-    });
-  }, []);
+    if (stompClient?.active || stompClient?.connected)
+      sendMessage({
+        type: 'ENTER',
+        roomId: roomId,
+        sender: myNickname!,
+        senderId: myUserId!,
+        message: newMessage,
+      });
+    // // 메시지 비우기
+    // return () => {
+    //   clearMessage();
+    // };
+  }, [stompClient?.active, stompClient?.connected]);
+
+  // useEffect(() => {
+  //   // 마운트 될때 비우고
+  //   clearMessage();
+  // }, []);
 
   useEffect(() => {
-    // 메시지 비우기
-    return () => disconnect();
-  }, [roomId, connect, disconnect]);
+    const lastMsg = messages[messages.length - 1];
+    console.log('바뀐마지막메세지입니다', lastMsg);
+    if (lastMsg && Number(lastMsg.target) !== myUserId) {
+      if (lastMsg.type === 'ENTER') {
+        addPlayers({
+          score: 0,
+          nickname: lastMsg.content,
+          id: lastMsg.target,
+        });
+        // 퇴장 메세지가 나오면 삭제....
+      } else if (lastMsg.type === 'EXIT') {
+        exitPlayer(lastMsg.target);
+      }
+    }
+    if (lastMsg && lastMsg.type === 'CORRECT') {
+      console.log('점수반영하세요', lastMsg);
+      getScore(lastMsg.target);
+    }
+  }, [messages]);
 
   return (
     <div className='h-full px-3 pt-3 pb-1 bg-ourLightGray/50 rounded-xl flex flex-col justify-between'>
@@ -45,11 +80,13 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
               {m.writer}
             </div>
             <div
-              className={`pl-2 w-10/12 ${
-                m.writer === '심심한 사과' && m.target === String(myUserId) && 'text-ourTheme font-bold '
-              }`}
+              className={`pl-2 w-10/12 
+              ${Number(m.target) !== myUserId && m.type === 'ENTER' && 'text-ourTheme'} 
+              ${m.type === 'EXIT' && ' text-rose-500 '}
+              ${m.type === 'CORRECT' && ' text-ourTheme font-bold '}`}
             >
               {m.content}
+              {m.type === 'ENTER' && '님이 입장하셨습니다.'}
             </div>
           </div>
         ))}
@@ -65,8 +102,9 @@ export default function ChatWrapper({ roomId }: { roomId: string }) {
           onKeyUp={(e) => {
             if (e.key === 'Enter') {
               setNewMessage('');
-              sendMessage(`/pub/ws/rooms/${roomId}/send`, {
-                type: 'TALK',
+              // 조건문 수정... 정답일때 TALK도 보내야 할듯!
+              sendMessage({
+                type: !isGameRoundInProgress ? 'TALK' : answer === newMessage && !isCorrectAnswer ? 'CORRECT' : 'TALK',
                 roomId: roomId,
                 sender: myNickname!,
                 senderId: myUserId!,

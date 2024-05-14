@@ -1,4 +1,5 @@
-import MyPageNav from './_components/MyPageNav';
+import MyInfo from './_components/MyInfo';
+import MyPageNav from './analysis/_components/MyPageNav';
 
 export default function MyPageLayout({
   children,
@@ -9,7 +10,7 @@ export default function MyPageLayout({
     <>
       <div>
         <div className='text-xl py-5'>
-          <span className='text-2xl font-bold'>문해너구리</span>의 활동 기록
+          <MyInfo />
         </div>
         <MyPageNav />
       </div>
