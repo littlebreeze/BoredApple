@@ -41,7 +41,7 @@ public class TodayLearningScheduler {
 	private static final List<String> categories = new ArrayList<>(Arrays.asList("인문", "사회", "과학", "예술", "기술"));
 
 	@Transactional
-	@Scheduled(cron = "0 30 9 * * ?")
+	@Scheduled(cron = "0 38 12 * * ?")
 	public void makeTodayLearning()throws NoSuchAlgorithmException{
 
 
@@ -115,7 +115,8 @@ public class TodayLearningScheduler {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
 							if(Objects.equals(choiceSolved.getProblemId(), paragraphOrder.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
 						}
-						todayLearningRepository.save(makeEntity(userId,paragraphOrder.getId(),type,category));
+						TodayLearning todayLearning =todayLearningRepository.save(makeEntity(userId,paragraphOrder.getId(),type,category));
+						log.info(" userId의 값은 = "  + userId+ "  생성된 오늘의 학습은 = "+todayLearning  );
 						count += 1;
 						if( count == 4) continue w;
 					}
@@ -128,7 +129,8 @@ public class TodayLearningScheduler {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
 							if(Objects.equals(choiceSolved.getProblemId(), sentenceInsert.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
 						}
-						todayLearningRepository.save(makeEntity(userId,sentenceInsert.getId(),type,category));
+						TodayLearning todayLearning =todayLearningRepository.save(makeEntity(userId,sentenceInsert.getId(),type,category));
+						log.info(" userId의 값은 = "  + userId+ "  생성된 오늘의 학습은 = "+todayLearning  );
 						count += 1;
 						if( count == 4) continue w;
 					}
@@ -140,7 +142,8 @@ public class TodayLearningScheduler {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
 							if(Objects.equals(choiceSolved.getProblemId(), voca.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
 						}
-						todayLearningRepository.save(makeEntity(userId,voca.getId(),type,category));
+						TodayLearning todayLearning =todayLearningRepository.save(makeEntity(userId,voca.getId(),type,category));
+						log.info(" userId의 값은 = "  + userId+ "  생성된 오늘의 학습은 = "+todayLearning  );
 						count += 1;
 						if( count == 4) continue w;
 					}
@@ -153,7 +156,8 @@ public class TodayLearningScheduler {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
 							if(Objects.equals(choiceSolved.getProblemId(), intensive.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
 						}
-						todayLearningRepository.save(makeEntity(userId,intensive.getId(),type,category));
+						 TodayLearning todayLearning = todayLearningRepository.save(makeEntity(userId,intensive.getId(),type,category));
+						log.info(" userId의 값은 = "  + userId+ "  생성된 오늘의 학습은 = "+todayLearning  );
 						count += 1;
 						if( count == 4) continue w;
 					}
@@ -165,7 +169,8 @@ public class TodayLearningScheduler {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
 							if(Objects.equals(choiceSolved.getProblemId(), topicProblem.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
 						}
-						todayLearningRepository.save(makeEntity(userId,topicProblem.getId(),type,category));
+						TodayLearning todayLearning =todayLearningRepository.save(makeEntity(userId,topicProblem.getId(),type,category));
+						log.info(" userId의 값은 = "  + userId+ "  생성된 오늘의 학습은 = "+todayLearning  );
 						count += 1;
 						if( count == 4) continue w;
 					}
