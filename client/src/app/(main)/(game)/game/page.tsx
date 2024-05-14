@@ -14,7 +14,7 @@ export default function Page() {
       </div>
       <Link href={'/home'} className='absolute bottom-3 right-8 w-16 h-16 duration-150 hover:w-20 hover:h-20'>
         <Image
-          className='w-full drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)] z-20 relative'
+          className='w-full drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)]'
           src='/game/icon-image.svg'
           loading='eager'
           fill
