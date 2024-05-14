@@ -16,8 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static com.a508.userservice.common.jwt.TokenProvider.AUTHORIZATION_HEADER;
-
 @RestController
 @RequiredArgsConstructor
 public class UserController {
