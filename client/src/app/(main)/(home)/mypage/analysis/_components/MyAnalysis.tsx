@@ -35,6 +35,8 @@ export default function MyAnalysis({ ability }: { ability: number[] }) {
     return { label, description, score };
   });
 
+  if (!ability.length) return <div className='py-16 text-ourDarkGray'>분석 데이터가 부족합니다.</div>;
+
   return (
     <>
       <div className='flex w-full overflow-x-scroll gap-5 pt-5 scrollbar-hide'>
