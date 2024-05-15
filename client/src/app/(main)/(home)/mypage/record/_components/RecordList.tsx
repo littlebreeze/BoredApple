@@ -1,30 +1,41 @@
-import { Study, RResponse } from '@/types/MypageRecord';
+'use client';
 import { useEffect, useState } from 'react';
-import { useRecordStore } from '@/stores/record';
-import StudyRecordItem from './StudyRecordItem';
+
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; //한국어
-import axios from 'axios';
+
+import { Study, RResponse } from '@/types/MypageRecord';
+import instance from '@/utils/interceptor';
+import { useRecordStore } from '@/stores/record';
+
+import StudyRecordItem from './StudyRecordItem';
 
 const getDailyData = async (today: Date | null) => {
-  const response = await axios.post<{ data: RResponse }>(
+  const response = await instance.post<{ data: RResponse }>(
     `${process.env.NEXT_PUBLIC_API_SERVER}/user-service/daystudy`,
     {
       date: today,
+      year: today?.getFullYear(),
+      month: today!.getMonth() + 1,
     }
   );
   return response;
 };
 
 export default function RecordList() {
-  const { parseValueIntoDate } = useRecordStore();
   const [records, setRecords] = useState<Study[] | null>(null);
+
+  const { parseValueIntoDate } = useRecordStore();
   const { today } = useRecordStore();
+
   useEffect(() => {
     // 요청 보내기
-    console.log('해당 일 학습 기록 요청 보내라');
     getDailyData(parseValueIntoDate(today)).then((value) => setRecords(value.data.data.dailyStudyList));
   }, [today]);
+
+  useEffect(() => {
+    console.log('해당일 학습 목록 요청 데이터: ', records);
+  }, [records]);
   return (
     <>
       <div className='text-ourDarkGray text-xl font-semibold ml-5 my-2'>

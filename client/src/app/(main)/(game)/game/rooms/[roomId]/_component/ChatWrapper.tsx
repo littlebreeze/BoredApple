@@ -1,39 +1,27 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useGameScoreStore } from '@/stores/game-score';
 import { useWebsocketStore } from '@/stores/websocketStore';
-import { Client, IMessage } from '@stomp/stompjs';
-import axios from 'axios';
-
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export default function ChatWrapper({ roomId }: { roomId: number }) {
   const chatRef = useRef<HTMLInputElement | null>(null);
   const messageEndRef = useRef<HTMLDivElement | null>(null);
+
   const [focused, setFocused] = useState(false);
   const [newMessage, setNewMessage] = useState<string>('');
 
   const { myNickname, myUserId } = useGameRoomStore();
   const { addPlayers, exitPlayer, getScore } = useGameScoreStore();
-  const {
-    connect,
-    disconnect,
-    messages,
-    sendMessage,
-    clearMessage,
-    answer,
-    stompClient,
-    isCorrectAnswer,
-    isGameRoundInProgress,
-    timer,
-  } = useWebsocketStore();
+  const { messages, sendMessage, answer, stompClient, isCorrectAnswer, isGameRoundInProgress, timer } =
+    useWebsocketStore();
 
   // 게임화면에서 엔터로 인풋창 포커스
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === 'Enter') {
-        console.log('####');
         chatRef.current?.focus();
       }
     };
@@ -50,6 +38,7 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // 방 입장했을 때 메세지 전송 (stompClient active, connected)
   useEffect(() => {
     if (stompClient?.active || stompClient?.connected)
       sendMessage({
@@ -59,16 +48,7 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
         senderId: myUserId!,
         message: newMessage,
       });
-    // // 메시지 비우기
-    // return () => {
-    //   clearMessage();
-    // };
   }, [stompClient?.active, stompClient?.connected]);
-
-  // useEffect(() => {
-  //   // 마운트 될때 비우고
-  //   clearMessage();
-  // }, []);
 
   useEffect(() => {
     const lastMsg = messages[messages.length - 1];

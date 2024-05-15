@@ -1,4 +1,5 @@
 'use client';
+
 import CalendarComponent from './CalendarComponent';
 import RecordList from './RecordList';
 

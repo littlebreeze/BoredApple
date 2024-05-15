@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import RecordDetailItem from './_components/RecordDetailItem';
+
 import AttendanceRecord from './_components/AttendanceRecord';
 import StudyRecord from './_components/StudyRecord';
 import GameRecord from './_components/GameRecord';
