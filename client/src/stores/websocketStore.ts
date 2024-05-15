@@ -64,7 +64,7 @@ interface WebSocketState {
 export const useWebsocketStore = create<WebSocketState>((set, get) => ({
   stompClient: null,
   messages: [],
-  timer: 33,
+  timer: 34,
   isGaming: false,
   isGameRoundInProgress: false,
   roundCount: 5,
