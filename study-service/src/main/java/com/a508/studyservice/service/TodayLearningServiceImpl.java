@@ -162,32 +162,33 @@ public class TodayLearningServiceImpl implements TodayLearningService {
         boolean vocaDay = false;
 
         for (TodayLearning todayLearning : todayLearnings) {
-            if( todayLearning.isCorrect()) {
-                if(todayLearning.getType().equals("정독훈련") && !intensiveDay){
+            boolean flag = todayLearning.isCorrect();
+
+            if(todayLearning.getType().equals("정독훈련") && !intensiveDay){
                     intensiveDay = true;
-                    dayResponses.add(new DayResponse("정독훈련",true));
+
+                    dayResponses.add(new DayResponse("정독훈련",flag));
                 }
 
                 if(todayLearning.getType().equals("순서맞추기") && !sentenceDay){
                     sentenceDay = true;
-                    dayResponses.add(new DayResponse("순서맞추기",true));
+                    dayResponses.add(new DayResponse("순서맞추기",flag));
                 }
 
                 if(todayLearning.getType().equals("문장삽입") && !insertDay){
                     insertDay = true;
-                    dayResponses.add( new DayResponse("문장삽입",true));
+                    dayResponses.add( new DayResponse("문장삽입",flag));
                 }
 
                 if(todayLearning.getType().equals("주제맞추기") && !topicDay){
                     topicDay = true;
-                    dayResponses.add(new DayResponse("주제맞추기",true));
+                    dayResponses.add(new DayResponse("주제맞추기",flag));
                 }
 
                 if(todayLearning.getType().equals("어휘") && !vocaDay){
                     vocaDay = true;
-                    dayResponses.add( new DayResponse("어휘",true));
+                    dayResponses.add( new DayResponse("어휘",flag));
                 }
-            }
         }
 
         return dayResponses;
@@ -274,7 +275,7 @@ public class TodayLearningServiceImpl implements TodayLearningService {
             if(typeMax == topic) {totalResponse.setType("주제맞추기");}
             if(typeMax == voca) {totalResponse.setType("어휘");}
         }
-
+        minus /= 3;
         totalResponse.setTotalCnt(minus);
         double va = (double) minus/size;
         totalResponse.setCompletePercent(va);
