@@ -16,6 +16,7 @@ public class JoinRoomRes {
     private String myNickname;
     private Integer myUserId;
     private Integer roomId;
+    private String roomName;
     private Integer maxNum;
     private Integer quizCount;
     private Integer creatorId;

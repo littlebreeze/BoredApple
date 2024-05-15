@@ -109,6 +109,7 @@ public class GameRoomService {
                 .myNickname(userServiceClient.getNicknameByUserId(userId))
                 .myUserId(userId)
                 .roomId(roomId)
+                .roomName(gameRoomReq.getRoomName())
                 .maxNum(gameRoomReq.getMaxNum())
                 .quizCount(gameRoomReq.getQuizCount())
                 .creatorId(userId)
@@ -183,6 +184,7 @@ public class GameRoomService {
         }
         return JoinRoomRes.builder()
                 .roomId(roomId)
+                .roomName(gameRoom.getRoomName())
                 .myUserId(userId)
                 .myNickname(myNickname)
                 .quizCount(gameRoom.getQuizCount())
