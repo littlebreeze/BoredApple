@@ -55,6 +55,33 @@ export default function Page() {
     };
   }, []);
 
+  // 새로고침, 브라우저 종료시
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+
+      const leavePage = confirm('정말 게임을 나가시겠습니까?');
+
+      if (leavePage) {
+        disconnect({
+          type: 'EXIT',
+          roomId: storedRoomId!,
+          sender: myNickname!,
+          senderId: myUserId!,
+          message: '나갑니다',
+        });
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // 언마운트시 이벤트리스너 삭제
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [storedRoomId, myNickname, myUserId, disconnect]);
+
   return (
     <div className='flex flex-col items-center'>
       {resultModalIsShow && <GameResultsModal />}
@@ -65,7 +92,8 @@ export default function Page() {
           <button
             className='w-4/5 p-3 mt-3 text-white rounded-3xl bg-[#FF0000] mb-1'
             onClick={() => {
-              router.back();
+              const leavePage = confirm('정말 게임을 나가시겠습니까?');
+              if (leavePage) router.back();
             }}
           >
             게임나가기
