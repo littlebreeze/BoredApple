@@ -24,7 +24,13 @@ spring:
               - Method= POST
             filters:
               - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-              - RewritePath=/study-service/(?<segment>.*), /$\{segment}
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
+              - Path=/user-service/oauth/**
+              - Method= POST
+            filters:
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
           - id: user-service
             uri: lb://USER-SERVICE
             predicates:
@@ -32,16 +38,6 @@ spring:
             filters:
               - RewritePath=/user-service/(?<segment>.*), /$\{segment}
               - AuthorizationHeaderFilter
-
-#          - id: game-service-ws
-#            uri: wss://k10a508.p.ssafy.io:8081/game-service/ws
-#            predicates:
-#              - Path=/game-service/ws/**
-#            filters:
-#              - name: RewritePath
-#                args:
-#                  regexp: /game-service/ws/(?<segment>.*)
-#                  replacement: /$\{segment}
           - id: game-service
             uri: lb://GAME-SERVICE
             predicates:
@@ -55,16 +51,13 @@ spring:
               - Path=/game-service/**
             filters:
               - RewritePath=/game-service/(?<segment>.*), /$\{segment}
-
           - id: study-service
             uri: lb://STUDY-SERVICE
             predicates:
               - Path=/study-service/**
             filters:
               - RewritePath=/study-service/(?<segment>.*), /$\{segment}
-              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
               - AuthorizationHeaderFilter
-
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
       global-cors:
