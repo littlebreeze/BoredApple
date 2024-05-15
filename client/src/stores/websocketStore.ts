@@ -113,7 +113,6 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
               set({ isGaming: false });
               // 게임 끝...일때 결과 요청
               useGameRoomStore.getState().setResultModalIsShow(true);
-              useGameScoreStore.getState().clearScore();
               break;
           }
           console.log('메세지: ', res);
