@@ -13,9 +13,11 @@ import { useWebsocketStore } from '@/stores/websocketStore';
 import loading from '@/../public/login/loading.png';
 
 const getGameRoomInfo = async () => {
+  console.log('빠른 대전이 되긴 되는데 방이 찾아질 때까지 돕...니다?');
   const response = await instance.get<{ data: GameRoomDetail }>(
     `${process.env.NEXT_PUBLIC_API_SERVER}/game-service/quick-entry`
   );
+  console.log(response);
   return response;
 };
 
