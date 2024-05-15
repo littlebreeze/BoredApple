@@ -1,13 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { InsertProblemResponse, IInsertProblem } from '@/types/Problem';
+import Image from 'next/image';
 import instance from '@/utils/interceptor';
+import ProgressBar from '../../_components/ProgressBar';
+import InsertProblem from './InsertProblem';
 import checkTrue from '@/../public/learn/check-true.svg';
 import checkFalse from '@/../public/learn/check-false.svg';
 import unchecked from '@/../public/learn/unchecked.svg';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { InsertProblemResponse, IInsertProblem } from '@/types/Problem';
-import ProgressBar from '../../_components/ProgressBar';
 
 export default function InsertResult() {
   const router = useRouter();
@@ -74,31 +75,21 @@ export default function InsertResult() {
         <ProgressBar progress={progress} />
 
         {/* 문제 */}
-        <div className='py-4'></div>
-        <div className='flex'>
-          <div className='mr-2'>문장 넣기</div>
-          <div>
-            <span className='text-ourBlue'>{progress}</span>
-            <span className='text-ourBlack'> / 3</span>
-          </div>
-        </div>
-        <div className='py-1'></div>
-        <div>다음 글을 읽고 문맥상 빈칸에 들어가기에 알맞은 내용을 골라주세요</div>
-        <div className='py-2'></div>
+        <InsertProblem progress={progress} />
 
         {/* 지문 및 선택지 */}
         {currProblem && (
           <div>
             <div className='flex gap-2'>
-              <div className='p-4 h-fit flex-1 font-Batang'>
-                <span className='font-Batang'>{currProblem.content1}</span>
+              <div className='p-4 h-fit flex-1 font-Batang mt-2 bg-ourGray mr-4'>
+                <span className='font-Batang leading-7'>{currProblem.content1}</span>
                 <span className='select-none font-bold font-Batang bg-white p-1 rounded-lg px-4 mx-2'>
                   &nbsp;?&nbsp;
                 </span>
-                <span className='font-Batang'>{currProblem.content2}</span>
+                <span className='font-Batang leading-7'>{currProblem.content2}</span>
               </div>
               <div>
-                <div className='py-12'></div>
+                <div className='pt-2'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
                   {[1, 2, 3].map((option) => (
                     <div

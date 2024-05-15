@@ -1,13 +1,14 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import instance from '@/utils/interceptor';
-import checked from '@/../public/learn/checked.svg';
-import unchecked from '@/../public/learn/unchecked.svg';
-import Image from 'next/image';
-import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { InsertProblemResponse } from '@/types/Problem';
+import Image from 'next/image';
+import Swal from 'sweetalert2';
+import instance from '@/utils/interceptor';
 import ProgressBar from '../../_components/ProgressBar';
+import InsertProblem from './InsertProblem';
+import checked from '@/../public/learn/checked.svg';
+import unchecked from '@/../public/learn/unchecked.svg';
 
 export default function Insert() {
   const router = useRouter();
@@ -94,33 +95,22 @@ export default function Insert() {
         <ProgressBar progress={progress} />
 
         {/* 문제 */}
-        <div className='py-4'></div>
-        <div className='flex'>
-          <div className='mr-2'>문장 넣기</div>
-          <div>
-            <span className='text-ourBlue'>{progress}</span>
-            <span className='text-ourBlack'> / 3</span>
-          </div>
-        </div>
-        <div className='py-1'></div>
-        <div>다음 글을 읽고 문맥상 빈칸에 들어가기에 알맞은 내용을 골라주세요</div>
-        <div className='py-2'></div>
+        <InsertProblem progress={progress} />
 
         {/* 지문 및 선택지 */}
         {currProblem && (
           <div>
             <div className='flex gap-2'>
-              <div>
-                <div className='p-4 h-fit flex-1 '>
-                  <span className='font-Batang'>{currProblem.content1}</span>
-                  <span className='select-none font-bold font-Batang bg-white p-1 rounded-lg px-4 mx-2'>
-                    &nbsp;?&nbsp;
-                  </span>
-                  <span className='font-Batang'>{currProblem.content2}</span>
-                </div>
+              {/* 지문 */}
+              <div className='mt-2 p-4 h-fit flex-1 bg-ourGray mr-4'>
+                <span className='font-Batang leading-7'>{currProblem.content1}</span>
+                <span className='select-none font-bold font-Batang bg-white p-1 rounded-lg px-4 mx-2'>
+                  &nbsp;?&nbsp;
+                </span>
+                <span className='font-Batang leading-7'>{currProblem.content2}</span>
               </div>
               <div>
-                <div className='py-12'></div>
+                <div className='pt-2'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
                   <div
                     className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${

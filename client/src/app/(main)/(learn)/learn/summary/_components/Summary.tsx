@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { SummaryProblemResponse } from '@/types/Problem';
 import ProgressBar from '../../_components/ProgressBar';
+import SummaryProblem from './SummaryProblem';
 
 export default function Summary() {
   const router = useRouter();
@@ -57,7 +58,7 @@ export default function Summary() {
       const response = await instance.get(`/study-service/problem/topic`);
       setProblems(response.data.data);
     } catch (error) {
-      // error
+      // erro
     }
   };
 
@@ -92,33 +93,23 @@ export default function Summary() {
         <ProgressBar progress={progress} />
 
         {/* 문제 */}
-        <div className='py-4'></div>
-        <div className='flex'>
-          <div className='mr-2'>지문 요약</div>
-          <div>
-            <span className='text-ourBlue'>{progress}</span>
-            <span className='text-ourBlack'> / 3</span>
-          </div>
-        </div>
-        <div className='py-1'></div>
-        <div>다음 글을 읽고 문단의 핵심 내용을 담아 한 문장으로 요약해보세요.</div>
-        <div className='py-2'></div>
+        <SummaryProblem progress={progress} />
 
         {/* 지문 및 선택지 */}
         {currProblem && (
           <div>
             <div className='flex gap-2'>
               {/* 지문 */}
-              <div>
-                <div className='p-4 h-fit flex-1'>
-                  <span className='font-Batang'>{currProblem.content}</span>
+              <div className='flex-1'>
+                <div className='p-4 h-fit  mr-4 mt-2 bg-ourGray '>
+                  <span className='leading-7 font-Batang'>{currProblem.content}</span>
                 </div>
               </div>
-              <div>
-                <div className='py-12'></div>
+              <div className='w-96'>
+                <div className='pt-2'></div>
                 <div className='bg-white p-4 rounded-lg'>
                   <textarea
-                    className='h-40 w-96 outline-none resize-none'
+                    className='h-40 outline-none resize-none w-full'
                     name='input'
                     value={input}
                     onChange={handleTextareaChange}

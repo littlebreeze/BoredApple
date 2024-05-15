@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Image from 'next/image';
 import checked from '@/../public/signup/checked.svg';
 import unchecked from '@/../public/signup/unchecked.svg';
-import axios from 'axios';
 import instance from '@/utils/interceptor';
 
 export default function Interest() {
