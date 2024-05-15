@@ -26,7 +26,7 @@ export default function InsertPasswordModal() {
       if (!isLoading && !isError && roomData) {
         // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
         const roomDataData = roomData.data.data;
-        setGameRoomInfo({ ...roomDataData, roomName: selectedRoom?.roomName });
+        setGameRoomInfo({ ...roomDataData });
         setIsShow(false);
         connect(String(selectedRoom?.id));
 
