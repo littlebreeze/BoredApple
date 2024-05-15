@@ -14,8 +14,8 @@ type GameRoomDetail = {
   roomPlayerRes: { userId: number; nickname: string }[];
 };
 
-const getGameRoomInfo = (roomId: number | undefined) => {
-  const response = instance
+const getGameRoomInfo = async (roomId: number | undefined) => {
+  const response = await instance
     .get<{ data: GameRoomDetail }>(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players`, {
       params: {
         roomId: roomId, // roomId를 요청에 포함시킵니다.
