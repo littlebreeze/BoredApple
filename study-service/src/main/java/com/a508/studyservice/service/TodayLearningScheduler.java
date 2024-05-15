@@ -109,7 +109,7 @@ public class TodayLearningScheduler {
 				//type 마다 3개씩 생성
 				int  count = 1 ;
 				if(type.equals("순서맞추기")){
-					List<ParagraphOrder> paragraphOrders = paragraphOrderRepository.findByCategory(type);
+					List<ParagraphOrder> paragraphOrders = paragraphOrderRepository.findByCategory(category);
 					Collections.shuffle(paragraphOrders);
 					l: for(ParagraphOrder paragraphOrder : paragraphOrders) {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
@@ -123,7 +123,7 @@ public class TodayLearningScheduler {
 				}
 
 				if(type.equals("문장삽입")){
-					List<SentenceInsert> sentenceInsertList = sentenceInsertRepository.findByCategory(type);
+					List<SentenceInsert> sentenceInsertList = sentenceInsertRepository.findByCategory(category);
 					Collections.shuffle(sentenceInsertList);
 					l: for(SentenceInsert sentenceInsert : sentenceInsertList) {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
