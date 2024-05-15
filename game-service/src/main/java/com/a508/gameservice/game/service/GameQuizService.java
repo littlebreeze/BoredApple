@@ -5,9 +5,9 @@ import com.a508.gameservice.game.repository.GameQuizRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -18,9 +18,10 @@ public class GameQuizService {
     public List<GameQuiz> getQuiz(int quizCount) {
         List<GameQuiz> gameQuizList = new ArrayList<>();
         List<GameQuiz> list = gameQuizRepository.findAll();
-        Random random=new Random();
+
+        SecureRandom secureRandom = new SecureRandom();
         for (int i = 0; i < quizCount; i++) {
-                gameQuizList.add(list.get(random.nextInt(list.size())));
+            gameQuizList.add(list.get(secureRandom.nextInt(list.size())));
         }
         return gameQuizList;
     }
