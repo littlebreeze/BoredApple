@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 type GameRoomDetail = {
+  roomName: string | undefined;
   myNickname: string | undefined;
   myUserId: number | undefined;
   roomId: number | undefined;
@@ -17,6 +18,7 @@ type Score = {
 };
 
 interface GameRoomInfo {
+  roomName: string | undefined;
   myNickname: string | undefined;
   myUserId: number | undefined;
   roomId: number | undefined;
@@ -27,9 +29,12 @@ interface GameRoomInfo {
   setGameRoomInfo: (info: GameRoomDetail) => void;
   setCreatorId: (userId: number) => void;
   clearGameRoomInfo: () => void;
+  resultModalIsShow: boolean;
+  setResultModalIsShow: (state: boolean) => void;
 }
 
 export const useGameRoomStore = create<GameRoomInfo>((set) => ({
+  roomName: undefined,
   myNickname: undefined,
   myUserId: undefined,
   roomId: undefined,
@@ -58,4 +63,6 @@ export const useGameRoomStore = create<GameRoomInfo>((set) => ({
       roomPlayerRes: [],
     });
   },
+  resultModalIsShow: false,
+  setResultModalIsShow: (state: boolean) => set({ resultModalIsShow: state }),
 }));
