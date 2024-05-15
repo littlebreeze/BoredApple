@@ -4,6 +4,7 @@ import instance from '@/utils/interceptor';
 import { useGameWaitStore } from '@/stores/game-wait';
 
 type GameRoomDetail = {
+  roomName: string | undefined;
   myNickname: string | undefined;
   myUserId: number | undefined;
   roomId: number | undefined;
