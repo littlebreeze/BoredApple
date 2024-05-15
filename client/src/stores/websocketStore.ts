@@ -25,6 +25,18 @@ interface ChatMessageResponse {
   target: number;
 }
 
+// base64 디코딩 함수
+function decodeUnicode(str: string) {
+  return decodeURIComponent(
+    atob(str)
+      .split('')
+      .map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join('')
+  );
+}
+
 interface WebSocketState {
   stompClient: Client | null;
   messages: ChatMessageResponse[];
@@ -99,7 +111,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
               set({ quiz: res.content });
               break;
             case 'ANSWER':
-              set({ answer: atob(res.content) });
+              set({ answer: decodeUnicode(res.content) });
               break;
             case 'START':
               set({ isGaming: true, isGameRoundInProgress: true, currentRound: 1 });
