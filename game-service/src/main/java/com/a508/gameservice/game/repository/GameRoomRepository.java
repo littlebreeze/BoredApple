@@ -92,4 +92,16 @@ public class GameRoomRepository {
         redisTemplate.delete(GAME_ROOM_HASH_KEY + roomId);
     }
 
+
+    public List<GameRoom> findQuickEntryGameRoom() {
+        Set<String> keys = redisTemplate.keys(GAME_ROOM_HASH_KEY + "*");
+        List<GameRoom> gameRooms = new ArrayList<>();
+        for (String key : keys) {
+            GameRoom gameRoom=redisTemplate.opsForValue().get(key);
+            if (gameRoom != null && !gameRoom.getIsSecret() && !gameRoom.getIsStarted()) {
+                gameRooms.add(gameRoom);
+            }
+        }
+        return gameRooms;
+    }
 }
