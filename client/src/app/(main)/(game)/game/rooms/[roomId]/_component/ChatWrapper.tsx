@@ -9,7 +9,9 @@ import axios from 'axios';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export default function ChatWrapper({ roomId }: { roomId: number }) {
+  const chatRef = useRef<HTMLInputElement | null>(null);
   const messageEndRef = useRef<HTMLDivElement | null>(null);
+  const [focused, setFocused] = useState(false);
   const [newMessage, setNewMessage] = useState<string>('');
 
   const { myNickname, myUserId } = useGameRoomStore();
@@ -27,6 +29,23 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
     timer,
   } = useWebsocketStore();
 
+  // 게임화면에서 엔터로 인풋창 포커스
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        console.log('####');
+        chatRef.current?.focus();
+      }
+    };
+
+    document.addEventListener('keypress', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keypress', handleKeyPress);
+    };
+  }, []);
+
+  // 마지막 채팅으로 스크롤 이동
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -76,10 +95,7 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
     <div className='h-full px-3 pt-3 pb-1 bg-ourLightGray/50 rounded-xl flex flex-col justify-between'>
       <div className='h-44 flex flex-col overflow-y-scroll'>
         {messages.map((m, idx) => (
-          <div
-            key={idx}
-            className='p-1 flex gap-3'
-          >
+          <div key={idx} className='p-1 flex gap-3'>
             <div className={`text-center w-2/12 border-r-2 ${m.writer === '심심한 사과' && 'font-bold text-ourTheme'}`}>
               {m.writer}
             </div>
@@ -101,6 +117,10 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
         <input
           className='px-2 w-10/12 appearance-none rounded leading-tight focus:outline-none'
           type='text'
+          ref={chatRef}
+          placeholder={focused ? '' : '엔터키를 눌러 채팅을 시작하세요'}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyUp={(e) => {
