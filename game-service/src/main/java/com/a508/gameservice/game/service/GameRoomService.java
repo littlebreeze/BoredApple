@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Type;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -130,16 +131,30 @@ public class GameRoomService {
     /**
      * 방에 회원넣기
      */
-    public synchronized void createRoomPlayer(HttpServletRequest request, Integer roomId) {
+    public synchronized boolean createRoomPlayer(HttpServletRequest request, Integer roomId, boolean type) {
         int userId = getUserId(request);
-        if (roomPlayerRepository.playerCnt(String.valueOf(roomId)) < gameRoomRepository.getGameRoom(String.valueOf(roomId)).getMaxNum()) {
+        GameRoom gameRoom = gameRoomRepository.getGameRoom(String.valueOf(roomId));
+        if (roomPlayerRepository.playerCnt(String.valueOf(roomId)) < gameRoom.getMaxNum()) {
+            if (gameRoom.getIsStarted()) {
+                if (type)
+                    throw new CustomException(ErrorCode.GAME_IS_STARTED);
+                else {
+                    return false;
+                }
+            }
             RoomPlayer roomPlayer = RoomPlayer.builder().userId(userId)
                     .joinGameTime(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                     .build();
             roomPlayerRepository.addPlayerToRoom(String.valueOf(roomId), userId, roomPlayer);
+            return true;
         } else {
-            throw new CustomException(ErrorCode.PLAYER_IS_FULL_ERROR);
+            if (type)
+                throw new CustomException(ErrorCode.PLAYER_IS_FULL_ERROR);
+            else {
+                return false;
+            }
         }
+
     }
 
     /**
@@ -392,9 +407,14 @@ public class GameRoomService {
      * 빠른 입장
      */
     public int quickEntryPlayer(HttpServletRequest request) {
-        int userId = getUserId(request);
-        //방 중에 isStarted False고 isSecret True인 방 id List로 반환
-        List<GameRoom> gameRoomList=gameRoomRepository.findQuickEntryGameRoom();
-        return 1;
+        String roomId = "";
+        do {
+            // isStarted, isSecret False인 방 List
+            List<GameRoom> gameRoomList = gameRoomRepository.findQuickEntryGameRoom();
+            SecureRandom secureRandom = new SecureRandom();
+            int random = secureRandom.nextInt(gameRoomList.size());
+            roomId = gameRoomList.get(random).getId();
+        } while (!createRoomPlayer(request, Integer.parseInt(roomId), false));
+        return Integer.parseInt(roomId);
     }
 }

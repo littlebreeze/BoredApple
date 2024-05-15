@@ -42,7 +42,7 @@ public class GameRoomController {
      */
     @GetMapping("/players")
     public SuccessResponse<JoinRoomRes> addPlayer(HttpServletRequest request, @RequestParam Integer roomId) {
-        gameRoomService.createRoomPlayer(request, roomId);
+        gameRoomService.createRoomPlayer(request, roomId,true);
         return new SuccessResponse<>(gameRoomService.getRoomInfo(request, roomId));
     }
 
