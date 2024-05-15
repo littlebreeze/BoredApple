@@ -50,13 +50,9 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
 
   // 효과음
   useEffect(() => {
-    if (timer == 33) clockES.play();
-    if (timer == 32) clockES.play();
-    if (timer == 31) clockES.play();
-    if (timer == 20) hintES.play();
-    if (timer == 10) hintES.play();
-    if (timer == 5) timerES.play();
-    if (timer == 0 || isCorrectAnswer) timerES.stop();
+    if (timer === 33 || timer === 32 || timer === 31) clockES.play();
+    if (timer === 20 || timer === 10) hintES.play();
+    if (timer === 5 || timer === 4 || timer === 3 || timer === 2 || timer === 1) timerES.play();
     if (isCorrectAnswer) correctES.play();
   }, [timer, isCorrectAnswer]);
 
