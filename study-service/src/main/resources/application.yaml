@@ -17,6 +17,15 @@ spring:
   profiles:
     include:
       - secret
+  kafka:
+    bootstrap-servers: k10a508.p.ssafy.io:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+app:
+  kafka:
+    topic: user-events
 
 server:
   port: 8086
