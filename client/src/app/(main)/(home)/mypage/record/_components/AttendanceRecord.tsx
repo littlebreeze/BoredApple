@@ -27,7 +27,7 @@ export default function AttendanceRecord() {
     getAttendanceData(yearMonth).then((value) => {
       setAttendance(value.data.data);
     });
-  }, [yearMonth]);
+  }, [yearMonth?.getMonth()]);
 
   useEffect(() => {
     console.log('출석 정보 요청 데이터: ', attendance);
