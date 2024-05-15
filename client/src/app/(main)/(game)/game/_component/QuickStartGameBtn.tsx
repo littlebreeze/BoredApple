@@ -39,7 +39,7 @@ export default function QuickStartGameBtn() {
         text: '새로고침하거나 직접 방을 만들어 대결을 시작하세요!',
         confirmButtonColor: '#0064FF',
       });
-    else
+    else if (!isLoading)
       getGameRoomInfo()
         .then((response) => {
           setIsLoading(false);
