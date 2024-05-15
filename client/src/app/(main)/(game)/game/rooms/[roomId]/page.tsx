@@ -21,9 +21,34 @@ export default function Page() {
   const { connect, disconnect, stompClient } = useWebsocketStore();
   const { setGameRoomInfo, resultModalIsShow } = useGameRoomStore();
 
+  // 개발자 도구 차단
   useEffect(() => {
-    console.log(roomPlayerRes);
-    // myUserId 없으면 game으로 보내기
+    const blockDevTools = (e: KeyboardEvent) => {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+        (e.ctrlKey && e.shiftKey && e.key === 'C') ||
+        (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+        (e.ctrlKey && e.key === 'U')
+      )
+        e.preventDefault();
+    };
+
+    const blockRightClick = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+
+    window.addEventListener('keydown', blockDevTools);
+    window.addEventListener('contextmenu', blockRightClick);
+
+    return () => {
+      window.addEventListener('keydown', blockDevTools);
+      window.addEventListener('contextmenu', blockRightClick);
+    };
+  }, []);
+
+  // myUserId 없으면 game으로 보내기
+  useEffect(() => {
     if (!myUserId) router.replace('/game');
   }, []);
 
