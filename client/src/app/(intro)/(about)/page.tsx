@@ -7,6 +7,7 @@ import UpsideAnimation from './_component/UpsideAnimation';
 import LeftSideAnimation from './_component/LeftSideAnimation';
 import RightSideAnimation from './_component/RightSideAnimation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: '심심한 사과, 당신의 문해력 지키미',
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div className='bg-white '>
+    <div className='bg-white'>
       <Header />
       <div className='bg-ourTheme pt-32 pb-10 overflow-hidden'>
         <div className='flex flex-col items-center text-center gap-9'>
@@ -66,8 +67,8 @@ export default function Page() {
           <SituationCard svg={'situation4'} content={`말할 때 '그거 있잖아' 반복하기`} />
         </div>
       </div>
-      <div className='px-5 md:px-10 lg:px-28 pt-36 flex flex-col justify-center gap-10'>
-        <div className='text-center font-semibold text-base md:text-xl lg:text-xl mb-10'>
+      <div className='px-5 md:px-10 lg:px-44 pt-36 flex flex-col justify-center gap-5 md:gap-28 lg:gap-28'>
+        <div className='text-center font-semibold text-base md:text-xl lg:text-xl'>
           이런 문해력 고민{' '}
           <mark className='bg-ourGreen/30 mr-1'>
             <span className='font-Ansungtangmyun text-base md:text-3xl lg:text-3xl text-ourTheme'>심심한 사과</span>
@@ -76,7 +77,7 @@ export default function Page() {
         </div>
         <UpsideAnimation>
           <div className='w-full flex flex-col gap-5 md:flex-row lg:flex-row justify-center'>
-            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 flex flex-col gap-10 items-center md:items-start lg:items-start'>
+            <div className='w-full md:w-1/2 lg:w-1/2 h-80 flex flex-col gap-10 items-center md:items-start lg:items-start justify-center'>
               <div className='text-ourBlue font-bold text-base md:text-xl lg:text-xl'>난이도별, 관심사별</div>
               <div className='font-bold text-3xl md:text-5xl lg:text-5xl flex flex-col gap-2'>
                 <span>매일 새로운</span>
@@ -87,16 +88,20 @@ export default function Page() {
                 <li>인지 능력, 추론 능력 등을 기를 수 있는 다양한 문제</li>
               </ul>
             </div>
-            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 bg-blue-100  '>사진</div>
+            <div className='w-full md:w-1/2 lg:w-1/2 h-80 relative'>
+              <Image fill src={`/about/explain1.svg`} loading='eager' alt='' priority />
+            </div>
           </div>
         </UpsideAnimation>
-        <div className='w-full flex flex-col-reverse gap-5 md:flex-row lg:flex-row justify-center'>
-          <div className='w-full  md:w-1/2 lg:w-1/2'>
+        <div className='w-full flex flex-col-reverse gap-0 md:gap-14 lg:gap-14 md:flex-row lg:flex-row justify-center'>
+          <div className='w-full md:w-1/2 lg:w-1/2'>
             <LeftSideAnimation>
-              <div className='w-full h-80 bg-blue-100  '>글</div>
+              <div className='w-full h-80 relative'>
+                <Image fill src={`/about/explain1.svg`} loading='eager' alt='' priority />
+              </div>
             </LeftSideAnimation>
           </div>
-          <div className='w-full  md:w-1/2 lg:w-1/2'>
+          <div className='w-full md:w-1/2 lg:w-1/2'>
             <RightSideAnimation>
               <div className='w-full h-80 flex flex-col gap-10 items-center md:items-start lg:items-start'>
                 <div className='text-ourBlue font-bold text-base md:text-xl lg:text-xl'>나의 요약 실력</div>
@@ -115,7 +120,7 @@ export default function Page() {
         </div>
         <UpsideAnimation>
           <div className='w-full flex flex-col gap-5 md:flex-row lg:flex-row justify-center'>
-            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 flex flex-col gap-10 items-center md:items-start lg:items-start'>
+            <div className='w-full md:w-1/2 lg:w-1/2 h-80 flex flex-col gap-10 items-center md:items-start lg:items-start justify-center'>
               <div className='text-ourBlue font-bold text-base md:text-xl lg:text-xl'>모든 학년별, 수준별</div>
               <div className='font-bold text-3xl md:text-5xl lg:text-5xl  flex flex-col gap-2'>
                 <span>다양한 주제 지문들로</span>
@@ -126,16 +131,20 @@ export default function Page() {
                 <li>다양한 문제 유형들의 실시간 피드백과 해설</li>
               </ul>
             </div>
-            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 bg-blue-100  '>사진</div>
+            <div className='w-full md:w-1/2 lg:w-1/2 h-80 relative'>
+              <Image fill src={`/about/explain1.svg`} loading='eager' alt='' priority />
+            </div>
           </div>
         </UpsideAnimation>
-        <div className='w-full flex flex-col-reverse gap-5 md:flex-row lg:flex-row justify-center'>
-          <div className='w-full  md:w-1/2 lg:w-1/2'>
+        <div className='w-full flex flex-col-reverse gap-0 md:gap-14 lg:gap-14 md:flex-row lg:flex-row justify-center'>
+          <div className='w-full md:w-1/2 lg:w-1/2'>
             <LeftSideAnimation>
-              <div className='w-full h-80 bg-blue-100  '>글</div>
+              <div className='w-full h-80 relative'>
+                <Image fill src={`/about/explain1.svg`} loading='eager' alt='' priority />
+              </div>
             </LeftSideAnimation>
           </div>
-          <div className='w-full  md:w-1/2 lg:w-1/2'>
+          <div className='w-full md:w-1/2 lg:w-1/2'>
             <RightSideAnimation>
               <div className='w-full h-80 flex flex-col gap-10 items-center md:items-start lg:items-start'>
                 <div className='text-ourBlue font-bold text-base md:text-xl lg:text-xl'>매달 성장하는 나</div>
@@ -153,7 +162,7 @@ export default function Page() {
         </div>
         <UpsideAnimation>
           <div className='w-full flex flex-col gap-5 md:flex-row lg:flex-row justify-center'>
-            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 flex flex-col gap-10 items-center md:items-start lg:items-start'>
+            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 flex flex-col gap-10 items-center md:items-start lg:items-start justify-center'>
               <div className='text-ourBlue font-bold text-base md:text-xl lg:text-xl'>문해력의 기초, 어휘!</div>
               <div className='font-bold text-3xl md:text-5xl lg:text-5xl flex flex-col gap-2'>
                 <span>대결을 통한</span>
@@ -164,7 +173,9 @@ export default function Page() {
                 <li>단어를 알면 표현력도 올라가요</li>
               </ul>
             </div>
-            <div className='w-full  md:w-1/2 lg:w-1/2 h-80 bg-blue-100  '>사진</div>
+            <div className='w-full md:w-1/2 lg:w-1/2 h-80   relative'>
+              <Image fill src={`/about/explain1.svg`} loading='eager' alt='' priority />
+            </div>
           </div>
         </UpsideAnimation>
       </div>
