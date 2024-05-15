@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { IBasicProblem, BasicProblemResponse } from '@/types/Problem';
 import ProgressBar from '../../_components/ProgressBar';
+import ReadProblem from './ReadProblem';
 
 export default function ReadResult() {
   const router = useRouter();
@@ -74,25 +75,17 @@ export default function ReadResult() {
         <ProgressBar progress={progress} />
 
         {/* 문제 */}
-        <div className='py-4'></div>
-        <div className='flex'>
-          <div className='mr-2'>정독 훈련</div>
-          <div>
-            <span className='text-ourBlue'>{progress}</span>
-            <span className='text-ourBlack'> / 3</span>
-          </div>
-        </div>
-        <div className='py-1'></div>
-        <div>각 문장을 정확히 끊어 읽고 가장 적절한 선택지를 고르세요. 준비됐다면 시작 버튼을 눌러주세요!</div>
-        <div className='py-2'></div>
+        <ReadProblem progress={progress} />
 
         {/* 지문 및 선택지 */}
         {currProblem && (
           <div>
-            <div className='flex gap-2'>
-              <div className='p-4 h-fit flex-1 font-Batang'> {currProblem.content.replace(/\|/g, '')}</div>
+            <div className='flex gap-2 '>
+              <div className='leading-7 p-4 h-fit flex-1 font-Batang bg-ourGray mr-4 mt-2 '>
+                {currProblem.content.replace(/\|/g, '')}
+              </div>
               <div>
-                <div className='py-12'></div>
+                <div className='pt-2'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
                   {[1, 2, 3].map((option) => (
                     <div

@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { BasicProblemResponse } from '@/types/Problem';
 import ProgressBar from '../../_components/ProgressBar';
+import WordProblem from './WordProblem';
 
 export default function Word() {
   const router = useRouter();
@@ -94,28 +95,18 @@ export default function Word() {
         <ProgressBar progress={progress} />
 
         {/* 문제 */}
-        <div className='py-4'></div>
-        <div className='flex'>
-          <div className='mr-2'>어휘 퀴즈</div>
-          <div>
-            <span className='text-ourBlue'>{progress}</span>
-            <span className='text-ourBlack'> / 3</span>
-          </div>
-        </div>
-        <div className='py-1'></div>
-        <div>다음 문장의 의미에 부합하는 적절한 어휘를 고르시오.</div>
-        <div className='py-2'></div>
+        <WordProblem progress={progress} />
 
         {/* 지문 및 선택지*/}
         {currProblem && (
           <div>
             <div className='flex gap-2'>
               {/* 지문 */}
-              <div className='p-4 h-fit flex-1 font-Batang'>{currProblem.content}</div>
+              <div className='mt-2 p-4 h-fit flex-1 font-Batang bg-ourGray mr-4'>{currProblem.content}</div>
 
               {/* 선택지 */}
               <div>
-                <div className='py-12'></div>
+                <div className='pt-2'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
                   <div
                     className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${

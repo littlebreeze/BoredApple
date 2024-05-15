@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <div className='mx-auto min-h-screen max-w-[800px] flex flex-col items-center py-10 relative'>
-      <Image className='mb-6 w-80' src={quizTitle} alt='자가진단' />
+      <Image className='mb-2 w-80' src={quizTitle} alt='자가진단' />
       <Quiz />
     </div>
   );

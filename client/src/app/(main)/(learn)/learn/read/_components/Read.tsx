@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { BasicProblemResponse } from '@/types/Problem';
 import ProgressBar from '../../_components/ProgressBar';
+import ReadProblem from './ReadProblem';
+import replay from '@/../public/learn/replay.svg';
 
 export default function Read() {
   const router = useRouter();
@@ -122,17 +124,7 @@ export default function Read() {
         <ProgressBar progress={progress} />
 
         {/* 문제 */}
-        <div className='py-4'></div>
-        <div className='flex'>
-          <div className='mr-2'>정독 훈련</div>
-          <div>
-            <span className='text-ourBlue'>{progress}</span>
-            <span className='text-ourBlack'> / 3</span>
-          </div>
-        </div>
-        <div className='py-1'></div>
-        <div>각 문장을 정확히 끊어 읽고 가장 적절한 선택지를 고르세요. 준비됐다면 시작 버튼을 눌러주세요!</div>
-        <div className='py-2'></div>
+        <ReadProblem progress={progress} />
 
         {/* 지문 및 선택지 */}
         {currProblem && (
@@ -149,15 +141,47 @@ export default function Read() {
                   </button>
                 </div>
               ) : (
-                // 지문 및 선택지
+                // 지문 및 선택지 및 다시 읽기
                 <div className='flex flex-1 gap-2'>
                   {/* 지문 */}
-                  <div className='flex-1 p-4 h-fit'>
-                    <div className='font-Batang select-none'>{currProblem.content.split('|')[currSentence]} &nbsp;</div>
+                  <div className='mt-2 flex-1 h-fit'>
+                    <div
+                      className='leading-7 font-Batang select-none bg-ourGray p-4 mr-4 '
+                      style={{
+                        display: currSentence === currProblem.content.split('|').length - 1 ? 'none' : 'block',
+                      }}
+                    >
+                      {currProblem.content.split('|').map((sentence, index) => (
+                        <span key={index} style={{ visibility: currSentence === index ? 'visible' : 'hidden' }}>
+                          {sentence}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* 다시 읽기 */}
+                    <div
+                      className=''
+                      style={{
+                        display: currSentence === currProblem.content.split('|').length - 1 ? 'block' : 'none',
+                      }}
+                    >
+                      <div className='flex-1'>
+                        <button
+                          className='mt-2 cursor-pointer bg-black p-4 rounded-xl h-10 flex justify-center items-center text-white'
+                          onClick={handleStartClick}
+                        >
+                          <span className='w-fit'>
+                            <Image className='w-4 mr-2' src={replay} alt='다시 하기' />
+                          </span>
+                          <span>다시 읽기</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
+
                   {/* 선택지 */}
                   <div>
-                    <div className='py-12'></div>
+                    <div className='pt-2'></div>
                     <div className='w-96 bg-white rounded-xl p-4'>
                       <div
                         className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${

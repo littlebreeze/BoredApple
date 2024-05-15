@@ -4,6 +4,7 @@ import instance from '@/utils/interceptor';
 import { useRouter } from 'next/navigation';
 import { SummaryProblemResponse } from '@/types/Problem';
 import ProgressBar from '../../_components/ProgressBar';
+import SummaryProblem from './SummaryProblem';
 
 export default function SummaryResult() {
   const router = useRouter();
@@ -54,26 +55,16 @@ export default function SummaryResult() {
         <ProgressBar progress={progress} />
 
         {/* 문제 */}
-        <div className='py-4'></div>
-        <div className='flex'>
-          <div className='mr-2'>지문 요약</div>
-          <div>
-            <span className='text-ourBlue'>{progress}</span>
-            <span className='text-ourBlack'> / 3</span>
-          </div>
-        </div>
-        <div className='py-1'></div>
-        <div>다음 글을 읽고 문단의 핵심 내용을 담아 한 문장으로 요약해보세요.</div>
-        <div className='py-2'></div>
+        <SummaryProblem progress={progress} />
 
         {/* 지문 및 선택지 */}
         {currProblem && (
           <div>
-            <div className='flex gap-2'>
-              <div className='p-4 h-fit flex-1 font-Batang'>
-                <span className='font-Batang'>{currProblem.content}</span>
+            <div className='flex gap-2 '>
+              <div className='p-4 h-fit flex-1 font-Batang mr-4 mt-2 bg-ourGray'>
+                <span className='leading-7 font-Batang'>{currProblem.content}</span>
               </div>
-              <div className='bg-white rounded-xl p-4 w-96'>
+              <div className='bg-white rounded-xl p-4 w-96 mt-2'>
                 <div className='flex gap-2'>
                   <div className='w-fit flex flex-col justify-center p-1 px-2 text-black text-xs rounded-full bg-ourGreen'>
                     {getStars(currProblem.similarity!)}
