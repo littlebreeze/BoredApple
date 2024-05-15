@@ -281,6 +281,9 @@ public class GameRoomService {
     }
 
 
+    /**
+     * 게임 결과 조회
+     */
     public List<ResultRes> getResult(ResultListReq resultListReq) {
         if (resultListReq.getResultReqList() == null || resultListReq.getResultReqList().isEmpty()) {
             throw new CustomException(ErrorCode.RESULT_IS_EMPTY);
@@ -343,6 +346,10 @@ public class GameRoomService {
         return resultResList;
     }
 
+
+    /**
+     * 게임방 퇴장
+     */
     public void removeRoomPlayer(Integer roomId, Integer senderId) {
         String id = String.valueOf(roomId);
         //방에 나 혼자
@@ -379,5 +386,15 @@ public class GameRoomService {
         }
 
 
+    }
+
+    /**
+     * 빠른 입장
+     */
+    public int quickEntryPlayer(HttpServletRequest request) {
+        int userId = getUserId(request);
+        //방 중에 isStarted False고 isSecret True인 방 id List로 반환
+        List<GameRoom> gameRoomList=gameRoomRepository.findQuickEntryGameRoom();
+        return 1;
     }
 }
