@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -51,11 +52,12 @@ public class SchedulerService {
         GameQuiz gameQuiz = gameQuizList.get(roundCnt);
         // 스케줄링 작업 시작
         scheduledTask = scheduler.scheduleAtFixedRate(() -> {
-            if (timeCnt>=0) simpMessagingTemplate.convertAndSend("/topic/time/rooms/" + roomId, timeCnt);
+            if (timeCnt >= 0) simpMessagingTemplate.convertAndSend("/topic/time/rooms/" + roomId, timeCnt);
             if (timeCnt == 30) {
                 ChatMessageRes quiz = ChatMessageRes.builder().type(MessageType.QUIZ).content(gameQuiz.getQuiz()).build();
                 simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, quiz);
-                ChatMessageRes answer = ChatMessageRes.builder().type(MessageType.ANSWER).content(gameQuiz.getAnswer()).build();
+                String encodingAnswer = Base64.getEncoder().encodeToString(gameQuiz.getAnswer().getBytes());
+                ChatMessageRes answer = ChatMessageRes.builder().type(MessageType.ANSWER).content(encodingAnswer).build();
                 simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, answer);
             }
             timeCnt--;
