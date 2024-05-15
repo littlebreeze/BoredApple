@@ -1,31 +1,23 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
-import ChatWrapper from './_component/ChatWrapper';
-import GameScoreBoard from './_component/GameScoreBoard';
-import { useGameRoomStore } from '@/stores/game-room-info';
 import { useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+
+import { useGameRoomStore } from '@/stores/game-room-info';
+import { useWebsocketStore } from '@/stores/websocketStore';
+
 import QuizWrapper from './_component/QuizWrapper';
 import TimerWrapper from './_component/TimerWrapper';
-import { useWebsocketStore } from '@/stores/websocketStore';
-import { useGameRoomInfo } from '@/queries/get-room-info';
 import GameResultsModal from './_component/GameResultsModal';
+import ChatWrapper from './_component/ChatWrapper';
+import GameScoreBoard from './_component/GameScoreBoard';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
-  const {
-    myNickname,
-    myUserId,
-    roomId: storedRoomId,
-    maxNum,
-    quizCount,
-    creatorId,
-    roomPlayerRes,
-  } = useGameRoomStore();
+  const { myNickname, myUserId, roomId: storedRoomId, roomPlayerRes } = useGameRoomStore();
 
   const router = useRouter();
   const { connect, disconnect, stompClient } = useWebsocketStore();
-  // const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(parseInt(roomId));
   const { setGameRoomInfo, resultModalIsShow } = useGameRoomStore();
 
   useEffect(() => {
@@ -33,13 +25,6 @@ export default function Page() {
     // myUserId 없으면 game으로 보내기
     if (!myUserId) router.replace('/game');
   }, []);
-
-  // useEffect(() => {
-  //   if (!stompClient) {
-  //     connect(roomId);
-  //     if (roomData) setGameRoomInfo(roomData?.data.data);
-  //   }
-  // }, [roomId, connect, disconnect, roomData]);
 
   useEffect(() => {
     // unMount 될 때 disconnect

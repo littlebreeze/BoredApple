@@ -1,9 +1,11 @@
 'use client';
-import { AResponse } from '@/types/MypageRecord';
 import { useEffect, useState } from 'react';
-import RecordDetailItem from './RecordDetailItem';
-import { useRecordStore } from '@/stores/record';
+
 import instance from '@/utils/interceptor';
+import { AResponse } from '@/types/MypageRecord';
+import { useRecordStore } from '@/stores/record';
+
+import RecordDetailItem from './RecordDetailItem';
 
 const getAttendanceData = async (yearMonth: Date | null) => {
   const response = await instance.post<{ data: AResponse }>(
@@ -24,9 +26,13 @@ export default function AttendanceRecord() {
   useEffect(() => {
     getAttendanceData(yearMonth).then((value) => {
       setAttendance(value.data.data);
-      console.log(attendance);
     });
   }, [yearMonth]);
+
+  useEffect(() => {
+    console.log('출석 정보 요청 데이터: ', attendance);
+  }, [attendance]);
+
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>

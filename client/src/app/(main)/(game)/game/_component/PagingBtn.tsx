@@ -1,7 +1,6 @@
 'use client';
 
 import { useGameWaitStore } from '@/stores/game-wait';
-import { useEffect } from 'react';
 
 export default function PagingBtn({ title, activate }: { title: string; activate: boolean }) {
   const { pageNum, setPageNum } = useGameWaitStore();
@@ -14,9 +13,7 @@ export default function PagingBtn({ title, activate }: { title: string; activate
       }
     }
   };
-  // useEffect(() => {
-  //   console.log(pageNum);
-  // }, [pageNum]);
+
   return (
     <>
       <div

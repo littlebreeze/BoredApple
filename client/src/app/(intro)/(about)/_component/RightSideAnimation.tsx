@@ -1,5 +1,5 @@
 'use client';
-import { Children, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type Props = {
   children: React.ReactNode;
@@ -40,7 +40,6 @@ export default function RightSideAnimation({ children }: Props) {
   }, []);
 
   return (
-    // <div className=''>
     <div
       className={`flex flex-col gap-5 md:flex-row lg:flex-row justify-center transition-all ease-in-out duration-700 ",
     ${visible ? 'opacity-100' : 'opacity-0 pl-14'}`}
@@ -48,6 +47,5 @@ export default function RightSideAnimation({ children }: Props) {
     >
       {children}
     </div>
-    // </div>
   );
 }
