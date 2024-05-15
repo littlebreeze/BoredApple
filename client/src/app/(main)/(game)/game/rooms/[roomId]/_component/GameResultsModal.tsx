@@ -23,7 +23,7 @@ type ResponseItem = {
 
 export default function GameResultsModal() {
   const { setResultModalIsShow, roomId, roomName, myUserId, creatorId } = useGameRoomStore();
-  const { players } = useGameScoreStore();
+  const { players, clearScore } = useGameScoreStore();
   const { stompClient, gameResult } = useWebsocketStore();
 
   useEffect(() => {
@@ -32,6 +32,7 @@ export default function GameResultsModal() {
     // 점수별 내림차순 정렬 => 순위...
     copyPlayers.sort((a, b) => b.score - a.score);
 
+    console.log('정렬된 데이터: ', copyPlayers);
     let rank = 1;
     const requestarr: RequestItem[] = players.map((player, idx) => {
       if (idx === 0) return { ranking: rank, userId: player.id };
@@ -43,6 +44,7 @@ export default function GameResultsModal() {
         };
       }
     });
+    console.log('요청 보낼 데이터: ', requestarr);
 
     // 방장만 결과 요청 발행
     if (myUserId === creatorId) {
@@ -52,6 +54,14 @@ export default function GameResultsModal() {
       });
     }
   }, [stompClient?.active, stompClient?.connected]);
+
+  useEffect(() => {
+    console.log('발행된 게임결과: ', gameResult);
+  }, [gameResult]);
+
+  useEffect(() => {
+    return () => clearScore();
+  }, []);
 
   return (
     <>
