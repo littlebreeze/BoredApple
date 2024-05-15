@@ -99,7 +99,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
               set({ quiz: res.content });
               break;
             case 'ANSWER':
-              set({ answer: res.content });
+              set({ answer: atob(res.content) });
               break;
             case 'START':
               set({ isGaming: true, isGameRoundInProgress: true, currentRound: 1 });
