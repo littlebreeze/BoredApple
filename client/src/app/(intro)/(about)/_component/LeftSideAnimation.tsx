@@ -42,7 +42,7 @@ export default function LeftSideAnimation({ children }: Props) {
   return (
     // <div className=''>
     <div
-      className={`flex flex-col gap-5 md:flex-row lg:flex-row justify-center transition-all ease-in-out duration-1000",
+      className={`flex flex-col md:flex-row lg:flex-row justify-center transition-all ease-in-out duration-1000 ",
     ${visible ? 'opacity-100' : 'opacity-0 pr-14'}`}
       ref={ref}
     >
