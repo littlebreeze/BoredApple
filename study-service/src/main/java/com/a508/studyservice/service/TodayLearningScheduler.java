@@ -166,8 +166,8 @@ public class TodayLearningScheduler {
 					List<TopicProblem> topicProblemList = topicRepository.findByCategory(category);
 					Collections.shuffle((topicProblemList));
 					l: for(TopicProblem topicProblem : topicProblemList) {
-						for(ChoiceSolved choiceSolved :choiceSolvedList) {
-							if(Objects.equals(choiceSolved.getProblemId(), topicProblem.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
+						for(EssaySolved essaySolved :essaySolvedList) {
+							if(Objects.equals(essaySolved.getProblemId(), topicProblem.getId())) continue  l;
 						}
 						TodayLearning todayLearning =todayLearningRepository.save(makeEntity(userId,topicProblem.getId(),type,category));
 						log.info(" userId의 값은 = "  + userId+ "  생성된 오늘의 학습은 = "+todayLearning  );
