@@ -107,7 +107,7 @@ public class TodayLearningScheduler {
 				String category = categoryList.get(idx);
 				log.info( "String = " +  type );
 				//type 마다 3개씩 생성
-				int  count = 0 ;
+				int  count = 1 ;
 				if(type.equals("순서맞추기")){
 					List<ParagraphOrder> paragraphOrders = paragraphOrderRepository.findByCategory(type);
 					Collections.shuffle(paragraphOrders);
