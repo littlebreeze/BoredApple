@@ -9,6 +9,7 @@ import clockSound from '@/../public/sound/clock.mp3';
 import timerSound from '@/../public/sound/timer.mp3';
 import hintSound from '@/../public/sound/hint.mp3';
 import correctSound from '@/../public/sound/correct.mp3';
+import timeOut from '@/../public/sound/timeout.mp3';
 
 export default function TimerWrapper({ roomId }: { roomId: string }) {
   // 효과음
@@ -16,6 +17,7 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
   const timerES = effectSound(timerSound);
   const hintES = effectSound(hintSound);
   const correctES = effectSound(correctSound);
+  const timeOutES = effectSound(timeOut);
 
   const {
     timer,
@@ -53,6 +55,7 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
     if (timer === 33 || timer === 32 || timer === 31) clockES.play();
     if (timer === 20 || timer === 10) hintES.play();
     if (timer === 5 || timer === 4 || timer === 3 || timer === 2 || timer === 1) timerES.play();
+    if (timer === 0) timeOutES.play();
     if (isCorrectAnswer) correctES.play();
   }, [timer, isCorrectAnswer]);
 
