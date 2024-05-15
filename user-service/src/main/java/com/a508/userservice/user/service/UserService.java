@@ -145,4 +145,14 @@ public class UserService {
 
 		return userRepository.findById(userId).orElseThrow().getNickname();
 	}
+
+
+	public List<StudyTimeRes> getStudyTime(){
+		List<User> userList = userRepository.findAll();
+		List<StudyTimeRes> studyTimeResList = new ArrayList<>();
+		for(User user : userList){studyTimeResList.add(new StudyTimeRes(user.getId(),user.getStudyTime()));}
+		return studyTimeResList;
+	}
+
+
 }

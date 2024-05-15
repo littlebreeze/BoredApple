@@ -168,4 +168,11 @@ public class UserController {
 	public String getNicknameByUserId(@RequestParam Integer userId) {
 		return userService.getNicknameByUserId(userId);
 	}
+
+
+	@GetMapping("/studytime")
+	public SuccessResponse<List<StudyTimeRes>> getStudyTime(HttpServletRequest request){
+		return new SuccessResponse<>(userService.getStudyTime());
+	}
+
 }
