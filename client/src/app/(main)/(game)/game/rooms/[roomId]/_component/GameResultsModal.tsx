@@ -1,10 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
+import instance from '@/utils/interceptor';
+
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useGameWaitStore } from '@/stores/game-wait';
 import { useGameScoreStore } from '@/stores/game-score';
-import { useEffect, useState } from 'react';
-import instance from '@/utils/interceptor';
 import { useWebsocketStore } from '@/stores/websocketStore';
 
 type RequestItem = {
@@ -19,38 +21,17 @@ type ResponseItem = {
   diff: number;
 };
 
-const postGameResult = async (playerScores: RequestItem[]) => {
-  const response = await instance.post<{ data: { ResultList: ResponseItem[] } }>(
-    `${process.env.NEXT_PUBLIC_API_SERVER}/game-service/results`,
-    {
-      resultReqList: playerScores,
-    }
-  );
-  return response;
-};
-
-const returnKorean = (number: number) => {
-  if (number === 1) return '일';
-  else if (number === 2) return '이';
-  else if (number === 3) return '삼';
-  else if (number === 4) return '사';
-  else if (number === 5) return '오';
-  else if (number === 6) return '육';
-};
-
 export default function GameResultsModal() {
-  const { resultModalIsShow, setResultModalIsShow, roomId, roomName, myUserId, creatorId } = useGameRoomStore();
-  const { selectedRoom } = useGameWaitStore();
-  const { clearScore, players } = useGameScoreStore();
-  const [gameResults, setGameResults] = useState<ResponseItem[]>();
+  const { setResultModalIsShow, roomId, roomName, myUserId, creatorId } = useGameRoomStore();
+  const { players } = useGameScoreStore();
   const { stompClient, gameResult } = useWebsocketStore();
 
   useEffect(() => {
-    console.log('나왔다');
     let copyPlayers = [...players];
+
     // 점수별 내림차순 정렬 => 순위...
     copyPlayers.sort((a, b) => b.score - a.score);
-    // console.log('copyPlayers', copyPlayers);
+
     let rank = 1;
     const requestarr: RequestItem[] = players.map((player, idx) => {
       if (idx === 0) return { ranking: rank, userId: player.id };
@@ -62,27 +43,16 @@ export default function GameResultsModal() {
         };
       }
     });
+
+    // 방장만 결과 요청 발행
     if (myUserId === creatorId) {
-      console.log('게임결과요청보낸다');
       stompClient?.publish({
         destination: `/pub/ws/result/rooms/${roomId}/send`,
         body: JSON.stringify({ resultReqList: requestarr }),
       });
     }
-
-    setGameResults([
-      { ranking: 1, userNickname: '뛰뛰', rating: 1515, diff: 15 },
-      { ranking: 2, userNickname: '뿅뿅', rating: 1500, diff: 0 },
-      { ranking: 3, userNickname: '정윤', rating: 1545, diff: -15 },
-      { ranking: 1, userNickname: '뛰뛰', rating: 1515, diff: 15 },
-      { ranking: 2, userNickname: '뿅뿅', rating: 1500, diff: 0 },
-      { ranking: 3, userNickname: '정윤', rating: 1545, diff: -15 },
-    ]);
   }, [stompClient?.active, stompClient?.connected]);
 
-  useEffect(() => {
-    console.log(gameResult);
-  }, [gameResult]);
   return (
     <>
       <div className='z-30 rounded-md absolute top-0 left-0 w-full h-screen bg-ourBlack/30 flex justify-center items-center'>

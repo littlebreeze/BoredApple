@@ -1,31 +1,26 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 import { useGameRoomInfo } from '@/queries/get-room-info';
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useGameWaitStore } from '@/stores/game-wait';
 import { useWebsocketStore } from '@/stores/websocketStore';
-import instance from '@/utils/interceptor';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-type GameRoomDetail = {
-  myNickname: string | undefined;
-  myUserId: number | undefined;
-  roomId: number | undefined;
-  maxNum: number | undefined;
-  quizCount: number | undefined;
-  creatorId: number | undefined;
-  roomPlayerRes: { userId: number; nickname: string }[];
-};
 
 export default function InsertPasswordModal() {
   const router = useRouter();
-  const { setGameRoomInfo, roomId, roomPlayerRes } = useGameRoomStore();
-  const { roomList, selectedRoom, setIsShow } = useGameWaitStore();
-  const { data: roomData, isLoading, isError } = useGameRoomInfo(selectedRoom?.id);
+
   const [password, setPassword] = useState<string>('');
   const [isCorrect, setCorrect] = useState<boolean>(true);
-  const { connect, stompClient } = useWebsocketStore();
 
+  const { setGameRoomInfo } = useGameRoomStore();
+  const { selectedRoom, setIsShow } = useGameWaitStore();
+  const { connect } = useWebsocketStore();
+
+  const { data: roomData, isLoading, isError } = useGameRoomInfo(selectedRoom?.id);
+
+  // 비밀번호 체크
   const onClickPasswordCheck = () => {
     if (password === selectedRoom?.roomPassword) {
       if (!isLoading && !isError && roomData) {
