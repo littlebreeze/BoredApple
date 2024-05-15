@@ -413,6 +413,7 @@ public class GameRoomService {
         do {
             // isStarted, isSecret False인 방 List
             List<GameRoom> gameRoomList = gameRoomRepository.findQuickEntryGameRoom();
+            if (gameRoomList.isEmpty()) throw new CustomException(ErrorCode.QUICK_ENTRY_ROOM_IS_EMPTY);
             SecureRandom secureRandom = new SecureRandom();
             int random = secureRandom.nextInt(gameRoomList.size());
             roomId = gameRoomList.get(random).getId();
