@@ -31,20 +31,17 @@ export const useGameScoreStore = create<GameScore>((set, get) => ({
     set({ players: filtered });
   },
   getScore: (playerId: number) => {
-    console.log(playerId, get().players);
     let filtered = get().players;
     filtered = filtered.map((player) => {
       if (Number(player.id) === Number(playerId)) {
         return { ...player, score: player.score + 1 };
       } else return player;
     });
-    console.log(filtered);
     set({ players: filtered });
   },
   clearScore: () => {
     let filtered = get().players;
     filtered = filtered.map((player) => ({ ...player, score: 0 }));
-    console.log(filtered);
     set({ players: filtered });
   },
 }));
