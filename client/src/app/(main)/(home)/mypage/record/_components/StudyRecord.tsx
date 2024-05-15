@@ -28,7 +28,7 @@ export default function StudyRecord() {
     try {
       getStudyData(yearMonth).then((value) => setStudyData(value.data.data));
     } catch (error) {}
-  }, [yearMonth]);
+  }, [yearMonth?.getMonth()]);
 
   useEffect(() => {
     console.log('학습 기록 데이터: ', studyData);

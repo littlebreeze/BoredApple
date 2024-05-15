@@ -17,6 +17,7 @@ const getDailyData = async (today: Date | null) => {
       date: today,
       year: today?.getFullYear(),
       month: today!.getMonth() + 1,
+      day: today!.getDate(),
     }
   );
   return response;

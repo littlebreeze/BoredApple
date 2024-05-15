@@ -24,15 +24,20 @@ const getCalendarData = async (yearMonth: Date | null) => {
 export default function CalendarComponent() {
   const { solvedCnt, setSolvedCnt } = useRecordStore();
   const { today, onChange } = useRecordStore();
-  const { yearMonth, onChangeYearMonth } = useRecordStore();
+  const { yearMonth, onChangeYearMonth, parseValueIntoDate } = useRecordStore();
 
   useEffect(() => {
     getCalendarData(yearMonth).then((value) => setSolvedCnt(value.data.data));
-  }, [yearMonth]);
+  }, [yearMonth?.getMonth()]);
 
   useEffect(() => {
     console.log('캘린더 요청 데이터: ', solvedCnt);
   }, [solvedCnt]);
+
+  useEffect(() => {
+    const date = parseValueIntoDate(today);
+    onChangeYearMonth(new Date(date.getFullYear(), date.getMonth(), 1));
+  }, [today]);
 
   return (
     <>
