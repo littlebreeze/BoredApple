@@ -24,9 +24,8 @@ export default function InsertResult() {
 
   const getReadData = async () => {
     try {
-      // const response = await instance.get(`/study-service/problem/sentence`);
-      // setProblems(response.data.data);
-      setProblems(temp.data);
+      const response = await instance.get(`/study-service/problem/sentence`);
+      setProblems(response.data.data);
     } catch (error) {
       // error
     }
@@ -67,56 +66,6 @@ export default function InsertResult() {
     } else {
       return unchecked;
     }
-  };
-
-  const temp = {
-    status: 'success',
-    data: [
-      {
-        content1:
-          '인상주의 비평은 모든 분석적 비평에 대해 회의적인 시각을 가지고 있어 예술을 어떤 규칙이나 객관적 자료로 판단할 수 없다고 본다. “훌륭한 비평가는 대작들과 자기 자신의 영혼의 모험들을 관련시킨다.”라는 비평가 프랑스의 말처럼, ',
-        content2:
-          ' 즉, 인상주의 비평가는 작가의 의도나 그 밖의 외적인 요인들을 고려할 필요 없이 비평가의 자유 의지로 무한대의 상상력을 가지고 작품을 해석하고 판단한다.',
-        option1: '인상주의 비평은 작품의 창작 과정과 작가의 의도를 중요시하지 않는다.',
-        option2: '인상주의 비평은 작품을 객관적인 기준으로 평가하며, 공정성을 추구한다.',
-        option3:
-          '인상주의 비평은 비평가가 다른 저명한 비평가의 관점과 상관없이 자신의 생각과 느낌에 대하여 자율성과 창의성을 가지고 비평하는 것이다.',
-        userAnswer: null,
-        answer: null,
-        category: '예술',
-        type: '문장삽입',
-        problemId: 12,
-        correct: false,
-      },
-      {
-        content1:
-          '미술관에서 오랫동안 움직이지 않고 서 있는 관광객 차림의 부부를 본다면 사람들은 다시 한 번 바라볼 것이다. ',
-        content2: ' 이처럼현실에 존재하는 것을 실재라고 믿을 수 있도록 재현하는 유파를 하이퍼리얼리즘이라고 한다.',
-        option1: '사람들은 미술 작품인 줄 알고 그 부부를 주목할 것이다.',
-        option2: '부부는 미술 작품이 아니라고 밝혀지면 주목받지 않을 것이다.',
-        option3: '그것이 미술 작품이라는 것을 알고서도 놀랄 것이다.',
-        userAnswer: null,
-        answer: null,
-        category: '예술',
-        type: '문장삽입',
-        problemId: 32,
-        correct: false,
-      },
-      {
-        content1: '상징은 말이나 형상이 명백한 의미 이상의 무언가를 내포하고 있는 것이다. ',
-        content2:
-          '어떤 환자는 음식물을 삼키려 할 때마다 심한 경련을 일으키는데, 그것은 음식물로 상징되는 상황을 용납할 수 없는무의식의 발현 때문이라고 할 수 있다. 무의식에서의 문제는 신체적 증상, 즉 신경증으로 나타나는 경우도 있지만 일반적으로는 꿈으로 나타나는 경우가 더 많다. 지크문트 프로이트는 꿈의 상징이 신경증보다 훨씬 더 풍부하고 다양하기 때문에 꿈은 환자의 무의식을 파악하는 데 중요한 단서가 된다고 보았다.',
-        option1: '그 무언가는 정확하게 정의하거나 완벽하게 설명하지는 못하는 부분이기 때문에 무의식과 관련이 깊다.',
-        option2: '상징은 항상 명확하게 해석되고 이해되지만, 때로는 다양한 해석을 허용한다.',
-        option3: '상징은 단순히 시각적인 형상에 국한되지 않고 감정적인 의미도 내포할 수 있다.',
-        userAnswer: null,
-        answer: null,
-        category: '예술',
-        type: '문장삽입',
-        problemId: 40,
-        correct: false,
-      },
-    ],
   };
 
   return (

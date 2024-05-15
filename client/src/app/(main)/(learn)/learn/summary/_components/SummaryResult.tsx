@@ -18,44 +18,10 @@ export default function SummaryResult() {
     getSummaryData();
   }, []);
 
-  const temp = {
-    status: 'success',
-    data: [
-      {
-        content:
-          '변증법의 매력은 ‘종합’에 있다. 종합의 범주는 두 대립적범주 중 하나의 일방적 승리로 끝나도 안 되고, 두 범주의고유한 본질적 규정이 소멸되는 중화 상태로 나타나도 안 된다. 종합은 양자의 본질적 규정이 유기적 조화를 이루어 질적으로 고양된 최상의 범주가 생성됨으로써 성립하는 것이다.',
-        userAnswer: null,
-        answer: null,
-        type: '주제맞추기',
-        problemId: null,
-        similarity: null,
-      },
-      {
-        content:
-          'PCR는 시료로부터 얻은 DNA를 가지고 유전자 복제, 유전병 진단, 친자 감별, 암 및 감염성 질병 진단 등에 광범위하게 활용된다. 특히 실시간 PCR를 이용하면 바이러스의 감염여부를 초기에 정확하고 빠르게 진단할 수 있다.',
-        userAnswer: null,
-        answer: null,
-        type: '주제맞추기',
-        problemId: null,
-        similarity: null,
-      },
-      {
-        content:
-          '채권은 어떤 사람이 다른 사람에게 특정 행위를 요구할 수있는 권리이다. 이 특정 행위를 급부라 하고, 특정 행위를 해주어야 할 의무를 채무라 한다. 채무자가 채권을 가진 이에게 급부를 이행하면 채권에 대응하는 채무는 소멸한다. 급부는 재화나 서비스 제공인 경우가 많지만 그 외의 내용일 수도 있다.',
-        userAnswer: null,
-        answer: null,
-        type: '주제맞추기',
-        problemId: null,
-        similarity: null,
-      },
-    ],
-  };
-
   const getSummaryData = async () => {
     try {
-      // const response = await instance.get(`/study-service/problem/topic`);
-      // setProblems(response.data.data);
-      setProblems(temp.data);
+      const response = await instance.get(`/study-service/problem/topic`);
+      setProblems(response.data.data);
     } catch (error) {
       // error
     }
