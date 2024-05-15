@@ -37,7 +37,7 @@ export default function CreateRoomModal() {
       const newRoomId = res.data.data.roomId;
       console.log('방정보응답', res);
       const resData = res.data.data;
-      setGameRoomInfo({ ...resData, roomName: newRoom.roomName });
+      setGameRoomInfo({ ...resData });
       resetState();
       connect(newRoomId);
       router.replace(`/game/rooms/${newRoomId}`);
