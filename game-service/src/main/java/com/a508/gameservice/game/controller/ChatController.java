@@ -20,6 +20,9 @@ public class ChatController {
     private final GameRoomService gameRoomService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
+    /**
+     *  채팅방 구독 & 발행
+     */
     @MessageMapping("/ws/rooms/{roomId}/send")
     @SendTo("/topic/chat/rooms/{roomId}")
     public ChatMessageRes sendMessage(@DestinationVariable Integer roomId, @Payload ChatMessageReq chatMessage) {
@@ -47,6 +50,9 @@ public class ChatController {
                 .build();
     }
 
+    /**
+     * 게임방 진행 상태 구독
+     */
     @MessageMapping("/ws/quiz/rooms/{roomId}/send")
     public void sendQuiz(@DestinationVariable Integer roomId, @Payload QuizMessageReq quizMessageReq) {
         String message = quizMessageReq.getMessage();
@@ -68,6 +74,9 @@ public class ChatController {
         }
     }
 
+    /**
+     * 게임결과 구독 & 발행
+     */
     @MessageMapping("/ws/result/rooms/{roomId}/send")
     @SendTo("/topic/result/rooms/{roomId}")
     public ResultListRes sendResult(@DestinationVariable Integer roomId, @Payload ResultListReq resultListReq) {
