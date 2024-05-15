@@ -6,11 +6,9 @@ import com.a508.gameservice.game.service.GameSchedulerManageService;
 import com.a508.gameservice.response.SuccessResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 
 @RequiredArgsConstructor
@@ -19,6 +17,7 @@ public class GameRoomController {
 
     private final GameRoomService gameRoomService;
     private final GameSchedulerManageService gameSchedulerManageService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     /**
      * 방 목록 (페이지)
@@ -48,6 +47,15 @@ public class GameRoomController {
     }
 
     /**
+     * 빠른 입장
+     */
+    @GetMapping("/quick-entry")
+    public SuccessResponse<JoinRoomRes> quickEntryPlayer(HttpServletRequest request){
+        int roomId=gameRoomService.quickEntryPlayer(request);
+        return new SuccessResponse<>(gameRoomService.getRoomInfo(request, roomId));
+    }
+
+    /**
      * 게임 랭킹 목록
      */
     @GetMapping("/rankings")
@@ -64,4 +72,19 @@ public class GameRoomController {
     }
 
 
+    /**
+     * 방 퇴장
+     */
+    @PostMapping("/exit")
+    public SuccessResponse<HttpStatus> removeRoomPlayer(@RequestBody ExitReq exitReq){
+        gameRoomService.removeRoomPlayer(exitReq.getRoomId(),exitReq.getUserId());
+        ChatMessageRes exit= ChatMessageRes.builder()
+                .type(MessageType.EXIT)
+                .content(exitReq.getSender() + "님이 퇴장하셨습니다.")
+                .writer("심심한 사과")
+                .target(exitReq.getUserId())
+                .build();
+        simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + exitReq.getRoomId(), exit);
+        return new SuccessResponse<>(HttpStatus.OK);
+    }
 }
