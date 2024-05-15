@@ -1,19 +1,20 @@
 'use client';
-import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+import Swal from 'sweetalert2';
+import { useGameRoomList } from '@/queries/game-wait';
+import { useGameRoomInfo } from '@/queries/get-room-info';
+import { useGameWaitStore } from '@/stores/game-wait';
+import { useWebsocketStore } from '@/stores/websocketStore';
+import { useGameRoomStore } from '@/stores/game-room-info';
+
 import MakeRoomBtn from './MakeRoomBtn';
 import GameRoomItem from './GameRoomItem';
 import PagingBtn from './PagingBtn';
 import QuickStartGameBtn from './QuickStartGameBtn';
 import RefreshRoomsBtn from './RefreshRoomsBtn';
-import { useGameWaitStore } from '@/stores/game-wait';
 import InsertPasswordModal from './InsertPasswordModal';
-import { useGameRoomList } from '@/queries/game-wait';
-import axios from 'axios';
-import { useGameRoomInfo } from '@/queries/get-room-info';
-import { useWebsocketStore } from '@/stores/websocketStore';
-import { useRouter } from 'next/navigation';
-import { useGameRoomStore } from '@/stores/game-room-info';
 
 type GameRoomInfo = {
   id: number;
@@ -31,15 +32,22 @@ type GameRoomInfo = {
 export default function GameRightSection() {
   const router = useRouter();
 
-  const { pageNum, setPageNum } = useGameWaitStore();
-  const { data, isLoading, refetch, isFetching } = useGameRoomList(pageNum);
-
-  const { isShow, roomList, setRoomList, isEndPage, setIsEndPage, selectedRoom, setSelectedRoom } = useGameWaitStore();
-  const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(selectedRoom?.id);
+  // STORE
+  const { pageNum, isShow, roomList, setRoomList, isEndPage, setIsEndPage, selectedRoom, setSelectedRoom } =
+    useGameWaitStore();
   const { connect, stompClient } = useWebsocketStore();
   const { setGameRoomInfo } = useGameRoomStore();
+
+  // 방 목록 요청 쿼리
+  const { data, isLoading, refetch, isFetching } = useGameRoomList(pageNum);
+
+  // 방 정보 요청 쿼리
+  const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(selectedRoom?.id);
+
+  // 출력을 위한 복사 리스트
   const [duplList, setDuplList] = useState<(GameRoomInfo | undefined)[]>(new Array(6).fill(undefined));
 
+  // 출력 리스트 구성 메서드
   const generateRoomItems = (list: GameRoomInfo[]): (GameRoomInfo | undefined)[] => {
     let duplicatedList: (GameRoomInfo | undefined)[] = [];
     for (let idx = 0; idx < 6; idx++) {
@@ -64,6 +72,7 @@ export default function GameRightSection() {
     setDuplList(generateRoomItems(roomList));
   }, [roomList]);
 
+  // 선택한 방 바꼈을 때,
   useEffect(() => {
     if (isError)
       Swal.fire({

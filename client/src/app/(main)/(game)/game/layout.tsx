@@ -1,6 +1,5 @@
 import RQProvider from '@/queries/RQProvider';
 import Image from 'next/image';
-import Link from 'next/link';
 
 export default function Layout({
   children,

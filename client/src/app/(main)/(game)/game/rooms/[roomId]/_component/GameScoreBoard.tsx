@@ -1,8 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useGameScoreStore } from '@/stores/game-score';
-import { useEffect } from 'react';
 
 class MemberScore {
   public score: number;
@@ -25,6 +26,7 @@ export default function GameScoreBoard() {
   const { players, setPlayers } = useGameScoreStore();
   const { myNickname, myUserId, roomPlayerRes, creatorId } = useGameRoomStore();
 
+  // store에 저장된 참여자와 본인을 추가한 점수 목록 구성
   useEffect(() => {
     const res: Res[] = roomPlayerRes;
     let scoreList: MemberScore[] =
