@@ -1,14 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { InsertProblemResponse, IInsertProblem } from '@/types/Problem';
+import Image from 'next/image';
 import instance from '@/utils/interceptor';
+import ProgressBar from '../../_components/ProgressBar';
+import InsertProblem from './InsertProblem';
 import checkTrue from '@/../public/learn/check-true.svg';
 import checkFalse from '@/../public/learn/check-false.svg';
 import unchecked from '@/../public/learn/unchecked.svg';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { InsertProblemResponse, IInsertProblem } from '@/types/Problem';
-import ProgressBar from '../../_components/ProgressBar';
-import InsertProblem from './InsertProblem';
 
 export default function InsertResult() {
   const router = useRouter();

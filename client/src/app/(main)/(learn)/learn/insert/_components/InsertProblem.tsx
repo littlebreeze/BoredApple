@@ -1,6 +1,4 @@
 'use client';
-import React from 'react';
-
 const InsertProblem: React.FC<{ progress: number }> = ({ progress }) => {
   return (
     <>
