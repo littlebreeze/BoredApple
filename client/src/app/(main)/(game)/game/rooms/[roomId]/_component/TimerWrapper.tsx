@@ -3,8 +3,20 @@
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useWebsocketStore } from '@/stores/websocketStore';
 import { useEffect } from 'react';
+import effectSound from '@/utils/effectSound';
+
+import clockSound from '@/../public/sound/clock.mp3';
+import timerSound from '@/../public/sound/timer.mp3';
+import hintSound from '@/../public/sound/hint.mp3';
+import correctSound from '@/../public/sound/correct.mp3';
 
 export default function TimerWrapper({ roomId }: { roomId: string }) {
+  // 효과음
+  const clockES = effectSound(clockSound);
+  const timerES = effectSound(timerSound);
+  const hintES = effectSound(hintSound);
+  const correctES = effectSound(correctSound);
+
   const {
     timer,
     isGaming,
@@ -35,6 +47,18 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
       }
     }
   }, [timer, isCorrectAnswer, isGaming, isGameRoundInProgress]);
+
+  // 효과음
+  useEffect(() => {
+    if (timer == 33) clockES.play();
+    if (timer == 32) clockES.play();
+    if (timer == 31) clockES.play();
+    if (timer == 20) hintES.play();
+    if (timer == 10) hintES.play();
+    if (timer == 5) timerES.play();
+    if (timer == 0 || isCorrectAnswer) timerES.stop();
+    if (isCorrectAnswer) correctES.play();
+  }, [timer, isCorrectAnswer]);
 
   if (!isGaming || timer > 30) return null;
 
