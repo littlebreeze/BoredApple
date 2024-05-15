@@ -41,7 +41,7 @@ public class TodayLearningScheduler {
 	private static final List<String> categories = new ArrayList<>(Arrays.asList("인문", "사회", "과학", "예술", "기술"));
 
 	@Transactional
-	@Scheduled(cron = "0 38 12 * * ?")
+	@Scheduled(cron = "0 0 0 * * ?")
 	public void makeTodayLearning()throws NoSuchAlgorithmException{
 
 
