@@ -11,6 +11,7 @@ import TimerWrapper from './_component/TimerWrapper';
 import GameResultsModal from './_component/GameResultsModal';
 import ChatWrapper from './_component/ChatWrapper';
 import GameScoreBoard from './_component/GameScoreBoard';
+import instance from '@/utils/interceptor';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -49,12 +50,10 @@ export default function Page() {
       const leavePage = confirm('정말 게임을 나가시겠습니까?');
 
       if (leavePage) {
-        disconnect({
-          type: 'EXIT',
-          roomId: storedRoomId!,
-          sender: myNickname!,
-          senderId: myUserId!,
-          message: '나갑니다',
+        instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players`, {
+          userId: myUserId,
+          sender: myNickname,
+          roomId: roomId,
         });
       }
     };
