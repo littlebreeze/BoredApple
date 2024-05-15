@@ -102,11 +102,11 @@ export default function Word() {
           <div>
             <div className='flex gap-2'>
               {/* 지문 */}
-              <div className='p-4 h-fit flex-1 font-Batang'>{currProblem.content}</div>
+              <div className='mt-2 p-4 h-fit flex-1 font-Batang bg-ourGray mr-4'>{currProblem.content}</div>
 
               {/* 선택지 */}
               <div>
-                <div className='py-12'></div>
+                <div className='pt-2'></div>
                 <div className='w-96 bg-white rounded-xl p-4'>
                   <div
                     className={`cursor-pointer flex items-center p-2 m-1 rounded-xl ${
