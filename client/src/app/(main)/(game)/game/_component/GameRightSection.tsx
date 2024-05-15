@@ -107,7 +107,7 @@ export default function GameRightSection() {
           <QuickStartGameBtn />
         </div>
         <div className='w-1/4 lg:w-1/5 lg:px-5 px-4 py-3 mr-2 bg-ourGray/50 rounded-xl' onClick={() => refetch()}>
-          <RefreshRoomsBtn />
+          <RefreshRoomsBtn isFetching={isFetching} />
         </div>
       </div>
       <div className='grid grid-cols-2 py-4 px-5 gap-x-2 gap-y-2 md:gap-x-3 md:gap-y-6 lg:gap-x-6 lg:px-6 bg-ourGray/50 rounded-xl'>
