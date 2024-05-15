@@ -1,13 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import Calendar from 'react-calendar';
 import './Calendar.css';
-
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; //한국어
-import { useRecordStore } from '@/stores/record';
+
 import instance from '@/utils/interceptor';
+import { useRecordStore } from '@/stores/record';
 
 const getCalendarData = async (yearMonth: Date | null) => {
   const response = await instance.post<{ data: number[] }>(
@@ -24,13 +24,15 @@ const getCalendarData = async (yearMonth: Date | null) => {
 export default function CalendarComponent() {
   const { solvedCnt, setSolvedCnt } = useRecordStore();
   const { today, onChange } = useRecordStore();
-
   const { yearMonth, onChangeYearMonth } = useRecordStore();
 
   useEffect(() => {
-    console.log('월 바뀜 캘린더 요청 보내라');
     getCalendarData(yearMonth).then((value) => setSolvedCnt(value.data.data));
   }, [yearMonth]);
+
+  useEffect(() => {
+    console.log('캘린더 요청 데이터: ', solvedCnt);
+  }, [solvedCnt]);
 
   return (
     <>

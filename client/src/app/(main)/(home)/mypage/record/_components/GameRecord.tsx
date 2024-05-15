@@ -1,22 +1,26 @@
 'use client';
 
-import { GResponse } from '@/types/MypageRecord';
 import { useEffect, useState } from 'react';
-import RecordDetailItem from './RecordDetailItem';
-import axios from 'axios';
+
+import { GResponse } from '@/types/MypageRecord';
 import { useGameRecord } from '@/queries/mypage-record';
 
-// const getDailyData = async () => {
-//   const response = await axios.get<GResponse>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/record`);
-//   console.log(response.data);
-// };
+import RecordDetailItem from './RecordDetailItem';
+
 export default function GameRecord() {
-  const { data, isLoading } = useGameRecord();
   const [gameRecord, setGameRecord] = useState<GResponse | undefined>(undefined);
+
+  const { data, isLoading } = useGameRecord();
+
   // 마운트 되었을 때 요청 보내기
   useEffect(() => {
     if (data?.data) setGameRecord(data.data.data);
   }, [isLoading]);
+
+  useEffect(() => {
+    console.log('게임 기록 요청 데이터: ', gameRecord);
+  }, [gameRecord]);
+
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>

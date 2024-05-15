@@ -1,10 +1,11 @@
 'use client';
-import { SResponse } from '@/types/MypageRecord';
 import { useEffect, useState } from 'react';
-import RecordDetailItem from './RecordDetailItem';
-import { useRecordStore } from '@/stores/record';
-import axios from 'axios';
+
+import { SResponse } from '@/types/MypageRecord';
 import instance from '@/utils/interceptor';
+import { useRecordStore } from '@/stores/record';
+
+import RecordDetailItem from './RecordDetailItem';
 
 const getStudyData = async (yearMonth: Date | null) => {
   const response = await instance.post<{ data: SResponse }>(
@@ -17,6 +18,7 @@ const getStudyData = async (yearMonth: Date | null) => {
   );
   return response;
 };
+
 export default function StudyRecord() {
   const [studyData, setStudyData] = useState<SResponse>();
   // 월 바뀔 때 요청 보내기
@@ -27,6 +29,11 @@ export default function StudyRecord() {
       getStudyData(yearMonth).then((value) => setStudyData(value.data.data));
     } catch (error) {}
   }, [yearMonth]);
+
+  useEffect(() => {
+    console.log('학습 기록 데이터: ', studyData);
+  }, [studyData]);
+
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>

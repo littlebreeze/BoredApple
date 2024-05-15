@@ -1,23 +1,8 @@
 'use client';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import InsertPasswordModal from './InsertPasswordModal';
-import { useGameWaitStore } from '@/stores/game-wait';
-import instance from '@/utils/interceptor';
-import { useGameRoomStore } from '@/stores/game-room-info';
-import { useRouter } from 'next/navigation';
-import { useGameRoomInfo } from '@/queries/get-room-info';
-import { useWebsocketStore } from '@/stores/websocketStore';
 
-type GameRoomDetail = {
-  myNickname: string | undefined;
-  myUserId: number | undefined;
-  roomId: number | undefined;
-  maxNum: number | undefined;
-  quizCount: number | undefined;
-  creatorId: number | undefined;
-  roomPlayerRes: { userId: number; nickname: string }[];
-};
+import { useRouter } from 'next/navigation';
+
+import { useGameWaitStore } from '@/stores/game-wait';
 
 type GameRoomInfo = {
   id: number;
@@ -38,10 +23,10 @@ type Props = {
 
 export default function GameRoomItem({ roomInfo }: Props) {
   const router = useRouter();
-  const { setGameRoomInfo } = useGameRoomStore();
+
   const { setIsShow, setSelectedRoom, selectedRoom } = useGameWaitStore();
-  // const { data: roomData, isLoading, isError, error } = useGameRoomInfo(roomInfo?.id);
-  const { connect, stompClient } = useWebsocketStore();
+
+  // 방 눌렀을 때, 선택된 방 저장
   const onClickRoomItem = () => {
     if (!roomInfo?.isStarted && roomInfo?.nowNum !== roomInfo?.maxNum) {
       if (roomInfo?.isSecret) {

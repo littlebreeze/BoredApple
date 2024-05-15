@@ -1,7 +1,8 @@
 import Link from 'next/link';
+import Image from 'next/image';
+
 import GameLeftSection from './_component/GameLeftSection';
 import GameRightSection from './_component/GameRightSection';
-import Image from 'next/image';
 
 export default function Page() {
   return (
