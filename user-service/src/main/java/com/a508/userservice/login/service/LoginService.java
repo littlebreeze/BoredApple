@@ -13,6 +13,9 @@ import com.a508.userservice.user.data.UserRole;
 import com.a508.userservice.user.domain.User;
 import com.a508.userservice.user.repository.UserRepository;
 import com.google.gson.Gson;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -97,7 +100,7 @@ public class LoginService {
         return gson.fromJson(response.getBody(), GoogleUserInfoRes.class);
     }
 
-    public OauthTokenRes getAccessTokenJsonData(String code) {
+    public OauthTokenRes getAccessTokenJsonData(HttpServletResponse response,String code) {
         //코드로 토큰받기
         GoogleOAuthTokenRes oauthTokenData = getTokenbyCode(code);
 
@@ -105,10 +108,10 @@ public class LoginService {
         GoogleUserInfoRes googleUserInfoRes = getUserInfoByToken(oauthTokenData.getAccess_token());
 
         //받아온 사용자 정보(로그인/회원가입한 유저)로 우리 토큰 만들기
-        return generateTokenbyUserInfo(googleUserInfoRes);
+        return generateTokenbyUserInfo(response,googleUserInfoRes);
     }
 
-    private OauthTokenRes generateTokenbyUserInfo(GoogleUserInfoRes googleUserInfoRes) {
+    private OauthTokenRes generateTokenbyUserInfo(HttpServletResponse response,GoogleUserInfoRes googleUserInfoRes) {
         boolean signUp = false;
         if (userRepository.findByGoogleId(googleUserInfoRes.getId()) == null) { //우리 회원이 아니면
             User newMember = User.builder()
@@ -130,6 +133,11 @@ public class LoginService {
         }
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(user);
 
+        Cookie cookie=createCookie(oauthTokenRes.getRefreshToken());
+
+        // 쿠키 전송
+        response.addCookie(cookie); //만들어진 쿠키를 쿠키에 저장해준다.
+
         //refreshToken redis에 저장
         refreshTokenService.saveTokenInfo(
                 user.getId(), oauthTokenRes.getRefreshToken(),
@@ -142,9 +150,19 @@ public class LoginService {
         return oauthTokenRes;
     }
 
-    public OauthTokenRes regenerateToken(String refreshTokenReq) {
+    public OauthTokenRes regenerateToken(HttpServletResponse response, HttpServletRequest request) {
+
+        Cookie rc[] = request.getCookies();
+        String refreshTokenCookie = "";
+        for (Cookie cookie : rc) {
+            System.out.println("rc" + cookie.getValue());
+            if (cookie.getName().equals("refreshtoken")) { // 쿠키의 이름이 "refreshToken"인 경우만 처리
+                refreshTokenCookie = cookie.getValue();
+                break; // 원하는 쿠키를 찾았으므로 반복문을 종료합니다.
+            }
+        }
         //Refresh Token 일치 확인
-        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(refreshTokenReq).orElseThrow(() ->
+        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(refreshTokenCookie).orElseThrow(() ->
                 new CustomException(ErrorCode.REFRESH_TOKEN_VALIDATION_ERROR));
 
         //Refresh Token 만료 여부
@@ -153,7 +171,7 @@ public class LoginService {
         }
 
         //tokenProvider에서 refreshToken으로 member정보 받기
-        String googleId = tokenProvider.getUserByRefreshToken(refreshTokenReq);
+        String googleId = tokenProvider.getUserByRefreshToken(refreshTokenCookie);
 
         User user = userRepository.findByGoogleId(googleId);
         if (user == null) {
@@ -162,6 +180,11 @@ public class LoginService {
 
         //Member 정보로 토큰 재발급
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(user);
+
+        Cookie cookie=createCookie(oauthTokenRes.getRefreshToken());
+
+        // 쿠키 전송
+        response.addCookie(cookie); //만들어진 쿠키를 쿠키에 저장해준다.
 
         //redis에 저장
         refreshTokenService.saveTokenInfo(
@@ -172,5 +195,16 @@ public class LoginService {
 
 
         return oauthTokenRes;
+    }
+    public Cookie createCookie(String refreshToken) {
+        String cookieName = "refreshtoken";
+        String cookieValue = refreshToken; // 쿠키벨류엔 글자제한이 있어, 벨류로 만들어담아준다.
+        Cookie cookie = new Cookie(cookieName, cookieValue);
+        // 쿠키 속성 설정
+        cookie.setHttpOnly(true);  //httponly 옵션 설정
+        cookie.setSecure(true); //https 옵션 설정
+        cookie.setPath("/"); // 모든 곳에서 쿠키열람이 가능하도록 설정
+        cookie.setMaxAge(60 * 60 * 24); //쿠키 만료시간 설정
+        return cookie;
     }
 }
