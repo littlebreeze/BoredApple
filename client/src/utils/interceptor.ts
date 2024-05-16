@@ -43,7 +43,7 @@ instance.interceptors.response.use(
     // 2xx 이외 상태 코드 시 이 함수 트리거: 응답 오류가 있는 작업 수행
 
     // 토큰이 만료되거나 유효하지 않은 경우 토큰 재발급
-    if (error.response.status == 400 || 401) {
+    if (error.response.status == 400 || error.response.status == 401) {
       const originRequest = error.config;
 
       try {
