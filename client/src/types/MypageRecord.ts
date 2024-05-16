@@ -22,7 +22,7 @@ export interface GResponse {
 // RecordList
 export interface Study {
   problemType: string;
-  isCorrect: boolean;
+  correct: boolean;
 }
 
 // RecordList
@@ -58,4 +58,58 @@ export interface SRResponse {
   daysCompleteLearning: number;
   mostLearnedStudy: string;
   mostReadCategory: string;
+}
+
+export function toServer(type: string): string {
+  switch (type) {
+    case '정독훈련':
+      return 'intensive';
+    case '문장넣기':
+      return 'sentence';
+    case '주제맞추기':
+      return 'topic';
+    case '순서맞추기':
+      return 'order';
+    case '어휘문제':
+      return 'voca';
+
+    default:
+      return 'chkplz';
+  }
+}
+
+export function toClient(type: string): string {
+  switch (type) {
+    case '정독훈련':
+      return 'read';
+    case '문장넣기':
+      return 'insert';
+    case '주제맞추기':
+      return 'summary';
+    case '순서맞추기':
+      return 'order';
+    case '어휘문제':
+      return 'word';
+
+    default:
+      return 'chkplz';
+  }
+}
+
+export function toExplain(type: string): string {
+  switch (type) {
+    case '정독훈련':
+      return '비문학 지문을 읽고 문제를 풀어요';
+    case '문장넣기':
+      return '빈칸에 알맞은 문장을 넣어요';
+    case '주제맞추기':
+      return '비문학 지문을 읽고 요약해요';
+    case '순서맞추기':
+      return '문장 순서를 올바르게 배열해요';
+    case '어휘문제':
+      return '어휘력을 높여요';
+
+    default:
+      return 'chkplz';
+  }
 }

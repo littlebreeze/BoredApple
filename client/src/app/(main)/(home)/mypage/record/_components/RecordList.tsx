@@ -23,6 +23,29 @@ const getDailyData = async (today: Date | null) => {
   return response;
 };
 
+const tmpRecords = [
+  {
+    problemType: '정독훈련',
+    correct: true,
+  },
+  {
+    problemType: '순서맞추기',
+    correct: false,
+  },
+  {
+    problemType: '주제맞추기',
+    correct: true,
+  },
+  {
+    problemType: '문장넣기',
+    correct: true,
+  },
+  {
+    problemType: '어휘문제',
+    correct: true,
+  },
+];
+
 export default function RecordList() {
   const [records, setRecords] = useState<Study[] | null>(null);
 
