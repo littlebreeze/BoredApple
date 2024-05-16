@@ -113,13 +113,8 @@ public class UserController {
 		int daysInMonth = LocalDate.of(date.getYear(), date.getMonth(), 1).lengthOfMonth();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		List<Integer> result = new ArrayList<>();
-		System.out.println(daysInMonth);
 		LocalDate da = LocalDate.of(date.getYear(),date.getMonth(),1);
-		System.out.println("da: " + da);
 		CalendarRes cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), da.format(formatter));
-
-		for(int i:cal.getData()) System.out.print(i+" ");
-		System.out.println();
 
 		return new SuccessResponse<>(cal.getData());
 	}
@@ -131,8 +126,6 @@ public class UserController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 		DateCalendarRes dateCalendarRes = studyServiceClient.GetDateStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7),day.format(formatter));
-
-		System.out.println(dateCalendarRes.getData().get(0).getProblemType());
 
 		return new SuccessResponse<>(dateCalendarRes.getData());
 	}
