@@ -50,9 +50,9 @@ export default function Page() {
   }, []);
 
   // myUserId 없으면 game으로 보내기
-  // useEffect(() => {
-  //   if (!myUserId) router.replace('/game');
-  // }, []);
+  useEffect(() => {
+    if (!myUserId) router.replace('/game');
+  }, []);
 
   useEffect(() => {
     // unMount 될 때 disconnect
