@@ -2,9 +2,9 @@ import { Study, toServer, toClient, toExplain } from '@/types/MypageRecord';
 import Link from 'next/link';
 
 // 얘를 클릭하면 결과 페이지로 이동하도록
-export default function StudyRecordItem({ record }: { record: Study }) {
+export default function StudyRecordItem({ record, today }: { record: Study; today: Date }) {
   return (
-    <Link href={`/learn/${toClient(record.problemType)}/result`} className='flex gap-2'>
+    <Link href={`/learn/${toClient(record.problemType)}/result?date=${today}`} className='flex gap-2'>
       <div>
         {record.correct === true ? (
           <svg width='25' height='25' viewBox='0 0 300 300' fill='none' xmlns='http://www.w3.org/2000/svg'>
