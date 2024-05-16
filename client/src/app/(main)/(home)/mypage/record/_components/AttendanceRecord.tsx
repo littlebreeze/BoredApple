@@ -20,7 +20,7 @@ const getAttendanceData = async (yearMonth: Date | null) => {
 };
 export default function AttendanceRecord() {
   // 월 바뀔 때 요청 보내기
-  const { yearMonth } = useRecordStore();
+  const { yearMonth, setRegisterDate } = useRecordStore();
   const [attendance, setAttendance] = useState<AResponse>();
 
   useEffect(() => {
@@ -31,6 +31,7 @@ export default function AttendanceRecord() {
 
   useEffect(() => {
     console.log('출석 정보 요청 데이터: ', attendance);
+    if (attendance) setRegisterDate(attendance?.registerDate);
   }, [attendance]);
 
   return (
