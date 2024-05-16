@@ -118,8 +118,7 @@ public class TodayLearningServiceImpl implements TodayLearningService {
     @Override
     public List<MonthResponse> getMonths(LocalDateTime dateTime, String token) {
         log.info( "Month 데이터를 받아옵니다 요청자 : " + token);
-        String actualToken = token.substring(7);
-        int userid = userServiceFeignClient.getUserId(actualToken);
+        int userid = userServiceFeignClient.getUserId(token);
         List<MonthResponse> monthResponses = new ArrayList<>();
 
         YearMonth currentYearMonth = YearMonth.of(dateTime.getYear(), dateTime.getMonth());
