@@ -134,7 +134,7 @@ public class LoginService {
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(user);
 
 //        Cookie cookie=createCookie(oauthTokenRes.getRefreshToken());
-        response.setHeader("Set-Cookie","token=" + oauthTokenRes.getRefreshToken() +" ;Path=/; Domain=k10a508.p.ssafy.io; HttpOnly; Max-Age=604800; SameSite=None; Secure;");
+        response.setHeader("Set-Cookie","token=" + oauthTokenRes.getRefreshToken() +" ;Path=/; Domain=k10a508.p.ssafy.io:3000; HttpOnly; Max-Age=604800; SameSite=None; Secure;");
 
         // 쿠키 전송
 //        response.addCookie(cookie); //만들어진 쿠키를 쿠키에 저장해준다.
@@ -182,7 +182,7 @@ public class LoginService {
 
         //Member 정보로 토큰 재발급
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(user);
-        response.setHeader("Set-Cookie","token=" + oauthTokenRes.getRefreshToken() +" ;Path=/; Domain=k10a508.p.ssafy.io; HttpOnly; Max-Age=604800; SameSite=None; Secure;");
+        response.setHeader("Set-Cookie","token=" + oauthTokenRes.getRefreshToken() +" ;Path=/; Domain=k10a508.p.ssafy.io:3000; HttpOnly; Max-Age=604800; SameSite=None; Secure;");
 //        Cookie cookie=createCookie(oauthTokenRes.getRefreshToken());
 
         // 쿠키 전송
