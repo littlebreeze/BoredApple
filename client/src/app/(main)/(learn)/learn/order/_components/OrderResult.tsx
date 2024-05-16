@@ -32,6 +32,7 @@ export default function OrderResult() {
       console.log(response.data.data);
     } catch (error) {
       // error
+      router.replace('/mypage/record');
     }
   };
 
@@ -41,7 +42,8 @@ export default function OrderResult() {
   };
 
   const handleFinishClick = () => {
-    router.push('/home');
+    if (searchParams.get('date')) router.push('/mypage/record');
+    else router.push('/home');
   };
 
   const optionTextColor = (option: number) => {
