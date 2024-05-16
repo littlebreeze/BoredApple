@@ -33,7 +33,6 @@ export default function AttendanceRecord() {
   }, [yearMonth?.getMonth()]);
 
   useEffect(() => {
-    console.log('출석 정보 요청 데이터: ', attendance);
     if (attendance) setRegisterDate(attendance?.registerDate);
   }, [attendance]);
 

@@ -52,7 +52,6 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
 
   useEffect(() => {
     const lastMsg = messages[messages.length - 1];
-    console.log('바뀐마지막메세지입니다', lastMsg);
     if (lastMsg && Number(lastMsg.target) !== myUserId) {
       if (lastMsg.type === 'ENTER') {
         addPlayers({
@@ -60,13 +59,12 @@ export default function ChatWrapper({ roomId }: { roomId: number }) {
           nickname: lastMsg.content,
           id: lastMsg.target,
         });
-        // 퇴장 메세지가 나오면 삭제....
+        // 퇴장 메세지가 나오면 삭제
       } else if (lastMsg.type === 'EXIT') {
         exitPlayer(lastMsg.target);
       }
     }
     if (lastMsg && lastMsg.type === 'CORRECT') {
-      console.log('점수반영하세요', lastMsg);
       getScore(lastMsg.target);
     }
   }, [messages]);
