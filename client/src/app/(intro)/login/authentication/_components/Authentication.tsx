@@ -20,6 +20,7 @@ export default function Authentication() {
   const postLogin = async (code: string | null) => {
     const headers = {
       'Content-Type': 'text/plain;charset=utf-8',
+      withCredentials: true,
     };
 
     try {
