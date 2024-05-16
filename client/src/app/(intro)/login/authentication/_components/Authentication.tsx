@@ -20,12 +20,12 @@ export default function Authentication() {
   const postLogin = async (code: string | null) => {
     const headers = {
       'Content-Type': 'text/plain;charset=utf-8',
-      withCredentials: true,
     };
 
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/oauth2/code/google`, code, {
         headers: headers,
+        withCredentials: true,
       });
 
       // 메모리에 토큰 저장
