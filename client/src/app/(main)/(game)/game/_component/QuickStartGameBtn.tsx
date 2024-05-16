@@ -13,11 +13,9 @@ import { useWebsocketStore } from '@/stores/websocketStore';
 import loading from '@/../public/login/loading.png';
 
 const getGameRoomInfo = async () => {
-  console.log('빠른 대전이 되긴 되는데 방이 찾아질 때까지 돕...니다?');
   const response = await instance.get<{ data: GameRoomDetail }>(
     `${process.env.NEXT_PUBLIC_API_SERVER}/game-service/quick-entry`
   );
-  console.log(response);
   return response;
 };
 
@@ -31,7 +29,6 @@ export default function QuickStartGameBtn() {
   const { setGameRoomInfo } = useGameRoomStore();
 
   const onClickQuickStart = () => {
-    console.log('click');
     setIsLoading(true);
     if (pageNum === 1 && roomList.length === 0) {
       Swal.fire({
@@ -45,13 +42,11 @@ export default function QuickStartGameBtn() {
         .then((response) => {
           setIsLoading(false);
           const roomData = response.data.data;
-          console.log('입장할 방 정보: ', roomData);
           setGameRoomInfo(roomData);
           connect(String(roomData.roomId));
           router.push(`/game/rooms/${roomData.roomId}`);
         })
         .catch((error) => {
-          console.log(error);
           Swal.fire({
             title: '입장 가능한 방이 없습니다!',
             text: '직접 방을 만들어 대결을 시작하세요!',
