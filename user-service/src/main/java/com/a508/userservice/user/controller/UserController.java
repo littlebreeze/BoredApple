@@ -114,9 +114,10 @@ public class UserController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		List<Integer> result = new ArrayList<>();
 		System.out.println(daysInMonth);
-		CalendarRes cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), LocalDate.of(date.getYear(), date.getMonth(), 1).format(formatter));
-		System.out.println(cal.getData().get(0));
-
+		LocalDate da = LocalDate.of(date.getYear(),date.getMonth(),1);
+		System.out.println("da: " + da);
+		CalendarRes cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), da.format(formatter));
+		System.out.println(cal.getData().get(0).getSolveCnt());
 		for (int i = 0; i < daysInMonth; i++) {
 			result.add(cal.getData().get(i).getSolveCnt());
 		}
