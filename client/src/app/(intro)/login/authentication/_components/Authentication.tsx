@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import axios from 'axios';
+import instance from '@/utils/interceptor';
 
 export let testToken = '';
 
@@ -28,11 +29,11 @@ export default function Authentication() {
       });
 
       // 메모리에 토큰 저장
-      // const accessToken = response.data.data.accessToken;
-      // instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      const accessToken = response.data.data.accessToken;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
       // 로컬스토리지에 토큰 저장
-      localStorage.setItem('accessToken', response.data.data.accessToken);
+      // localStorage.setItem('accessToken', response.data.data.accessToken);
 
       // 기존 유저인지 신규 유저인지 판단하여 라우팅 처리
       handleRouter(response.data.data.signUpProcess);
