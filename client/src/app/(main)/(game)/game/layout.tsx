@@ -1,5 +1,5 @@
-import RQProvider from '@/queries/RQProvider';
 import Image from 'next/image';
+import RQProvider from '@/queries/RQProvider';
 import SoundSection from './_component/SoundSection';
 
 export default function Layout({
