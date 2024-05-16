@@ -72,7 +72,7 @@ public class EssayServiceImpl  implements  EssayService{
 
         if( todayLearnings.get(0).isCorrect()){
             for(int idx = 0 ; idx < todayLearnings.size() ; idx++){
-                EssaySolved essaySolved = essayRepository.findByProblemId(todayLearnings.get(idx).getProblemId());
+                EssaySolved essaySolved = essayRepository.findByUserIdAndProblemId(userId,todayLearnings.get(idx).getProblemId());
                 problemResponses.get(idx).setUserAnswer(essaySolved.getMyAnswer());
                 problemResponses.get(idx).setAnswer(essaySolved.getAnswer());
                 problemResponses.get(idx).setSimilarity(essaySolved.getSimilarity());
