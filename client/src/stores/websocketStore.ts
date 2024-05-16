@@ -126,7 +126,6 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
               useGameRoomStore.getState().setResultModalIsShow(true);
               break;
           }
-          console.log('메세지: ', res);
         });
         // 시간 구독
         const timerSubscription = client.subscribe(`/topic/time/rooms/${roomId}`, (message: IMessage) => {
@@ -144,7 +143,6 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         const resultSubscription = client.subscribe(`/topic/result/rooms/${roomId}`, (message: IMessage) => {
           const messageBody = JSON.parse(message.body);
 
-          console.log('결과구독', messageBody);
           set({ gameResult: messageBody.resultResList });
         });
 

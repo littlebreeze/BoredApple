@@ -31,10 +31,6 @@ export default function CalendarComponent() {
   }, [yearMonth?.getMonth()]);
 
   useEffect(() => {
-    console.log('캘린더 요청 데이터: ', solvedCnt);
-  }, [solvedCnt]);
-
-  useEffect(() => {
     const date = parseValueIntoDate(today);
     onChangeYearMonth(new Date(date.getFullYear(), date.getMonth(), 1));
   }, [today]);

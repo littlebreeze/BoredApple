@@ -12,7 +12,6 @@ import TimerWrapper from './_component/TimerWrapper';
 import GameResultsModal from './_component/GameResultsModal';
 import ChatWrapper from './_component/ChatWrapper';
 import GameScoreBoard from './_component/GameScoreBoard';
-import instance from '@/utils/interceptor';
 import RoomInfoWrapper from './_component/RoomInfoWrapper';
 
 export default function Page() {
@@ -57,7 +56,6 @@ export default function Page() {
   useEffect(() => {
     // unMount 될 때 disconnect
     return () => {
-      console.log('나가면서메세지보내기');
       disconnect({
         type: 'EXIT',
         roomId: storedRoomId!,
