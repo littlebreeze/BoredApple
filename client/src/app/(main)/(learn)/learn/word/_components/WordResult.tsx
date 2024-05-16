@@ -31,7 +31,7 @@ export default function WordResult() {
       const response = await instance.get(`/study-service/problem/voca${date ? '?date=' + date : ''}`);
       setWordProblems(response.data.data);
     } catch (error) {
-      // error
+      router.replace('/mypage/record');
     }
   };
 
@@ -41,7 +41,8 @@ export default function WordResult() {
   };
 
   const handleFinishClick = () => {
-    router.push('/home');
+    if (searchParams.get('date')) router.push('/mypage/record');
+    else router.push('/home');
   };
 
   const optionTextColor = (option: number) => {
