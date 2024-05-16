@@ -29,7 +29,7 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
-    private static final int ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분
+    private static final int ACCESS_TOKEN_EXPIRE_TIME = 1000 * 10; // 30분
     private static final int REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7; // 7일
     private static final String AUD = "https://k10a508.p.ssafy.io/";
     private static final String ISS = "https://k10a508.p.ssafy.io/";
