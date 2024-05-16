@@ -148,7 +148,7 @@ public class UserController {
 	public SuccessResponse<RecordRes> getMatchRecord(HttpServletRequest request) {
 		MyBattleRecordRes record = gameServiceClient.getMyRecord(request.getHeader(AUTHORIZATION_HEADER).substring(7));
 		System.out.println(record.getGame());
-		return new SuccessResponse<>(RecordRes.builder().numberOfWin(record.getVictory()).numberOfGame(record.getGame()).rating(record.getRating()).rank(record.getRanking()).odd(record.getOdds()).build());
+		return new SuccessResponse<>(RecordRes.builder().numberOfWin(record.getVictory()).numberOfGame(record.getGame()).rating(record.getRating()).rank(record.getRanking()).odd(((double)record.getVictory()/ (double)record.getGame()*100)).build());
 	}
 
 
