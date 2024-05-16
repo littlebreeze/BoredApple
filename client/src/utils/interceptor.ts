@@ -23,7 +23,7 @@ const refreshInstance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     // 요청 전달 전 미리 헤더에 엑세스 토큰 저장
-    config.headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+    // config.headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
     return config;
   },
   (error) => {
@@ -52,13 +52,14 @@ instance.interceptors.response.use(
         // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
         if (response.status == 200) {
           const newAccessToken = response.data.data.accessToken;
-          localStorage.setItem('accessToken', response.data.data.accessToken);
+          // localStorage.setItem('accessToken', response.data.data.accessToken);
+
           axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
           return instance(originRequest);
         }
       } catch (error) {
         // 토큰 재발급 실패 시 로그인 요청 페이지로 이동
-        localStorage.removeItem('accessToken');
+        // localStorage.removeItem('accessToken');
         window.location.replace('/login');
       }
     }
