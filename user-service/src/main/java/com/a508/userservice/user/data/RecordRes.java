@@ -17,5 +17,5 @@ public class RecordRes {
 
 	private int rank;
 
-	private int odd;
+	private double odd;
 }
