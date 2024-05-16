@@ -133,10 +133,11 @@ public class LoginService {
         }
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(user);
 
-        Cookie cookie=createCookie(oauthTokenRes.getRefreshToken());
+//        Cookie cookie=createCookie(oauthTokenRes.getRefreshToken());
+        response.setHeader("Set-Cookie","token=" + oauthTokenRes.getRefreshToken() +" ;Path=/; Domain=k10a508.p.ssafy.io; HttpOnly; Max-Age=604800; SameSite=None; Secure;");
 
         // 쿠키 전송
-        response.addCookie(cookie); //만들어진 쿠키를 쿠키에 저장해준다.
+//        response.addCookie(cookie); //만들어진 쿠키를 쿠키에 저장해준다.
 
         //refreshToken redis에 저장
         refreshTokenService.saveTokenInfo(
@@ -156,7 +157,7 @@ public class LoginService {
         String refreshTokenCookie = "";
         for (Cookie cookie : rc) {
             System.out.println("rc" + cookie.getValue());
-            if (cookie.getName().equals("refreshtoken")) { // 쿠키의 이름이 "refreshToken"인 경우만 처리
+            if (cookie.getName().equals("token")) { // 쿠키의 이름이 "refreshToken"인 경우만 처리
                 refreshTokenCookie = cookie.getValue();
                 break; // 원하는 쿠키를 찾았으므로 반복문을 종료합니다.
             }
@@ -180,11 +181,11 @@ public class LoginService {
 
         //Member 정보로 토큰 재발급
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(user);
-
-        Cookie cookie=createCookie(oauthTokenRes.getRefreshToken());
+        response.setHeader("Set-Cookie","token=" + oauthTokenRes.getRefreshToken() +" ;Path=/; Domain=k10a508.p.ssafy.io; HttpOnly; Max-Age=604800; SameSite=None; Secure;");
+//        Cookie cookie=createCookie(oauthTokenRes.getRefreshToken());
 
         // 쿠키 전송
-        response.addCookie(cookie); //만들어진 쿠키를 쿠키에 저장해준다.
+//        response.addCookie(cookie); //만들어진 쿠키를 쿠키에 저장해준다.
 
         //redis에 저장
         refreshTokenService.saveTokenInfo(
