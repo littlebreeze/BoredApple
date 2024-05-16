@@ -68,7 +68,7 @@ instance.interceptors.response.use(
           localStorage.setItem('accessToken', response.data.data.accessToken);
           localStorage.setItem('refreshToken', response.data.data.refreshToken);
           axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-          return axios(originRequest);
+          return instance(originRequest);
         }
       } catch (error) {
         // 토큰 재발급 실패 시 로그인 요청 페이지로 이동
