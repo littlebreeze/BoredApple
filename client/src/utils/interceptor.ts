@@ -82,10 +82,10 @@ const regenerateRefreshToken = async () => {
 
   // 로컬스토리지용
   // const refreshToken = localStorage.getItem('refreshToken');
-  // const response = await refreshInstance.post('/oauth/token', refreshToken, { headers: headers });
+  // const response = await refreshInstance.post('/user-service/oauth/token', refreshToken, { headers: headers });
 
   // 쿠키용
-  const response = await refreshInstance.post('/oauth/token', {}, { headers: headers });
+  const response = await refreshInstance.post('/user-service/oauth/token', {}, { headers: headers });
   return response;
 };
 
