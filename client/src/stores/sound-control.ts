@@ -9,7 +9,7 @@ interface SoundState {
 }
 
 export const useSoundControlStore = create<SoundState>((set, get) => ({
-  isPlaying: false,
+  isPlaying: true,
   setIsPlaying: (tmp: boolean) => set({ isPlaying: tmp }),
 
   isWaitingPage: false,
