@@ -132,12 +132,13 @@ public class LoginService {
             throw new CustomException(ErrorCode.USER_NOT_FOUND_ERROR);
         }
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(user);
-        response.addHeader("Access-Control-Allow-Credentials", "true");
-        response.addHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS);
+
+        // response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS);
 //        Cookie cookie=createCookie(oauthTokenRes.getRefreshToken());
       //  response.setHeader("Set-Cookie","token=" + oauthTokenRes.getRefreshToken() +"; Path=/; Domain=k10a508.p.ssafy.io; HttpOnly; Max-Age=604800; SameSite=None; Secure;");
-      response.setHeader("Set-Cookie","token=" + oauthTokenRes.getRefreshToken() +"; Path=/; Domain=k10a508.p.ssafy.io; Max-Age=604800;");
+        response.setHeader("Set-Cookie","token=test");
+        response.addHeader("Access-Control-Allow-Credentials", "true");
+        response.addHeader("Access-Control-Allow-Origin", "*");
 
         // 쿠키 전송
 //        response.addCookie(cookie); //만들어진 쿠키를 쿠키에 저장해준다.
