@@ -67,7 +67,7 @@ export default function StudyRecord() {
       </div>
       <div className='grid grid-cols-2 gap-2'>
         <RecordDetailItem title={'횟수'} content={studyData ? studyData!.totalCnt + '회' : '-'} />
-        <RecordDetailItem title={'완료율'} content={studyData ? studyData!.completePercent + '%' : '-'} />
+        <RecordDetailItem title={'완료율'} content={studyData ? studyData!.completePercent.toFixed(2) + '%' : '-'} />
         <RecordDetailItem title={'가장 많이 한 학습'} content={studyData ? studyData!.type : '-'} />
         <RecordDetailItem title={'가장 많이 읽은 분야'} content={studyData ? studyData!.category : '-'} />
       </div>
