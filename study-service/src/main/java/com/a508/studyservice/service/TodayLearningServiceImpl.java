@@ -116,11 +116,11 @@ public class TodayLearningServiceImpl implements TodayLearningService {
         }
 
     @Override
-    public List<MonthResponse> getMonths(LocalDateTime dateTime, String token) {
+    public List<Integer> getMonths(LocalDateTime dateTime, String token) {
         log.info( "Month 데이터를 받아옵니다 요청자 : " + token);
         int userid = userServiceFeignClient.getUserId(token);
         log.info(dateTime.toString());
-        List<MonthResponse> monthResponses = new ArrayList<>();
+        List<Integer> monthResponses = new ArrayList<>();
 
         YearMonth currentYearMonth = YearMonth.of(dateTime.getYear(), dateTime.getMonth());
 
@@ -137,7 +137,7 @@ public class TodayLearningServiceImpl implements TodayLearningService {
         }
         for (int idx = 1 ; idx <= lastDayOfMonth.getDayOfMonth() ; idx++){
             int value = cnt[idx] / 3;
-            monthResponses.add(new MonthResponse(value));
+            monthResponses.add(value);
         }
 
         log.info("반환하는 값은 : " + monthResponses);
