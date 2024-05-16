@@ -116,12 +116,12 @@ public class UserController {
 		System.out.println(daysInMonth);
 		LocalDate da = LocalDate.of(date.getYear(),date.getMonth(),1);
 		System.out.println("da: " + da);
-		List<Integer> cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), da.format(formatter));
+		CalendarRes cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), da.format(formatter));
 
-		for(int i:cal) System.out.print(i+" ");
+		for(int i:cal.getData()) System.out.print(i+" ");
 		System.out.println();
 
-		return new SuccessResponse<>(cal);
+		return new SuccessResponse<>(cal.getData());
 	}
 
 	@PostMapping("/daystudy")

@@ -14,14 +14,6 @@ public class CalendarRes {
 
 	private String status;
 
-	private List<MonthResponse> data;
-
-	@Getter
-	@Builder
-	@AllArgsConstructor
-	public static class MonthResponse {
-
-		private Integer solveCnt;
-	}
+	private List<Integer> data;
 
 }
