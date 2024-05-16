@@ -118,6 +118,7 @@ public class EssayServiceImpl  implements  EssayService{
                         .build());
                 }
                 fiveAbilityRepository.save(FiveAbility.builder()
+                    .id(fiveAbility.getId())
                     .userId(userId)
                     .fact(fiveAbility.getFact() )
                     .inference(fiveAbility.getInference())
