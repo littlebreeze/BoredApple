@@ -97,7 +97,7 @@ export default function Page() {
           <div className='w-full md:w-1/2 lg:w-1/2'>
             <LeftSideAnimation>
               <div className='w-full h-80 relative'>
-                <Image fill src={`/about/explain1.svg`} loading='eager' alt='' priority />
+                <Image fill src={`/about/explain2.svg`} loading='eager' alt='' priority />
               </div>
             </LeftSideAnimation>
           </div>
@@ -128,11 +128,12 @@ export default function Page() {
               </div>
               <ul className='text-ourDarkGray list-disc ml-4 text-sm md:text-base lg:text-base'>
                 <li>고등 수준 5개 대주제의 비문학 지문</li>
+                <li>인문, 사회, 과학, 기술, 예술</li>
                 <li>다양한 문제 유형들의 실시간 피드백과 해설</li>
               </ul>
             </div>
             <div className='w-full md:w-1/2 lg:w-1/2 h-80 relative'>
-              <Image fill src={`/about/explain1.svg`} loading='eager' alt='' priority />
+              <Image fill src={`/about/explain3.svg`} loading='eager' alt='' priority />
             </div>
           </div>
         </UpsideAnimation>
@@ -140,7 +141,7 @@ export default function Page() {
           <div className='w-full md:w-1/2 lg:w-1/2'>
             <LeftSideAnimation>
               <div className='w-full h-80 relative'>
-                <Image fill src={`/about/explain1.svg`} loading='eager' alt='' priority />
+                <Image fill src={`/about/explain4.svg`} loading='eager' alt='' priority />
               </div>
             </LeftSideAnimation>
           </div>
@@ -174,13 +175,13 @@ export default function Page() {
               </ul>
             </div>
             <div className='w-full md:w-1/2 lg:w-1/2 h-80   relative'>
-              <Image fill src={`/about/explain1.svg`} loading='eager' alt='' priority />
+              <Image fill src={`/about/explain5.svg`} loading='eager' alt='' priority />
             </div>
           </div>
         </UpsideAnimation>
       </div>
 
-      <div className='py-36 bg-ourBlue mt-10 text-white'>
+      <div className='mt-28 py-36 bg-ourBlue text-white'>
         <UpsideAnimation>
           <div className='text-center flex flex-col items-center'>
             <div>

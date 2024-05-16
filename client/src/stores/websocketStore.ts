@@ -119,7 +119,6 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
               break;
             case 'MANAGER':
               useGameRoomStore.getState().setCreatorId(res.target);
-              set({ isGaming: false });
               break;
             case 'END':
               set({ isGaming: false });

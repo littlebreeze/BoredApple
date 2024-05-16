@@ -33,13 +33,14 @@ export default function QuickStartGameBtn() {
   const onClickQuickStart = () => {
     console.log('click');
     setIsLoading(true);
-    if (pageNum === 1 && roomList.length === 0)
+    if (pageNum === 1 && roomList.length === 0) {
       Swal.fire({
         title: '입장 가능한 방이 없습니다!',
         text: '새로고침하거나 직접 방을 만들어 대결을 시작하세요!',
         confirmButtonColor: '#0064FF',
       });
-    else if (!isLoading)
+      setIsLoading(false);
+    } else if (!isLoading)
       getGameRoomInfo()
         .then((response) => {
           setIsLoading(false);
