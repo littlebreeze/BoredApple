@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
+import Swal from 'sweetalert2';
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useWebsocketStore } from '@/stores/websocketStore';
 
@@ -11,7 +12,6 @@ import TimerWrapper from './_component/TimerWrapper';
 import GameResultsModal from './_component/GameResultsModal';
 import ChatWrapper from './_component/ChatWrapper';
 import GameScoreBoard from './_component/GameScoreBoard';
-import instance from '@/utils/interceptor';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -110,8 +110,18 @@ export default function Page() {
           <button
             className='w-4/5 p-3 mt-3 text-white rounded-3xl bg-[#FF0000] mb-1'
             onClick={() => {
-              const leavePage = confirm('정말 게임을 나가시겠습니까?');
-              if (leavePage) router.back();
+              Swal.fire({
+                title: '정말 게임을 나가시겠습니까?',
+                confirmButtonColor: '#D9D9D9',
+                confirmButtonText: '나가기',
+                showCancelButton: true,
+                cancelButtonColor: '#0064FF',
+                cancelButtonText: '취소',
+              }).then((leavePage) => {
+                if (leavePage.isConfirmed) {
+                  router.back();
+                }
+              });
             }}
           >
             게임나가기
