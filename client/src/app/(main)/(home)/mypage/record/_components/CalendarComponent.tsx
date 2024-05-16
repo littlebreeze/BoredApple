@@ -39,6 +39,11 @@ export default function CalendarComponent() {
     onChangeYearMonth(new Date(date.getFullYear(), date.getMonth(), 1));
   }, [today]);
 
+  // useEffect(() => {
+  //   onChange(new Date());
+  //   return () => onChange(null);
+  // }, []);
+
   return (
     <>
       <Calendar

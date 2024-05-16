@@ -37,11 +37,11 @@ const tmpRecords = [
     correct: true,
   },
   {
-    problemType: '문장넣기',
+    problemType: '문장삽입',
     correct: true,
   },
   {
-    problemType: '어휘문제',
+    problemType: '어휘',
     correct: true,
   },
 ];
