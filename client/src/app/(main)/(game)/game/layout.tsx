@@ -1,5 +1,6 @@
 import RQProvider from '@/queries/RQProvider';
 import Image from 'next/image';
+import SoundSection from './_component/SoundSection';
 
 export default function Layout({
   children,
@@ -34,6 +35,7 @@ export default function Layout({
             {children}
             {modal}
           </RQProvider>
+          <SoundSection />
         </div>
       </div>
     </div>
