@@ -58,7 +58,7 @@ public class ChatController {
         String message = quizMessageReq.getMessage();
         if (message.equals("START")) {
             //방정보 게임 중
-            gameRoomService.updateIsStarted(roomId);
+            gameRoomService.updateIsStarted(roomId,true);
             ChatMessageRes start = ChatMessageRes.builder().type(MessageType.START).content("START").build();
             simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, start);
         } else if (message.equals("ROUND")) {
@@ -68,7 +68,7 @@ public class ChatController {
             //방정보 게임 중 X
             ChatMessageRes end = ChatMessageRes.builder().type(MessageType.END).content("END").build();
             simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, end);
-            gameRoomService.updateIsStarted(roomId);
+            gameRoomService.updateIsStarted(roomId,false);
             SchedulerService service = gameSchedulerManageService.getGameScheduler(roomId);
             service.getQuizList();
         }

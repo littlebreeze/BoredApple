@@ -78,10 +78,10 @@ public class GameRoomRepository {
                 .build();
     }
 
-    public void updateIsStarted(String roomId) {
+    public void updateIsStarted(String roomId,boolean isStarted) {
         GameRoom gameRoom = getGameRoom(roomId);
         if (gameRoom != null) {
-            gameRoom.setIsStarted();
+            gameRoom.setIsStarted(isStarted);
             redisTemplate.opsForValue().set(GAME_ROOM_HASH_KEY + roomId, gameRoom);
         } else {
             throw new CustomException(ErrorCode.ROOM_IS_NOT_EXIST);
@@ -95,6 +95,7 @@ public class GameRoomRepository {
 
     public List<GameRoom> findQuickEntryGameRoom() {
         Set<String> keys = redisTemplate.keys(GAME_ROOM_HASH_KEY + "*");
+        if (keys==null) throw new CustomException(ErrorCode.GAME_ROOM_IS_EMPTY);
         List<GameRoom> gameRooms = new ArrayList<>();
         for (String key : keys) {
             GameRoom gameRoom=redisTemplate.opsForValue().get(key);

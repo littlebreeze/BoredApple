@@ -35,8 +35,8 @@ public class GameRoom {
 
     private LocalDateTime createdTime;
 
-    public void setIsStarted() {
-        this.isStarted = !isStarted;
+    public void setIsStarted(boolean isStarted) {
+        this.isStarted = isStarted;
     }
 
     public void setRoomCreatorId(int userId){
