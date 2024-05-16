@@ -6,18 +6,19 @@ export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
 
   // 1. 토큰이 없는 경우(비로그인)
-  // const token = req.cookies.get('refreshToken');
-  // if (
-  //   !token &&
-  //   (pathname.startsWith('/home') ||
-  //     pathname.startsWith('/learn') ||
-  //     pathname.startsWith('/game') ||
-  //     pathname.startsWith('/mypage') ||
-  //     pathname.startsWith('/signup'))
-  // ) {
-  //   url.pathname = '/login';
-  //   return NextResponse.redirect(url);
-  // }
+  const refreshToken = req.cookies.get('refreshToken');
+  console.log('토큰입니다', refreshToken);
+  if (
+    !refreshToken &&
+    (pathname.startsWith('/home') ||
+      pathname.startsWith('/learn') ||
+      pathname.startsWith('/game') ||
+      pathname.startsWith('/mypage') ||
+      pathname.startsWith('/signup'))
+  ) {
+    url.pathname = '/login';
+    return NextResponse.redirect(url);
+  }
 
   // 2. 사용자가 직접 URL을 입력한 경우
   const referer = req.headers.get('referer');
