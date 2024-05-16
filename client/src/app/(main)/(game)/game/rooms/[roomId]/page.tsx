@@ -12,13 +12,14 @@ import GameResultsModal from './_component/GameResultsModal';
 import ChatWrapper from './_component/ChatWrapper';
 import GameScoreBoard from './_component/GameScoreBoard';
 import instance from '@/utils/interceptor';
+import RoomInfoWrapper from './_component/RoomInfoWrapper';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
   const { myNickname, myUserId, roomId: storedRoomId, roomPlayerRes } = useGameRoomStore();
 
   const router = useRouter();
-  const { connect, disconnect, stompClient } = useWebsocketStore();
+  const { disconnect, isGaming } = useWebsocketStore();
   const { setGameRoomInfo, resultModalIsShow } = useGameRoomStore();
 
   // 개발자 도구 차단
@@ -48,9 +49,9 @@ export default function Page() {
   }, []);
 
   // myUserId 없으면 game으로 보내기
-  useEffect(() => {
-    if (!myUserId) router.replace('/game');
-  }, []);
+  // useEffect(() => {
+  //   if (!myUserId) router.replace('/game');
+  // }, []);
 
   useEffect(() => {
     // unMount 될 때 disconnect
@@ -113,9 +114,7 @@ export default function Page() {
           <QuizWrapper roomId={roomId} />
         </div>
         {/* 시간 */}
-        <div className='w-1/6'>
-          <TimerWrapper roomId={roomId} />
-        </div>
+        <div className='w-1/6 flex flex-col'>{isGaming ? <TimerWrapper roomId={roomId} /> : <RoomInfoWrapper />}</div>
       </div>
       <div className='w-1/2 h-60'>
         {/* 채팅창 */}
