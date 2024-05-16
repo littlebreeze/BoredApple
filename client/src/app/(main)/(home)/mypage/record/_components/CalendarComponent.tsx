@@ -22,7 +22,7 @@ const getCalendarData = async (yearMonth: Date | null) => {
 };
 
 export default function CalendarComponent() {
-  const { solvedCnt, setSolvedCnt } = useRecordStore();
+  const { solvedCnt, setSolvedCnt, registerDate } = useRecordStore();
   const { today, onChange } = useRecordStore();
   const { yearMonth, onChangeYearMonth, parseValueIntoDate } = useRecordStore();
 
