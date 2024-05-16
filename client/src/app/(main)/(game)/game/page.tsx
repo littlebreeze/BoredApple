@@ -13,7 +13,10 @@ export default function Page() {
       <div className='w-full md:w-3/5 lg:w-3/5'>
         <GameRightSection />
       </div>
-      <Link href={'/home'} className='absolute bottom-3 right-8 w-16 h-16 duration-150 hover:w-20 hover:h-20'>
+      <Link
+        href={'/home'}
+        className='absolute bottom-3 right-7 w-16 h-16 duration-150 hover:w-20 hover:h-20'
+      >
         <Image
           className='w-full drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)]'
           src='/game/icon-image.svg'
