@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
+import Swal from 'sweetalert2';
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useWebsocketStore } from '@/stores/websocketStore';
 
@@ -16,7 +17,7 @@ import RoomInfoWrapper from './_component/RoomInfoWrapper';
 
 export default function Page() {
   const { roomId } = useParams<{ roomId: string }>();
-  const { myNickname, myUserId, roomId: storedRoomId, roomPlayerRes } = useGameRoomStore();
+  const { myNickname, myUserId, roomId: storedRoomId, roomPlayerRes, clearGameRoomInfo } = useGameRoomStore();
 
   const router = useRouter();
   const { disconnect, isGaming } = useWebsocketStore();
@@ -69,22 +70,31 @@ export default function Page() {
 
   // 새로고침, 브라우저 종료시
   useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-      event.returnValue = '';
-
-      const leavePage = confirm('정말 게임을 나가시겠습니까?');
-
-      if (leavePage) {
-        instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/players`, {
-          userId: myUserId,
-          sender: myNickname,
-          roomId: roomId,
-        });
-      }
+    const handleBeforeUnload = () => {
+      return disconnect({
+        type: 'EXIT',
+        roomId: storedRoomId!,
+        sender: myNickname!,
+        senderId: myUserId!,
+        message: '나갑니다',
+      });
     };
-
     window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // 브라우저 종료 시 => 안 됨...
+    // window.addEventListener(
+    //   'unload',
+    //   () => {
+    //     return disconnect({
+    //       type: 'EXIT',
+    //       roomId: storedRoomId!,
+    //       sender: myNickname!,
+    //       senderId: myUserId!,
+    //       message: '나갑니다',
+    //     });
+    //   }
+    //   //, { once: true }
+    // );
 
     // 언마운트시 이벤트리스너 삭제
     return () => {
@@ -102,8 +112,18 @@ export default function Page() {
           <button
             className='w-4/5 p-3 mt-3 text-white rounded-3xl bg-[#FF0000] mb-1'
             onClick={() => {
-              const leavePage = confirm('정말 게임을 나가시겠습니까?');
-              if (leavePage) router.back();
+              Swal.fire({
+                title: '정말 게임을 나가시겠습니까?',
+                confirmButtonColor: '#D9D9D9',
+                confirmButtonText: '나가기',
+                showCancelButton: true,
+                cancelButtonColor: '#0064FF',
+                cancelButtonText: '취소',
+              }).then((leavePage) => {
+                if (leavePage.isConfirmed) {
+                  router.back();
+                }
+              });
             }}
           >
             게임나가기
