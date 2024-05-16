@@ -5,7 +5,7 @@ import checkTrue from '@/../public/learn/check-true.svg';
 import checkFalse from '@/../public/learn/check-false.svg';
 import unchecked from '@/../public/learn/unchecked.svg';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { IBasicProblem, BasicProblemResponse } from '@/types/Problem';
 import ProgressBar from '../../_components/ProgressBar';
 import ReadProblem from './ReadProblem';
@@ -18,13 +18,16 @@ export default function ReadResult() {
 
   const currProblem = problems[problemIndex];
 
+  const searchParams = useSearchParams();
+  const date = searchParams.get('date');
+
   useEffect(() => {
     getReadData();
   }, []);
 
   const getReadData = async () => {
     try {
-      const response = await instance.get(`/study-service/problem/intensive`);
+      const response = await instance.get(`/study-service/problem/intensive${date ? '?date=' + date : ''}`);
       setProblems(response.data.data);
     } catch (error) {
       // error

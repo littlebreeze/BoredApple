@@ -5,7 +5,7 @@ import checkTrue from '@/../public/learn/check-true.svg';
 import checkFalse from '@/../public/learn/check-false.svg';
 import unchecked from '@/../public/learn/unchecked.svg';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { BasicProblemResponse } from '@/types/Problem';
 import ProgressBar from '../../_components/ProgressBar';
 import OrderProblem from './OrderProblem';
@@ -18,13 +18,16 @@ export default function OrderResult() {
 
   const currProblem = problems[problemIndex];
 
+  const searchParams = useSearchParams();
+  const date = searchParams.get('date');
+
   useEffect(() => {
     getOrderData();
   }, []);
 
   const getOrderData = async () => {
     try {
-      const response = await instance.get(`/study-service/problem/order`);
+      const response = await instance.get(`/study-service/problem/order${date ? '?date=' + date : ''}`);
       setProblems(response.data.data);
       console.log(response.data.data);
     } catch (error) {

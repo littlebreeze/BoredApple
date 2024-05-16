@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { InsertProblemResponse, IInsertProblem } from '@/types/Problem';
 import Image from 'next/image';
 import instance from '@/utils/interceptor';
@@ -18,13 +18,16 @@ export default function InsertResult() {
 
   const currProblem = problems[problemIndex];
 
+  const searchParams = useSearchParams();
+  const date = searchParams.get('date');
+
   useEffect(() => {
     getReadData();
   }, []);
 
   const getReadData = async () => {
     try {
-      const response = await instance.get(`/study-service/problem/sentence`);
+      const response = await instance.get(`/study-service/problem/sentence${date ? '?date=' + date : ''}`);
       setProblems(response.data.data);
     } catch (error) {
       // error
