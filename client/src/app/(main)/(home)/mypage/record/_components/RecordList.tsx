@@ -11,7 +11,7 @@ import { useRecordStore } from '@/stores/record';
 import StudyRecordItem from './StudyRecordItem';
 
 const getDailyData = async (today: Date | null) => {
-  const response = await instance.post<{ data: RResponse }>(
+  const response = await instance.post<{ data: Study[] }>(
     `${process.env.NEXT_PUBLIC_API_SERVER}/user-service/daystudy`,
     {
       date: today,
@@ -23,19 +23,43 @@ const getDailyData = async (today: Date | null) => {
   return response;
 };
 
+const tmpRecords = [
+  {
+    problemType: '정독훈련',
+    correct: true,
+  },
+  {
+    problemType: '순서맞추기',
+    correct: false,
+  },
+  {
+    problemType: '주제맞추기',
+    correct: true,
+  },
+  {
+    problemType: '문장삽입',
+    correct: true,
+  },
+  {
+    problemType: '어휘',
+    correct: true,
+  },
+];
+
 export default function RecordList() {
-  const [records, setRecords] = useState<Study[] | null>(null);
+  const [records, setRecords] = useState<Study[]>([]);
 
   const { parseValueIntoDate } = useRecordStore();
   const { today } = useRecordStore();
 
   useEffect(() => {
     // 요청 보내기
-    getDailyData(parseValueIntoDate(today)).then((value) => setRecords(value.data.data.dailyStudyList));
+    getDailyData(parseValueIntoDate(today)).then((value) => setRecords(value.data.data));
   }, [today]);
 
   useEffect(() => {
     console.log('해당일 학습 목록 요청 데이터: ', records);
+    records.length;
   }, [records]);
   return (
     <>
@@ -43,7 +67,7 @@ export default function RecordList() {
         {dayjs(parseValueIntoDate(today)).format('MM월 DD일')}
       </div>
       <div className='bg-ourLightGray rounded-2xl p-4 flex flex-col gap-2'>
-        {records ? (
+        {records.length > 0 ? (
           records!.map((re: Study, idx: number) => {
             return <StudyRecordItem key={idx} record={re} />;
           })
