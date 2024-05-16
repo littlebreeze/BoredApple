@@ -114,9 +114,9 @@ public class UserController {
 
 		int daysInMonth = LocalDate.of(date.getYear(), date.getMonth(), 1).lengthOfMonth();
 		List<Integer> result = new ArrayList<>();
-
-		for (int i = 1; i <= daysInMonth; i++) {
-			result.add(new Random().nextInt(4));
+		CalendarRes cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), LocalDate.of(date.getYear(), date.getMonth(), 1));
+		for (int i = 0; i < daysInMonth; i++) {
+			result.add(cal.getData().getGetMonths().get(i).getSolveCnt());
 		}
 		return new SuccessResponse<>(result);
 	}
