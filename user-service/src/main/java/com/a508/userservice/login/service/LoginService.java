@@ -154,6 +154,7 @@ public class LoginService {
     public OauthTokenRes regenerateToken(HttpServletResponse response, HttpServletRequest request) {
 
         Cookie rc[] = request.getCookies();
+        System.out.println("rc사이즈"+rc.length);
         String refreshTokenCookie = "";
         for (Cookie cookie : rc) {
             System.out.println("rc" + cookie.getValue());
