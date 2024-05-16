@@ -17,7 +17,7 @@ export default function MainLayout({
   return (
     <div className='bg-ourLightGray h-screen flex flex-col items-center'>
       <NavMenu />
-      <div className='w-full max-w-[1000px] flex-1  overflow-y-scroll scrollbar-hide'>
+      <div className='w-full max-w-[1000px] flex-1 overflow-y-scroll scrollbar-hide'>
         <RQProvider>
           <div className='h-full'>{children}</div>
         </RQProvider>
