@@ -84,11 +84,9 @@ public class UserController {
 	public SuccessResponse<List<List<Double>>> userAbility(HttpServletRequest request) {
 
 		fiveDto userAbilityRes = studyServiceClient.GetUserAbility(request.getHeader(AUTHORIZATION_HEADER).substring(7));
-		System.out.println(userAbilityRes.getData().getVoca());
 
 		fiveDto avgAbilityRes = studyServiceClient.GetAvgAbility();
 
-		System.out.println(avgAbilityRes.getData().getFact());
 
 		List<Double> a1 = new ArrayList<>(), a2 = new ArrayList<>();
 		a1.add(userAbilityRes.getData().getFact() / 10.0);
@@ -119,6 +117,10 @@ public class UserController {
 		for (int i = 0; i < daysInMonth; i++) {
 			result.add(cal.getData().getGetMonths().get(i).getSolveCnt());
 		}
+
+		for(int i:result) System.out.print(i+" ");
+		System.out.println();
+
 		return new SuccessResponse<>(result);
 	}
 
@@ -129,6 +131,8 @@ public class UserController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 		DateCalendarRes dateCalendarRes = studyServiceClient.GetDateStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7),day.format(formatter));
+
+		System.out.println(dateCalendarRes.getData().getDayStudyCalendars().get(0));
 
 		return new SuccessResponse<>(dateCalendarRes);
 	}

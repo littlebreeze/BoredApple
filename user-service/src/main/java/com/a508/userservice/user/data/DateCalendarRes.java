@@ -15,6 +15,9 @@ public class DateCalendarRes {
 
 	private DateCalendar data;
 
+	@Getter
+	@Builder
+	@AllArgsConstructor
 	public static class DateCalendar {
 
 		private List<DayStudyCalendar> dayStudyCalendars;
