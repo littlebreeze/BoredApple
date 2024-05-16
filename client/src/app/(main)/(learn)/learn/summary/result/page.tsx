@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CloseButton from '../../_components/CloseButton';
 import InsertResult from '../_components/SummaryResult';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: '지문요약 - 오늘의 학습',
@@ -13,7 +14,9 @@ export default function Page() {
       <div className='py-1'></div>
       <CloseButton />
       <div className='py-2'></div>
-      <InsertResult />
+      <Suspense>
+        <InsertResult />
+      </Suspense>
     </div>
   );
 }
