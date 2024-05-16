@@ -43,7 +43,7 @@ instance.interceptors.response.use(
     // 2xx 이외 상태 코드 시 이 함수 트리거: 응답 오류가 있는 작업 수행
 
     // 토큰이 만료되거나 유효하지 않은 경우 토큰 재발급
-    if (error.response.status == 401) {
+    if (error.response.status == 400 || 401) {
       const originRequest = error.config;
 
       try {
@@ -52,8 +52,6 @@ instance.interceptors.response.use(
         // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
         if (response.status == 200) {
           const newAccessToken = response.data.data.accessToken;
-          // localStorage.setItem('accessToken', response.data.data.accessToken);
-
           axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
           return instance(originRequest);
         }
@@ -72,8 +70,6 @@ const regenerateRefreshToken = async () => {
   const headers = {
     'Content-Type': 'text/plain;charset=utf-8',
   };
-
-  // 쿠키용
   const response = await refreshInstance.post('/user-service/oauth/token', {}, { headers: headers });
   return response;
 };
