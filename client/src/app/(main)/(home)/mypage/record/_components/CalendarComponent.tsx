@@ -39,11 +39,6 @@ export default function CalendarComponent() {
     onChangeYearMonth(new Date(date.getFullYear(), date.getMonth(), 1));
   }, [today]);
 
-  // useEffect(() => {
-  //   onChange(new Date());
-  //   return () => onChange(null);
-  // }, []);
-
   return (
     <>
       <Calendar
@@ -69,9 +64,7 @@ export default function CalendarComponent() {
               classType = 'one';
             } else if (solvedCnt[dayNum] === 2) {
               classType = 'two';
-            } else if (solvedCnt[dayNum] === 0) {
-              classType = '';
-            } else {
+            } else if (solvedCnt[dayNum] >= 3) {
               classType = 'three';
             }
             return `react-calendar__tile--${classType}-solved`;
