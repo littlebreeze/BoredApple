@@ -13,23 +13,15 @@ public class DateCalendarRes {
 
 	private String status;
 
-	private DateCalendar data;
+	private List<DayStudyCalendar> data;
 
 	@Getter
 	@Builder
 	@AllArgsConstructor
-	public static class DateCalendar {
+	public static class DayStudyCalendar {
 
-		private List<DayStudyCalendar> dayStudyCalendars;
+		private String problemType;
 
-		@Getter
-		@Builder
-		@AllArgsConstructor
-		public static class DayStudyCalendar {
-
-			private String problemType;
-			private boolean correct;
-		}
+		private boolean correct;
 	}
-
 }

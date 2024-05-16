@@ -115,10 +115,10 @@ public class UserController {
 		List<Integer> result = new ArrayList<>();
 		System.out.println(daysInMonth);
 		CalendarRes cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), LocalDate.of(date.getYear(), date.getMonth(), 1).format(formatter));
-		System.out.println(cal.getData().getGetMonths().get(0));
+		System.out.println(cal.getData().get(0));
 
 		for (int i = 0; i < daysInMonth; i++) {
-			result.add(cal.getData().getGetMonths().get(i).getSolveCnt());
+			result.add(cal.getData().get(i).getSolveCnt());
 		}
 
 		for(int i:result) System.out.print(i+" ");
@@ -135,7 +135,7 @@ public class UserController {
 
 		DateCalendarRes dateCalendarRes = studyServiceClient.GetDateStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7),day.format(formatter));
 
-		System.out.println(dateCalendarRes.getData().getDayStudyCalendars().get(0));
+		System.out.println(dateCalendarRes.getData().get(0));
 
 		return new SuccessResponse<>(dateCalendarRes);
 	}
