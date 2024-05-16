@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import ReactHowler from 'react-howler';
 
-import soundOn from '@/../public/game/SoundOn.svg';
-import soundOff from '@/../public/game/SoundOff.svg';
+import soundOn from '@/../public/game/soundOn.svg';
+import soundOff from '@/../public/game/soundOff.svg';
 import bgm from '@/../public/sound/bgm.mp3';
 import { useSoundControlStore } from '@/stores/sound-control';
 
