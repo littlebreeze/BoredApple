@@ -27,6 +27,7 @@ export default function SummaryResult() {
       setProblems(response.data.data);
     } catch (error) {
       // error
+      router.replace('/mypage/record');
     }
   };
 
@@ -48,7 +49,8 @@ export default function SummaryResult() {
   };
 
   const handleFinishClick = () => {
-    router.push('/home');
+    if (searchParams.get('date')) router.push('/mypage/record');
+    else router.push('/home');
   };
 
   return (
