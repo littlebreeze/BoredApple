@@ -22,7 +22,7 @@ public interface StudyServiceClient {
 	public fiveDto GetAvgAbility();
 
 	@GetMapping("/solve/month")
-	public Object GetMonthStudy(@RequestHeader(value = "Authorization") String token, @RequestParam String date);
+	public CalendarRes GetMonthStudy(@RequestHeader(value = "Authorization") String token, @RequestParam String date);
 
 	@GetMapping("/solve/day")
 	public DateCalendarRes GetDateStudy(@RequestHeader(value = "Authorization") String token, @RequestParam String date);
