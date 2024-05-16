@@ -17,6 +17,7 @@ export interface GResponse {
   numberOfGame: number;
   rating: number;
   rank: number;
+  odd: number;
 }
 
 // RecordList
