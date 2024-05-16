@@ -1,6 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko'; //한국어
+
 import instance from '@/utils/interceptor';
 import { AResponse } from '@/types/MypageRecord';
 import { useRecordStore } from '@/stores/record';
@@ -57,7 +60,7 @@ export default function AttendanceRecord() {
         <RecordDetailItem title={'출석율'} content={attendance ? attendance?.ratio + '%' : '-'} />
         <RecordDetailItem
           title={'심심한 사과와 처음 만난 날'}
-          content={attendance ? attendance!.registerDate.toString() : '-'}
+          content={attendance ? dayjs(attendance!.registerDate.toString()).format('YY년 M월 D일') : '-'}
         />
       </div>
     </div>
