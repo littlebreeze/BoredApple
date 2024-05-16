@@ -41,7 +41,7 @@ export default function GameScoreBoard() {
       <div className='text-center'>점수</div>
       {players?.map((player, idx) => (
         <div key={idx} className='flex justify-between'>
-          <div className='font-bold'>
+          <div className='font-bold font-Ansungtangmyun'>
             {player.nickname}
             <span className='font-normal'>{player.id === creatorId && ' ♛'}</span>
           </div>
