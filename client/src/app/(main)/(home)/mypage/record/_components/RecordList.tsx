@@ -69,7 +69,9 @@ export default function RecordList() {
       <div className='bg-ourLightGray rounded-2xl p-4 flex flex-col gap-2'>
         {records.length > 0 ? (
           records!.map((re: Study, idx: number) => {
-            return <StudyRecordItem key={idx} record={re} />;
+            return (
+              <StudyRecordItem key={idx} record={re} today={dayjs(parseValueIntoDate(today)).format('YYYY-MM-DD')} />
+            );
           })
         ) : (
           <div className='flex gap-2'>

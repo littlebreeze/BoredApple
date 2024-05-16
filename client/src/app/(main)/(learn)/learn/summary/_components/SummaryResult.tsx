@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import instance from '@/utils/interceptor';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { SummaryProblemResponse } from '@/types/Problem';
 import ProgressBar from '../../_components/ProgressBar';
 import SummaryProblem from './SummaryProblem';
@@ -14,13 +14,16 @@ export default function SummaryResult() {
 
   const currProblem = problems[problemIndex];
 
+  const searchParams = useSearchParams();
+  const date = searchParams.get('date');
+
   useEffect(() => {
     getSummaryData();
   }, []);
 
   const getSummaryData = async () => {
     try {
-      const response = await instance.get(`/study-service/problem/topic`);
+      const response = await instance.get(`/study-service/problem/topic${date ? '?date=' + date : ''}`);
       setProblems(response.data.data);
     } catch (error) {
       // error
