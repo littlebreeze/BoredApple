@@ -150,8 +150,7 @@ public class TodayLearningServiceImpl implements TodayLearningService {
     public List<DayResponse> getDays(LocalDateTime dateTime, String token) {
         log.info( "Day 데이터를 받아옵니다 요청자 : " + token);
         log.info(dateTime.toString());
-        // int userid = userServiceFeignClient.getUserId(token);
-        int userid = 8;
+        int userid = userServiceFeignClient.getUserId(token);
         List<DayResponse> dayResponses = new ArrayList<>();
 
 
