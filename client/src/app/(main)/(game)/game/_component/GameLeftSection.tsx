@@ -8,6 +8,8 @@ import trophy from '@/../public/game/trophy.svg';
 import first from '@/../public/game/1st.svg';
 import second from '@/../public/game/2nd.svg';
 import third from '@/../public/game/3rd.svg';
+import LeftLaurel from '@/../public/game/laurel-left.svg';
+import RightLaurel from '@/../public/game/laurel-right.svg';
 
 export default function GameLeftSection() {
   const { data: rankings } = useGetRanking();
@@ -26,9 +28,23 @@ export default function GameLeftSection() {
             alt='트로피'
           />
         </div>
-        <div className='mt-1 text-xl text-ourDarkGray font-bold'>{rankingList[0]?.nickname}</div>
+        <div className='w-full justify-center mt-2 text-xl text-ourDarkGray font-bold flex font-Ansungtangmyun'>
+          <Image
+            src={LeftLaurel}
+            alt='월계수1'
+            width={30}
+            color='#51D0A2'
+          />
+          {rankingList[0]?.nickname}
+          <Image
+            src={RightLaurel}
+            alt='월계수2'
+            width={30}
+            color='#51D0A2'
+          />
+        </div>
       </div>
-      <div className='flex flex-col w-full h-full gap-2 pt-2 mt-5 text-sm bg-white rounded-lg'>
+      <div className='flex flex-col w-full h-full gap-2 pt-2 mt-3 text-sm bg-white rounded-lg'>
         <div className='flex pb-1 text-center border-b text-ourDarkGray'>
           <div className='flex-1'>순위</div>
           <div className='flex-1'>닉네임</div>
