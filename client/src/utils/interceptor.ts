@@ -53,19 +53,11 @@ instance.interceptors.response.use(
         if (response.status == 200) {
           const newAccessToken = response.data.data.accessToken;
           localStorage.setItem('accessToken', response.data.data.accessToken);
-          // localStorage.setItem('refreshToken', response.data.data.refreshToken);
           axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
           return instance(originRequest);
         }
       } catch (error) {
         // 토큰 재발급 실패 시 로그인 요청 페이지로 이동
-
-        // 로컬스토리지용
-        // localStorage.removeItem('accessToken');
-        // localStorage.removeItem('refreshToken');
-        // window.location.replace('/login');
-
-        // 쿠키용
         localStorage.removeItem('accessToken');
         window.location.replace('/login');
       }
@@ -79,10 +71,6 @@ const regenerateRefreshToken = async () => {
   const headers = {
     'Content-Type': 'text/plain;charset=utf-8',
   };
-
-  // 로컬스토리지용
-  // const refreshToken = localStorage.getItem('refreshToken');
-  // const response = await refreshInstance.post('/user-service/oauth/token', refreshToken, { headers: headers });
 
   // 쿠키용
   const response = await refreshInstance.post('/user-service/oauth/token', {}, { headers: headers });
