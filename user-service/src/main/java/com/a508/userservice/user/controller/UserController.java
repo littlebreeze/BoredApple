@@ -12,6 +12,7 @@ import org.apache.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -111,10 +112,10 @@ public class UserController {
 
 	@PostMapping("/calendar")
 	public SuccessResponse<List<Integer>> getCalenderInfo(HttpServletRequest request, @RequestBody YearMonthReq date) {
-
 		int daysInMonth = LocalDate.of(date.getYear(), date.getMonth(), 1).lengthOfMonth();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		List<Integer> result = new ArrayList<>();
-		CalendarRes cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), LocalDate.of(date.getYear(), date.getMonth(), 1));
+		CalendarRes cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), LocalDate.of(date.getYear(), date.getMonth(), 1).format(formatter));
 		for (int i = 0; i < daysInMonth; i++) {
 			result.add(cal.getData().getGetMonths().get(i).getSolveCnt());
 		}
@@ -122,14 +123,14 @@ public class UserController {
 	}
 
 	@PostMapping("/daystudy")
-	public SuccessResponse<DailyStudyRes> getStudyByDay(HttpServletRequest request, @RequestBody DateReq date) {
+	public SuccessResponse<DateCalendarRes> getStudyByDay(HttpServletRequest request, @RequestBody DateReq date) {
 
-		List<DailyStudyRes.StudyInfo> dailyStudy = new ArrayList<>();
-		dailyStudy.add(DailyStudyRes.StudyInfo.builder().problemType("정독훈련").isCorrect(true).build());
-		dailyStudy.add(DailyStudyRes.StudyInfo.builder().problemType("순서맞추기").isCorrect(false).build());
-		dailyStudy.add(DailyStudyRes.StudyInfo.builder().problemType("주제맞추기").isCorrect(true).build());
+		LocalDate day = LocalDate.of(date.getYear(),date.getMonth(),date.getDay());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-		return new SuccessResponse<>(DailyStudyRes.builder().DailyStudyList(dailyStudy).build());
+		DateCalendarRes dateCalendarRes = studyServiceClient.GetDateStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7),day.format(formatter));
+
+		return new SuccessResponse<>(dateCalendarRes);
 	}
 
 	@PostMapping("/attendance")
