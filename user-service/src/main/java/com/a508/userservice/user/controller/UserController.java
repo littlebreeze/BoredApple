@@ -116,29 +116,25 @@ public class UserController {
 		System.out.println(daysInMonth);
 		LocalDate da = LocalDate.of(date.getYear(),date.getMonth(),1);
 		System.out.println("da: " + da);
-		CalendarRes cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), da.format(formatter));
-		System.out.println(cal.getData().get(0).getSolveCnt());
-		for (int i = 0; i < daysInMonth; i++) {
-			result.add(cal.getData().get(i).getSolveCnt());
-		}
+		List<Integer> cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), da.format(formatter));
 
-		for(int i:result) System.out.print(i+" ");
+		for(int i:cal) System.out.print(i+" ");
 		System.out.println();
 
-		return new SuccessResponse<>(result);
+		return new SuccessResponse<>(cal);
 	}
 
 	@PostMapping("/daystudy")
-	public SuccessResponse<DateCalendarRes> getStudyByDay(HttpServletRequest request, @RequestBody DateReq date) {
+	public SuccessResponse<List<DateCalendarRes.DayStudyCalendar>> getStudyByDay(HttpServletRequest request, @RequestBody DateReq date) {
 
 		LocalDate day = LocalDate.of(date.getYear(),date.getMonth(),date.getDay());
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 		DateCalendarRes dateCalendarRes = studyServiceClient.GetDateStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7),day.format(formatter));
 
-		System.out.println(dateCalendarRes.getData().get(0));
+		System.out.println(dateCalendarRes.getData().get(0).getProblemType());
 
-		return new SuccessResponse<>(dateCalendarRes);
+		return new SuccessResponse<>(dateCalendarRes.getData());
 	}
 
 	@PostMapping("/attendance")
@@ -155,7 +151,6 @@ public class UserController {
 
 	@GetMapping("/record")
 	public SuccessResponse<RecordRes> getMatchRecord(HttpServletRequest request) {
-		System.out.println(11);
 		MyBattleRecordRes record = gameServiceClient.getMyRecord(request.getHeader(AUTHORIZATION_HEADER).substring(7));
 		System.out.println(record.getGame());
 		return new SuccessResponse<>(RecordRes.builder().numberOfWin(record.getVictory()).numberOfGame(record.getGame()).rating(record.getRating()).rank(record.getRanking()).odd(record.getOdds()).build());

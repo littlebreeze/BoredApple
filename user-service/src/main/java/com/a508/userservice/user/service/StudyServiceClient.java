@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @FeignClient(name = "study-service")
 public interface StudyServiceClient {
@@ -22,7 +23,7 @@ public interface StudyServiceClient {
 	public fiveDto GetAvgAbility();
 
 	@GetMapping("/solve/month")
-	public CalendarRes GetMonthStudy(@RequestHeader(value = "Authorization") String token, @RequestParam String date);
+	public List<Integer> GetMonthStudy(@RequestHeader(value = "Authorization") String token, @RequestParam String date);
 
 	@GetMapping("/solve/day")
 	public DateCalendarRes GetDateStudy(@RequestHeader(value = "Authorization") String token, @RequestParam String date);
