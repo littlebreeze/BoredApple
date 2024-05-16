@@ -23,7 +23,7 @@ const refreshInstance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     // 요청 전달 전 미리 헤더에 엑세스 토큰 저장
-    // config.headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+    config.headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
     return config;
   },
   (error) => {
@@ -52,8 +52,8 @@ instance.interceptors.response.use(
         // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
         if (response.status == 200) {
           const newAccessToken = response.data.data.accessToken;
-          // localStorage.setItem('accessToken', response.data.data.accessToken);
-          localStorage.setItem('refreshToken', response.data.data.refreshToken);
+          localStorage.setItem('accessToken', response.data.data.accessToken);
+          // localStorage.setItem('refreshToken', response.data.data.refreshToken);
           axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
           return instance(originRequest);
         }
@@ -62,12 +62,12 @@ instance.interceptors.response.use(
 
         // 로컬스토리지용
         // localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.replace('/login');
+        // localStorage.removeItem('refreshToken');
+        // window.location.replace('/login');
 
         // 쿠키용
-        // localStorage.removeItem('accessToken');
-        // window.location.replace('/login');
+        localStorage.removeItem('accessToken');
+        window.location.replace('/login');
       }
     }
     return Promise.reject(error);
@@ -81,11 +81,11 @@ const regenerateRefreshToken = async () => {
   };
 
   // 로컬스토리지용
-  const refreshToken = localStorage.getItem('refreshToken');
-  const response = await refreshInstance.post('/oauth/token', refreshToken, { headers: headers });
+  // const refreshToken = localStorage.getItem('refreshToken');
+  // const response = await refreshInstance.post('/oauth/token', refreshToken, { headers: headers });
 
   // 쿠키용
-  // const response = await refreshInstance.post('/oauth/token', {}, { headers: headers });
+  const response = await refreshInstance.post('/oauth/token', {}, { headers: headers });
   return response;
 };
 

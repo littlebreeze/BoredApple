@@ -28,12 +28,12 @@ export default function Authentication() {
       });
 
       // 메모리에 토큰 저장
-      const accessToken = response.data.data.accessToken;
-      instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      // const accessToken = response.data.data.accessToken;
+      // instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
       // 로컬스토리지에 토큰 저장
-      // localStorage.setItem('accessToken', response.data.data.accessToken);
-      localStorage.setItem('refreshToken', response.data.data.refreshToken);
+      localStorage.setItem('accessToken', response.data.data.accessToken);
+      // localStorage.setItem('refreshToken', response.data.data.refreshToken);
 
       // 기존 유저인지 신규 유저인지 판단하여 라우팅 처리
       handleRouter(response.data.data.signUpProcess);
