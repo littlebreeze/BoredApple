@@ -116,10 +116,10 @@ public class UserController {
 		System.out.println(daysInMonth);
 		LocalDate da = LocalDate.of(date.getYear(),date.getMonth(),1);
 		System.out.println("da: " + da);
-		CalendarRes cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), da.format(formatter));
-		System.out.println(cal.getData().get(0).getSolveCnt());
+		Object cal = studyServiceClient.GetMonthStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7), da.format(formatter));
+		System.out.println(cal);
 		for (int i = 0; i < daysInMonth; i++) {
-			result.add(cal.getData().get(i).getSolveCnt());
+//			result.add(cal.getData().get(i).getSolveCnt());
 		}
 
 		for(int i:result) System.out.print(i+" ");
