@@ -13,6 +13,8 @@ public interface EssayRepository extends JpaRepository<EssaySolved,Integer> {
 
     EssaySolved findByProblemId(Integer problemId);
 
+    EssaySolved findByUserIdAndProblemId(Integer userId, Integer problemId);
+
     List<EssaySolved> findByUserId(Integer userId);
 
 }

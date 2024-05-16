@@ -24,6 +24,7 @@ import com.a508.studyservice.entity.TodayLearning;
 import com.a508.studyservice.entity.TopicProblem;
 import com.a508.studyservice.feign.UserServiceFeignClient;
 import com.a508.studyservice.repository.ChoiceRepository;
+import com.a508.studyservice.repository.EssayRepository;
 import com.a508.studyservice.repository.IntensiveRepository;
 import com.a508.studyservice.repository.SentenceInsertRepository;
 import com.a508.studyservice.repository.TodayLearningRepository;
@@ -44,7 +45,8 @@ public class TodayLearningServiceImpl implements TodayLearningService {
     private final IntensiveRepository intensiveRepository;
     private final SentenceInsertRepository sentenceInsertRepository;
     private final TopicRepository topicRepository;
-    private  final UserServiceFeignClient userServiceFeignClient;
+    private final UserServiceFeignClient userServiceFeignClient;
+    private final EssayRepository essayRepository;
 
     private static final List<String> categories = new ArrayList<>(Arrays.asList("인문", "사회", "과학", "예술", "기술"));
     @Override
@@ -148,7 +150,8 @@ public class TodayLearningServiceImpl implements TodayLearningService {
     public List<DayResponse> getDays(LocalDateTime dateTime, String token) {
         log.info( "Day 데이터를 받아옵니다 요청자 : " + token);
         log.info(dateTime.toString());
-        int userid = userServiceFeignClient.getUserId(token);
+        // int userid = userServiceFeignClient.getUserId(token);
+        int userid = 8;
         List<DayResponse> dayResponses = new ArrayList<>();
 
 
@@ -163,34 +166,68 @@ public class TodayLearningServiceImpl implements TodayLearningService {
         boolean topicDay = false;
         boolean vocaDay = false;
 
+        TreeSet<String> stringList  = new TreeSet<>();
         for (TodayLearning todayLearning : todayLearnings) {
-            boolean flag = todayLearning.isCorrect();
+            if( !todayLearning.isCorrect()) continue;;
 
-            if(todayLearning.getType().equals("정독훈련") && !intensiveDay){
-                    intensiveDay = true;
-
-                    dayResponses.add(new DayResponse("정독훈련",flag));
+            stringList.add(todayLearning.getType());
+            if(todayLearning.getType().equals("정독훈련") && !intensiveDay ){
+                    boolean check = choiceRepository.findByUserIdAndTypeAndProblemId(userid,todayLearning.getType(),todayLearning.getProblemId()).isCorrect();
+                    if(!check) {intensiveDay = true;}
                 }
 
                 if(todayLearning.getType().equals("순서맞추기") && !sentenceDay){
-                    sentenceDay = true;
-                    dayResponses.add(new DayResponse("순서맞추기",flag));
+                    boolean check = choiceRepository.findByUserIdAndTypeAndProblemId(userid,todayLearning.getType(),todayLearning.getProblemId()).isCorrect();
+                    if(!check) {sentenceDay = true;}
                 }
 
                 if(todayLearning.getType().equals("문장삽입") && !insertDay){
-                    insertDay = true;
-                    dayResponses.add( new DayResponse("문장삽입",flag));
+                    boolean check = choiceRepository.findByUserIdAndTypeAndProblemId(userid,todayLearning.getType(),todayLearning.getProblemId()).isCorrect();
+                    if(!check) {insertDay = true;}
                 }
 
                 if(todayLearning.getType().equals("주제맞추기") && !topicDay){
-                    topicDay = true;
-                    dayResponses.add(new DayResponse("주제맞추기",flag));
+                     int similarity = essayRepository.findByUserIdAndProblemId(userid,todayLearning.getProblemId()).getSimilarity();
+                     if( similarity < 60) {topicDay = true;}
                 }
 
                 if(todayLearning.getType().equals("어휘") && !vocaDay){
-                    vocaDay = true;
-                    dayResponses.add( new DayResponse("어휘",flag));
+                    boolean check = choiceRepository.findByUserIdAndTypeAndProblemId(userid,todayLearning.getType(),todayLearning.getProblemId()).isCorrect();
+                    if(!check) {vocaDay = true;}
                 }
+
+
+
+        }
+        log.info(stringList.toString());
+
+        for(String string : stringList){
+            log.info(string);
+            if(string.equals("정독훈련")){
+                log.info("정독");
+                if(intensiveDay) dayResponses.add(new DayResponse("정독훈련",false));
+                else dayResponses.add(new DayResponse("정독훈련",true));
+            }
+            if(string.equals("어휘")){
+                log.info("어휘");
+                if(vocaDay) dayResponses.add(new DayResponse("어휘",false));
+                else dayResponses.add(new DayResponse("어휘",true));
+            }
+            if(string.equals("주제맞추기")){
+                log.info("주제맞추기");
+                if(topicDay) dayResponses.add(new DayResponse("주제맞추기",false));
+                else dayResponses.add(new DayResponse("주제맞추기",true));
+            }
+            if(string.equals("순서맞추기")){
+                log.info("순서맞추기");
+                if(sentenceDay) dayResponses.add(new DayResponse("순서맞추기",false));
+                else dayResponses.add(new DayResponse("순서맞추기",true));
+            }
+            if(string.equals("문장삽입")){
+                log.info("문장삽입");
+                if(insertDay) dayResponses.add(new DayResponse("문장삽입",false));
+                else dayResponses.add(new DayResponse("문장삽입",true));
+            }
         }
 
         return dayResponses;
