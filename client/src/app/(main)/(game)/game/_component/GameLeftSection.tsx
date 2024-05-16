@@ -10,11 +10,22 @@ import second from '@/../public/game/2nd.svg';
 import third from '@/../public/game/3rd.svg';
 import LeftLaurel from '@/../public/game/laurel-left.svg';
 import RightLaurel from '@/../public/game/laurel-right.svg';
+import { useEffect } from 'react';
+import { useSoundControlStore } from '@/stores/sound-control';
 
 export default function GameLeftSection() {
   const { data: rankings } = useGetRanking();
 
   const rankingList: IRankingList[] = rankings?.rankingList ?? [];
+  const { setIsWaitingPage } = useSoundControlStore();
+
+  useEffect(() => {
+    setIsWaitingPage(true);
+
+    return () => {
+      setIsWaitingPage(false);
+    };
+  }, []);
 
   return (
     <div className='flex flex-col items-center w-full h-full p-5'>
