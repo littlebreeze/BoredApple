@@ -259,8 +259,8 @@ public class GameRoomService {
     /**
      * 게임 상태 변경
      */
-    public void updateIsStarted(Integer roomId) {
-        gameRoomRepository.updateIsStarted(String.valueOf(roomId));
+    public void updateIsStarted(Integer roomId,boolean isStarted) {
+        gameRoomRepository.updateIsStarted(String.valueOf(roomId),isStarted);
     }
 
 
