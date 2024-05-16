@@ -6,8 +6,7 @@ export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
 
   // 1. 토큰이 없는 경우(비로그인)
-  const refreshToken = req.cookies.get('refreshToken');
-  console.log('토큰입니다', refreshToken);
+  const refreshToken = req.cookies.get('refreshtoken');
   if (
     !refreshToken &&
     (pathname.startsWith('/home') ||
