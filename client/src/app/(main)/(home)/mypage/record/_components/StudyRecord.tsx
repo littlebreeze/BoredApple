@@ -30,10 +30,6 @@ export default function StudyRecord() {
     } catch (error) {}
   }, [yearMonth?.getMonth()]);
 
-  useEffect(() => {
-    console.log('학습 기록 데이터: ', studyData);
-  }, [studyData]);
-
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>

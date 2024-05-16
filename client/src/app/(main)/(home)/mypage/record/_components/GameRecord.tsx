@@ -17,10 +17,6 @@ export default function GameRecord() {
     if (data?.data) setGameRecord(data.data.data);
   }, [isLoading]);
 
-  useEffect(() => {
-    console.log('게임 기록 요청 데이터: ', gameRecord);
-  }, [gameRecord]);
-
   return (
     <div className='flex flex-col'>
       <div className='flex mb-2'>

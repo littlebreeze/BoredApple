@@ -57,10 +57,6 @@ export default function RecordList() {
     getDailyData(parseValueIntoDate(today)).then((value) => setRecords(value.data.data));
   }, [today]);
 
-  useEffect(() => {
-    console.log('해당일 학습 목록 요청 데이터: ', records);
-    records.length;
-  }, [records]);
   return (
     <>
       <div className='text-ourDarkGray text-xl font-semibold ml-5 my-2'>
