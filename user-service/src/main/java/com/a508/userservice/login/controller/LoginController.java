@@ -24,6 +24,7 @@ public class LoginController {
 
     @PostMapping("/oauth/token") //accessToken 만료 시 refreshToken으로 토큰 재발급
     public SuccessResponse<OauthTokenRes> regenerateToken(HttpServletResponse response, HttpServletRequest request) {
+        System.out.println("여기는 와??");
         OauthTokenRes oauthTokenRes = loginService.regenerateToken(response, request);
         return new SuccessResponse<>(oauthTokenRes);
     }
