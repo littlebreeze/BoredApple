@@ -22,7 +22,7 @@ const getCalendarData = async (yearMonth: Date | null) => {
 };
 
 export default function CalendarComponent() {
-  const { solvedCnt, setSolvedCnt } = useRecordStore();
+  const { solvedCnt, setSolvedCnt, registerDate } = useRecordStore();
   const { today, onChange } = useRecordStore();
   const { yearMonth, onChangeYearMonth, parseValueIntoDate } = useRecordStore();
 
@@ -38,6 +38,11 @@ export default function CalendarComponent() {
     const date = parseValueIntoDate(today);
     onChangeYearMonth(new Date(date.getFullYear(), date.getMonth(), 1));
   }, [today]);
+
+  // useEffect(() => {
+  //   onChange(new Date());
+  //   return () => onChange(null);
+  // }, []);
 
   return (
     <>
@@ -64,7 +69,9 @@ export default function CalendarComponent() {
               classType = 'one';
             } else if (solvedCnt[dayNum] === 2) {
               classType = 'two';
-            } else if (solvedCnt[dayNum] === 3) {
+            } else if (solvedCnt[dayNum] === 0) {
+              classType = '';
+            } else {
               classType = 'three';
             }
             return `react-calendar__tile--${classType}-solved`;
