@@ -132,7 +132,8 @@ public class LoginService {
             throw new CustomException(ErrorCode.USER_NOT_FOUND_ERROR);
         }
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(user);
-
+        response.addHeader("Access-Control-Allow-Credentials", "true");
+        response.addHeader("Access-Control-Allow-Origin", "*");
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS);
 //        Cookie cookie=createCookie(oauthTokenRes.getRefreshToken());
         response.setHeader("Set-Cookie","token=" + oauthTokenRes.getRefreshToken() +"; Path=/; Domain=k10a508.p.ssafy.io; HttpOnly; Max-Age=604800; SameSite=None; Secure;");
