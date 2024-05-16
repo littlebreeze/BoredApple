@@ -137,9 +137,11 @@ public class UserController {
 	}
 
 	@PostMapping("/monthstudy")
-	public SuccessResponse<MonthlyStudyRes> getStudyByMonth(HttpServletRequest request, @RequestBody YearMonthReq date) {
-
-		return new SuccessResponse<>(MonthlyStudyRes.builder().daysCompleteLearning(3).mostLearnedStudy("정독훈련").mostReadCategory("과학/기술").build());
+	public SuccessResponse<MonthlyStudyRes.MonthStudy> getStudyByMonth(HttpServletRequest request, @RequestBody YearMonthReq date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate da = LocalDate.of(date.getYear(),date.getMonth(),1);
+		MonthlyStudyRes monthlyStudyRes = studyServiceClient.MonthTotalStudy(request.getHeader(AUTHORIZATION_HEADER).substring(7),da.format(formatter));
+		return new SuccessResponse<>(monthlyStudyRes.getData());
 	}
 
 	@GetMapping("/record")

@@ -9,9 +9,21 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MonthlyStudyRes {
 
-	private int daysCompleteLearning;
+	private String status;
 
-	private String mostLearnedStudy;
+	private MonthStudy data;
 
-	private String mostReadCategory;
+	@Getter
+	@Builder
+	@AllArgsConstructor
+	public static class MonthStudy {
+
+		private int totalCnt;
+
+		private double completePercent;
+
+		private String type;
+
+		private String category;
+	}
 }

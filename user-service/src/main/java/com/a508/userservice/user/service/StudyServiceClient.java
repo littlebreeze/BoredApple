@@ -1,10 +1,7 @@
 package com.a508.userservice.user.service;
 
 import com.a508.userservice.common.response.SuccessResponse;
-import com.a508.userservice.user.data.CalendarRes;
-import com.a508.userservice.user.data.DateCalendarRes;
-import com.a508.userservice.user.data.UserAbilityRes;
-import com.a508.userservice.user.data.fiveDto;
+import com.a508.userservice.user.data.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -27,4 +24,7 @@ public interface StudyServiceClient {
 
 	@GetMapping("/solve/day")
 	public DateCalendarRes GetDateStudy(@RequestHeader(value = "Authorization") String token, @RequestParam String date);
+
+	@GetMapping("/solve/total")
+	public MonthlyStudyRes MonthTotalStudy(@RequestHeader(value = "Authorization") String token, @RequestParam String date);
 }
