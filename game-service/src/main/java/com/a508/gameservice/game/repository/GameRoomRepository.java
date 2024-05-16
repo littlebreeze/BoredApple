@@ -7,17 +7,22 @@ import com.a508.gameservice.game.domain.GameRoom;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Repository
 public class GameRoomRepository {
     private final RedisTemplate<String, GameRoom> redisTemplate;
+    private final RoomPlayerRepository roomPlayerRepository;
     private static final String GAME_ROOM_HASH_KEY = "gameRoom:";
 
-    public GameRoomRepository(RedisTemplate<String, GameRoom> redisGameRoomTemplate) {
+    public GameRoomRepository(RedisTemplate<String, GameRoom> redisGameRoomTemplate, RoomPlayerRepository roomPlayerRepository) {
         this.redisTemplate = redisGameRoomTemplate;
+        this.roomPlayerRepository = roomPlayerRepository;
     }
 
     public void saveGameRoom(GameRoom gameRoom) {
@@ -63,22 +68,22 @@ public class GameRoomRepository {
                 GameRoom gameRoom = getGameRoom(String.valueOf(id));
                 if (gameRoom != null) {
                     gameRooms.add(gameRoom);
-                }else {
-                isEndPage = true;
-                break;
+                } else {
+                    isEndPage = true;
+                    break;
                 }
             }
             i++;
         }
 
-        if (ids.size()<=end+1) isEndPage=true;
+        if (ids.size() <= end + 1) isEndPage = true;
         return PageRoomListDTO.builder()
                 .gameRoomList(gameRooms)
                 .isEndPage(isEndPage)
                 .build();
     }
 
-    public void updateIsStarted(String roomId,boolean isStarted) {
+    public void updateIsStarted(String roomId, boolean isStarted) {
         GameRoom gameRoom = getGameRoom(roomId);
         if (gameRoom != null) {
             gameRoom.setIsStarted(isStarted);
@@ -88,18 +93,18 @@ public class GameRoomRepository {
         }
     }
 
-    public void removeGameRoom(String roomId){
+    public void removeGameRoom(String roomId) {
         redisTemplate.delete(GAME_ROOM_HASH_KEY + roomId);
     }
 
 
     public List<GameRoom> findQuickEntryGameRoom() {
         Set<String> keys = redisTemplate.keys(GAME_ROOM_HASH_KEY + "*");
-        if (keys==null) throw new CustomException(ErrorCode.GAME_ROOM_IS_EMPTY);
+        if (keys == null) throw new CustomException(ErrorCode.GAME_ROOM_IS_EMPTY);
         List<GameRoom> gameRooms = new ArrayList<>();
         for (String key : keys) {
-            GameRoom gameRoom=redisTemplate.opsForValue().get(key);
-            if (gameRoom != null && !gameRoom.getIsSecret() && !gameRoom.getIsStarted()) {
+            GameRoom gameRoom = redisTemplate.opsForValue().get(key);
+            if (gameRoom != null && !gameRoom.getIsSecret() && !gameRoom.getIsStarted() && roomPlayerRepository.playerCnt(String.valueOf(gameRoom.getId())) < gameRoom.getMaxNum()) {
                 gameRooms.add(gameRoom);
             }
         }
