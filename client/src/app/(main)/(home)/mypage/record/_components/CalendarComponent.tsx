@@ -64,7 +64,9 @@ export default function CalendarComponent() {
               classType = 'one';
             } else if (solvedCnt[dayNum] === 2) {
               classType = 'two';
-            } else if (solvedCnt[dayNum] === 3) {
+            } else if (solvedCnt[dayNum] === 0) {
+              classType = '';
+            } else {
               classType = 'three';
             }
             return `react-calendar__tile--${classType}-solved`;
