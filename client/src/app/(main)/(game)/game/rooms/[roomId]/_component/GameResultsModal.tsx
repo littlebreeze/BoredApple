@@ -34,10 +34,10 @@ export default function GameResultsModal() {
 
     console.log('정렬된 데이터: ', copyPlayers);
     let rank = 1;
-    const requestarr: RequestItem[] = players.map((player, idx) => {
+    const requestarr: RequestItem[] = copyPlayers.map((player, idx) => {
       if (idx === 0) return { ranking: rank, userId: player.id };
       else {
-        if (players[idx - 1].score !== player.score) rank++;
+        if (copyPlayers[idx - 1].score !== player.score) rank++;
         return {
           ranking: rank,
           userId: player.id,
