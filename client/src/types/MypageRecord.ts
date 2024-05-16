@@ -17,12 +17,13 @@ export interface GResponse {
   numberOfGame: number;
   rating: number;
   rank: number;
+  odd: number;
 }
 
 // RecordList
 export interface Study {
   problemType: string;
-  isCorrect: boolean;
+  correct: boolean;
 }
 
 // RecordList
@@ -32,10 +33,10 @@ export interface RResponse {
 
 // StudyRecord
 export interface SResponse {
-  daysCompleteLearning: number;
-  completePercentage: number;
-  mostLearnedStudy: string;
-  mostReadCategory: string;
+  totalCnt: number;
+  completePercent: number;
+  type: string;
+  category: string;
 }
 
 // 일자별 기록 요청 데이터
@@ -58,4 +59,58 @@ export interface SRResponse {
   daysCompleteLearning: number;
   mostLearnedStudy: string;
   mostReadCategory: string;
+}
+
+export function toServer(type: string): string {
+  switch (type) {
+    case '정독훈련':
+      return 'intensive';
+    case '문장삽입':
+      return 'sentence';
+    case '주제맞추기':
+      return 'topic';
+    case '순서맞추기':
+      return 'order';
+    case '어휘':
+      return 'voca';
+
+    default:
+      return 'chkplz';
+  }
+}
+
+export function toClient(type: string): string {
+  switch (type) {
+    case '정독훈련':
+      return 'read';
+    case '문장삽입':
+      return 'insert';
+    case '주제맞추기':
+      return 'summary';
+    case '순서맞추기':
+      return 'order';
+    case '어휘':
+      return 'word';
+
+    default:
+      return 'chkplz';
+  }
+}
+
+export function toExplain(type: string): string {
+  switch (type) {
+    case '정독훈련':
+      return '비문학 지문을 읽고 문제를 풀어요';
+    case '문장삽입':
+      return '빈칸에 알맞은 문장을 넣어요';
+    case '주제맞추기':
+      return '비문학 지문을 읽고 요약해요';
+    case '순서맞추기':
+      return '문장 순서를 올바르게 배열해요';
+    case '어휘':
+      return '어휘력을 높여요';
+
+    default:
+      return 'chkplz';
+  }
 }
