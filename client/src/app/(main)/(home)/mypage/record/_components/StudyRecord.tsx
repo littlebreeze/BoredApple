@@ -66,10 +66,10 @@ export default function StudyRecord() {
         <div className='text-[#00C27C] font-bold text-lg'>{yearMonth!.getMonth() + 1}월 학습</div>
       </div>
       <div className='grid grid-cols-2 gap-2'>
-        <RecordDetailItem title={'횟수'} content={studyData ? studyData!.daysCompleteLearning + '회' : '-'} />
-        <RecordDetailItem title={'완료율'} content={studyData ? studyData!.completePercentage + '%' : '-'} />
-        <RecordDetailItem title={'가장 많이 한 학습'} content={studyData ? studyData!.mostLearnedStudy : '-'} />
-        <RecordDetailItem title={'가장 많이 읽은 분야'} content={studyData ? studyData!.mostReadCategory : '-'} />
+        <RecordDetailItem title={'횟수'} content={studyData ? studyData!.totalCnt + '회' : '-'} />
+        <RecordDetailItem title={'완료율'} content={studyData ? studyData!.completePercent + '%' : '-'} />
+        <RecordDetailItem title={'가장 많이 한 학습'} content={studyData ? studyData!.type : '-'} />
+        <RecordDetailItem title={'가장 많이 읽은 분야'} content={studyData ? studyData!.category : '-'} />
       </div>
     </div>
   );
