@@ -25,6 +25,7 @@ export default function Authentication() {
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/oauth2/code/google`, code, {
         headers: headers,
+        withCredentials: true,
       });
 
       // 메모리에 토큰 저장
