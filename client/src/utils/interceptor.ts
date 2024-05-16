@@ -70,6 +70,7 @@ const regenerateRefreshToken = async () => {
   const headers = {
     'Content-Type': 'text/plain;charset=utf-8',
   };
+  refreshInstance.defaults.headers.common['Authorization'] = `Bearer Regenerate`;
   const response = await refreshInstance.post('/user-service/oauth/token', {}, { headers: headers });
   return response;
 };
