@@ -2,6 +2,7 @@ package com.a508.userservice.user.service;
 
 import com.a508.userservice.common.response.SuccessResponse;
 import com.a508.userservice.user.data.CalendarRes;
+import com.a508.userservice.user.data.DateCalendarRes;
 import com.a508.userservice.user.data.UserAbilityRes;
 import com.a508.userservice.user.data.fiveDto;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -21,5 +22,8 @@ public interface StudyServiceClient {
 	public fiveDto GetAvgAbility();
 
 	@GetMapping("/solve/month")
-	public CalendarRes GetMonthStudy(@RequestHeader(value = "Authorization") String token, @RequestParam LocalDate date);
+	public CalendarRes GetMonthStudy(@RequestHeader(value = "Authorization") String token, @RequestParam String date);
+
+	@GetMapping("/solve/day")
+	public DateCalendarRes GetDateStudy(@RequestHeader(value = "Authorization") String token, @RequestParam String date);
 }
