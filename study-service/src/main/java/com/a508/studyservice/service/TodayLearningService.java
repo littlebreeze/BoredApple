@@ -13,7 +13,7 @@ public interface TodayLearningService {
 
 	List<TodayLearningResponse> getTodayLearning (String token);
 
-	List<MonthResponse> getMonths(LocalDateTime dateTime, String token);
+	List<Integer> getMonths(LocalDateTime dateTime, String token);
 
 	List<DayResponse> getDays (LocalDateTime dateTime , String token);
 
