@@ -1,8 +1,8 @@
 'use client';
 
 export default function MyStrength({ abilities }: { abilities: number[][] }) {
-  const avg: number[] = abilities[0] ?? [];
-  const diff: number[] = abilities[1]?.map((n, idx) => n - avg[idx]) ?? [];
+  const avg: number[] = abilities[1] ?? [];
+  const diff: number[] = abilities[0]?.map((n, idx) => n - avg[idx]) ?? [];
 
   if (!avg.length)
     return (
