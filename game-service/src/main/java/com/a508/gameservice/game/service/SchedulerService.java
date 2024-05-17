@@ -31,7 +31,7 @@ public class SchedulerService {
     }
 
     private int roomId;
-    private int timeCnt = 33;
+    private int timeCnt = 43;
     private int roundCnt = 0;
     private ScheduledFuture<?> scheduledTask;
 
@@ -43,7 +43,7 @@ public class SchedulerService {
     }
 
     public void startRound() {
-        timeCnt = 33;
+        timeCnt = 43;
         // 이전에 실행된 작업이 있다면 중지
         if (scheduledTask != null && !scheduledTask.isCancelled()) {
             scheduledTask.cancel(true);
@@ -53,7 +53,7 @@ public class SchedulerService {
         // 스케줄링 작업 시작
         scheduledTask = scheduler.scheduleAtFixedRate(() -> {
             if (timeCnt >= 0) simpMessagingTemplate.convertAndSend("/topic/time/rooms/" + roomId, timeCnt);
-            if (timeCnt == 30) {
+            if (timeCnt == 40) {
                 ChatMessageRes quiz = ChatMessageRes.builder().type(MessageType.QUIZ).content(gameQuiz.getQuiz()).build();
                 simpMessagingTemplate.convertAndSend("/topic/chat/rooms/" + roomId, quiz);
                 String encodingAnswer = Base64.getEncoder().encodeToString(gameQuiz.getAnswer().getBytes());
