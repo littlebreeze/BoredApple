@@ -5,11 +5,11 @@ import axios from 'axios';
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   withCredentials: true,
-  headers: {
-    'Access-Control-Allow-Origin': 'https://k10a601.p.ssafy.io:8081', // CORS 정책을 허용할 오리진 설정
-    'Access-Control-Allow-Credentials': 'true', // CORS 요청에서 자격 증명 정보를 허용
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE', // CORS 요청에서 허용하는 HTTP 메소드
-  },
+  // headers: {
+  //   'Access-Control-Allow-Origin': 'https://k10a601.p.ssafy.io:8081', // CORS 정책을 허용할 오리진 설정
+  //   'Access-Control-Allow-Credentials': 'true', // CORS 요청에서 자격 증명 정보를 허용
+  //   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE', // CORS 요청에서 허용하는 HTTP 메소드
+  // },
 });
 
 // 2. Access token 재생성용 axios 인스턴스
@@ -52,20 +52,25 @@ instance.interceptors.response.use(
     if (error.response.status == 400) {
       console.log('400번 에러 발생');
       console.log(error);
+      const originRequest = error.config;
 
-      // try {
-      //   const response = await regenerateAccessToken();
+      try {
+        const response = await regenerateAccessToken();
 
-      //   // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
-      //   if (response.status == 200) {
-      //     const newAccessToken = response.data.data.accessToken;
-      //     axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-      //     return instance(originRequest);
-      //   }
-      // } catch (error) {
-      //   // 토큰 재발급 실패 시 로그인 요청 페이지로 이동
-      //   window.location.replace('/login');
-      // }
+        // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
+        if (response.status == 200) {
+          console.log('요청 성공하나?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+          const newAccessToken = response.data.data.accessToken;
+          axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+          setTimeout(() => {
+            console.log('멈춰라!');
+          }, 90000);
+          return instance(originRequest);
+        }
+      } catch (error) {
+        // 토큰 재발급 실패 시 로그인 요청 페이지로 이동
+        window.location.replace('/login');
+      }
     }
 
     // 토큰이 만료되거나 유효하지 않은 경우
@@ -92,14 +97,16 @@ instance.interceptors.response.use(
 );
 
 // access token 재생성 요청
-// const regenerateAccessToken = async () => {
-//   const headers = {
-//     'Content-Type': 'text/plain;charset=utf-8',
-//   };
-//   accessInstance.defaults.headers.common['Authorization'] = `Bearer boredApple`;
-//   const response = await accessInstance.post('/user-service/oauth/token', {}, { headers: headers });
-//   return response;
-// };
+const regenerateAccessToken = async () => {
+  const headers = {
+    'Content-Type': 'text/plain;charset=utf-8',
+  };
+  const tokenString =
+    'eyJhbGciOiJIUzUxMiJ9.eyJhdXRoIjpbIlJPTEVfVVNFUiJdLCJhdWQiOiJodHRwczovL2sxMGE1MDgucC5zc2FmeS5pby8iLCJzdWIiOiIxMTczMTE0MDcwMjUxNTcwMTYxMjUiLCJpc3MiOiJodHRwczovL2sxMGE1MDgucC5zc2FmeS5pby8iLCJpYXQiOjE3MTU5MjgyNDgsImV4cCI6MTcxNTkzMDA0OH0.XujnBIBcriOLzc6Nl2hB8VHUv7VAARxcHKnOMIp522xje9EYKXU6JKZEuGVCySP3xHJqrkl8YWEGDWCS2a3ZLg';
+  accessInstance.defaults.headers.common['Authorization'] = `Bearer ${tokenString}`;
+  const response = await accessInstance.post('/user-service/oauth/token', {}, { headers: headers });
+  return response;
+};
 
 // refresh token 재생성 요청
 const regenerateRefreshToken = async () => {
