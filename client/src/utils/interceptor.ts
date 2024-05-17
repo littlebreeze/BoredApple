@@ -43,12 +43,10 @@ instance.interceptors.response.use(
   // 200번대 이외의 상태 코드 시 실행
   // 응답 오류가 있는 작업 수행
   async (error) => {
+    const originRequest = error.config;
+
     // 토큰이 존재하지 않는 경우
     if (error.response.status == 400) {
-      console.log('400번 에러 발생');
-      console.log(error);
-      const originRequest = error.config;
-
       try {
         const response = await regenerateAccessToken();
 
@@ -56,7 +54,6 @@ instance.interceptors.response.use(
         if (response.status == 200) {
           const newAccessToken = response.data.data.accessToken;
           instance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-          // originRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
           return instance(originRequest);
         }
       } catch (error) {
@@ -67,9 +64,6 @@ instance.interceptors.response.use(
 
     // 토큰이 만료되거나 유효하지 않은 경우
     if (error.response.status == 401) {
-      console.log('401번 에러 발생');
-      const originRequest = error.config;
-
       try {
         const response = await regenerateRefreshToken();
 
@@ -87,14 +81,6 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-const getNewTokens = async () => {
-  const headers = {
-    'Content-Type': 'text/plain;charset=utf-8',
-  };
-  const response = await refreshInstance.post('/user-service/oauth/token', {}, { headers: headers });
-  return response;
-};
 
 // access token 재생성 요청
 const regenerateAccessToken = async () => {
