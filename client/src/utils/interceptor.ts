@@ -1,7 +1,7 @@
 'use client';
 import axios from 'axios';
 
-// axios 기본 인스턴스
+// 1. Axios 기본 인스턴스
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   withCredentials: true,
@@ -12,14 +12,19 @@ const instance = axios.create({
   },
 });
 
-// refresh token 재생성용 axios 인스턴스
+// 2. Access token 재생성용 axios 인스턴스
+const accessInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_SERVER,
+  withCredentials: true,
+});
+
+// 3. Refresh token 재생성용 axios 인스턴스
 const refreshInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   withCredentials: true,
 });
 
-// 인스턴스의 요청 인터셉터
-// 요청 시마다 기본적으로 적용
+// 4. 인스턴스의 요청 인터셉터: 요청 시마다 기본적으로 적용
 instance.interceptors.request.use(
   (config) => {
     // 요청 전달 전 미리 헤더에 엑세스 토큰 저장
@@ -32,23 +37,24 @@ instance.interceptors.request.use(
   }
 );
 
-// 인스턴스의 응답 인터셉터
-// 응답 시마다 기본적으로 적용
+// 5. 인스턴스의 응답 인터셉터: 응답 시마다 기본적으로 적용
 instance.interceptors.response.use(
+  // 200번대 상태 코드 시 실행
+  // 응답 데이터가 있는 작업 수행
   (response) => {
-    // 2xx 상태 코드 시 이 함수 트리거: 응답 데이터가 있는 작업 수행
     return response;
   },
-  async (error) => {
-    // 2xx 이외 상태 코드 시 이 함수 트리거: 응답 오류가 있는 작업 수행
 
-    // 토큰이 유효하지 않은 경우
+  // 200번대 이외의 상태 코드 시 실행
+  // 응답 오류가 있는 작업 수행
+  async (error) => {
+    // 토큰이 존재하지 않는 경우
     if (error.response.status == 400) {
       console.log('400번 에러 발생');
       const originRequest = error.config;
 
       try {
-        const response = await regenerateRefreshToken();
+        const response = await regenerateAccessToken();
 
         // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
         if (response.status == 200) {
@@ -62,7 +68,7 @@ instance.interceptors.response.use(
       }
     }
 
-    // 토큰이 만료되거나 유효하지 않은 경우 토큰 재발급
+    // 토큰이 만료되거나 유효하지 않은 경우
     if (error.response.status == 401) {
       console.log('401번 에러 발생');
       const originRequest = error.config;
@@ -85,12 +91,21 @@ instance.interceptors.response.use(
   }
 );
 
+// access token 재생성 요청
+const regenerateAccessToken = async () => {
+  const headers = {
+    'Content-Type': 'text/plain;charset=utf-8',
+  };
+  accessInstance.defaults.headers.common['Authorization'] = `Bearer boredApple`;
+  const response = await accessInstance.post('/user-service/oauth/token', {}, { headers: headers });
+  return response;
+};
+
 // refresh token 재생성 요청
 const regenerateRefreshToken = async () => {
   const headers = {
     'Content-Type': 'text/plain;charset=utf-8',
   };
-  // refreshInstance.defaults.headers.common['Authorization'] = `Bearer Regenerate`;
   const response = await refreshInstance.post('/user-service/oauth/token', {}, { headers: headers });
   return response;
 };
