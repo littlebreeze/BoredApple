@@ -51,21 +51,21 @@ instance.interceptors.response.use(
     // 토큰이 존재하지 않는 경우
     if (error.response.status == 400) {
       console.log('400번 에러 발생');
-      const originRequest = error.config;
+      console.log(error);
 
-      try {
-        const response = await regenerateAccessToken();
+      // try {
+      //   const response = await regenerateAccessToken();
 
-        // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
-        if (response.status == 200) {
-          const newAccessToken = response.data.data.accessToken;
-          axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-          return instance(originRequest);
-        }
-      } catch (error) {
-        // 토큰 재발급 실패 시 로그인 요청 페이지로 이동
-        window.location.replace('/login');
-      }
+      //   // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
+      //   if (response.status == 200) {
+      //     const newAccessToken = response.data.data.accessToken;
+      //     axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+      //     return instance(originRequest);
+      //   }
+      // } catch (error) {
+      //   // 토큰 재발급 실패 시 로그인 요청 페이지로 이동
+      //   window.location.replace('/login');
+      // }
     }
 
     // 토큰이 만료되거나 유효하지 않은 경우
@@ -92,14 +92,14 @@ instance.interceptors.response.use(
 );
 
 // access token 재생성 요청
-const regenerateAccessToken = async () => {
-  const headers = {
-    'Content-Type': 'text/plain;charset=utf-8',
-  };
-  accessInstance.defaults.headers.common['Authorization'] = `Bearer boredApple`;
-  const response = await accessInstance.post('/user-service/oauth/token', {}, { headers: headers });
-  return response;
-};
+// const regenerateAccessToken = async () => {
+//   const headers = {
+//     'Content-Type': 'text/plain;charset=utf-8',
+//   };
+//   accessInstance.defaults.headers.common['Authorization'] = `Bearer boredApple`;
+//   const response = await accessInstance.post('/user-service/oauth/token', {}, { headers: headers });
+//   return response;
+// };
 
 // refresh token 재생성 요청
 const regenerateRefreshToken = async () => {
