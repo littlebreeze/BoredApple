@@ -5,11 +5,6 @@ import axios from 'axios';
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   withCredentials: true,
-  // headers: {
-  //   'Access-Control-Allow-Origin': 'https://k10a601.p.ssafy.io:8081', // CORS 정책을 허용할 오리진 설정
-  //   'Access-Control-Allow-Credentials': 'true', // CORS 요청에서 자격 증명 정보를 허용
-  //   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE', // CORS 요청에서 허용하는 HTTP 메소드
-  // },
 });
 
 // 2. Access token 재생성용 axios 인스턴스
@@ -59,12 +54,9 @@ instance.interceptors.response.use(
 
         // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
         if (response.status == 200) {
-          console.log('요청 성공하나?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
           const newAccessToken = response.data.data.accessToken;
-          axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-          setTimeout(() => {
-            console.log('멈춰라!');
-          }, 90000);
+          instance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+          // originRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
           return instance(originRequest);
         }
       } catch (error) {
@@ -84,7 +76,7 @@ instance.interceptors.response.use(
         // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
         if (response.status == 200) {
           const newAccessToken = response.data.data.accessToken;
-          axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+          instance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
           return instance(originRequest);
         }
       } catch (error) {
@@ -95,6 +87,14 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+const getNewTokens = async () => {
+  const headers = {
+    'Content-Type': 'text/plain;charset=utf-8',
+  };
+  const response = await refreshInstance.post('/user-service/oauth/token', {}, { headers: headers });
+  return response;
+};
 
 // access token 재생성 요청
 const regenerateAccessToken = async () => {
