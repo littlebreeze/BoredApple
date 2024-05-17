@@ -34,7 +34,7 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
   const { myUserId, creatorId } = useGameRoomStore();
 
   useEffect(() => {
-    if (!isGaming || timer > 30) return;
+    if (!isGaming || timer > 40) return;
 
     if (isGameRoundInProgress && (isCorrectAnswer || timer === 0)) {
       setIsGameRoundInProgress();
@@ -57,14 +57,14 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
 
   // 효과음
   useEffect(() => {
-    if (timer === 33 || timer === 32 || timer === 31) clockES.play();
-    if (timer === 20 || timer === 10) hintES.play();
+    if (timer === 43 || timer === 42 || timer === 41) clockES.play();
+    if (timer === 30 || timer === 20) hintES.play();
     if (timer === 5 || timer === 4 || timer === 3 || timer === 2 || timer === 1) timerES.play();
     if (timer === 0) timeOutES.play();
     if (isCorrectAnswer) correctES.play();
   }, [timer, isCorrectAnswer]);
 
-  if (!isGaming || timer > 30) return null;
+  if (!isGaming || timer > 40) return null;
 
   const formattedTimer = timer.toString().padStart(2, '0');
 
@@ -75,9 +75,9 @@ export default function TimerWrapper({ roomId }: { roomId: string }) {
         <div className={`text-center text-6xl font-Ansungtangmyun mt-2 ${timer <= 5 ? 'text-[#FF0000]' : ''}`}>
           {formattedTimer}
         </div>
-        {timer > 20 ? (
+        {timer > 30 ? (
           <div className='text-sm text-ourDarkGray mt-3 text-center'>곧 글자 수 힌트가 나와요</div>
-        ) : timer > 10 ? (
+        ) : timer > 20 ? (
           <div className='text-sm text-ourDarkGray mt-3 text-center'>곧 초성 힌트가 나와요</div>
         ) : (
           <div className='text-sm text-ourDarkGray mt-3 text-center'>&nbsp;</div>
