@@ -24,17 +24,17 @@ export default function SoundSection() {
           className='absolute bottom-24 right-12 w-16 h-16 duration-150 hover:w-20 hover:h-20'
           onClick={() => setIsPlaying(!isPlaying)}
         >
-          {isPlaying ? (
+          {!isPlaying ? (
             <Image
               className='w-full drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)]'
               src={soundOff}
-              alt='음소거'
+              alt='음소거상태'
             />
           ) : (
             <Image
               className='w-full drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)]'
               src={soundOn}
-              alt='재생'
+              alt='재생상태'
             />
           )}
         </div>
