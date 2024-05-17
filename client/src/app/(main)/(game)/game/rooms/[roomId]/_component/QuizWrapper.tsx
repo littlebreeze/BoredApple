@@ -74,7 +74,7 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
         key={idx}
         className='flex items-center justify-center w-16 text-3xl text-white bg-ourGreen rounded-xl'
       >
-        {isCorrectAnswer ? answer[idx] : timer > 10 ? '' : timer === 0 ? answer[idx] : createHint2(answer)[idx]}
+        {isCorrectAnswer ? answer[idx] : timer > 20 ? '' : timer === 0 ? answer[idx] : createHint2(answer)[idx]}
       </div>
     ));
   };
@@ -99,19 +99,19 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
         </div>
         <div className='flex items-center justify-center flex-1 px-5 text-lg font-semibold font-Batang'>
           {isGaming && isGameRoundInProgress ? (
-            timer == 33 ? (
+            timer == 43 ? (
               <Image
                 width={80}
                 src={count_3}
                 alt='카운트-3'
               />
-            ) : timer == 32 ? (
+            ) : timer == 42 ? (
               <Image
                 width={80}
                 src={count_2}
                 alt='카운트-2'
               />
-            ) : timer == 31 ? (
+            ) : timer == 41 ? (
               <Image
                 width={80}
                 src={count_1}
@@ -131,10 +131,9 @@ export default function QuizWrapper({ roomId }: { roomId: string }) {
             isCorrectAnswer || timer == 0 ? (
               viewAnswer(answer.length)
             ) : (
-              timer <= 20 && createHint1(answer.length)
+              timer <= 30 && createHint1(answer.length)
             )
           ) : (
-            //   timer <= 20 && createHint1(answer.length)
             '곧 다음 문제가 나옵니다!'
           )
         ) : myUserId === creatorId ? (
