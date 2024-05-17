@@ -42,8 +42,9 @@ instance.interceptors.response.use(
   async (error) => {
     // 2xx 이외 상태 코드 시 이 함수 트리거: 응답 오류가 있는 작업 수행
 
-    // 토큰이 만료되거나 유효하지 않은 경우 토큰 재발급
-    if (error.response.status == 401) {
+    // 토큰이 유효하지 않은 경우
+    if (error.response.status == 400) {
+      console.log('400번 에러 발생');
       const originRequest = error.config;
 
       try {
@@ -57,7 +58,26 @@ instance.interceptors.response.use(
         }
       } catch (error) {
         // 토큰 재발급 실패 시 로그인 요청 페이지로 이동
-        // localStorage.removeItem('accessToken');
+        window.location.replace('/login');
+      }
+    }
+
+    // 토큰이 만료되거나 유효하지 않은 경우 토큰 재발급
+    if (error.response.status == 401) {
+      console.log('401번 에러 발생');
+      const originRequest = error.config;
+
+      try {
+        const response = await regenerateRefreshToken();
+
+        // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
+        if (response.status == 200) {
+          const newAccessToken = response.data.data.accessToken;
+          axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+          return instance(originRequest);
+        }
+      } catch (error) {
+        // 토큰 재발급 실패 시 로그인 요청 페이지로 이동
         window.location.replace('/login');
       }
     }
