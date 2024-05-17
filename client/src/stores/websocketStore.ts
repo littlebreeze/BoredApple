@@ -76,7 +76,7 @@ interface WebSocketState {
 export const useWebsocketStore = create<WebSocketState>((set, get) => ({
   stompClient: null,
   messages: [],
-  timer: 34,
+  timer: 44,
   isGaming: false,
   isGameRoundInProgress: false,
   roundCount: 5,
@@ -131,7 +131,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
         // 시간 구독
         const timerSubscription = client.subscribe(`/topic/time/rooms/${roomId}`, (message: IMessage) => {
           set({ timer: parseInt(message.body) });
-          if (parseInt(message.body) === 33)
+          if (parseInt(message.body) === 43)
             set({
               isGameRoundInProgress: true,
               currentRound: get().currentRound + 1,
@@ -232,7 +232,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
     set({
       stompClient: null,
       messages: [],
-      timer: 33,
+      timer: 44,
       isGaming: false,
       isGameRoundInProgress: false,
       roundCount: 5,
