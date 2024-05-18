@@ -1,14 +1,42 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
+import { useSSEStore } from '@/stores/sse';
 
 export default function NavMenu() {
   const segment = useSelectedLayoutSegment();
   const [hasNewAlarm, setHasNewAlarm] = useState<boolean>(true);
-  const [isHover, setIsHover] = useState<boolean>(true);
+
+  const { eventSource, setEventSource } = useSSEStore();
+
+  useEffect(() => {
+    if (eventSource) {
+      //sse 최초 연결되었을 때
+      eventSource.onopen = (event) => {
+        console.log('SSE 연결# ', event);
+      };
+
+      //서버에서 뭔가 날릴 때마다
+      eventSource.onmessage = (event) => {
+        console.log('SSE 메세지# ', event.data);
+        setHasNewAlarm(true);
+      };
+
+      //sse 에러
+      eventSource.onerror = (event) => {
+        console.log('SSE 오류# ', event);
+      };
+    } else {
+      console.log('아직 eventSource없음');
+    }
+
+    return () => {
+      if (eventSource) eventSource.close();
+    };
+  }, [eventSource]);
 
   return (
     <>
