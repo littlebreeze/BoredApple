@@ -3,11 +3,15 @@ import { useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import instance from '@/utils/interceptor';
+import { useSSEStore } from '@/stores/sse';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
 export default function Authentication() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code: string | null = searchParams.get('code');
+
+  const { eventSource, setEventSource } = useSSEStore();
 
   useEffect(() => {
     if (code) {
@@ -29,6 +33,9 @@ export default function Authentication() {
       // 메모리에 토큰 저장
       const accessToken = response.data.data.accessToken;
       instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+      // 이벤트 수신 객체 생성
+      setEventSource(accessToken);
 
       // 기존 유저인지 신규 유저인지 판단하여 라우팅 처리
       handleRouter(response.data.data.signUpProcess);
