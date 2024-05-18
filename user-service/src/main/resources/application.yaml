@@ -21,7 +21,7 @@ spring:
       port: 6379
   kafka:
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: k10a508.p.ssafy.io:9092:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringDeserializer
 
