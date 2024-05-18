@@ -4,6 +4,8 @@ import com.a508.userservice.user.data.*;
 import com.a508.userservice.user.domain.User;
 import com.a508.userservice.user.domain.UserAttendance;
 import com.a508.userservice.user.domain.UserCategory;
+import com.a508.userservice.user.kafka.NotificationMessage;
+import com.a508.userservice.user.kafka.NotificationService;
 import com.a508.userservice.user.repository.UserAttendanceRepository;
 import com.a508.userservice.user.repository.UserCategoryRepository;
 import com.a508.userservice.user.repository.UserRepository;
@@ -23,6 +25,7 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final UserCategoryRepository userCategoryRepository;
 	private final UserAttendanceRepository userAttendanceRepository;
+	private final NotificationService notificationService;
 
 	public User getUser(int userId) {
 		return userRepository.findById(userId).orElseThrow();
@@ -50,6 +53,7 @@ public class UserService {
 		User user = getUser(userId);
 		user.setStudyTime(LocalTime.of(hour, minute));
 		user.setSignUpProcess(4);
+		notificationService.sendNotification("study-time-topic",new NotificationMessage(String.valueOf(userId),LocalTime.of(hour, minute),"userId : " +userId + "학습 알람 신청함"));
 		userRepository.save(user);
 	}
 
