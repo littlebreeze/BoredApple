@@ -12,13 +12,16 @@ interface LabelInfo {
 }
 
 export default function MyGraph({ ability }: { ability: number[] }) {
+  // 모두 8배, 10 넘는다면 10으로
+  const scaledAbility = ability.map((value) => Math.min(value * 8, 10));
+
   const data = {
     labels: ['사실적읽기', '추론능력', '어휘', '인지능력', '읽기속도'],
 
     datasets: [
       {
         // 데이터
-        data: ability.length ? ability : [0, 0, 0, 0, 0],
+        data: scaledAbility.length ? scaledAbility : [0, 0, 0, 0, 0],
         // 배경
         backgroundColor: 'rgba(72,147,255,0.3)',
         // border
