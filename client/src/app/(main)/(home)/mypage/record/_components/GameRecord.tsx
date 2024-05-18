@@ -38,7 +38,14 @@ export default function GameRecord() {
       <div className='grid grid-cols-2 gap-2'>
         <RecordDetailItem title={'우승 횟수'} content={gameRecord ? gameRecord!.numberOfWin + '번' : '-'} />
         <RecordDetailItem title={'총 경기 횟수'} content={gameRecord ? gameRecord!.numberOfGame + '번' : '-'} />
-        <RecordDetailItem title={'승률'} content={gameRecord ? gameRecord!.odd.toFixed(1) + '%' : '-'} />
+        <RecordDetailItem
+          title={'승률'}
+          content={
+            gameRecord && gameRecord!.numberOfGame > 0
+              ? ((gameRecord!.numberOfWin / gameRecord!.numberOfGame) * 100).toFixed(1) + '%'
+              : '-'
+          }
+        />
         <RecordDetailItem
           title={'랭킹(*점수)'}
           content={
