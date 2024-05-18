@@ -3,6 +3,8 @@ package com.a508.userservice.user.controller;
 import com.a508.userservice.common.jwt.TokenProvider;
 import com.a508.userservice.common.response.SuccessResponse;
 import com.a508.userservice.user.data.*;
+import com.a508.userservice.user.kafka.NotificationMessage;
+import com.a508.userservice.user.kafka.NotificationService;
 import com.a508.userservice.user.service.GameServiceClient;
 import com.a508.userservice.user.service.StudyServiceClient;
 import com.a508.userservice.user.service.UserService;
@@ -12,6 +14,7 @@ import org.apache.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +30,12 @@ public class UserController {
 	private final UserService userService;
 	private final GameServiceClient gameServiceClient;
 	private final StudyServiceClient studyServiceClient;
+	private final NotificationService notificationProducer;
+
+	@GetMapping("/usertest1")
+	public void testtest(){
+		notificationProducer.sendNotification( "study-time-topic",new NotificationMessage("8", LocalTime.now().plusMinutes(1),"메세지입력"));
+	}
 
 	/**
 	 * feign
