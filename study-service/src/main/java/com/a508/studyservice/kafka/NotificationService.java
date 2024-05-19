@@ -16,8 +16,6 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 @Service
 @Slf4j
@@ -25,9 +23,8 @@ import java.util.concurrent.ScheduledExecutorService;
 public class NotificationService {
     private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
     private static final Map<String, NotificationMessage> notifications = new ConcurrentHashMap<>();
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
     private final TodayLearningRepository todayLearningRepository;
-    private final Long DEFAULT_TIMEOUT = 60L * 1000 * 30;
+    private final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
 
 
     public void init2() {
@@ -81,7 +78,7 @@ public class NotificationService {
     private void sendNotification(NotificationMessage message) {
         String userId = message.getUserId();
         SseEmitter emitter = emitters.get(userId);
-
+        log.info(emitter.toString());
         LocalDateTime date = LocalDateTime.now();
         LocalDateTime startDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN); // 오늘의 시작
         LocalDateTime endDate = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX); // 오늘의 끝
