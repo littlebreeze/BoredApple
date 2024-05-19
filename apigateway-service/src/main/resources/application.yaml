@@ -1,0 +1,86 @@
+server:
+  port: 8081
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://k10a508.p.ssafy.io:8083/eureka
+
+  instance:
+    hostname: 43.202.53.115
+
+#      http://localhost:8083/eureka
+spring:
+  application:
+    name: apigateway-service
+  cloud:
+    gateway:
+      routes:
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
+              - Path=/user-service/oauth2/**
+              - Method= POST
+            filters:
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
+              - Path=/user-service/oauth/**
+              - Method= POST
+            filters:
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
+              - Path=/user-service/**
+            filters:
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+              - AuthorizationHeaderFilter
+          - id: game-service
+            uri: lb://GAME-SERVICE
+            predicates:
+              - Path=/game-service/rankings
+            filters:
+              - RewritePath=/game-service/(?<segment>.*), /$\{segment}
+              - AuthorizationHeaderFilter
+          - id: game-service
+            uri: lb://GAME-SERVICE
+            predicates:
+              - Path=/game-service/**
+            filters:
+              - RewritePath=/game-service/(?<segment>.*), /$\{segment}
+          - id: study-service
+            uri: lb://STUDY-SERVICE
+            predicates:
+              - Path=/study-service/**
+            filters:
+              - RewritePath=/study-service/(?<segment>.*), /$\{segment}
+              - AuthorizationHeaderFilter
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      global-cors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: # 허용하려는 도메인
+              - 'http://localhost:3000'
+              - 'http://localhost:8081'
+              -  'http://localhost:8084'
+              -  'http://k10a508.p.ssafy.io'
+              - 'http://k10a508.p.ssafy.io:3000'
+              -  'https://k10a508.p.ssafy.io'
+            allow-credentials: true # 요청 시 인증 정보를 전송하도록 허가
+            allowedHeaders: '*' # 허용하려는 헤더
+            allowedMethods: # 허용하려는 HTTP 메서드
+              - PUT
+              - GET
+              - POST
+              - DELETE
+              - OPTIONS
+        add-to-simple-url-handler-mapping: true
+
+  profiles:
+    include:
+      - secret
+      - cors
