@@ -1,0 +1,37 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: user-service
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+#      show-sql: true
+
+  profiles:
+    include:
+      - secret
+      - cors
+
+  data:
+    redis:
+      host: k10a508.p.ssafy.io
+      port: 6379
+  kafka:
+    producer:
+      bootstrap-servers: k10a508.p.ssafy.io:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringDeserializer
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://k10a508.p.ssafy.io:8083/eureka
+#      http://localhost:8083/eureka
+
+  instance:
+    hostname: 43.202.53.115
