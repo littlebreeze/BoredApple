@@ -67,16 +67,30 @@ SSAFY 10기 자율 프로젝트 A508
 <img width="800" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/architecture.png">
 
 ## 💻 주요 기술
+[![React](https://img.shields.io/badge/react-18.2.0-blue?style=flat&logo=react)](https://ko.legacy.reactjs.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.3-green?style=flat&logo=spring)](https://spring.io/projects/spring-boot)
+[![Java](https://img.shields.io/badge/Java-17-orange?style=flat&logo=java)](https://www.oracle.com/java/)
+[![Next.js](https://img.shields.io/badge/Next.js-14.2.2-black?style=flat&logo=Next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.4-3178C6?style=flat&logo=Next.js)](https://www.typescriptlang.org/)
+[![mysql](https://img.shields.io/badge/mysql-8.3.0-4479A1?style=flat&logo=mysql)](https://mysql.com/)
+[![Redis](https://img.shields.io/badge/Redis-7.2.4-red?style=flat&logo=redis)](https://redis.io/)
 
-[](https://ko.legacy.reactjs.org/)[](https://spring.io/projects/spring-boot)[](https://www.oracle.com/java/)[](https://mysql.com/)[](https://redis.io/)
+[![reactquery](https://img.shields.io/badge/reactquery-3.39.3-FF4154?style=flat&logo=reactquery)](https://tanstack.com/query/v4/docs/framework/react/overview)
+[![tailwindcss](https://img.shields.io/badge/tailwindcss-3.4.1-06B6D4?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
 
-[](https://tanstack.com/query/v4/docs/framework/react/overview)[](https://tailwindcss.com/)[](https://developers.kakao.com/product/kakaoPay)
+[![Git](https://img.shields.io/badge/Git-gray?style=flat&logo=git)](https://git-scm.com/)
+[![GitLab](https://img.shields.io/badge/GitLab-gray?style=flat&logo=gitlab)](https://about.gitlab.com/)
+[![Notion](https://img.shields.io/badge/Notion-gray?style=flat&logo=notion)](https://www.notion.so/)
+[![Jira](https://img.shields.io/badge/Jira-gray?style=flat&logo=jira)](https://www.atlassian.com/software/jira)
+[![Mattermost](https://img.shields.io/badge/Mattermost-gray?style=flat&logo=mattermost)](https://mattermost.com/)
 
-[](https://git-scm.com/)[](https://about.gitlab.com/)[](https://www.notion.so/)[](https://www.atlassian.com/software/jira)[](https://mattermost.com/)
+[![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ_IDEA-2023.3.2-red?style=flat&logo=intellij-idea)](https://www.jetbrains.com/idea/)
+[![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-1.85.1-blue.svg?style=flat&logo=visual-studio-code)](https://code.visualstudio.com/)
 
-[](https://www.jetbrains.com/idea/)[](https://developer.android.com/studio)[![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-1.85.1-blue.svg?style=flat&logo=visual-studio-code)](https://code.visualstudio.com/)
-
-[](https://aws.amazon.com/ec2/)[](https://www.docker.com/)[](https://aws.amazon.com/s3/)[](https://ubuntu.com/)
+[![AWS EC2](https://img.shields.io/badge/AWS_EC2-gray?style=flat&logo=amazon-aws)](https://aws.amazon.com/ec2/)
+[![Docker](https://img.shields.io/badge/Docker-24.0.7-blue?style=flat&logo=docker)](https://www.docker.com/)
+[![AWS S3](https://img.shields.io/badge/AWS_S3-gray?style=flat&logo=amazon-s3)](https://aws.amazon.com/s3/)
+[![Ubuntu](https://img.shields.io/badge/Ubuntu-20.04.06-purple?style=flat&logo=ubuntu)](https://ubuntu.com/)
 
 ### Backend - 메인
 
