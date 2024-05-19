@@ -2,10 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import instance from '@/utils/interceptor';
-
 import { useGameRoomStore } from '@/stores/game-room-info';
-import { useGameWaitStore } from '@/stores/game-wait';
 import { useGameScoreStore } from '@/stores/game-score';
 import { useWebsocketStore } from '@/stores/websocketStore';
 
