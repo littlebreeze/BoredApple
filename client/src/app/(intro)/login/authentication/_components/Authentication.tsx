@@ -34,8 +34,9 @@ export default function Authentication() {
       const accessToken = response.data.data.accessToken;
       instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
-      // 이벤트 수신 객체 생성
-      setEventSource(accessToken);
+      // 이벤트 객체 생성에 사용할 accessToken 저장
+      //setEventSource(accessToken);
+      useSSEStore.getState().setAccessToken(accessToken);
 
       // 기존 유저인지 신규 유저인지 판단하여 라우팅 처리
       handleRouter(response.data.data.signUpProcess);
