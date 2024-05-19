@@ -1,6 +1,5 @@
 'use client';
 import axios from 'axios';
-import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useSSEStore } from '@/stores/sse';
 
 // 1. Axios 기본 인스턴스
