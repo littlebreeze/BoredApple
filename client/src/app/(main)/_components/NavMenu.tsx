@@ -8,7 +8,8 @@ import { useSSEStore } from '@/stores/sse';
 
 export default function NavMenu() {
   const segment = useSelectedLayoutSegment();
-  const [hasNewAlarm, setHasNewAlarm] = useState<boolean>(true);
+  const [hasNewAlarm, setHasNewAlarm] = useState<boolean>(false);
+  const [notiMessage, setNotiMessage] = useState<string>('오늘의 학습을 시작해 보세요!');
 
   const { eventSource, setEventSource } = useSSEStore();
 
@@ -24,6 +25,11 @@ export default function NavMenu() {
         console.log('SSE 메세지# ', event.data);
         setHasNewAlarm(true);
       };
+
+      eventSource.addEventListener('notification', (event) => {
+        const { data } = event;
+        setHasNewAlarm(true);
+      });
 
       //sse 에러
       eventSource.onerror = (event) => {
@@ -41,7 +47,7 @@ export default function NavMenu() {
   return (
     <>
       <div className='flex w-full max-w-[1000px] h-[60px] items-center justify-between'>
-        <Link href='/home' className='flex justify-start w-36 items-center  cursor-pointer'>
+        <Link href='/home' className='flex justify-start w-36 items-center cursor-pointer'>
           <div className='font-Ansungtangmyun w-40 text-3xl text-ourTheme'>심심한 사과</div>
         </Link>
         <div className='flex justify-end gap-8 h-full'>
@@ -164,8 +170,8 @@ export default function NavMenu() {
             onClick={() => {
               if (hasNewAlarm) {
                 Swal.fire({
-                  title: '설정한 학습 시간이 되었습니다.',
-                  text: '지금 바로 오늘의 학습을 시작해보세요!',
+                  title: '학습 알림',
+                  text: `${notiMessage}`,
                   confirmButtonColor: '#0064FF',
                 });
                 setHasNewAlarm(false);
@@ -188,15 +194,15 @@ export default function NavMenu() {
                 <path
                   d='M243.791 159.375C243.791 140.833 238.293 122.707 227.991 107.29C217.69 91.8732 203.048 79.857 185.918 72.7613C168.787 65.6656 149.937 63.809 131.751 67.4264C113.566 71.0437 96.861 79.9726 83.7499 93.0837C70.6387 106.195 61.7099 122.9 58.0925 141.085C54.4751 159.271 56.3317 178.121 63.4274 195.252C70.5231 212.382 82.5393 227.024 97.9564 237.325C113.374 247.627 131.499 253.125 150.041 253.125C174.905 253.125 198.751 243.248 216.332 225.666C233.914 208.085 243.791 184.239 243.791 159.375ZM83.2735 53.4434C78.3539 49.2335 72.1 46.906 65.6251 46.875L63.9903 46.9219C49.0196 47.8242 37.5001 60.9375 37.5411 76.7578C37.5411 84.498 40.2716 88.1074 43.9161 92.7129C44.1425 93.0088 44.4284 93.254 44.7554 93.4326C45.0824 93.6113 45.4432 93.7194 45.8146 93.75H46.3302C46.6205 93.7448 46.9058 93.6729 47.1638 93.5398C47.4219 93.4067 47.6459 93.216 47.8185 92.9824L83.4259 58.0078C83.7299 57.7003 83.9675 57.3336 84.1237 56.9304C84.2799 56.5272 84.3516 56.0961 84.3341 55.6641C84.3193 55.2409 84.2176 54.8253 84.0351 54.4433C83.8526 54.0612 83.5934 53.7208 83.2735 53.4434ZM216.727 53.4434C221.646 49.2335 227.9 46.906 234.375 46.875L236.01 46.9219C250.981 47.8242 262.5 60.9375 262.459 76.7578C262.459 84.498 259.729 88.1074 256.084 92.7129C255.857 93.0077 255.571 93.2518 255.244 93.4294C254.917 93.607 254.557 93.7142 254.186 93.7441H253.67C253.38 93.7389 253.094 93.667 252.836 93.5339C252.578 93.4008 252.354 93.2101 252.182 92.9766L216.574 58.0078C216.27 57.7003 216.033 57.3336 215.877 56.9304C215.72 56.5272 215.649 56.0961 215.666 55.6641C215.681 55.2409 215.783 54.8253 215.965 54.4433C216.148 54.0612 216.407 53.7208 216.727 53.4434Z'
                   stroke='#737373'
-                  stroke-width='18.75'
-                  stroke-miterlimit='10'
+                  strokeWidth='18.75'
+                  strokeMiterlimit='10'
                 />
                 <path
                   d='M150.041 93.75V159.375H103.166M243.791 253.125L220.354 229.688M56.291 253.125L79.7285 229.688'
                   stroke='#737373'
-                  stroke-width='18.75'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
+                  strokeWidth='18.75'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
                 />
               </svg>
             )}
