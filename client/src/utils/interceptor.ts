@@ -57,7 +57,7 @@ instance.interceptors.response.use(
           instance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
 
           // 이벤트 수신 객체 토큰 변경
-          useSSEStore.getState().setEventSource(newAccessToken);
+          useSSEStore.getState().setAccessToken(newAccessToken);
 
           return instance(originRequest);
         }
@@ -78,7 +78,7 @@ instance.interceptors.response.use(
           instance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
 
           // 이벤트 수신 객체 토큰 변경
-          useSSEStore.getState().setEventSource(newAccessToken);
+          useSSEStore.getState().setAccessToken(newAccessToken);
 
           return instance(originRequest);
         }
