@@ -18,10 +18,15 @@ spring:
     include:
       - secret
   kafka:
-    bootstrap-servers: k10a508.p.ssafy.io:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      bootstrap-servers: k10a508.p.ssafy.io:9092 # 카프카 브로커 주소
+      group-id: study-group
+      auto-offset-reset: earliest # 가장 오래된 레코드부터 읽기 시작
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages:  "*"
+        spring.json.value.default.type: com.a508.studyservice.kafka.NotificationMessage
 
 app:
   kafka:
@@ -41,3 +46,6 @@ eureka:
       defaultZone: http://k10a508.p.ssafy.io:8083/eureka
   instance:
     hostname: 43.202.53.115
+logging:
+  level:
+    org.springframework.web.servlet.resource: ERROR

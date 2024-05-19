@@ -1,28 +1,14 @@
 package com.a508.studyservice.controller;
 
-import java.security.NoSuchAlgorithmException;
-import java.time.LocalDate;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.a508.studyservice.global.common.response.SuccessResponse;
-import com.a508.studyservice.service.EssayService;
-import com.a508.studyservice.service.IntensiveService;
-import com.a508.studyservice.service.ParagraphOrderService;
-import com.a508.studyservice.service.SentenceInsertService;
-import com.a508.studyservice.service.TodayLearningScheduler;
-import com.a508.studyservice.service.TodayLearningService;
-import com.a508.studyservice.service.TopicProblemService;
-import com.a508.studyservice.service.VocaService;
-
+import com.a508.studyservice.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/problem")
@@ -38,20 +24,9 @@ public class ProblemController {
     private final VocaService vocaService;
 
     private final TodayLearningScheduler todayLearningScheduler;
-    @GetMapping("/test")
-    public ResponseEntity<SuccessResponse<?>> test(@RequestHeader(value = "Authorization", required = false) String token){
-        return ResponseEntity.ok(
-                new SuccessResponse<>("success" ,"연결 성공"));
-    }
 
-    @GetMapping("/tt")
-    public void test(){
-		try {
-			todayLearningScheduler.makeTodayLearning();
-		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException(e);
-		}
-	}
+
+
 
     //오늘의 학습
     @GetMapping("/today")
