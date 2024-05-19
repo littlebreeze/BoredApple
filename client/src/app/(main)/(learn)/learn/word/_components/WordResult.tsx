@@ -20,7 +20,7 @@ export default function WordResult() {
 
   const searchParams = useSearchParams();
   const date = searchParams.get('date');
-  console.log('########', date);
+  // console.log('########', date);
 
   useEffect(() => {
     getWordData();

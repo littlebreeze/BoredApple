@@ -10,7 +10,7 @@ async function getAbilities() {
     const res = await instance.get<IAbilities>(`${process.env.NEXT_PUBLIC_API_SERVER}/user-service/ability`);
     return res.data;
   } catch (e) {
-    console.log('분석 보고서 데이터 조회 에러: ', e);
+    // console.log('분석 보고서 데이터 조회 에러: ', e);
     return null;
   }
 }

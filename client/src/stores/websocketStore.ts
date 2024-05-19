@@ -91,7 +91,7 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
   resultSubscription: null,
 
   connect: (roomId: string) => {
-    console.log('웹소켓연결');
+    // console.log('웹소켓연결');
     const client = new Client({
       brokerURL: 'wss://k10a508.p.ssafy.io:8081/game-service/ws',
       reconnectDelay: 5000,

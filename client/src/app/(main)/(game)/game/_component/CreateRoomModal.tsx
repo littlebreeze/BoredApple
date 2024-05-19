@@ -35,7 +35,7 @@ export default function CreateRoomModal() {
     try {
       const res = await instance.post(`${process.env.NEXT_PUBLIC_API_SERVER}/game-service/rooms`, newRoom);
       const newRoomId = res.data.data.roomId;
-      console.log('방정보응답', res);
+      // console.log('방정보응답', res);
       const resData = res.data.data;
       setGameRoomInfo({ ...resData });
       resetState();
