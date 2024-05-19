@@ -30,7 +30,7 @@ SSAFY 10기 자율 프로젝트 A508
 
 ## 🎶 주요 기능
 
-## 간편 문해력 테스트
+### 간편 문해력 테스트
 
 <img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%EA%B0%84%EC%9D%B4%20%ED%85%8C%EC%8A%A4%ED%8A%B8.gif?ref_type=heads">
 
