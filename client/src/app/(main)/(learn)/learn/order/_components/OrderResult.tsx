@@ -29,7 +29,7 @@ export default function OrderResult() {
     try {
       const response = await instance.get(`/study-service/problem/order${date ? '?date=' + date : ''}`);
       setProblems(response.data.data);
-      console.log(response.data.data);
+      // console.log(response.data.data);
     } catch (error) {
       // error
       router.replace('/mypage/record');

@@ -30,19 +30,19 @@ export default function NavMenu() {
       );
       //sse 최초 연결되었을 때
       newEventSource.onopen = (event) => {
-        console.log('SSE 연결# ', event);
+        // console.log('SSE 연결# ', event);
       };
 
       //서버에서 뭔가 날릴 때마다
       newEventSource.onmessage = (event) => {
-        console.log('SSE 메세지# ', event.data);
+        // console.log('SSE 메세지# ', event.data);
         setHasNewAlarm(true);
       };
 
       newEventSource.addEventListener('notification', (event) => {
         // const { data } = event;
         setHasNewAlarm(true);
-        console.log(event);
+        // console.log(event);
         if ('data' in event) {
           setNotiMessage(String(event.data));
         }
@@ -50,13 +50,13 @@ export default function NavMenu() {
 
       //sse 에러
       newEventSource.onerror = (event) => {
-        console.log('SSE 오류# ', event);
+        // console.log('SSE 오류# ', event);
         newEventSource.close();
       };
 
       setEventSource(newEventSource);
     } else {
-      console.log('아직 eventSource없음');
+      // console.log('아직 eventSource없음');
     }
 
     return () => {
