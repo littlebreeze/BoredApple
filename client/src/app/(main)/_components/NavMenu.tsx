@@ -43,6 +43,9 @@ export default function NavMenu() {
         // const { data } = event;
         setHasNewAlarm(true);
         console.log(event);
+        if ('data' in event) {
+          setNotiMessage(String(event.data));
+        }
       });
 
       //sse 에러
