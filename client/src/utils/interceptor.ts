@@ -1,5 +1,6 @@
 'use client';
 import axios from 'axios';
+import { useSSEStore } from '@/stores/sse';
 
 // 1. Axios 기본 인스턴스
 const instance = axios.create({
@@ -54,6 +55,10 @@ instance.interceptors.response.use(
         if (response.status == 200) {
           const newAccessToken = response.data.data.accessToken;
           instance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+
+          // 이벤트 수신 객체 토큰 변경
+          useSSEStore.getState().setAccessToken(newAccessToken);
+
           return instance(originRequest);
         }
       } catch (error) {
@@ -71,6 +76,10 @@ instance.interceptors.response.use(
         if (response.status == 200) {
           const newAccessToken = response.data.data.accessToken;
           instance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+
+          // 이벤트 수신 객체 토큰 변경
+          useSSEStore.getState().setAccessToken(newAccessToken);
+
           return instance(originRequest);
         }
       } catch (error) {
