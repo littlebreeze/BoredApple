@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import instance from '@/utils/interceptor';
+import { useSSEStore } from '@/stores/sse';
 
 export default function Authentication() {
   const router = useRouter();
@@ -29,6 +30,10 @@ export default function Authentication() {
       // 메모리에 토큰 저장
       const accessToken = response.data.data.accessToken;
       instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+      // 이벤트 객체 생성에 사용할 accessToken 저장
+      //setEventSource(accessToken);
+      useSSEStore.getState().setAccessToken(accessToken);
 
       // 기존 유저인지 신규 유저인지 판단하여 라우팅 처리
       handleRouter(response.data.data.signUpProcess);
