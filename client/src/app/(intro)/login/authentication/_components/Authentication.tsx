@@ -4,14 +4,11 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import instance from '@/utils/interceptor';
 import { useSSEStore } from '@/stores/sse';
-import { EventSourcePolyfill } from 'event-source-polyfill';
 
 export default function Authentication() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code: string | null = searchParams.get('code');
-
-  const { eventSource, setEventSource } = useSSEStore();
 
   useEffect(() => {
     if (code) {

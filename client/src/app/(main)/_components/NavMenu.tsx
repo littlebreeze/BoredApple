@@ -5,36 +5,53 @@ import { useSelectedLayoutSegment } from 'next/navigation';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
 import { useSSEStore } from '@/stores/sse';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
 export default function NavMenu() {
   const segment = useSelectedLayoutSegment();
   const [hasNewAlarm, setHasNewAlarm] = useState<boolean>(false);
   const [notiMessage, setNotiMessage] = useState<string>('오늘의 학습을 시작해 보세요!');
 
-  const { eventSource, setEventSource } = useSSEStore();
+  const { eventSource, setEventSource, accessToken } = useSSEStore();
 
+  // const newEventSource = EventSourcePolyfill;
   useEffect(() => {
-    if (eventSource) {
+    if (accessToken) {
+      const newEventSource = new EventSourcePolyfill(
+        `${process.env.NEXT_PUBLIC_API_SERVER}/study-service/notifications`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Connection: 'keep-alive',
+          },
+          withCredentials: true,
+          heartbeatTimeout: 86400000,
+        }
+      );
       //sse 최초 연결되었을 때
-      eventSource.onopen = (event) => {
+      newEventSource.onopen = (event) => {
         console.log('SSE 연결# ', event);
       };
 
       //서버에서 뭔가 날릴 때마다
-      eventSource.onmessage = (event) => {
+      newEventSource.onmessage = (event) => {
         console.log('SSE 메세지# ', event.data);
         setHasNewAlarm(true);
       };
 
-      eventSource.addEventListener('notification', (event) => {
-        const { data } = event;
+      newEventSource.addEventListener('notification', (event) => {
+        // const { data } = event;
         setHasNewAlarm(true);
+        console.log(event);
       });
 
       //sse 에러
-      eventSource.onerror = (event) => {
+      newEventSource.onerror = (event) => {
         console.log('SSE 오류# ', event);
+        newEventSource.close();
       };
+
+      setEventSource(newEventSource);
     } else {
       console.log('아직 eventSource없음');
     }
@@ -42,7 +59,7 @@ export default function NavMenu() {
     return () => {
       if (eventSource) eventSource.close();
     };
-  }, [eventSource]);
+  }, [accessToken]);
 
   return (
     <>
