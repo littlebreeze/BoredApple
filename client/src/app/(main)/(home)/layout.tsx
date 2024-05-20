@@ -5,7 +5,7 @@ import RQProvider from '@/queries/RQProvider';
 import NavMenu from '../_components/NavMenu';
 
 export const metadata: Metadata = {
-  title: '심심한 사과, 당신의 문해력 지키미',
+  title: '심심한 사과, 당신의 문해력 지킴이',
   description: '문해력 학습 서비스 심심한 사과',
 };
 
