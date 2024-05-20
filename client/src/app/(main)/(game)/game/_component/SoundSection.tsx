@@ -17,7 +17,7 @@ export default function SoundSection() {
         src={bgm}
         loop={true}
         playing={isPlaying}
-        volume={0.15}
+        volume={0.1}
       />
       {isWaitingPage ? (
         <div
