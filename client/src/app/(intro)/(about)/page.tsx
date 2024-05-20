@@ -10,7 +10,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: '심심한 사과, 당신의 문해력 지키미',
+  title: '심심한 사과, 당신의 문해력 지킴이',
   description: '문해력 학습 서비스 심심한 사과의 소개 페이지',
 };
 
@@ -22,7 +22,7 @@ export default function Page() {
         <div className='flex flex-col items-center text-center gap-9'>
           <UpsideAnimation>
             <div className='flex flex-col gap-5'>
-              <div className='text-white text-base md:text-xl lg:text-xl'>당신의 문해력 지키미,</div>
+              <div className='text-white text-base md:text-xl lg:text-xl'>당신의 문해력 지킴이,</div>
               <div className='text-white font-Ansungtangmyun text-5xl md:text-7xl lg:text-7xl'>심심한 사과</div>
             </div>
           </UpsideAnimation>
