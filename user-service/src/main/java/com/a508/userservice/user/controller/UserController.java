@@ -142,7 +142,7 @@ public class UserController {
 	@PostMapping("/attendance")
 	public SuccessResponse<AttendanceRes> getAttendanceInfo(HttpServletRequest request, @RequestBody YearMonthReq date) {
 
-		return new SuccessResponse<>(userService.UserAttendance(1, date.getYear(), date.getMonth()));
+		return new SuccessResponse<>(userService.UserAttendance(tokenProvider.getUserByToken(token).getId(), date.getYear(), date.getMonth()));
 	}
 
 	@PostMapping("/monthstudy")
