@@ -75,7 +75,7 @@ SSAFY 10기 자율 프로젝트 A508
 [![mysql](https://img.shields.io/badge/mysql-8.3.0-4479A1?style=flat&logo=mysql)](https://mysql.com/)
 [![Redis](https://img.shields.io/badge/Redis-7.2.4-red?style=flat&logo=redis)](https://redis.io/)
 
-[![reactquery](https://img.shields.io/badge/reactquery-3.39.3-FF4154?style=flat&logo=reactquery)](https://tanstack.com/query/v4/docs/framework/react/overview)
+[![reactquery](https://img.shields.io/badge/reactquery-5.35.1-FF4154?style=flat&logo=reactquery)](https://tanstack.com/query/v4/docs/framework/react/overview)
 [![tailwindcss](https://img.shields.io/badge/tailwindcss-3.4.1-06B6D4?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
 
 [![Git](https://img.shields.io/badge/Git-gray?style=flat&logo=git)](https://git-scm.com/)
