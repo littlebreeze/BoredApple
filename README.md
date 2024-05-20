@@ -40,8 +40,8 @@ SSAFY 10기 자율 프로젝트 A508
 
 ### 매일 새로운 개인 맞춤 학습
 
-<img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%EA%B0%84%EC%9D%B4%20%ED%85%8C%EC%8A%A4%ED%8A%B8.gif?ref_type=heads">
-<img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%EA%B0%84%EC%9D%B4%20%ED%85%8C%EC%8A%A4%ED%8A%B8.gif?ref_type=heads">
+<img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%EC%98%A4%EB%8A%98%EC%9D%98%ED%95%99%EC%8A%B5-%EC%A0%95%EB%8F%85%ED%9B%88%EB%A0%A8.gif?ref_type=heads">
+<img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%EC%98%A4%EB%8A%98%EC%9D%98%ED%95%99%EC%8A%B5-%EC%A7%80%EB%AC%B8%EC%9A%94%EC%95%BD.gif?ref_type=heads">
 
 - 학습 유형, 학습 요소, 수준에 따른 개인화된 일일 세 가지의 맞춤 학습 추천
 - 인지 능력, 추론 능력 등을 기를 수있는 5가지 유형의 다양한 문제
