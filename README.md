@@ -100,7 +100,7 @@ SSAFY 10기 자율 프로젝트 A508
 [![AWS S3](https://img.shields.io/badge/AWS_S3-gray?style=flat&logo=amazon-s3)](https://aws.amazon.com/s3/)
 [![Ubuntu](https://img.shields.io/badge/Ubuntu-20.04.06-purple?style=flat&logo=ubuntu)](https://ubuntu.com/)
 
-### Backend - 메인
+### Backend
 
 - Spring Boot 3.2.3
 - Spring Data JPA
@@ -117,6 +117,8 @@ SSAFY 10기 자율 프로젝트 A508
 - kafka
 - stomp
 - websocket
+- Mecab
+- fastText
 
 ### Frontend
 
