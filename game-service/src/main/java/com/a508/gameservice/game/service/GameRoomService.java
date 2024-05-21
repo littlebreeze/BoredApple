@@ -372,6 +372,7 @@ public class GameRoomService {
         //방에 나 혼자
         if (roomPlayerRepository.playerCnt(id) == 1) {
             gameRoomRepository.removeGameRoom(id);
+            gameSchedulerManageService.getGameScheduler(roomId).stopTask();
             gameSchedulerManageService.removeRoom(roomId);
             roomPlayerRepository.removePlayerToRoom(id, senderId);
         }
