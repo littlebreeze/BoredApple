@@ -161,11 +161,11 @@ export const useWebsocketStore = create<WebSocketState>((set, get) => ({
       get().resultSubscription?.unsubscribe();
       client.deactivate();
       // 연결 끊기
-      get().clearWebsocketStore();
       client.onDisconnect = () => {
         // 방 상태 초기화
         useGameRoomStore.getState().clearGameRoomInfo();
         // 웹소켓 스토어 초기화
+        get().clearWebsocketStore();
       };
     }
   },
