@@ -33,8 +33,18 @@ export default function GameRightSection() {
   const router = useRouter();
 
   // STORE
-  const { pageNum, isShow, roomList, setRoomList, isEndPage, setIsEndPage, selectedRoom, setSelectedRoom } =
-    useGameWaitStore();
+  const {
+    pageNum,
+    isShow,
+    roomList,
+    setRoomList,
+    isEndPage,
+    setIsEndPage,
+    clickedRoom,
+    setClickedRoom,
+    enteredRoom,
+    setEnteredRoom,
+  } = useGameWaitStore();
   const { connect, stompClient } = useWebsocketStore();
   const { setGameRoomInfo } = useGameRoomStore();
 
@@ -42,7 +52,7 @@ export default function GameRightSection() {
   const { data, isLoading, refetch, isFetching } = useGameRoomList(pageNum);
 
   // 방 정보 요청 쿼리
-  const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(selectedRoom?.id);
+  const { data: roomData, isLoading: getLoading, isError, error } = useGameRoomInfo(enteredRoom);
 
   // 출력을 위한 복사 리스트
   const [duplList, setDuplList] = useState<(GameRoomInfo | undefined)[]>(new Array(6).fill(undefined));
@@ -72,29 +82,34 @@ export default function GameRightSection() {
     setDuplList(generateRoomItems(roomList));
   }, [roomList]);
 
-  // 선택한 방 바꼈을 때,
+  // 들어갈 방 바꼈을 때,
   useEffect(() => {
+    console.log('들어갈방바뀜 : ', enteredRoom);
     if (isError)
       Swal.fire({
         title: '방에 입장할 수 없습니다!',
         text: '방 상태가 변경되었습니다. 새로고침 버튼을 눌러주세요!',
         confirmButtonColor: '#0064FF',
       });
-    if (!isLoading && !isError && roomData) {
-      if (!selectedRoom?.isSecret) {
-        // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
-        const roomDataData = roomData.data.data;
-        setGameRoomInfo({ ...roomDataData });
-        connect(String(selectedRoom?.id));
+    if (!getLoading && !isError && roomData) {
+      // 데이터가 로딩 중이 아니고 에러가 없고 데이터가 존재할 때만 실행
+      const roomDataData = roomData.data.data;
+      setGameRoomInfo({ ...roomDataData });
+      connect(String(enteredRoom?.id));
 
-        router.push(`/game/rooms/${selectedRoom?.id}`);
-      }
+      router.push(`/game/rooms/${enteredRoom?.id}`);
     }
-  }, [selectedRoom, getLoading]);
+  }, [enteredRoom, getLoading]);
+
+  // 선택한 방 바꼈을 때,
+  useEffect(() => {
+    console.log('선택방바뀜 : ', clickedRoom);
+  }, [clickedRoom]);
 
   useEffect(() => {
     return () => {
-      setSelectedRoom(null);
+      setClickedRoom(null);
+      setEnteredRoom(null);
     };
   }, []);
 
