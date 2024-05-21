@@ -11,7 +11,7 @@ export default function Page() {
   return (
     <div className='mx-auto h-screen max-w-[800px] flex flex-col justify-center items-center'>
       <div className='flex flex-col items-center justify-center gap-5'>
-        <div className='text-xl text-ourTheme'>당신의 문해력 지키미,</div>
+        <div className='text-xl text-ourTheme'>당신의 문해력 지킴이,</div>
         <div className='text-ourTheme font-Ansungtangmyun text-7xl'>심심한 사과</div>
       </div>
       <GoogleLogin />
