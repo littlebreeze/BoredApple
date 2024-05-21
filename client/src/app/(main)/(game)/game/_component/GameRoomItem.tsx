@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import { useGameWaitStore } from '@/stores/game-wait';
+import { useEffect } from 'react';
 
 type GameRoomInfo = {
   id: number;
@@ -24,16 +25,22 @@ type Props = {
 export default function GameRoomItem({ roomInfo }: Props) {
   const router = useRouter();
 
-  const { setIsShow, setSelectedRoom, selectedRoom } = useGameWaitStore();
+  const { setIsShow, clickedRoom, setClickedRoom, setEnteredRoom } = useGameWaitStore();
 
   // 방 눌렀을 때, 선택된 방 저장
   const onClickRoomItem = () => {
+    // 시작한 방이 아니고, 꽉찬 방이 아니면
     if (!roomInfo?.isStarted && roomInfo?.nowNum !== roomInfo?.maxNum) {
-      if (roomInfo?.isSecret) {
-        setIsShow(true);
-        setSelectedRoom(roomInfo);
-      } else {
-        if (roomInfo) setSelectedRoom(roomInfo);
+      // 방 선택
+      if (roomInfo) {
+        if (roomInfo.isSecret) {
+          console.log('비밀방이래');
+          setIsShow(true);
+          setClickedRoom(roomInfo);
+        } else {
+          console.log('그냥방');
+          setEnteredRoom(roomInfo);
+        }
       }
     }
   };
