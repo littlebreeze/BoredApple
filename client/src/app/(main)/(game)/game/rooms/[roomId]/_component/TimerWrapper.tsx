@@ -13,11 +13,11 @@ import timeOut from '@/../public/sound/timeout.mp3';
 
 export default function TimerWrapper({ roomId }: { roomId: string }) {
   // 효과음
-  const clockES = effectSound(clockSound, 0.3);
-  const timerES = effectSound(timerSound, 0.3);
-  const hintES = effectSound(hintSound, 0.5);
-  const correctES = effectSound(correctSound, 0.5);
-  const timeOutES = effectSound(timeOut, 0.5);
+  const clockES = effectSound(clockSound, 0.02);
+  const timerES = effectSound(timerSound, 0.02);
+  const hintES = effectSound(hintSound, 0.02);
+  const correctES = effectSound(correctSound, 0.02);
+  const timeOutES = effectSound(timeOut, 0.02);
 
   const {
     timer,
