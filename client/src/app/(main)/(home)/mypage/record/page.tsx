@@ -20,7 +20,7 @@ export default function Page() {
         </div>
       </div>
       <div className='w-full md:w-1/3 lg:w-1/3'>
-        <div className='text-lg text-ourBlack pt-5 pb-2'>{'-'}</div>
+        <div className='text-lg text-ourBlack pt-5 pb-2 opacity-0'>&nbsp;</div>
         <div className='flex flex-col gap-4'>
           <div className='bg-white rounded-2xl p-5'>
             <AttendanceRecord />
