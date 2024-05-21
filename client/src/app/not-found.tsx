@@ -11,9 +11,6 @@ const NotFound: NextPage = () => {
   return (
     <div className='w-full h-screen flex flex-col-reverse lg:flex-row justify-center items-center gap-10 lg:justify-evenly'>
       <div className='flex flex-col justify-center items-center gap-3'>
-        {/* <div className='text-ourBlue text-base md:text-xl lg:text-xl'>당신의 문해력 지키미,</div>
-        <div className='text-ourTheme font-Ansungtangmyun text-5xl md:text-7xl lg:text-7xl mb-5'>심심한 사과</div> */}
-
         <div className='flex flex-col gap-2'>
           <div className='font-bold text-lg md:text-2xl lg:text-2xl mb-2'>페이지를 찾을 수 없습니다.</div>
           <div className='text-sm md:text-base lg:text-base'>입력하신 주소를 다시 한번 확인해 주세요!</div>
