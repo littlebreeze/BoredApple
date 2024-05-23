@@ -70,9 +70,9 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                     return response.writeWith(Mono.just(errorResponse).flatMap(this::jsonResponse));
                 }
             } else {
-                response.setStatusCode(HttpStatus.BAD_REQUEST);
+                response.setStatusCode(HttpStatus.UNAUTHORIZED);
                 ErrorResponse errorResponse = new ErrorResponse(
-                        HttpStatus.BAD_REQUEST.value(),
+                        HttpStatus.UNAUTHORIZED.value(),
                         "TOK002",
                         "토큰이 존재하지 않습니다."
                 );
