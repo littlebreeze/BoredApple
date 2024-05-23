@@ -13,14 +13,14 @@ public class UserAbilityRes {
 
 	private Integer userId;
 
-	private Integer fact;
+	private double fact;
 
-	private Integer inference;
+	private double inference;
 
-	private Integer voca;
+	private double voca;
 
-	private Integer recognition;
+	private double recognition;
 
-	private Integer speed;
+	private double speed;
 
 }

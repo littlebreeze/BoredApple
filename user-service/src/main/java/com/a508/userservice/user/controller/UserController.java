@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -95,7 +96,7 @@ public class UserController {
 		fiveDto userAbilityRes = studyServiceClient.GetUserAbility(request.getHeader(AUTHORIZATION_HEADER).substring(7));
 
 		fiveDto avgAbilityRes = studyServiceClient.GetAvgAbility();
-
+		DecimalFormat df = new DecimalFormat("#.##");
 
 		List<Double> a1 = new ArrayList<>(), a2 = new ArrayList<>();
 		a1.add(userAbilityRes.getData().getFact() / 10.0);
@@ -104,11 +105,11 @@ public class UserController {
 		a1.add(userAbilityRes.getData().getRecognition() / 10.0);
 		a1.add(userAbilityRes.getData().getSpeed() / 10.0);
 
-		a2.add(avgAbilityRes.getData().getFact() / 10.0);
-		a2.add(avgAbilityRes.getData().getInference() / 10.0);
-		a2.add(avgAbilityRes.getData().getVoca() / 10.0);
-		a2.add(avgAbilityRes.getData().getRecognition() / 10.0);
-		a2.add(avgAbilityRes.getData().getSpeed() / 10.0);
+		a2.add(Double.valueOf(df.format(avgAbilityRes.getData().getFact() / 10.0)));
+		a2.add(Double.valueOf(df.format(avgAbilityRes.getData().getInference() / 10.0)));
+		a2.add(Double.valueOf(df.format(avgAbilityRes.getData().getVoca() / 10.0)));
+		a2.add(Double.valueOf(df.format(avgAbilityRes.getData().getRecognition() / 10.0)));
+		a2.add(Double.valueOf(df.format(avgAbilityRes.getData().getSpeed() / 10.0)));
 
 		List<List<Double>> data = new ArrayList<>();
 
