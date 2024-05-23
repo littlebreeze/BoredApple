@@ -12,6 +12,7 @@ import com.a508.userservice.login.repository.RefreshTokenRepository;
 import com.a508.userservice.user.data.UserRole;
 import com.a508.userservice.user.domain.User;
 import com.a508.userservice.user.repository.UserRepository;
+import com.a508.userservice.user.service.UserService;
 import com.google.gson.Gson;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -37,6 +39,7 @@ public class LoginService {
     private final UserRepository userRepository;
     private final RefreshTokenService refreshTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final UserService userService;
 
     private final String GRANT_TYPE = "authorization_code";
 
@@ -100,7 +103,7 @@ public class LoginService {
         return gson.fromJson(response.getBody(), GoogleUserInfoRes.class);
     }
 
-    public OauthTokenRes getAccessTokenJsonData(HttpServletResponse response,String code) {
+    public OauthTokenRes getAccessTokenJsonData(HttpServletResponse response, String code) {
         //코드로 토큰받기
         GoogleOAuthTokenRes oauthTokenData = getTokenbyCode(code);
 
@@ -108,10 +111,10 @@ public class LoginService {
         GoogleUserInfoRes googleUserInfoRes = getUserInfoByToken(oauthTokenData.getAccess_token());
 
         //받아온 사용자 정보(로그인/회원가입한 유저)로 우리 토큰 만들기
-        return generateTokenbyUserInfo(response,googleUserInfoRes);
+        return generateTokenbyUserInfo(response, googleUserInfoRes);
     }
 
-    private OauthTokenRes generateTokenbyUserInfo(HttpServletResponse response,GoogleUserInfoRes googleUserInfoRes) {
+    private OauthTokenRes generateTokenbyUserInfo(HttpServletResponse response, GoogleUserInfoRes googleUserInfoRes) {
         boolean signUp = false;
         if (userRepository.findByGoogleId(googleUserInfoRes.getId()) == null) { //우리 회원이 아니면
             User newMember = User.builder()
@@ -133,11 +136,11 @@ public class LoginService {
         }
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(user);
 
-       
-       Cookie cookie=createCookie(oauthTokenRes.getRefreshToken());
+
+        Cookie cookie = createCookie(oauthTokenRes.getRefreshToken());
 
         // 쿠키 전송
-       response.addCookie(cookie); //만들어진 쿠키를 쿠키에 저장해준다.
+        response.addCookie(cookie); //만들어진 쿠키를 쿠키에 저장해준다.
 
         //refreshToken redis에 저장
         refreshTokenService.saveTokenInfo(
@@ -148,16 +151,17 @@ public class LoginService {
 
         if (signUp) oauthTokenRes.isSignUp(true);
 
+        //출석체크
+        userService.UserAttendanceCheck(user.getId(), LocalDate.now());
+
         return oauthTokenRes;
     }
 
     public OauthTokenRes regenerateToken(HttpServletResponse response, HttpServletRequest request) {
 
         Cookie rc[] = request.getCookies();
-        System.out.println("rc사이즈"+rc.length);
         String refreshTokenCookie = "";
         for (Cookie cookie : rc) {
-            System.out.println("rc" + cookie.getValue());
             if (cookie.getName().equals("refreshtoken")) { // 쿠키의 이름이 "refreshToken"인 경우만 처리
                 refreshTokenCookie = cookie.getValue();
                 break; // 원하는 쿠키를 찾았으므로 반복문을 종료합니다.
@@ -182,11 +186,11 @@ public class LoginService {
 
         //Member 정보로 토큰 재발급
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(user);
-       
-       Cookie cookie=createCookie(oauthTokenRes.getRefreshToken());
+
+        Cookie cookie = createCookie(oauthTokenRes.getRefreshToken());
 
         // 쿠키 전송
-       response.addCookie(cookie); //만들어진 쿠키를 쿠키에 저장해준다.
+        response.addCookie(cookie); //만들어진 쿠키를 쿠키에 저장해준다.
 
         //redis에 저장
         refreshTokenService.saveTokenInfo(
@@ -198,6 +202,7 @@ public class LoginService {
 
         return oauthTokenRes;
     }
+
     public Cookie createCookie(String refreshToken) {
         String cookieName = "refreshtoken";
         String cookieValue = refreshToken; // 쿠키벨류엔 글자제한이 있어, 벨류로 만들어담아준다.
