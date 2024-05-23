@@ -113,7 +113,7 @@ public class TodayLearningScheduler {
 					Collections.shuffle(paragraphOrders);
 					l: for(ParagraphOrder paragraphOrder : paragraphOrders) {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
-							if(Objects.equals(choiceSolved.getProblemId(), paragraphOrder.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
+							if(Objects.equals(choiceSolved.getProblemId(), paragraphOrder.getId()) && (choiceSolved.getType().equals(type))) continue  l;
 						}
 						TodayLearning todayLearning =todayLearningRepository.save(makeEntity(userId,paragraphOrder.getId(),type,category));
 						log.info(" userId의 값은 = "  + userId+ "  생성된 오늘의 학습은 = "+todayLearning  );
@@ -127,7 +127,7 @@ public class TodayLearningScheduler {
 					Collections.shuffle(sentenceInsertList);
 					l: for(SentenceInsert sentenceInsert : sentenceInsertList) {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
-							if(Objects.equals(choiceSolved.getProblemId(), sentenceInsert.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
+							if(Objects.equals(choiceSolved.getProblemId(), sentenceInsert.getId()) && (choiceSolved.getType().equals(type) )) continue  l;
 						}
 						TodayLearning todayLearning =todayLearningRepository.save(makeEntity(userId,sentenceInsert.getId(),type,category));
 						log.info(" userId의 값은 = "  + userId+ "  생성된 오늘의 학습은 = "+todayLearning  );
@@ -140,7 +140,7 @@ public class TodayLearningScheduler {
 					Collections.shuffle(vocaList);
 					l: for(Voca voca : vocaList) {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
-							if(Objects.equals(choiceSolved.getProblemId(), voca.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
+							if(Objects.equals(choiceSolved.getProblemId(), voca.getId()) && (choiceSolved.getType().equals(type))) continue  l;
 						}
 						TodayLearning todayLearning =todayLearningRepository.save(makeEntity(userId,voca.getId(),type,category));
 						log.info(" userId의 값은 = "  + userId+ "  생성된 오늘의 학습은 = "+todayLearning  );
@@ -154,7 +154,7 @@ public class TodayLearningScheduler {
 					Collections.shuffle(intensiveList);
 					l: for(Intensive intensive : intensiveList) {
 						for(ChoiceSolved choiceSolved :choiceSolvedList) {
-							if(Objects.equals(choiceSolved.getProblemId(), intensive.getId()) && (choiceSolved.getType().equals(type) && choiceSolved.isCorrect())) continue  l;
+							if(Objects.equals(choiceSolved.getProblemId(), intensive.getId()) && (choiceSolved.getType().equals(type))) continue  l;
 						}
 						 TodayLearning todayLearning = todayLearningRepository.save(makeEntity(userId,intensive.getId(),type,category));
 						log.info(" userId의 값은 = "  + userId+ "  생성된 오늘의 학습은 = "+todayLearning  );
