@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FeignUserScoreResponse {
 
-    private Integer userId;
-    private Integer fact;
-    private Integer inference;
-    private Integer voca;
-    private Integer recognition;
-    private Integer speed;
+    private double userId;
+    private double fact;
+    private double inference;
+    private double voca;
+    private double recognition;
+    private double speed;
 }
 
