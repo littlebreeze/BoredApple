@@ -18,7 +18,7 @@ export default function Page() {
   return (
     <div className='bg-white'>
       <Header />
-      <div className='bg-ourTheme overflow-hidden h-screen flex flex-col-reverse md:flex-row lg:flex-row justify-between'>
+      <div className='bg-ourTheme overflow-hidden h-dvh flex flex-col-reverse md:flex-row lg:flex-row justify-between'>
         <CardContainer direction={''}>
           {/* 카드를 감싼 div */}
           <div className='flex flex-row md:flex-col lg:flex-col gap-[15px] justify-start md:items-start ml-[15px]'>
@@ -53,7 +53,19 @@ export default function Page() {
         </div>
         <CardContainer direction={'upside'}>
           {/* 카드를 감싼 div */}
-          <div className='flex flex-row md:flex-col-reverse lg:flex-col-reverse gap-[15px] items-end mr-[15px]'>
+          <div className='flex flex-row md:flex-col-reverse lg:flex-col-reverse gap-[15px] items-end mr-[15px] absolute bottom-full'>
+            <Card num={1} />
+            <Card num={2} />
+            <Card num={3} />
+            <Card num={4} />
+            <Card num={5} />
+            <Card num={1} />
+            <Card num={2} />
+            <Card num={3} />
+            <Card num={4} />
+            <Card num={5} />
+          </div>
+          <div className='flex flex-row md:flex-col-reverse lg:flex-col-reverse mt-[15px] gap-[15px] items-end mr-[15px]'>
             <Card num={1} />
             <Card num={2} />
             <Card num={3} />
