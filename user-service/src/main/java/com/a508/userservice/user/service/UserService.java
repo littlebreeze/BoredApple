@@ -124,8 +124,6 @@ public class UserService {
 
 	public AttendanceRes UserAttendance(int userId, int year, int month) {
 
-		UserAttendanceCheck(userId, LocalDate.now());
-
 		LocalDate yearmonth = LocalDate.of(year, month, 1);
 
 		LocalDateTime createDate = userRepository.findById(userId).orElseThrow().getCreatedDate();
