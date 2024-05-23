@@ -16,8 +16,10 @@ type GameRoomInfo = {
 interface gameWaitState {
   isShow: boolean;
   setIsShow: (state: boolean) => void;
-  selectedRoom: GameRoomInfo | null;
-  setSelectedRoom: (item: GameRoomInfo | null) => void;
+  clickedRoom: GameRoomInfo | null;
+  setClickedRoom: (item: GameRoomInfo | null) => void;
+  enteredRoom: GameRoomInfo | null;
+  setEnteredRoom: (item: GameRoomInfo | null) => void;
   roomList: GameRoomInfo[];
   setRoomList: (list: GameRoomInfo[]) => void;
   isEndPage: boolean;
@@ -31,9 +33,13 @@ export const useGameWaitStore = create<gameWaitState>((set) => ({
   setIsShow: (state: boolean) => {
     set({ isShow: state });
   },
-  selectedRoom: null,
-  setSelectedRoom: (item: GameRoomInfo | null) => {
-    set({ selectedRoom: item });
+  clickedRoom: null,
+  setClickedRoom: (item: GameRoomInfo | null) => {
+    set({ clickedRoom: item });
+  },
+  enteredRoom: null,
+  setEnteredRoom: (item: GameRoomInfo | null) => {
+    set({ enteredRoom: item });
   },
   roomList: [],
   setRoomList: (list: GameRoomInfo[]) => {
