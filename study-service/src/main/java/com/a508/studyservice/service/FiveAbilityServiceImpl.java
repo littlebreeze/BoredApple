@@ -51,11 +51,11 @@ public class FiveAbilityServiceImpl implements  FiveAbilityService{
 
 		List<FiveAbility> fiveAbilityList = fiveAbilityRepository.findAll();
 
-		 Integer fact = 0;
-		 Integer inference = 0;
-		 Integer voca = 0;
-		 Integer recognition = 0;
-		 Integer speed = 0;
+		double fact = 0;
+		double inference = 0;
+		double voca = 0;
+		double recognition = 0;
+		double speed = 0;
 
 		for(FiveAbility fiveAbility : fiveAbilityList){
 			fact += fiveAbility.getFact();
