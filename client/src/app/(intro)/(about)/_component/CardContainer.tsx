@@ -7,7 +7,7 @@ export default function CardContainer({ children, direction }: { children: React
   const [isShow, setIsShow] = useState<boolean>(false);
 
   useEffect(() => {
-    if (slideIndex === 23) setSlideIdex(0);
+    if (slideIndex === 46) setSlideIdex(0);
     if (window.innerWidth >= 768 && window.innerWidth < 1024) {
       // md size
       setSlideDirection('translateY');
@@ -29,7 +29,7 @@ export default function CardContainer({ children, direction }: { children: React
   if (isShow) return null;
   return (
     <div
-      className={`block mt-[100px] mb-[60px] md:mt-0 lg:mt-0 md:w-1/5 lg:w-1/5`}
+      className={`block mt-[100px] mb-[60px] md:mt-0 lg:mt-0 md:w-1/5 lg:w-1/5 relative`}
       style={{
         transition: 'all 1000ms linear',
         transform: `${slideDirection}(${(direction === 'upside' ? 1 : -1) * (5 * slideIndex)}%)`,
