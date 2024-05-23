@@ -87,6 +87,19 @@ def calculate_elo(rank, a, b, id, players):
 def scorecal():
     data = request.json
     newelo = []
+    newrank = []
+    print(data)
+    t=0
+    i=0;
+    for i in range(len(data)):
+        te=0
+        for j in range(i-1,-1,-1):
+            if data[i][0]!=data[j][0]: break
+            te+=1
+        newrank.append(i-te)
+    for i in range(len(data)):
+        data[i][0] = newrank[i]+1
+
     for i in data:
         eloavg = 0
         for j in data:
