@@ -46,31 +46,31 @@ instance.interceptors.response.use(
   async (error) => {
     const originRequest = error.config;
 
-    // 토큰이 존재하지 않는 경우
-    if (error.response.status == 400) {
-      try {
-        const response = await regenerateAccessToken();
+    // 토큰이 존재하지 않을 경우
+    // if (error.response.status == 400) {
+    //   try {
+    //     const response = await regenerateAccessToken();
 
-        // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
-        if (response.status == 200) {
-          const newAccessToken = response.data.data.accessToken;
-          instance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+    //     // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
+    //     if (response.status == 200) {
+    //       const newAccessToken = response.data.data.accessToken;
+    //       instance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
 
-          // 이벤트 수신 객체 토큰 변경
-          useSSEStore.getState().setAccessToken(newAccessToken);
+    //       // 이벤트 수신 객체 토큰 변경
+    //       useSSEStore.getState().setAccessToken(newAccessToken);
 
-          return instance(originRequest);
-        }
-      } catch (error) {
-        // 토큰 재발급 실패 시 로그인 요청 페이지로 이동
-        window.location.replace('/login');
-      }
-    }
+    //       return instance(originRequest);
+    //     }
+    //   } catch (error) {
+    //     // 토큰 재발급 실패 시 로그인 요청 페이지로 이동
+    //     window.location.replace('/login');
+    //   }
+    // }
 
     // 토큰이 만료되거나 유효하지 않은 경우
     if (error.response.status == 401) {
       try {
-        const response = await regenerateRefreshToken();
+        const response = await regenerateTokens();
 
         // 토큰 재발급 성공 시 토큰을 다시 세팅하고 헤더에 담음
         if (response.status == 200) {
@@ -92,19 +92,19 @@ instance.interceptors.response.use(
 );
 
 // access token 재생성 요청
-const regenerateAccessToken = async () => {
-  const headers = {
-    'Content-Type': 'text/plain;charset=utf-8',
-  };
-  const tokenString =
-    'eyJhbGciOiJIUzUxMiJ9.eyJhdXRoIjpbIlJPTEVfVVNFUiJdLCJhdWQiOiJodHRwczovL2sxMGE1MDgucC5zc2FmeS5pby8iLCJzdWIiOiIxMTczMTE0MDcwMjUxNTcwMTYxMjUiLCJpc3MiOiJodHRwczovL2sxMGE1MDgucC5zc2FmeS5pby8iLCJpYXQiOjE3MTU5MjgyNDgsImV4cCI6MTcxNTkzMDA0OH0.XujnBIBcriOLzc6Nl2hB8VHUv7VAARxcHKnOMIp522xje9EYKXU6JKZEuGVCySP3xHJqrkl8YWEGDWCS2a3ZLg';
-  accessInstance.defaults.headers.common['Authorization'] = `Bearer ${tokenString}`;
-  const response = await accessInstance.post('/user-service/oauth/token', {}, { headers: headers });
-  return response;
-};
+// const regenerateAccessToken = async () => {
+//   const headers = {
+//     'Content-Type': 'text/plain;charset=utf-8',
+//   };
+//   const tokenString =
+//     'eyJhbGciOiJIUzUxMiJ9.eyJhdXRoIjpbIlJPTEVfVVNFUiJdLCJhdWQiOiJodHRwczovL2sxMGE1MDgucC5zc2FmeS5pby8iLCJzdWIiOiIxMTczMTE0MDcwMjUxNTcwMTYxMjUiLCJpc3MiOiJodHRwczovL2sxMGE1MDgucC5zc2FmeS5pby8iLCJpYXQiOjE3MTU5MjgyNDgsImV4cCI6MTcxNTkzMDA0OH0.XujnBIBcriOLzc6Nl2hB8VHUv7VAARxcHKnOMIp522xje9EYKXU6JKZEuGVCySP3xHJqrkl8YWEGDWCS2a3ZLg';
+//   accessInstance.defaults.headers.common['Authorization'] = `Bearer ${tokenString}`;
+//   const response = await accessInstance.post('/user-service/oauth/token', {}, { headers: headers });
+//   return response;
+// };
 
 // refresh token 재생성 요청
-const regenerateRefreshToken = async () => {
+const regenerateTokens = async () => {
   const headers = {
     'Content-Type': 'text/plain;charset=utf-8',
   };
