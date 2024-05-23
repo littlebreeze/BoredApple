@@ -2,7 +2,7 @@
 
 import { useGameRoomStore } from '@/stores/game-room-info';
 import { useWebsocketStore } from '@/stores/websocketStore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import effectSound from '@/utils/effectSound';
 
 import clockSound from '@/../public/sound/clock.mp3';
@@ -10,14 +10,23 @@ import timerSound from '@/../public/sound/timer.mp3';
 import hintSound from '@/../public/sound/hint.mp3';
 import correctSound from '@/../public/sound/correct.mp3';
 import timeOut from '@/../public/sound/timeout.mp3';
+import { useSoundControlStore } from '@/stores/sound-control';
 
 export default function TimerWrapper({ roomId }: { roomId: string }) {
+  const { isPlaying } = useSoundControlStore();
+  const [volume, setVolume] = useState<number>(0);
+
+  useEffect(() => {
+    if (isPlaying) setVolume(0.2);
+    else setVolume(0);
+  }, [isPlaying]);
+
   // 효과음
-  const clockES = effectSound(clockSound);
-  const timerES = effectSound(timerSound);
-  const hintES = effectSound(hintSound);
-  const correctES = effectSound(correctSound);
-  const timeOutES = effectSound(timeOut);
+  const clockES = effectSound(clockSound, volume);
+  const timerES = effectSound(timerSound, volume);
+  const hintES = effectSound(hintSound, volume);
+  const correctES = effectSound(correctSound, volume);
+  const timeOutES = effectSound(timeOut, volume);
 
   const {
     timer,
