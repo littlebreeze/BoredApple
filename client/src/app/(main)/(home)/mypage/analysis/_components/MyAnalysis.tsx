@@ -30,7 +30,7 @@ export default function MyAnalysis({ ability }: { ability: number[] }) {
   };
 
   const getDescription = labels.map((label, idx) => {
-    const score = getScore(ability[idx]);
+    const score = getScore(ability[idx] * 8);
     const description = readability.find((item) => item.label === label && item.score === score)?.description;
     return { label, description, score };
   });
