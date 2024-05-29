@@ -18,8 +18,23 @@ export default function Page() {
   return (
     <div className='bg-white'>
       <Header />
-      <div className='bg-ourTheme pt-32 pb-10 overflow-hidden'>
-        <div className='flex flex-col items-center text-center gap-9'>
+      <div className='bg-ourTheme overflow-hidden h-dvh flex flex-col-reverse md:flex-row lg:flex-row justify-between'>
+        <CardContainer direction={''}>
+          {/* 카드를 감싼 div */}
+          <div className='flex flex-row md:flex-col lg:flex-col gap-[15px] justify-start md:items-start ml-[15px]'>
+            <Card num={1} />
+            <Card num={2} />
+            <Card num={3} />
+            <Card num={4} />
+            <Card num={5} />
+            <Card num={1} />
+            <Card num={2} />
+            <Card num={3} />
+            <Card num={4} />
+            <Card num={5} />
+          </div>
+        </CardContainer>
+        <div className='flex flex-col items-center text-center gap-9 pt-32 pb-10'>
           <UpsideAnimation>
             <div className='flex flex-col gap-5'>
               <div className='text-white text-base md:text-xl lg:text-xl'>당신의 문해력 지킴이,</div>
@@ -36,10 +51,21 @@ export default function Page() {
             </div>
           </Link>
         </div>
-        {/* 움직일 div */}
-        <CardContainer>
+        <CardContainer direction={'upside'}>
           {/* 카드를 감싼 div */}
-          <div className='flex flex-row gap-[15px] justify-start items-stretch ml-[15px]'>
+          <div className='flex flex-row md:flex-col-reverse lg:flex-col-reverse gap-[15px] items-end mr-[15px] absolute bottom-full'>
+            <Card num={1} />
+            <Card num={2} />
+            <Card num={3} />
+            <Card num={4} />
+            <Card num={5} />
+            <Card num={1} />
+            <Card num={2} />
+            <Card num={3} />
+            <Card num={4} />
+            <Card num={5} />
+          </div>
+          <div className='flex flex-row md:flex-col-reverse lg:flex-col-reverse mt-[15px] gap-[15px] items-end mr-[15px]'>
             <Card num={1} />
             <Card num={2} />
             <Card num={3} />
@@ -81,11 +107,12 @@ export default function Page() {
               <div className='text-ourBlue font-bold text-base md:text-xl lg:text-xl'>난이도별, 관심사별</div>
               <div className='font-bold text-3xl md:text-5xl lg:text-5xl flex flex-col gap-2'>
                 <span>매일 새로운</span>
-                <span>개인 맞춤 학습</span>
+                <span>개인 맞춤 문제</span>
               </div>
               <ul className='text-ourDarkGray list-disc ml-4 text-sm md:text-base lg:text-base'>
-                <li>학습 유형, 학습 요소, 수준에 따른 학습 추천</li>
-                <li>인지 능력, 추론 능력 등을 기를 수 있는 다양한 문제</li>
+                <li>개인별 문해력 능력치에 따른 학습 추천</li>
+                <li>추론 능력, 인지 능력, 어휘, 읽기 속도, 읽기 정확도</li>
+                <li>각 능력을 기를 수 있는 다양한 문제</li>
               </ul>
             </div>
             <div className='w-full md:w-1/2 lg:w-1/2 h-80 relative'>
@@ -129,7 +156,7 @@ export default function Page() {
               <ul className='text-ourDarkGray list-disc ml-4 text-sm md:text-base lg:text-base'>
                 <li>고등 수준 5개 대주제의 비문학 지문</li>
                 <li>인문, 사회, 과학, 기술, 예술</li>
-                <li>다양한 문제 유형들의 실시간 피드백과 해설</li>
+                <li>다양한 문제 유형에 대한 피드백과 해설</li>
               </ul>
             </div>
             <div className='w-full md:w-1/2 lg:w-1/2 h-80 relative'>
