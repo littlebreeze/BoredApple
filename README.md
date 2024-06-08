@@ -2,7 +2,7 @@
 
 심심한 사과: 문해력 상승을 위한 다섯 가지 유형의 사용자 맞춤 문해력 학습 및 실시간 어휘 퀴즈 대결 플랫폼
 <br><br>
-<img width="400" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/logo.png">
+<img src="./docs/logo.png" alt="심심한사과" width="400">
 
 > https://k10a508.p.ssafy.io/
 
@@ -32,7 +32,7 @@ SSAFY 10기 자율 프로젝트 A508
 
 ### 간편 문해력 테스트
 
-<img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%EA%B0%84%EC%9D%B4%20%ED%85%8C%EC%8A%A4%ED%8A%B8.gif?ref_type=heads">
+<img src="./docs/ba-gif/간이-테스트.gif" alt="간편-문해력-테스트" width="650">
 
 - 12문제로 이루어진 간편한 테스트로 나의 문해력 수준 확인
 
@@ -40,8 +40,8 @@ SSAFY 10기 자율 프로젝트 A508
 
 ### 매일 새로운 개인 맞춤 학습
 
-<img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%EC%98%A4%EB%8A%98%EC%9D%98%ED%95%99%EC%8A%B5-%EC%A0%95%EB%8F%85%ED%9B%88%EB%A0%A8.gif?ref_type=heads">
-<img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%EC%98%A4%EB%8A%98%EC%9D%98%ED%95%99%EC%8A%B5-%EC%A7%80%EB%AC%B8%EC%9A%94%EC%95%BD.gif?ref_type=heads">
+<img src="./docs/ba-gif/오늘의학습-정독훈련.gif" alt="정독훈령" width="650">
+<img src="./docs/ba-gif/오늘의학습-지문요약.gif" alt="지문요약" width="650">
 
 - 학습 유형, 학습 요소, 수준에 따른 개인화된 일일 세 가지의 맞춤 학습 추천
 - 인지 능력, 추론 능력 등을 기를 수있는 5가지 유형의 다양한 문제
@@ -49,16 +49,17 @@ SSAFY 10기 자율 프로젝트 A508
 
 ### 나의 능력치와 학습 기록 확인
 
-<img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%ED%99%9C%EB%8F%99%20%EA%B8%B0%EB%A1%9D.gif?ref_type=heads">
+<img src="./docs/ba-gif/활동-기록.gif" alt="활동 기록" width="650">
 
 - 그래프를 통한 내 능력치와 강점&약점 분석 피드백
 - 달력에서 바로 확인하는 내 학습 기록
 
 ### 실시간 대결을 통한 재미있는 어휘 학습
-<img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%EA%B2%8C%EC%9E%84-%EB%B0%A9%EB%A7%8C%EB%93%A4%EA%B8%B0.gif?ref_type=heads">
-<img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%EA%B2%8C%EC%9E%84-%EC%9E%85%EC%9E%A5%ED%95%98%EA%B8%B0.gif?ref_type=heads">
-<img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%EA%B2%8C%EC%9E%84-%EC%A0%95%EB%8B%B5%EB%A7%9E%EC%B6%94%EA%B8%B0.gif?ref_type=heads">
-<img width="650" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/ba-gif/%EA%B2%8C%EC%9E%84-%ED%9E%8C%ED%8A%B8%EB%B0%8F%EA%B2%B0%EA%B3%BC.gif?ref_type=heads">
+
+<img src="./docs/ba-gif/게임-방만들기.gif" alt="간편-문해력-테스트" width="650">
+<img src="./docs/ba-gif/게임-입장하기.gif" alt="간편-문해력-테스트" width="650">
+<img src="./docs/ba-gif/게임-정답맞추기.gif" alt="간편-문해력-테스트" width="650">
+<img src="./docs/ba-gif/게임-힌트및결과.gif" alt="간편-문해력-테스트" width="650">
 
 - 문해력의 기초가 되는 어휘력을 재미있게 학습
 
@@ -67,7 +68,7 @@ SSAFY 10기 자율 프로젝트 A508
 - 랭킹 시스템을 통한 경쟁력 제고
 
 ## 🏛️ 프로젝트 구조도
-<img width="800" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/architecture.png">
+<img src="./docs/architecture.png" alt="프로젝트구조도" width="800">
 
 ## 💻 주요 기술
 [![React](https://img.shields.io/badge/react-18.2.0-blue?style=flat&logo=react)](https://ko.legacy.reactjs.org/)
@@ -213,8 +214,8 @@ client
 
 - [API 명세서](https://www.notion.so/righthun/API-597c2ee08c834f42a891ba7c5229979f)
 
-## 📊 ERD 다이어그램
-<img width="800" src="https://lab.ssafy.com/s10-final/S10P31A508/-/raw/main/docs/erd.png">
+## 📊 ER 다이어그램
+<img src="./docs/erd.png" alt="ERD" width="800">
 
 ## 🎨 와이어프레임
 
